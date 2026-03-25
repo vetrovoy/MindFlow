@@ -45,12 +45,12 @@
   display: inline-flex;
   justify-content: center;
   border-radius: 16px;
-  box-shadow: 0 0 0 6px var(--mf-color-accent-lime-ring-soft);
+  box-shadow: 0 0 0 1px var(--mf-color-accent-lime-ring-soft);
 }
 
 .iconButton:hover:not(:disabled),
 .iconButton:focus-visible:not(:disabled) {
-  box-shadow: 0 0 0 8px var(--mf-color-accent-lime-ring-strong);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-ring-strong);
   filter: saturate(1.08);
 }
 

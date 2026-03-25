@@ -1,0 +1,188 @@
+.root {
+  display: grid;
+}
+
+.headerTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--mf-space-lg);
+}
+
+.headerTitle {
+  margin: 0;
+}
+
+.content {
+  display: grid;
+  gap: var(--mf-space-3xl);
+  margin-top: var(--mf-space-3xl);
+}
+
+.editorGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+  gap: var(--mf-space-3xl);
+  align-items: start;
+}
+
+.mainColumn,
+.sideColumn {
+  display: grid;
+  gap: var(--mf-space-3xl);
+}
+
+.fieldGroup {
+  display: grid;
+  gap: var(--mf-space-md);
+}
+
+.planningGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--mf-space-md);
+}
+
+.fieldLabel {
+  color: var(--mf-color-text-secondary);
+  font-family: var(--mf-font-meta);
+  font-size: var(--mf-font-size-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.inlineAction {
+  min-height: 54px;
+  white-space: nowrap;
+}
+
+.choiceGrid {
+  display: grid;
+  gap: var(--mf-space-lg);
+}
+
+.choiceGroup {
+  display: grid;
+  gap: var(--mf-space-md);
+}
+
+.choiceLabel {
+  color: var(--mf-color-text-secondary);
+}
+
+.choiceList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mf-space-sm);
+}
+
+.choiceButton {
+  display: grid;
+  gap: 2px;
+  padding: var(--mf-space-lg);
+  border-radius: var(--mf-radius-lg);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-deep);
+  color: var(--mf-color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.choiceButton:hover,
+.choiceButton:focus-visible {
+  border-color: var(--mf-color-border-medium);
+  transform: translateY(-1px);
+}
+
+.choiceButtonActive {
+  border-color: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-lime-panel);
+}
+
+.choiceButtonTitle {
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-supportive);
+  font-weight: 600;
+}
+
+.choiceButtonDescription {
+  color: var(--mf-color-text-secondary);
+  font-size: var(--mf-font-size-badge);
+  line-height: 1.25;
+}
+
+.secondaryActions {
+  display: flex;
+  align-items: center;
+  gap: var(--mf-space-md);
+  flex-wrap: wrap;
+}
+
+.secondaryActionButton {
+  background: var(--mf-color-surface-deep);
+}
+
+.overviewCard {
+  display: grid;
+  gap: var(--mf-space-md);
+  padding: var(--mf-space-3xl);
+  border-radius: var(--mf-radius-card);
+  border: 1px solid var(--mf-color-border-medium);
+  background:
+    radial-gradient(circle at top left, var(--mf-color-accent-lime-panel-glow), transparent 42%),
+    linear-gradient(
+      180deg,
+      var(--mf-gradient-overlay-depth-start),
+      var(--mf-gradient-overlay-depth-end)
+    );
+}
+
+.overviewLabel {
+  color: var(--mf-color-accent-lime);
+}
+
+.overviewTitle {
+  margin: 0;
+}
+
+.overviewMeta {
+  display: grid;
+  gap: var(--mf-space-sm);
+}
+
+.overviewMetaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-md);
+}
+
+.overviewMetaLabel {
+  color: var(--mf-color-text-secondary);
+}
+
+.overviewMetaValue {
+  color: var(--mf-color-text-primary);
+}
+
+.validationMessage {
+  margin: 0;
+  color: var(--mf-color-accent-alert);
+  font-size: var(--mf-font-size-supportive);
+}
+
+@media (max-width: 1023px) {
+  .editorGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .planningGrid,
+  .choiceList {
+    grid-template-columns: 1fr;
+  }
+}

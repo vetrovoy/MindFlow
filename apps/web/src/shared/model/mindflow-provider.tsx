@@ -1,4 +1,5 @@
 import {
+  archiveProject,
   archiveTask,
   buildTodayFeed,
   bulkMoveToProject,
@@ -8,6 +9,7 @@ import {
   reorderTasks,
   setTaskStatus,
   toggleTaskDone,
+  updateProject,
   updateTask,
   validateProject,
   validateTask,
@@ -52,6 +54,19 @@ interface SaveTaskEditInput {
   projectId: string | null;
 }
 
+interface SaveProjectEditInput {
+  projectId: string;
+  name: string;
+  color: string;
+  isFavorite: boolean;
+  deadline: string | null;
+}
+
+interface SaveOptions {
+  closeOnSuccess?: boolean;
+  toastOnSuccess?: boolean;
+}
+
 interface MindFlowContextValue {
   state: {
     tasks: Task[];
@@ -80,8 +95,10 @@ interface MindFlowContextValue {
     closeTaskEdit: () => void;
     openProjectEdit: (projectId: string) => void;
     closeProjectEdit: () => void;
-    saveTaskEdit: (input: SaveTaskEditInput) => Promise<boolean>;
+    saveTaskEdit: (input: SaveTaskEditInput, options?: SaveOptions) => Promise<boolean>;
+    saveProjectEdit: (input: SaveProjectEditInput, options?: SaveOptions) => Promise<boolean>;
     archiveTask: (taskId: string) => Promise<void>;
+    archiveProject: (projectId: string) => Promise<void>;
     deleteTask: (taskId: string) => Promise<void>;
     toggleInboxSelection: (taskId: string) => void;
     clearInboxSelection: () => void;
@@ -338,7 +355,11 @@ export function MindFlowProvider({ children }: PropsWithChildren) {
     });
   }
 
-  async function saveTaskEdit(input: SaveTaskEditInput) {
+  async function saveTaskEdit(
+    input: SaveTaskEditInput,
+    options: SaveOptions = {}
+  ) {
+    const { closeOnSuccess = true, toastOnSuccess = true } = options;
     const task = tasks.find((item) => item.id === input.taskId);
     if (task == null) {
       return false;
@@ -374,11 +395,16 @@ export function MindFlowProvider({ children }: PropsWithChildren) {
     });
 
     if (saved) {
-      setEditingTaskId(null);
-      setToast({
-        title: "Задача обновлена",
-        description: "Изменения сохранены локально."
-      });
+      if (closeOnSuccess) {
+        setEditingTaskId(null);
+      }
+
+      if (toastOnSuccess) {
+        setToast({
+          title: "Задача обновлена",
+          description: "Изменения сохранены локально."
+        });
+      }
     }
 
     return saved;
@@ -399,6 +425,66 @@ export function MindFlowProvider({ children }: PropsWithChildren) {
       setToast({
         title: "Задача архивирована",
         description: "Она скрыта из активных экранов."
+      });
+    }
+  }
+
+  async function saveProjectEdit(
+    input: SaveProjectEditInput,
+    options: SaveOptions = {}
+  ) {
+    const { closeOnSuccess = true, toastOnSuccess = true } = options;
+    const project = projects.find((item) => item.id === input.projectId);
+    if (project == null) {
+      return false;
+    }
+
+    const nextProject = updateProject(
+      project,
+      {
+        name: input.name,
+        color: input.color,
+        isFavorite: input.isFavorite,
+        deadline: input.deadline
+      },
+      getNowIso()
+    );
+
+    const saved = await runMutation(async () => {
+      await repository.projects.save(nextProject);
+    });
+
+    if (saved) {
+      if (closeOnSuccess) {
+        setEditingProjectId(null);
+      }
+
+      if (toastOnSuccess) {
+        setToast({
+          title: "Список обновлён",
+          description: "Изменения списка сохранены локально."
+        });
+      }
+    }
+
+    return saved;
+  }
+
+  async function archiveProjectById(projectId: string) {
+    const project = projects.find((item) => item.id === projectId);
+    if (project == null) {
+      return;
+    }
+
+    const saved = await runMutation(async () => {
+      await repository.projects.save(archiveProject(project, getNowIso()));
+    });
+
+    if (saved) {
+      setEditingProjectId(null);
+      setToast({
+        title: "Список архивирован",
+        description: "Он скрыт из активных экранов вместе со своими задачами."
       });
     }
   }
@@ -575,7 +661,9 @@ export function MindFlowProvider({ children }: PropsWithChildren) {
         setEditingProjectId(null);
       },
       saveTaskEdit,
+      saveProjectEdit,
       archiveTask: archiveTaskById,
+      archiveProject: archiveProjectById,
       deleteTask: deleteTaskById,
       toggleInboxSelection,
       clearInboxSelection: () => {

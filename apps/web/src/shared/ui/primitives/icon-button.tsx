@@ -9,6 +9,7 @@ export interface IconButtonProps {
   icon: IconName;
   ariaLabel: string;
   variant?: ButtonVariant;
+  type?: "button" | "submit";
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
@@ -20,6 +21,7 @@ export function IconButton({
   disabled,
   icon,
   onClick,
+  type = "button",
   variant = "primary"
 }: IconButtonProps) {
   return (
@@ -27,6 +29,7 @@ export function IconButton({
       className={cn(styles.iconButton, className)}
       disabled={disabled}
       onClick={onClick}
+      type={type}
       variant={variant}
     >
       <span className={styles.srOnly}>{ariaLabel}</span>

@@ -1,0 +1,201 @@
+.trigger {
+  width: 100%;
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-lg);
+  padding: var(--mf-space-xl) var(--mf-space-4xl);
+  border-radius: var(--mf-radius-xl);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-elevated);
+  color: var(--mf-color-text-primary);
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-body);
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.trigger:hover,
+.trigger:focus-visible,
+.trigger[data-state="open"] {
+  border-color: var(--mf-color-accent-lime);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+}
+
+.trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.triggerValue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mf-space-md);
+  min-width: 0;
+}
+
+.content {
+  z-index: 40;
+  width: min(340px, calc(100vw - 32px));
+  border-radius: var(--mf-radius-card);
+  border: 1px solid var(--mf-color-border-medium);
+  background: linear-gradient(
+    180deg,
+    var(--mf-gradient-overlay-depth-start),
+    var(--mf-gradient-overlay-depth-end)
+  );
+  box-shadow: 0 18px 60px var(--mf-color-shadow-overlay);
+  padding: var(--mf-space-3xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-lg);
+  margin-bottom: var(--mf-space-lg);
+}
+
+.headerLabel {
+  color: var(--mf-color-text-secondary);
+  font-family: var(--mf-font-meta);
+  font-size: var(--mf-font-size-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.clearButton {
+  border: none;
+  background: transparent;
+  color: var(--mf-color-accent-lime);
+  font-family: var(--mf-font-meta);
+  font-size: var(--mf-font-size-badge);
+  cursor: pointer;
+  border-radius: var(--mf-radius-sm);
+  padding: var(--mf-space-2xs) var(--mf-space-sm);
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.clearButton:hover {
+  background: var(--mf-color-accent-lime-panel);
+  color: var(--mf-color-text-primary);
+}
+
+.calendar,
+.months,
+.month {
+  display: grid;
+}
+
+.month {
+  gap: var(--mf-space-lg);
+}
+
+.monthCaption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: var(--mf-space-sm);
+}
+
+.captionLabel {
+  font-family: var(--mf-font-display);
+  font-size: var(--mf-font-size-title);
+  color: var(--mf-color-text-primary);
+}
+
+.navButton {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--mf-radius-md);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-overlay-ghost);
+  color: var(--mf-color-text-secondary);
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.navButton:hover {
+  border-color: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-lime-panel);
+  color: var(--mf-color-text-primary);
+}
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.weekdays,
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--mf-space-xs);
+}
+
+.weekday {
+  color: var(--mf-color-text-tertiary);
+  font-family: var(--mf-font-meta);
+  font-size: var(--mf-font-size-badge);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.day {
+  display: flex;
+}
+
+.dayButton {
+  width: 100%;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--mf-radius-md);
+  background: transparent;
+  color: var(--mf-color-text-primary);
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-supportive);
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.dayButton:hover {
+  background: var(--mf-color-accent-lime-panel);
+  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 32%, transparent);
+}
+
+.daySelected .dayButton {
+  background: var(--mf-color-accent-lime);
+  color: var(--mf-color-background);
+}
+
+.dayToday .dayButton {
+  border-color: var(--mf-color-accent-lime);
+}
+
+.dayDisabled .dayButton {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

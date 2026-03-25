@@ -50,6 +50,19 @@ export function createProject(input: ProjectCreateInput): Project {
   });
 }
 
+export function updateProject(
+  project: Project,
+  updates: Partial<Pick<Project, "name" | "color" | "isFavorite" | "deadline">>,
+  now: string
+) {
+  return validateProject({
+    ...project,
+    ...updates,
+    name: updates.name == null ? project.name : updates.name.trim(),
+    updatedAt: now
+  });
+}
+
 export function updateTask(
   task: Task,
   updates: Partial<Pick<Task, "title" | "description" | "priority" | "dueDate" | "projectId">>,

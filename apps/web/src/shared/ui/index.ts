@@ -7,4 +7,5 @@ export * from "./project-card";
 export * from "./bottom-nav-item";
 export * from "./modal";
 export * from "./capture-form";
-export * from "./placeholder-edit-modal";
+export * from "./editor-sheet";
+export * from "./confirm-dialog";

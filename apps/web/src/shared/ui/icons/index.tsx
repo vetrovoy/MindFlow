@@ -1,18 +1,22 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Archive,
-  ArrowRight,
   Calendar,
   CalendarClock,
   Check,
   CheckCircle2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Circle,
+  Star,
   FolderKanban,
   LayoutGrid,
   ListTodo,
   Plus,
   Search,
   Sparkles,
+  Trash2,
   X,
   TriangleAlert
 } from "lucide-react";
@@ -26,6 +30,8 @@ export type IconName =
   | "check"
   | "checkbox-empty"
   | "checkbox-checked"
+  | "chevron-down"
+  | "chevron-left"
   | "chevron-right"
   | "priority-low"
   | "priority-medium"
@@ -35,9 +41,11 @@ export type IconName =
   | "overdue"
   | "toast-success"
   | "close"
+  | "favorite"
   | "nav-inbox"
   | "nav-lists"
-  | "nav-today";
+  | "nav-today"
+  | "trash";
 
 export interface IconProps {
   name: IconName;
@@ -53,7 +61,9 @@ const ICONS: Record<IconName, LucideIcon> = {
   check: Check,
   "checkbox-empty": Circle,
   "checkbox-checked": CheckCircle2,
-  "chevron-right": ArrowRight,
+  "chevron-down": ChevronDown,
+  "chevron-left": ChevronLeft,
+  "chevron-right": ChevronRight,
   "priority-low": Circle,
   "priority-medium": Calendar,
   "priority-high": TriangleAlert,
@@ -62,9 +72,11 @@ const ICONS: Record<IconName, LucideIcon> = {
   overdue: CalendarClock,
   "toast-success": Sparkles,
   close: X,
+  favorite: Star,
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,
-  "nav-today": LayoutGrid
+  "nav-today": LayoutGrid,
+  trash: Trash2
 };
 
 export function Icon({

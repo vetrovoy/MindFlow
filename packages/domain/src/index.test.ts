@@ -13,6 +13,7 @@ import {
   setTaskStatus,
   searchEntities,
   toggleTaskDone,
+  updateProject,
   updateTask
 } from "./index";
 
@@ -211,5 +212,21 @@ describe("task editing helpers", () => {
 
     expect(updated.status).toBe("done");
     expect(updated.completedAt).toBe("2026-03-25T10:00:00.000Z");
+  });
+
+  it("normalizes project name updates", () => {
+    const project = makeProject({ id: "project-a", name: "Landing" });
+
+    const updated = updateProject(
+      project,
+      {
+        name: "  Новый список  ",
+        isFavorite: true
+      },
+      NOW
+    );
+
+    expect(updated.name).toBe("Новый список");
+    expect(updated.isFavorite).toBe(true);
   });
 });
