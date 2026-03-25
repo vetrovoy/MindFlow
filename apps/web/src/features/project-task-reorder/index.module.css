@@ -198,13 +198,11 @@
 .priorityHigh {
   color: color-mix(in srgb, var(--mf-color-accent-alert) 92%, white);
   border-color: color-mix(in srgb, var(--mf-color-accent-alert) 24%, var(--mf-color-border-medium));
-  background: color-mix(in srgb, var(--mf-color-accent-alert) 8%, var(--mf-color-surface));
 }
 
 .priorityMedium {
   color: color-mix(in srgb, var(--mf-color-accent-lime) 72%, white);
   border-color: color-mix(in srgb, var(--mf-color-accent-lime) 28%, var(--mf-color-border-medium));
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 8%, var(--mf-color-surface));
 }
 
 .priorityLow {

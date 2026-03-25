@@ -44,29 +44,6 @@ function getPriorityTone(priority: Task["priority"]) {
   return styles.priorityLow;
 }
 
-function getPriorityLabel(priority: Task["priority"]) {
-  if (priority === "high") {
-    return "Высокий";
-  }
-
-  if (priority === "medium") {
-    return "Средний";
-  }
-
-  return "Низкий";
-}
-
-function formatDueDate(dueDate: string | null) {
-  if (dueDate == null) {
-    return null;
-  }
-
-  return new Date(`${dueDate}T00:00:00`).toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "short"
-  });
-}
-
 function SortableTaskCard({
   onOpenTask,
   onToggleDone,
@@ -82,12 +59,14 @@ function SortableTaskCard({
   } = useSortable({
     id: task.id
   });
-  const dueDateLabel = formatDueDate(task.dueDate);
   const isDone = task.status === "done";
-
   return (
     <article
-      className={cn(styles.card, isDragging && styles.cardDragging)}
+      className={cn(
+        styles.card,
+        isDragging && styles.cardDragging,
+        getPriorityTone(task.priority)
+      )}
       ref={setNodeRef}
       style={{
         transform: CSS.Transform.toString(transform),
@@ -118,27 +97,6 @@ function SortableTaskCard({
             <strong className={cn(styles.title, isDone && styles.titleDone)}>
               {task.title}
             </strong>
-            <div className={styles.meta}>
-              <span
-                className={cn(styles.metaBadge, getPriorityTone(task.priority))}
-              >
-                {getPriorityLabel(task.priority)}
-              </span>
-              <span className={styles.metaText}>
-                {isDone ? "Готово" : "В работе"}
-              </span>
-              {dueDateLabel == null ? null : (
-                <span className={styles.metaText}>
-                  <Icon
-                    className={styles.metaIcon}
-                    name="today"
-                    size={12}
-                    tone="muted"
-                  />
-                  {dueDateLabel}
-                </span>
-              )}
-            </div>
           </button>
         </div>
         <button

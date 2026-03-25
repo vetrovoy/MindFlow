@@ -1,14 +1,119 @@
+import type { Task } from "@mindflow/domain";
+import { useMemo, useState } from "react";
+
 import { TaskListEntity } from "@/entities/task-list";
+import { getTodayDateKey } from "@/shared/lib/date";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
+  Icon,
+  MetaText,
   SectionTitle,
   StateCard,
   SurfaceCard
-} from "@/shared/ui/primitives";
+} from "@/shared/ui";
 import styles from "./index.module.css";
+
+interface InboxSectionProps {
+  title: string;
+  count: number;
+  defaultOpen?: boolean;
+  emptyTitle: string;
+  emptyDescription: string;
+  tasks: Task[];
+  badgeByTaskId?: Partial<Record<string, "today" | "overdue">>;
+  onOpenTask: (taskId: string) => void;
+  onToggleDone: (taskId: string) => void;
+}
+
+function InboxSection({
+  badgeByTaskId,
+  count,
+  defaultOpen = true,
+  emptyDescription,
+  emptyTitle,
+  onOpenTask,
+  onToggleDone,
+  tasks,
+  title
+}: InboxSectionProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <section className={styles.section}>
+      <button
+        aria-expanded={isOpen}
+        className={styles.sectionHeader}
+        onClick={() => {
+          setIsOpen((current) => !current);
+        }}
+        type="button"
+      >
+        <div className={styles.sectionHeading}>
+          <strong className={styles.sectionTitle}>{title}</strong>
+          <MetaText className={styles.sectionCount}>{count}</MetaText>
+        </div>
+        <span className={styles.sectionChevron}>
+          <Icon name={isOpen ? "chevron-down" : "chevron-right"} size={16} tone="muted" />
+        </span>
+      </button>
+      {isOpen ? (
+        tasks.length === 0 ? (
+          <StateCard
+            description={emptyDescription}
+            title={emptyTitle}
+            variant="empty"
+          />
+        ) : (
+          <TaskListEntity
+            badgeByTaskId={badgeByTaskId}
+            onOpenTask={onOpenTask}
+            onToggleDone={onToggleDone}
+            tasks={tasks}
+          />
+        )
+      ) : null}
+    </section>
+  );
+}
 
 export function InboxViewWidget() {
   const { actions, derived } = useMindFlowApp();
+  const todayDateKey = getTodayDateKey();
+  const [todayTasks, laterTasks, completedTasks] = useMemo(() => {
+    const today: Task[] = [];
+    const later: Task[] = [];
+    const completed: Task[] = [];
+
+    for (const task of derived.inboxTasks) {
+      if (task.status === "done") {
+        completed.push(task);
+        continue;
+      }
+
+      if (task.dueDate != null && task.dueDate <= todayDateKey) {
+        today.push(task);
+        continue;
+      }
+
+      later.push(task);
+    }
+
+    return [today, later, completed] as const;
+  }, [derived.inboxTasks, todayDateKey]);
+
+  const badgeByTaskId = useMemo<Partial<Record<string, "today" | "overdue">>>(() => {
+    const result: Partial<Record<string, "today" | "overdue">> = {};
+
+    for (const task of todayTasks) {
+      if (task.dueDate == null) {
+        continue;
+      }
+
+      result[task.id] = task.dueDate < todayDateKey ? "overdue" : "today";
+    }
+
+    return result;
+  }, [todayDateKey, todayTasks]);
 
   return (
     <div className={styles.root}>
@@ -25,13 +130,45 @@ export function InboxViewWidget() {
               variant="empty"
             />
           ) : (
-            <TaskListEntity
-              onOpenTask={actions.openTaskEdit}
-              onToggleDone={(taskId) => {
-                void actions.toggleTask(taskId);
-              }}
-              tasks={derived.inboxTasks}
-            />
+            <div className={styles.sections}>
+              <InboxSection
+                badgeByTaskId={badgeByTaskId}
+                count={todayTasks.length}
+                defaultOpen
+                emptyDescription="Задач со сроком на сегодня или с просроченной датой сейчас нет."
+                emptyTitle="Сегодня свободно"
+                onOpenTask={actions.openTaskEdit}
+                onToggleDone={(taskId) => {
+                  void actions.toggleTask(taskId);
+                }}
+                tasks={todayTasks}
+                title="Сегодня"
+              />
+              <InboxSection
+                count={laterTasks.length}
+                defaultOpen
+                emptyDescription="Все активные входящие уже разобраны на сегодня."
+                emptyTitle="Позже пусто"
+                onOpenTask={actions.openTaskEdit}
+                onToggleDone={(taskId) => {
+                  void actions.toggleTask(taskId);
+                }}
+                tasks={laterTasks}
+                title="Позже"
+              />
+              <InboxSection
+                count={completedTasks.length}
+                defaultOpen={false}
+                emptyDescription="Когда завершите входящую задачу, она появится здесь."
+                emptyTitle="Пока ничего не выполнено"
+                onOpenTask={actions.openTaskEdit}
+                onToggleDone={(taskId) => {
+                  void actions.toggleTask(taskId);
+                }}
+                tasks={completedTasks}
+                title="Выполнено"
+              />
+            </div>
           )}
         </div>
       </SurfaceCard>
