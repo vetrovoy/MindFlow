@@ -12,9 +12,14 @@ interface CaptureFormProps {
   submitLabel?: string;
   disabled?: boolean;
   dateLabel?: string;
-  onSubmitValue: (input: { value: string; date: string | null }) => Promise<boolean>;
+  onSubmitValue: (input: {
+    value: string;
+    date: string | null;
+  }) => Promise<boolean>;
   afterSubmit?: () => void;
   leadingIcon?: ReactNode;
+  showDatePicker?: boolean;
+  preferredDate?: string | null;
 }
 
 interface CaptureFormValues {
@@ -30,17 +35,20 @@ export function CaptureForm({
   leadingIcon,
   onSubmitValue,
   placeholder,
+  preferredDate = null,
   submitLabel = "Создать",
-  title
+  title,
+  showDatePicker = true
 }: CaptureFormProps) {
-  const { handleSubmit, register, reset, setValue, watch } = useForm<CaptureFormValues>({
-    defaultValues: {
-      value: "",
-      date: ""
-    }
-  });
+  const { handleSubmit, register, reset, setValue, watch } =
+    useForm<CaptureFormValues>({
+      defaultValues: {
+        value: "",
+        date: ""
+      }
+    });
   const value = watch("value") ?? "";
-  const date = watch("date") ?? "";
+  const date = preferredDate ?? (watch("date") ?? "");
 
   return (
     <form
@@ -51,7 +59,10 @@ export function CaptureForm({
           date: nextDate || null
         });
         if (created) {
-          reset();
+          reset({
+            value: "",
+            date: preferredDate ?? ""
+          });
           afterSubmit?.();
         }
       })}
@@ -80,16 +91,21 @@ export function CaptureForm({
               {dateLabel ?? "Дата"}: {date}
             </span>
           ) : null}
-          <DatePickerField
-            className={styles.dateTrigger}
-            disabled={disabled}
-            onChange={(nextValue) => {
-              setValue("date", nextValue, { shouldDirty: true, shouldTouch: true });
-            }}
-            placeholder="Выберите дату"
-            triggerVariant="icon"
-            value={date}
-          />
+          {showDatePicker && (
+            <DatePickerField
+              className={styles.dateTrigger}
+              disabled={disabled}
+              onChange={(nextValue) => {
+                setValue("date", nextValue, {
+                  shouldDirty: true,
+                  shouldTouch: true
+                });
+              }}
+              placeholder="Выберите дату"
+              triggerVariant="icon"
+              value={date}
+            />
+          )}
           <ActionButton
             className={styles.submitButton}
             disabled={!value.trim() || disabled}

@@ -55,23 +55,20 @@ export function InboxViewWidget() {
   return (
     <div className={styles.root}>
       <SurfaceCard>
-        <SectionTitle
-          subtitle="Сначала быстрое добавление, потом разбор. Откройте задачу, чтобы спокойно уточнить список, дату и детали."
-          title="Входящие"
-        />
+        <SectionTitle title="Входящие" />
         <div className={styles.content}>
           {derived.inboxTasks.length === 0 ? (
             <StateCard
-              description="Входящие пусты. Добавьте задачу через быстрое поле, и она появится здесь."
-              title="Во Входящих пусто"
+              description="Добавьте задачу через быстрое поле, и она появится здесь."
+              title="Пусто"
               variant="empty"
             />
           ) : (
             <div className={styles.sections}>
               {activeInboxTasks.length === 0 ? (
                 <StateCard
-                  description="Сейчас во входящих нет активных задач."
-                  title="Входящие пусты"
+                  description="Добавьте задачу через быстрое поле, и она появится здесь."
+                  title="Пусто"
                   variant="empty"
                 />
               ) : (
@@ -91,8 +88,8 @@ export function InboxViewWidget() {
               >
                 {completedInboxTasks.length === 0 ? (
                   <StateCard
-                    description="Когда завершите входящую задачу, она появится здесь."
-                    title="Пока ничего не выполнено"
+                    description="Завершите задачу и она появится здесь."
+                    title="Пусто"
                     variant="empty"
                   />
                 ) : (

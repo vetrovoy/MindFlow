@@ -115,8 +115,19 @@ function AppShell() {
                 Сегодня
               </NavLink>
             </nav>
-            {isQuickAddOpen && isInbox ? <QuickAddFeature /> : null}
-            {isQuickAddOpen && isToday ? <QuickAddFeature /> : null}
+            {isQuickAddOpen && isInbox ? (
+              <QuickAddFeature
+                title="Быстрый захват задач"
+                description="Добавляйте задачи без приоритета в течение дня."
+              />
+            ) : null}
+            {isQuickAddOpen && isToday ? (
+              <QuickAddFeature
+                title="Быстрый захват задач"
+                description="Добавляйте задачи на сегодня"
+                preferredDate={new Date()}
+              />
+            ) : null}
             {isQuickAddOpen && isLists ? <ProjectCreateFeature /> : null}
             <SystemStatusWidget />
           </div>

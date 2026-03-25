@@ -49,13 +49,12 @@ export function ListsViewWidget() {
       ) : null}
       <SurfaceCard>
         <SectionTitle
-          subtitle="Списки остаются плоскими и на виду, чтобы следующий шаг всегда был очевиден."
           title="Все списки"
         />
         {derived.regularProjects.length === 0 ? (
           <StateCard
-            description="Создайте первый список, затем перенесите в него выбранные задачи из Входящих."
-            title="Списков пока нет"
+            description="Создайте первый список, затем перенесите в него выбранные задачи."
+            title="Пусто"
             variant="empty"
           />
         ) : (

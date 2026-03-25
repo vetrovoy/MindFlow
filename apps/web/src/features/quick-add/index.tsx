@@ -1,22 +1,53 @@
+import { useMemo } from "react";
+
+import { getTodayDateKey } from "@/shared/lib/date";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { CaptureForm } from "@/shared/ui";
 
-export function QuickAddFeature() {
+interface QuickAddFeatureProps {
+  description: string;
+  title: string;
+  preferredDate?: Date | string;
+}
+
+function resolvePreferredDate(preferredDate?: Date | string) {
+  if (preferredDate == null) {
+    return null;
+  }
+
+  if (typeof preferredDate === "string") {
+    return preferredDate;
+  }
+
+  return getTodayDateKey(preferredDate);
+}
+
+export function QuickAddFeature({
+  description,
+  title,
+  preferredDate
+}: QuickAddFeatureProps) {
   const { actions, state } = useMindFlowApp();
+  const resolvedPreferredDate = useMemo(
+    () => resolvePreferredDate(preferredDate),
+    [preferredDate]
+  );
 
   return (
     <CaptureForm
       dateLabel="Срок"
-      description="Добавляйте задачи без приоритета в течение дня. Разбор и планирование позже."
       disabled={state.isSaving}
-      onSubmitValue={({ date, value }) =>
-        actions.addInboxTask({
+      description={description}
+      onSubmitValue={({ date, value }) => {
+        return actions.addInboxTask({
           title: value,
-          dueDate: date
-        })
-      }
+          dueDate: resolvedPreferredDate ?? date
+        });
+      }}
       placeholder="Новая задача..."
-      title="Быстрый захват задач"
+      preferredDate={resolvedPreferredDate}
+      showDatePicker={resolvedPreferredDate == null}
+      title={title}
     />
   );
 }

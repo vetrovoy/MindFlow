@@ -15,6 +15,7 @@ export function ProjectCreateFeature() {
         })
       }
       placeholder="Создайте новый список проекта..."
+      description="Создайте список и планируйте задачи."
       title="Создать список"
     />
   );

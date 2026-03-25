@@ -34,23 +34,24 @@ export function TodayViewWidget() {
   return (
     <SurfaceCard>
       <div className={styles.root}>
-        <SectionTitle
-          subtitle="Сегодня формируется автоматически: сначала просроченные, затем на сегодня, затем важные задачи из Входящих."
-          title="Сегодня"
-        />
+        <SectionTitle title="Сегодня" />
         {derived.todayFeed.length === 0 ? (
           <StateCard
-            description="Задачи появляются здесь, когда становятся просроченными, назначены на сегодня или остаются высокоприоритетными во Входящих."
-            title="Срочных задач сейчас нет"
+            description="Задач на сегодня нет."
+            title="Пусто"
             variant="empty"
           />
         ) : (
           <div className={styles.sections}>
-            <CollapsibleSection count={overdueTasks.length} defaultOpen title="Просрочено">
+            <CollapsibleSection
+              count={overdueTasks.length}
+              defaultOpen
+              title="Просрочено"
+            >
               {overdueTasks.length === 0 ? (
                 <StateCard
-                  description="Просроченных задач сейчас нет."
-                  title="Просрочено пусто"
+                  description="Просроченных задач нет."
+                  title="Пусто"
                   variant="empty"
                 />
               ) : (
@@ -64,7 +65,11 @@ export function TodayViewWidget() {
                 />
               )}
             </CollapsibleSection>
-            <CollapsibleSection count={todayTasks.length} defaultOpen title="Сегодня">
+            <CollapsibleSection
+              count={todayTasks.length}
+              defaultOpen
+              title="Сегодня"
+            >
               {todayTasks.length === 0 ? (
                 <StateCard
                   description="На сегодня сейчас нет задач. Важные входящие и задачи на сегодня появятся здесь автоматически."
