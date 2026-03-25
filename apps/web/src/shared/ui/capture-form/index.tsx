@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 
 import { Body, Heading, Icon } from "..";
-import { ActionButton } from "@/shared/ui/primitives";
+import { ActionButton, DatePickerField } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 interface CaptureFormProps {
@@ -11,17 +11,20 @@ interface CaptureFormProps {
   placeholder: string;
   submitLabel?: string;
   disabled?: boolean;
-  onSubmitValue: (value: string) => Promise<boolean>;
+  dateLabel?: string;
+  onSubmitValue: (input: { value: string; date: string | null }) => Promise<boolean>;
   afterSubmit?: () => void;
   leadingIcon?: ReactNode;
 }
 
 interface CaptureFormValues {
   value: string;
+  date: string;
 }
 
 export function CaptureForm({
   afterSubmit,
+  dateLabel,
   description,
   disabled = false,
   leadingIcon,
@@ -30,18 +33,23 @@ export function CaptureForm({
   submitLabel = "Создать",
   title
 }: CaptureFormProps) {
-  const { handleSubmit, register, reset, watch } = useForm<CaptureFormValues>({
+  const { handleSubmit, register, reset, setValue, watch } = useForm<CaptureFormValues>({
     defaultValues: {
-      value: ""
+      value: "",
+      date: ""
     }
   });
   const value = watch("value") ?? "";
+  const date = watch("date") ?? "";
 
   return (
     <form
       className={styles.form}
-      onSubmit={handleSubmit(async ({ value: nextValue }) => {
-        const created = await onSubmitValue(nextValue);
+      onSubmit={handleSubmit(async ({ date: nextDate, value: nextValue }) => {
+        const created = await onSubmitValue({
+          value: nextValue,
+          date: nextDate || null
+        });
         if (created) {
           reset();
           afterSubmit?.();
@@ -66,6 +74,22 @@ export function CaptureForm({
               {...register("value")}
             />
           </label>
+          {date ? (
+            <span className={styles.dateValue}>
+              <Icon name="today" size={14} tone="lime" />
+              {dateLabel ?? "Дата"}: {date}
+            </span>
+          ) : null}
+          <DatePickerField
+            className={styles.dateTrigger}
+            disabled={disabled}
+            onChange={(nextValue) => {
+              setValue("date", nextValue, { shouldDirty: true, shouldTouch: true });
+            }}
+            placeholder="Выберите дату"
+            triggerVariant="icon"
+            value={date}
+          />
           <ActionButton
             className={styles.submitButton}
             disabled={!value.trim() || disabled}

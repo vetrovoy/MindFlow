@@ -14,6 +14,7 @@ export interface DatePickerFieldProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  triggerVariant?: "default" | "icon";
   onChange: (value: string) => void;
 }
 
@@ -32,25 +33,38 @@ export function DatePickerField({
   id,
   onChange,
   placeholder = "Выберите дату",
+  triggerVariant = "default",
   value
 }: DatePickerFieldProps) {
   const selectedDate = value ? parseISO(value) : undefined;
+  const isIconTrigger = triggerVariant === "icon";
 
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
         <button
           aria-labelledby={ariaLabelledBy}
-          className={cn(styles.trigger, className)}
+          aria-label={isIconTrigger && !ariaLabelledBy ? "Выбрать дату" : undefined}
+          className={cn(
+            styles.trigger,
+            isIconTrigger && styles.triggerIcon,
+            className
+          )}
           disabled={disabled}
           id={id}
           type="button"
         >
-          <span className={styles.triggerValue}>
+          {isIconTrigger ? (
             <Icon name="today" size={16} tone={value ? "lime" : "muted"} />
-            {value ? formatDateLabel(value) : placeholder}
-          </span>
-          <Icon name="chevron-down" size={16} tone="muted" />
+          ) : (
+            <>
+              <span className={styles.triggerValue}>
+                <Icon name="today" size={16} tone={value ? "lime" : "muted"} />
+                {value ? formatDateLabel(value) : placeholder}
+              </span>
+              <Icon name="chevron-down" size={16} tone="muted" />
+            </>
+          )}
         </button>
       </Popover.Trigger>
       <Popover.Portal>

@@ -6,9 +6,15 @@ export function QuickAddFeature() {
 
   return (
     <CaptureForm
+      dateLabel="Срок"
       description="Добавляйте задачи без приоритета в течение дня. Разбор и планирование позже."
       disabled={state.isSaving}
-      onSubmitValue={actions.addInboxTask}
+      onSubmitValue={({ date, value }) =>
+        actions.addInboxTask({
+          title: value,
+          dueDate: date
+        })
+      }
       placeholder="Новая задача..."
       title="Быстрый захват задач"
     />

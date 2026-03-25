@@ -6,8 +6,14 @@ export function ProjectCreateFeature() {
 
   return (
     <CaptureForm
+      dateLabel="Дедлайн"
       disabled={state.isSaving}
-      onSubmitValue={actions.createProject}
+      onSubmitValue={({ date, value }) =>
+        actions.createProject({
+          name: value,
+          deadline: date
+        })
+      }
       placeholder="Создайте новый список проекта..."
       title="Создать список"
     />

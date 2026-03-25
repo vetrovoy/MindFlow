@@ -20,6 +20,18 @@
     transform 140ms ease;
 }
 
+.triggerIcon {
+  width: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  border-radius: var(--mf-radius-sm);
+  background: transparent;
+  box-shadow: none;
+}
+
 .trigger:hover,
 .trigger:focus-visible,
 .trigger[data-state="open"] {

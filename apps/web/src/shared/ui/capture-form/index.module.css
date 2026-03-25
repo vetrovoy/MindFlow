@@ -37,6 +37,21 @@
   flex: 1;
 }
 
+.dateValue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mf-space-xs);
+  color: var(--mf-color-text-secondary);
+  font-family: var(--mf-font-meta);
+  font-size: var(--mf-font-size-badge);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.dateTrigger {
+  flex-shrink: 0;
+}
+
 .inputLead {
   display: inline-flex;
   align-items: center;
@@ -77,6 +92,10 @@
     align-items: stretch;
     flex-direction: column;
     padding: var(--mf-space-lg);
+  }
+
+  .dateValue {
+    white-space: normal;
   }
 
   .submitButton {

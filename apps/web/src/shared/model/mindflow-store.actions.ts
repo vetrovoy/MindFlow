@@ -57,8 +57,8 @@ export function createMindFlowActions({
         });
       }
     },
-    async addInboxTask(title) {
-      const trimmedTitle = title.trim();
+    async addInboxTask(input) {
+      const trimmedTitle = input.title.trim();
       if (!trimmedTitle) {
         return false;
       }
@@ -68,6 +68,7 @@ export function createMindFlowActions({
       const nextTask = createTask({
         id: createId(),
         title: trimmedTitle,
+        dueDate: input.dueDate ?? null,
         now,
         orderIndex: getNextOrderIndex(tasks, null)
       });
@@ -350,8 +351,8 @@ export function createMindFlowActions({
 
       return saved;
     },
-    async createProject(name) {
-      const trimmedName = name.trim();
+    async createProject(input) {
+      const trimmedName = input.name.trim();
       if (!trimmedName) {
         return false;
       }
@@ -363,6 +364,7 @@ export function createMindFlowActions({
         id: createId(),
         name: trimmedName,
         color: decoration.color,
+        deadline: input.deadline ?? null,
         emoji: decoration.emoji,
         now
       });
