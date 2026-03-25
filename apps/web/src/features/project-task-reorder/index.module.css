@@ -74,41 +74,6 @@
   gap: var(--mf-space-lg);
 }
 
-.card {
-  padding-right: var(--mf-space-lg);
-}
-
-.dragHandle:hover,
-.dragHandle:focus-visible {
-  color: var(--mf-color-text-primary);
-}
-
-.dragHandle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  border: 1px solid var(--mf-color-border-strong);
-  background: var(--mf-color-surface);
-  color: var(--mf-color-text-tertiary);
-  cursor: grab;
-  transition:
-    border-color 140ms ease,
-    background-color 140ms ease,
-    color 140ms ease,
-    transform 140ms ease;
-}
-
-.dragHandle:hover,
-.dragHandle:focus-visible {
-  transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 34%, var(--mf-color-border-medium));
-  background: var(--mf-color-accent-lime-panel);
-}
-
 @media (max-width: 639px) {
   .introCard {
     padding: var(--mf-space-xl);
@@ -116,9 +81,5 @@
 
   .introTitle {
     font-size: var(--mf-font-size-body-lg);
-  }
-
-  .card {
-    padding-right: var(--mf-space-md);
   }
 }

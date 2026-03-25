@@ -10,70 +10,17 @@ import {
 import {
   SortableContext,
   arrayMove,
-  useSortable,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "@mindflow/domain";
-
+import { TaskRowSortable } from "@/shared/ui/task-row-sortable";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
-import { Icon, TaskRow } from "@/shared/ui";
 import styles from "./index.module.css";
+import { useCallback } from "react";
 
 interface ProjectTaskReorderFeatureProps {
   projectId: string;
   tasks: Task[];
-}
-
-interface SortableTaskCardProps {
-  task: Task;
-  onOpenTask: (taskId: string) => void;
-  onToggleDone: (taskId: string) => void;
-}
-
-function SortableTaskCard({
-  onOpenTask,
-  onToggleDone,
-  task
-}: SortableTaskCardProps) {
-  const {
-    attributes,
-    isDragging,
-    listeners,
-    setNodeRef,
-    transform,
-    transition
-  } = useSortable({
-    id: task.id
-  });
-  return (
-    <div
-      ref={setNodeRef}
-      style={{
-        transform: CSS.Transform.toString(transform),
-        transition
-      }}
-    >
-      <TaskRow
-        className={styles.card}
-        isDragging={isDragging}
-        onOpenTask={onOpenTask}
-        onToggleDone={onToggleDone}
-        task={task}
-        trailingSlot={
-          <button
-            {...attributes}
-            {...listeners}
-            aria-label={`Изменить порядок задачи ${task.title}`}
-            className={styles.dragHandle}
-            type="button"
-          >
-            <Icon name="drag" size={16} tone="muted" />
-          </button>
-        }
-      />
-    </div>
-  );
 }
 
 export function ProjectTaskReorderFeature({
@@ -88,11 +35,7 @@ export function ProjectTaskReorderFeature({
     })
   );
 
-  if (tasks.length === 0) {
-    return null;
-  }
-
-  async function handleDragEnd(event: DragEndEvent) {
+  const handleDragEnd = useCallback(async (event: DragEndEvent) => {
     const activeId = String(event.active.id);
     const overId = event.over == null ? null : String(event.over.id);
 
@@ -110,6 +53,10 @@ export function ProjectTaskReorderFeature({
 
     const nextOrder = arrayMove(currentOrder, oldIndex, newIndex);
     await actions.reorderProjectTasks(projectId, nextOrder);
+  }, []);
+
+  if (tasks.length === 0) {
+    return null;
   }
 
   return (
@@ -127,8 +74,9 @@ export function ProjectTaskReorderFeature({
         >
           <div className={styles.list}>
             {tasks.map((task) => (
-              <SortableTaskCard
+              <TaskRowSortable
                 key={task.id}
+                showDragIcon={tasks.length !== 1}
                 onOpenTask={actions.openTaskEdit}
                 onToggleDone={actions.toggleTask}
                 task={task}
