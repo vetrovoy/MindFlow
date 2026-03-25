@@ -1,0 +1,80 @@
+import { ProjectCardEntity } from "../../entities/project/ui/project-card";
+import { ProjectTaskReorderFeature } from "../../features/project-task-reorder";
+import { useMindFlowApp } from "../../shared/model/mindflow-provider";
+import {
+  SectionTitle,
+  StateCard,
+  SurfaceCard
+} from "../../shared/ui/primitives";
+import styles from "./index.module.css";
+
+export function ListsViewWidget() {
+  const { actions, derived } = useMindFlowApp();
+
+  return (
+    <div className={styles.root}>
+      {derived.favoriteProjects.length > 0 ? (
+        <SurfaceCard>
+          <SectionTitle
+            subtitle="Избранные списки остаются сверху для быстрого доступа."
+            title="Избранное"
+          />
+          <div className={styles.sections}>
+            {derived.projectSections
+              .filter((section) => section.project.isFavorite)
+              .map((section) => (
+                <div key={section.project.id} className={styles.section}>
+                  <ProjectCardEntity
+                    onOpenProject={actions.openProjectEdit}
+                    progress={section.progress}
+                    project={section.project}
+                    tasks={section.tasks}
+                  />
+                  {section.tasks.length === 0 ? (
+                    <StateCard
+                      description="Перенесите задачи из Входящих или отредактируйте задачу, чтобы привязать её к этому списку."
+                      title="Пока нет задач"
+                      variant="empty"
+                    />
+                  ) : (
+                    <ProjectTaskReorderFeature
+                      projectId={section.project.id}
+                      tasks={section.tasks}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
+        </SurfaceCard>
+      ) : null}
+      <SurfaceCard>
+        <SectionTitle
+          subtitle="Списки остаются плоскими и на виду, чтобы следующий шаг всегда был очевиден."
+          title="Все списки"
+        />
+        {derived.regularProjects.length === 0 ? (
+          <StateCard
+            description="Создайте первый список, затем перенесите в него выбранные задачи из Входящих."
+            title="Списков пока нет"
+            variant="empty"
+          />
+        ) : (
+          <div className={styles.sections}>
+            {derived.projectSections
+              .filter((section) => !section.project.isFavorite)
+              .map((section) => (
+                <div key={section.project.id} className={styles.section}>
+                  <ProjectCardEntity
+                    onOpenProject={actions.openProjectEdit}
+                    progress={section.progress}
+                    project={section.project}
+                    tasks={section.tasks}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
+      </SurfaceCard>
+    </div>
+  );
+}

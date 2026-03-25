@@ -1,0 +1,53 @@
+.nav {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 12px 21px 21px;
+  background: linear-gradient(
+    180deg,
+    var(--mf-gradient-bottom-fade-start),
+    var(--mf-gradient-bottom-fade-end)
+  );
+  backdrop-filter: var(--mf-effect-background-blur);
+}
+
+.pill {
+  width: min(460px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--mf-radius-card);
+  border: 1px solid var(--mf-color-surface-elevated);
+  background: var(--mf-color-surface);
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 54px;
+  border-radius: var(--mf-radius-card);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--mf-color-text-secondary);
+  font-family: var(--mf-font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.linkActive {
+  background: var(--mf-color-accent-lime);
+  color: var(--mf-color-background);
+}

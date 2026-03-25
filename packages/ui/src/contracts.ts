@@ -43,7 +43,7 @@ export interface TaskRowProps {
 export interface ProjectCardProps {
   id: string;
   name: string;
-  emoji: string;
+  color: string;
   progress: ProgressBarProps;
   isFavorite?: boolean;
 }

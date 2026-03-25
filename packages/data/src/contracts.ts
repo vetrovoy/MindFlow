@@ -5,6 +5,7 @@ export interface TaskRepository {
   listAll(): Promise<Task[]>;
   listActive(): Promise<Task[]>;
   listArchived(): Promise<Task[]>;
+  delete(id: string): Promise<void>;
   save(task: Task): Promise<Task>;
   saveMany(tasks: Task[]): Promise<Task[]>;
 }

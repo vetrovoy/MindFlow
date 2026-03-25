@@ -1,0 +1,24 @@
+.icon {
+  color: var(--mf-color-text-primary);
+  flex-shrink: 0;
+}
+
+.toneMuted {
+  color: var(--mf-color-text-secondary);
+}
+
+.toneLime {
+  color: var(--mf-color-accent-lime);
+}
+
+.toneAlert {
+  color: var(--mf-color-accent-alert);
+}
+
+.toneSuccess {
+  color: var(--mf-color-accent-success-bright);
+}
+
+.toneContrast {
+  color: var(--mf-color-background);
+}

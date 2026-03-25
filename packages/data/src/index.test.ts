@@ -77,6 +77,20 @@ describe("createInMemoryRepositoryBundle", () => {
     await expect(bundle.tasks.getById("task-save")).resolves.toEqual(task);
   });
 
+  it("deletes tasks from the repository", async () => {
+    const bundle = createInMemoryRepositoryBundle();
+    const task = createTask({
+      id: "task-delete",
+      title: "Delete me",
+      now: NOW
+    });
+
+    await bundle.tasks.save(task);
+    await bundle.tasks.delete(task.id);
+
+    await expect(bundle.tasks.getById(task.id)).resolves.toBeNull();
+  });
+
   it("runs work through the transaction boundary", async () => {
     const bundle = createInMemoryRepositoryBundle();
 

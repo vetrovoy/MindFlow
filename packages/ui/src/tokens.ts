@@ -15,15 +15,15 @@ export const colors = {
   accentLime: "#C4F82A",
   accentLimeGlow: "#C4F82A25",
   accentAlert: "#FA541C",
-  accentSuccessDeep: "#15803D",
-  accentSuccessBright: "#22C55E",
+  accentSuccessDeep: "#C4F82A",
+  accentSuccessBright: "#C4F82A",
   accentFeaturedPurple: "#7C3AED",
   accentFeaturedBlue: "#2563EB"
 } as const;
 
 export const gradients = {
   featuredProject: ["#7C3AED", "#2563EB"],
-  success: ["#22C55E", "#15803D"],
+  success: ["#c5f82ace", "#C4F82A"],
   premiumSection: ["#1A1A1D", "#141417"],
   premiumCard: ["#1C1C21", "#141419"],
   overlayDepth: ["#111214", "#0A0A0A"],

@@ -1,0 +1,79 @@
+.card {
+  width: 100%;
+  text-align: left;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--mf-radius-md);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-deep);
+  padding: var(--mf-space-xl) var(--mf-space-2xl);
+  color: inherit;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  border-color: var(--mf-color-border-medium);
+  box-shadow: 0 14px 28px var(--mf-color-shadow-card);
+}
+
+.card:focus-visible {
+  outline: none;
+  border-color: var(--mf-color-accent-lime);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-xl);
+}
+
+.identity {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mf-space-lg);
+  min-width: 0;
+}
+
+.textWrap {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--mf-font-body);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.count {
+  color: var(--mf-color-text-secondary);
+  flex-shrink: 0;
+}
+
+.subtitle {
+  color: var(--mf-color-text-secondary);
+}
+
+.progress {
+  margin-top: var(--mf-space-xl);
+}
+
+.description {
+  margin-top: var(--mf-space-lg);
+  color: var(--mf-color-text-secondary);
+  font-size: var(--mf-font-size-supportive);
+}
+
+@media (max-width: 639px) {
+  .card {
+    padding: var(--mf-space-xl) var(--mf-space-2xl);
+  }
+}

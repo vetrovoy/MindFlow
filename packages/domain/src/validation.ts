@@ -56,6 +56,10 @@ export function validateTask(task: Task): Task {
     throw new Error("task.orderIndex must be a finite number");
   }
 
+  if (task.description != null && typeof task.description !== "string") {
+    throw new Error("task.description must be a string or null");
+  }
+
   return task;
 }
 

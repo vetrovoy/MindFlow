@@ -5,6 +5,7 @@ export type TaskPriority = "low" | "medium" | "high";
 export interface Task {
   id: string;
   title: string;
+  description: string | null;
   status: TaskStatus;
   priority: TaskPriority;
   dueDate: string | null;
@@ -31,6 +32,7 @@ export interface Project {
 export interface TaskCreateInput {
   id: string;
   title: string;
+  description?: string | null;
   now: string;
   priority?: TaskPriority;
   dueDate?: string | null;

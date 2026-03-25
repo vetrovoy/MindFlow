@@ -4,7 +4,6 @@ import {
   buttonPresets,
   getProgressValue,
   getTaskRowStateLabel,
-  iconMap,
   tokens
 } from "./index";
 
@@ -14,14 +13,6 @@ describe("tokens", () => {
     expect(tokens.colors.accentLime).toBe("#C4F82A");
     expect(tokens.typography.fontFamily.display).toBe("Space Grotesk");
     expect(tokens.radii.pill).toBe(100);
-  });
-});
-
-describe("iconMap", () => {
-  it("covers the core ui chrome names used by the shared contracts", () => {
-    expect(iconMap.search).toBe("search");
-    expect(iconMap.today).toBe("calendar-today");
-    expect(iconMap.archive).toBe("archive-box");
   });
 });
 

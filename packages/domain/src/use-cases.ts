@@ -10,10 +10,20 @@ function trimTitle(title: string) {
   return title.trim();
 }
 
+function normalizeDescription(description: string | null | undefined) {
+  if (description == null) {
+    return null;
+  }
+
+  const trimmed = description.trim();
+  return trimmed ? trimmed : null;
+}
+
 export function createTask(input: TaskCreateInput): Task {
   return validateTask({
     id: input.id,
     title: trimTitle(input.title),
+    description: normalizeDescription(input.description),
     status: "todo",
     priority: input.priority ?? "medium",
     dueDate: input.dueDate ?? null,
@@ -42,13 +52,26 @@ export function createProject(input: ProjectCreateInput): Project {
 
 export function updateTask(
   task: Task,
-  updates: Partial<Pick<Task, "title" | "priority" | "dueDate" | "projectId">>,
+  updates: Partial<Pick<Task, "title" | "description" | "priority" | "dueDate" | "projectId">>,
   now: string
 ) {
   return validateTask({
     ...task,
     ...updates,
     title: updates.title == null ? task.title : trimTitle(updates.title),
+    description:
+      updates.description === undefined
+        ? task.description
+        : normalizeDescription(updates.description),
+    updatedAt: now
+  });
+}
+
+export function setTaskStatus(task: Task, status: Task["status"], now: string) {
+  return validateTask({
+    ...task,
+    status,
+    completedAt: status === "done" ? task.completedAt ?? now : null,
     updatedAt: now
   });
 }

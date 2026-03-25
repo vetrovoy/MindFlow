@@ -10,8 +10,10 @@ import {
   createTask,
   getProjectProgress,
   restoreProject,
+  setTaskStatus,
   searchEntities,
-  toggleTaskDone
+  toggleTaskDone,
+  updateTask
 } from "./index";
 
 const NOW = "2026-03-25T09:00:00.000Z";
@@ -184,5 +186,30 @@ describe("searchEntities", () => {
 
     expect(result.tasks.map((task) => task.id)).toEqual(["task-a"]);
     expect(result.projects.map((project) => project.id)).toEqual(["project-a"]);
+  });
+});
+
+describe("task editing helpers", () => {
+  it("normalizes description updates", () => {
+    const task = makeTask({ id: "task-a", description: null });
+
+    const updated = updateTask(
+      task,
+      {
+        description: "   Уточнить copy для hero   "
+      },
+      NOW
+    );
+
+    expect(updated.description).toBe("Уточнить copy для hero");
+  });
+
+  it("sets completedAt when status becomes done", () => {
+    const task = makeTask({ id: "task-a" });
+
+    const updated = setTaskStatus(task, "done", "2026-03-25T10:00:00.000Z");
+
+    expect(updated.status).toBe("done");
+    expect(updated.completedAt).toBe("2026-03-25T10:00:00.000Z");
   });
 });

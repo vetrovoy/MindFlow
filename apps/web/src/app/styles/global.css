@@ -1,0 +1,46 @@
+:root {
+  color-scheme: dark;
+  font-family: var(--mf-font-body);
+  background: var(--mf-color-background);
+  color: var(--mf-color-text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, var(--mf-color-spotlight-featured), transparent 32%),
+    linear-gradient(
+      180deg,
+      var(--mf-gradient-app-background-start) 0%,
+      var(--mf-gradient-app-background-end) 100%
+    );
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input::placeholder {
+  color: var(--mf-color-text-tertiary);
+}

@@ -1,0 +1,124 @@
+.item {
+  cursor: pointer;
+  border-radius: var(--mf-radius-lg);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-deep);
+  padding: 16px 18px;
+  transition:
+    border-color 140ms ease,
+    transform 140ms ease,
+    background-color 140ms ease;
+}
+
+.item:hover {
+  transform: translateY(-1px);
+  border-color: var(--mf-color-border-medium);
+}
+
+.itemSelected {
+  border-color: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-lime-glow);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-xl);
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  border: 1px solid var(--mf-color-border-muted);
+  background: var(--mf-color-surface);
+  color: var(--mf-color-text-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.checkbox:hover,
+.checkbox:focus-visible {
+  transform: scale(1.03);
+  border-color: var(--mf-color-accent-lime);
+}
+
+.checkboxDone {
+  border-color: var(--mf-color-accent-success-bright);
+  background: var(--mf-color-accent-success-deep);
+}
+
+.contentButton {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 2px;
+}
+
+.contentButton:focus-visible {
+  outline: none;
+}
+
+.title {
+  color: var(--mf-color-text-primary);
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-task);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.titleDone {
+  color: var(--mf-color-text-secondary);
+  text-decoration: line-through;
+}
+
+.meta {
+  color: var(--mf-color-text-secondary);
+}
+
+.trailing {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mf-space-md);
+  flex-shrink: 0;
+}
+
+.priorityBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mf-space-xs);
+  min-width: 34px;
+  justify-content: center;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface);
+}
+
+.priorityIcon {
+  margin-top: -0.5px;
+}
+
+.priorityMark {
+  color: var(--mf-color-text-tertiary);
+}
+
+@media (max-width: 639px) {
+  .item {
+    padding: var(--mf-space-xl) var(--mf-space-2xl);
+  }
+}

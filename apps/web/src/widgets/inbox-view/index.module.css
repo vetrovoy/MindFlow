@@ -1,0 +1,33 @@
+.root {
+  display: grid;
+  gap: var(--mf-space-5xl);
+}
+
+.hero {
+  display: grid;
+  gap: 12px;
+  padding: var(--mf-space-4xl);
+  border-radius: var(--mf-radius-xl);
+  border: 1px solid var(--mf-color-surface-elevated);
+  background: var(--mf-color-surface);
+}
+
+.heroEyebrow {
+}
+
+.heroTitle {
+}
+
+.heroSubtitle {
+}
+
+.projectHighlights {
+  display: grid;
+  gap: 12px;
+  margin-top: var(--mf-space-4xl);
+}
+
+.content {
+  margin-top: var(--mf-space-4xl);
+}
+

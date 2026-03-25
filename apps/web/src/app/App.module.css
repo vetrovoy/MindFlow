@@ -1,0 +1,138 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.container {
+  width: min(1040px, calc(100vw - 32px));
+  margin: 0 auto;
+}
+
+.header {
+  padding: var(--mf-space-5xl) 0 var(--mf-space-4xl);
+}
+
+.hero {
+  display: grid;
+  gap: var(--mf-space-4xl);
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-4xl);
+  flex-wrap: nowrap;
+}
+
+.title {
+  margin-top: var(--mf-space-sm);
+}
+
+.subtitle {
+  margin-top: var(--mf-space-lg);
+}
+
+.addButton {
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.statCard {
+  min-height: 92px;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: var(--mf-space-lg);
+  border-radius: var(--mf-radius-xl);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface);
+}
+
+.statLabel {
+  color: var(--mf-color-text-secondary);
+  font-size: 11px;
+}
+
+.statValue {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.statValueAccent {
+  font-size: 36px;
+  line-height: 1;
+  color: var(--mf-color-accent-lime);
+}
+
+.topTabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 4px;
+  background: var(--mf-color-surface);
+  border: 1px solid var(--mf-color-surface-elevated);
+  border-radius: var(--mf-radius-lg);
+}
+
+.topTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: var(--mf-radius-sm);
+  color: var(--mf-color-text-tertiary);
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-badge);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.topTab:hover,
+.topTab:focus-visible {
+  color: var(--mf-color-text-primary);
+  transform: translateY(-1px);
+}
+
+.topTabActive {
+  background: var(--mf-color-accent-lime);
+  color: var(--mf-color-background);
+}
+
+.topTabActive:hover,
+.topTabActive:focus-visible {
+  color: var(--mf-color-background);
+}
+
+.quickAddPanel {
+  padding: var(--mf-space-4xl);
+  border-radius: var(--mf-radius-xl);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface);
+}
+
+.main {
+  padding-bottom: var(--mf-space-5xl);
+}
+
+@media (max-width: 639px) {
+  .stats {
+    gap: 10px;
+  }
+
+  .statCard {
+    min-height: 84px;
+    padding: var(--mf-space-md);
+  }
+}

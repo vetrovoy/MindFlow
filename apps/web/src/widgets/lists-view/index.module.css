@@ -1,0 +1,14 @@
+.root {
+  display: grid;
+  gap: var(--mf-space-5xl);
+}
+
+.sections {
+  display: grid;
+  gap: var(--mf-space-4xl);
+}
+
+.section {
+  display: grid;
+  gap: var(--mf-space-xl);
+}

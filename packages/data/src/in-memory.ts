@@ -34,6 +34,10 @@ class InMemoryTaskRepository implements TaskRepository {
     return tasks.filter((task) => task.archivedAt != null);
   }
 
+  async delete(id: string) {
+    this.items.delete(id);
+  }
+
   async save(task: Task) {
     const next = validateTask(task);
     this.items.set(next.id, next);

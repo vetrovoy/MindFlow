@@ -12,6 +12,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@mindflow/domain": "workspace:*"
+    "@mindflow/domain": "workspace:*",
+    "dexie": "^4.2.1"
   }
 }
