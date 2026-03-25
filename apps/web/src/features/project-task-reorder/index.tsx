@@ -1,6 +1,7 @@
 import {
   DndContext,
   PointerSensor,
+  TouchSensor,
   closestCenter,
   useSensor,
   useSensors,
@@ -14,11 +15,10 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "@mindflow/domain";
-import { getCheckboxStateLabel } from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
-import { ActionButton, Icon } from "@/shared/ui";
+import { Icon } from "@/shared/ui";
 import styles from "./index.module.css";
 
 interface ProjectTaskReorderFeatureProps {
@@ -44,18 +44,50 @@ function getPriorityTone(priority: Task["priority"]) {
   return styles.priorityLow;
 }
 
+function getPriorityLabel(priority: Task["priority"]) {
+  if (priority === "high") {
+    return "Высокий";
+  }
+
+  if (priority === "medium") {
+    return "Средний";
+  }
+
+  return "Низкий";
+}
+
+function formatDueDate(dueDate: string | null) {
+  if (dueDate == null) {
+    return null;
+  }
+
+  return new Date(`${dueDate}T00:00:00`).toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "short"
+  });
+}
+
 function SortableTaskCard({
   onOpenTask,
   onToggleDone,
   task
 }: SortableTaskCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+  const {
+    attributes,
+    isDragging,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({
     id: task.id
   });
+  const dueDateLabel = formatDueDate(task.dueDate);
+  const isDone = task.status === "done";
 
   return (
     <article
-      className={styles.card}
+      className={cn(styles.card, isDragging && styles.cardDragging)}
       ref={setNodeRef}
       style={{
         transform: CSS.Transform.toString(transform),
@@ -65,15 +97,17 @@ function SortableTaskCard({
       <div className={styles.cardRow}>
         <div className={styles.cardMain}>
           <button
-            aria-label={task.status === "done" ? "Вернуть задачу в работу" : "Отметить задачу выполненной"}
-            className={cn(styles.checkbox, task.status === "done" && styles.checkboxDone)}
+            aria-label={
+              isDone ? "Вернуть задачу в работу" : "Отметить задачу выполненной"
+            }
+            className={cn(styles.checkbox, isDone && styles.checkboxDone)}
             onClick={() => {
               void onToggleDone(task.id);
             }}
-          type="button"
-        >
-          {task.status === "done" ? <Icon name="check" size={16} tone="contrast" /> : null}
-        </button>
+            type="button"
+          >
+            {isDone ? <Icon name="check" size={14} tone="contrast" /> : null}
+          </button>
           <button
             className={styles.contentButton}
             onClick={() => {
@@ -81,24 +115,29 @@ function SortableTaskCard({
             }}
             type="button"
           >
-            <strong className={cn(styles.title, task.status === "done" && styles.titleDone)}>
+            <strong className={cn(styles.title, isDone && styles.titleDone)}>
               {task.title}
             </strong>
             <div className={styles.meta}>
-              <span className={getPriorityTone(task.priority)}>
-                {task.priority === "high"
-                  ? "Высокий"
-                  : task.priority === "medium"
-                    ? "Средний"
-                    : "Низкий"}
+              <span
+                className={cn(styles.metaBadge, getPriorityTone(task.priority))}
+              >
+                {getPriorityLabel(task.priority)}
               </span>
-              <span>
-                {getCheckboxStateLabel(task.status === "done" ? "checked" : "unchecked") ===
-                "Done"
-                  ? "Готово"
-                  : "В работе"}
+              <span className={styles.metaText}>
+                {isDone ? "Готово" : "В работе"}
               </span>
-              {task.dueDate == null ? null : <span>{task.dueDate}</span>}
+              {dueDateLabel == null ? null : (
+                <span className={styles.metaText}>
+                  <Icon
+                    className={styles.metaIcon}
+                    name="today"
+                    size={12}
+                    tone="muted"
+                  />
+                  {dueDateLabel}
+                </span>
+              )}
             </div>
           </button>
         </div>
@@ -109,8 +148,7 @@ function SortableTaskCard({
           className={styles.dragHandle}
           type="button"
         >
-          <Icon name="chevron-right" size={16} tone="muted" />
-          <span>Тяни</span>
+          <Icon name="drag" size={16} tone="muted" />
         </button>
       </div>
     </article>
@@ -122,7 +160,12 @@ export function ProjectTaskReorderFeature({
   tasks
 }: ProjectTaskReorderFeatureProps) {
   const { actions, state } = useMindFlowApp();
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 140, tolerance: 8 }
+    })
+  );
 
   if (tasks.length === 0) {
     return null;
@@ -150,16 +193,6 @@ export function ProjectTaskReorderFeature({
 
   return (
     <div className={styles.root}>
-      <div className={styles.toolbar}>
-        <p className={styles.hint}>
-          Перетаскивайте задачи, чтобы выставить реальный порядок выполнения внутри списка.
-        </p>
-        {state.isSaving ? (
-          <ActionButton disabled variant="secondary">
-            Сохраняем порядок
-          </ActionButton>
-        ) : null}
-      </div>
       <DndContext
         collisionDetection={closestCenter}
         onDragEnd={(event) => {
@@ -167,7 +200,10 @@ export function ProjectTaskReorderFeature({
         }}
         sensors={sensors}
       >
-        <SortableContext items={tasks.map((task) => task.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext
+          items={tasks.map((task) => task.id)}
+          strategy={verticalListSortingStrategy}
+        >
           <div className={styles.list}>
             {tasks.map((task) => (
               <SortableTaskCard

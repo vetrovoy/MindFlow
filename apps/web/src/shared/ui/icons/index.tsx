@@ -11,6 +11,7 @@ import {
   Circle,
   Star,
   FolderKanban,
+  GripVertical,
   LayoutGrid,
   ListTodo,
   Plus,
@@ -45,6 +46,7 @@ export type IconName =
   | "nav-inbox"
   | "nav-lists"
   | "nav-today"
+  | "drag"
   | "trash";
 
 export interface IconProps {
@@ -76,6 +78,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,
   "nav-today": LayoutGrid,
+  drag: GripVertical,
   trash: Trash2
 };
 
