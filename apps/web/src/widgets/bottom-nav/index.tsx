@@ -1,5 +1,5 @@
 import { BottomNavItem } from "@/shared/ui";
-import styles from "./bottom-nav.module.css";
+import styles from "./index.module.css";
 
 const items = [
   { to: "/inbox", label: "Входящие", icon: "nav-inbox" },
@@ -7,7 +7,7 @@ const items = [
   { to: "/today", label: "Сегодня", icon: "nav-today" }
 ] as const;
 
-export function BottomNavEntity() {
+export function BottomNavWidget() {
   return (
     <nav aria-label="Основная навигация" className={styles.nav}>
       <div className={styles.pill}>

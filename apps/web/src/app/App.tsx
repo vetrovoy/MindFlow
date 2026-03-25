@@ -8,7 +8,6 @@ import {
   useLocation
 } from "react-router-dom";
 
-import { BottomNavEntity } from "@/entities/navigation/ui/bottom-nav";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
 import { QuickAddFeature } from "@/features/quick-add";
@@ -17,6 +16,7 @@ import { InboxPage } from "@/pages/inbox";
 import { ListsPage } from "@/pages/lists";
 import { TodayPage } from "@/pages/today";
 import { SystemStatusWidget } from "@/widgets/system-status";
+import { BottomNavWidget } from "@/widgets/bottom-nav";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { Display, MetaText, SupportText } from "@/shared/ui";
 import { IconButton, StateCard, SurfaceCard } from "@/shared/ui/primitives";
@@ -144,7 +144,7 @@ function AppShell() {
           <Outlet />
         )}
       </main>
-      <BottomNavEntity />
+      <BottomNavWidget />
       <TaskEditFeature />
       <ProjectEditFeature />
     </div>

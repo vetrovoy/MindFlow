@@ -1,6 +1,6 @@
-import { ProjectCardEntity } from "@/entities/project/ui/project-card";
 import { ProjectTaskReorderFeature } from "@/features/project-task-reorder";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { ProjectCard } from "@/shared/ui";
 import {
   SectionTitle,
   StateCard,
@@ -24,7 +24,7 @@ export function ListsViewWidget() {
               .filter((section) => section.project.isFavorite)
               .map((section) => (
                 <div key={section.project.id} className={styles.section}>
-                  <ProjectCardEntity
+                  <ProjectCard
                     onOpenProject={actions.openProjectEdit}
                     progress={section.progress}
                     project={section.project}
@@ -63,7 +63,7 @@ export function ListsViewWidget() {
               .filter((section) => !section.project.isFavorite)
               .map((section) => (
                 <div key={section.project.id} className={styles.section}>
-                  <ProjectCardEntity
+                  <ProjectCard
                     onOpenProject={actions.openProjectEdit}
                     progress={section.progress}
                     project={section.project}
