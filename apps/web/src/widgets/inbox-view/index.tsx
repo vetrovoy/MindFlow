@@ -79,8 +79,12 @@ function InboxSection({
 export function InboxViewWidget() {
   const { actions, derived } = useMindFlowApp();
   const todayDateKey = getTodayDateKey();
-  const [todayTasks, laterTasks, completedTasks] = useMemo(() => {
-    const today: Task[] = [];
+  const todayAndOverdueTasks = useMemo(
+    () => derived.todayFeed.map((item) => item.task),
+    [derived.todayFeed]
+  );
+
+  const [laterTasks, completedTasks] = useMemo(() => {
     const later: Task[] = [];
     const completed: Task[] = [];
 
@@ -90,30 +94,26 @@ export function InboxViewWidget() {
         continue;
       }
 
-      if (task.dueDate != null && task.dueDate <= todayDateKey) {
-        today.push(task);
+      if (todayAndOverdueTasks.some((todayTask) => todayTask.id === task.id)) {
         continue;
       }
 
       later.push(task);
     }
 
-    return [today, later, completed] as const;
-  }, [derived.inboxTasks, todayDateKey]);
+    return [later, completed] as const;
+  }, [derived.inboxTasks, todayAndOverdueTasks]);
 
   const badgeByTaskId = useMemo<Partial<Record<string, "today" | "overdue">>>(() => {
     const result: Partial<Record<string, "today" | "overdue">> = {};
 
-    for (const task of todayTasks) {
-      if (task.dueDate == null) {
-        continue;
-      }
-
-      result[task.id] = task.dueDate < todayDateKey ? "overdue" : "today";
+    for (const task of todayAndOverdueTasks) {
+      result[task.id] =
+        task.dueDate != null && task.dueDate < todayDateKey ? "overdue" : "today";
     }
 
     return result;
-  }, [todayDateKey, todayTasks]);
+  }, [todayAndOverdueTasks, todayDateKey]);
 
   return (
     <div className={styles.root}>
@@ -133,15 +133,15 @@ export function InboxViewWidget() {
             <div className={styles.sections}>
               <InboxSection
                 badgeByTaskId={badgeByTaskId}
-                count={todayTasks.length}
+                count={todayAndOverdueTasks.length}
                 defaultOpen
-                emptyDescription="Задач со сроком на сегодня или с просроченной датой сейчас нет."
+                emptyDescription="Срочных задач на сегодня сейчас нет: ни просроченных, ни задач на сегодня, ни важных входящих."
                 emptyTitle="Сегодня свободно"
                 onOpenTask={actions.openTaskEdit}
                 onToggleDone={(taskId) => {
                   void actions.toggleTask(taskId);
                 }}
-                tasks={todayTasks}
+                tasks={todayAndOverdueTasks}
                 title="Сегодня"
               />
               <InboxSection
