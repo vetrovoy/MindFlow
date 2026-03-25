@@ -1,5 +1,5 @@
-import { useMindFlowApp } from "../../shared/model/mindflow-provider";
-import { Icon, MetaText, Title } from "../../shared/ui";
+import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { Icon, MetaText, Title } from "@/shared/ui";
 import styles from "./index.module.css";
 
 export function SystemStatusWidget() {

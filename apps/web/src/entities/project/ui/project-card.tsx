@@ -1,6 +1,6 @@
 import type { Project, Task } from "@mindflow/domain";
 
-import { ProjectCard } from "../../../shared/ui";
+import { ProjectCard } from "@/shared/ui";
 
 interface ProjectCardEntityProps {
   project: Project;

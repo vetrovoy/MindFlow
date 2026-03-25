@@ -1,4 +1,4 @@
-import { BottomNavItem } from "../../../shared/ui";
+import { BottomNavItem } from "@/shared/ui";
 import styles from "./bottom-nav.module.css";
 
 const items = [

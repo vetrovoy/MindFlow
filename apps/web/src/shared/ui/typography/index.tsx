@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
-import { cn } from "../../lib/cn";
+import { cn } from "@/shared/lib/cn";
 import styles from "./index.module.css";
 
 interface TextProps extends HTMLAttributes<HTMLElement> {

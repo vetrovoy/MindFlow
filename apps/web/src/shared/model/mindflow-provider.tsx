@@ -27,9 +27,9 @@ import {
   type PropsWithChildren
 } from "react";
 
-import { getNowIso, getTodayDateKey } from "../lib/date";
-import { createId } from "../lib/ids";
-import { getProjectDecoration } from "../lib/projects";
+import { getNowIso, getTodayDateKey } from "@/shared/lib/date";
+import { createId } from "@/shared/lib/ids";
+import { getProjectDecoration } from "@/shared/lib/projects";
 
 interface ToastState {
   title: string;

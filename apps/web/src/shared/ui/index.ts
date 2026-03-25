@@ -6,3 +6,5 @@ export * from "./task-row";
 export * from "./project-card";
 export * from "./bottom-nav-item";
 export * from "./modal";
+export * from "./capture-form";
+export * from "./placeholder-edit-modal";

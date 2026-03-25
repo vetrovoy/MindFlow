@@ -1,8 +1,8 @@
 import type { Project, Task } from "@mindflow/domain";
 
-import { ProgressBar } from "../primitives";
-import { ProjectBadge } from "../project-badge";
-import { Body, MetaText, Title } from "../typography";
+import { ProgressBar } from "@/shared/ui/primitives";
+import { ProjectBadge } from "@/shared/ui/project-badge";
+import { Body, MetaText, Title } from "@/shared/ui/typography";
 import styles from "./index.module.css";
 
 interface ProjectCardProps {

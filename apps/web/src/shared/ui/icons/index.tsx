@@ -17,7 +17,7 @@ import {
   TriangleAlert
 } from "lucide-react";
 
-import { cn } from "../../lib/cn";
+import { cn } from "@/shared/lib/cn";
 import styles from "./index.module.css";
 
 export type IconName =

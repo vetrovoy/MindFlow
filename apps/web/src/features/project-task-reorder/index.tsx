@@ -16,9 +16,9 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "@mindflow/domain";
 import { getCheckboxStateLabel } from "@mindflow/ui";
 
-import { cn } from "../../shared/lib/cn";
-import { useMindFlowApp } from "../../shared/model/mindflow-provider";
-import { ActionButton, Icon } from "../../shared/ui";
+import { cn } from "@/shared/lib/cn";
+import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { ActionButton, Icon } from "@/shared/ui";
 import styles from "./index.module.css";
 
 interface ProjectTaskReorderFeatureProps {

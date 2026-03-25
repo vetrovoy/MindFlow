@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 
-import { cn } from "../../lib/cn";
-import { Icon } from "../icons";
+import { cn } from "@/shared/lib/cn";
+import { Icon } from "@/shared/ui/icons";
 import styles from "./index.module.css";
 
 interface ModalProps {

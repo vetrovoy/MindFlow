@@ -1,5 +1,5 @@
 import type { Task } from "@mindflow/domain";
-import { TaskRow } from "../../shared/ui";
+import { TaskRow } from "@/shared/ui";
 import styles from "./index.module.css";
 
 interface TaskListEntityProps {

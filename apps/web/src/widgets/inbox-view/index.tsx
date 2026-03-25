@@ -1,10 +1,10 @@
-import { TaskListEntity } from "../../entities/task-list";
-import { useMindFlowApp } from "../../shared/model/mindflow-provider";
+import { TaskListEntity } from "@/entities/task-list";
+import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   SectionTitle,
   StateCard,
   SurfaceCard
-} from "../../shared/ui/primitives";
+} from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 export function InboxViewWidget() {

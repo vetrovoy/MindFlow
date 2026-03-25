@@ -1,9 +1,9 @@
 import type { Task } from "@mindflow/domain";
 
-import { cn } from "../../lib/cn";
-import { MetaText } from "../typography";
-import { StatusPill } from "../primitives";
-import { Icon } from "../icons";
+import { cn } from "@/shared/lib/cn";
+import { MetaText } from "@/shared/ui/typography";
+import { StatusPill } from "@/shared/ui/primitives";
+import { Icon } from "@/shared/ui/icons";
 import styles from "./index.module.css";
 
 interface TaskRowProps {

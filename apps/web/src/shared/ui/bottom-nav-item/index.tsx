@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
-import { cn } from "../../lib/cn";
-import { Icon, type IconName } from "../icons";
+import { cn } from "@/shared/lib/cn";
+import { Icon, type IconName } from "@/shared/ui/icons";
 import styles from "./index.module.css";
 
 interface BottomNavItemProps {

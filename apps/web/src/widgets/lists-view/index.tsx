@@ -1,11 +1,11 @@
-import { ProjectCardEntity } from "../../entities/project/ui/project-card";
-import { ProjectTaskReorderFeature } from "../../features/project-task-reorder";
-import { useMindFlowApp } from "../../shared/model/mindflow-provider";
+import { ProjectCardEntity } from "@/entities/project/ui/project-card";
+import { ProjectTaskReorderFeature } from "@/features/project-task-reorder";
+import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   SectionTitle,
   StateCard,
   SurfaceCard
-} from "../../shared/ui/primitives";
+} from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 export function ListsViewWidget() {

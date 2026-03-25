@@ -1,4 +1,4 @@
-import { InboxViewWidget } from "../../widgets/inbox-view";
+import { InboxViewWidget } from "@/widgets/inbox-view";
 
 export function InboxPage() {
   return <InboxViewWidget />;

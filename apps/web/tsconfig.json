@@ -1,7 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@mindflow/domain": ["../../packages/domain/src/index.ts"],
+      "@mindflow/data": ["../../packages/data/src/index.ts"],
+      "@mindflow/ui": ["../../packages/ui/src/index.ts"],
+      "@mindflow/config/*": ["../../packages/config/*"],
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "vite.config.ts"]
 }
