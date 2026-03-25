@@ -5,6 +5,7 @@ export * from "./select-field";
 export * from "./color-picker-field";
 export * from "./date-picker-field";
 export * from "./text-area-field";
+export * from "./radio-card-group";
 export * from "./section-title";
 export * from "./surface-card";
 export * from "./state-card";

@@ -6,6 +6,7 @@ import {
   DatePickerField,
   EditorSection,
   MetaText,
+  RadioCardGroup,
   SelectField,
   TextAreaField,
   TextField
@@ -149,47 +150,21 @@ export function TaskEditMainColumn({
         <div className={styles.choiceGrid}>
           <div className={styles.choiceGroup}>
             <MetaText className={styles.choiceLabel}>Приоритет</MetaText>
-            <div className={styles.choiceList}>
-              {PRIORITY_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  className={
-                    priority === option.value
-                      ? `${styles.choiceButton} ${styles.choiceButtonActive}`
-                      : styles.choiceButton
-                  }
-                  onClick={() => {
-                    onPriorityChange(option.value);
-                  }}
-                  type="button"
-                >
-                  <span className={styles.choiceButtonTitle}>{option.label}</span>
-                  <span className={styles.choiceButtonDescription}>{option.helper}</span>
-                </button>
-              ))}
-            </div>
+            <RadioCardGroup
+              ariaLabel="Приоритет задачи"
+              onValueChange={onPriorityChange}
+              options={PRIORITY_OPTIONS}
+              value={priority}
+            />
           </div>
           <div className={styles.choiceGroup}>
             <MetaText className={styles.choiceLabel}>Статус</MetaText>
-            <div className={styles.choiceList}>
-              {STATUS_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  className={
-                    status === option.value
-                      ? `${styles.choiceButton} ${styles.choiceButtonActive}`
-                      : styles.choiceButton
-                  }
-                  onClick={() => {
-                    onStatusChange(option.value);
-                  }}
-                  type="button"
-                >
-                  <span className={styles.choiceButtonTitle}>{option.label}</span>
-                  <span className={styles.choiceButtonDescription}>{option.helper}</span>
-                </button>
-              ))}
-            </div>
+            <RadioCardGroup
+              ariaLabel="Статус задачи"
+              onValueChange={onStatusChange}
+              options={STATUS_OPTIONS}
+              value={status}
+            />
           </div>
         </div>
       </EditorSection>
