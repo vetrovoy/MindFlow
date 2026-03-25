@@ -2,3 +2,8 @@
   display: grid;
   gap: var(--mf-space-4xl);
 }
+
+.sections {
+  display: grid;
+  gap: var(--mf-space-2xl);
+}

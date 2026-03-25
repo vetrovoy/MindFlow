@@ -1,4 +1,3 @@
-import type { Task } from "@mindflow/domain";
 import { useMemo } from "react";
 
 import { TaskListEntity } from "@/entities/task-list";
@@ -19,10 +18,9 @@ export function InboxViewWidget() {
     () => derived.todayFeed.map((item) => item.task),
     [derived.todayFeed]
   );
-
-  const [laterTasks, completedTasks] = useMemo(() => {
-    const later: Task[] = [];
-    const completed: Task[] = [];
+  const { activeInboxTasks, completedInboxTasks } = useMemo(() => {
+    const active = [];
+    const completed = [];
 
     for (const task of derived.inboxTasks) {
       if (task.status === "done") {
@@ -30,15 +28,14 @@ export function InboxViewWidget() {
         continue;
       }
 
-      if (todayAndOverdueTasks.some((todayTask) => todayTask.id === task.id)) {
-        continue;
-      }
-
-      later.push(task);
+      active.push(task);
     }
 
-    return [later, completed] as const;
-  }, [derived.inboxTasks, todayAndOverdueTasks]);
+    return {
+      activeInboxTasks: active,
+      completedInboxTasks: completed
+    };
+  }, [derived.inboxTasks]);
 
   const badgeByTaskId = useMemo<Partial<Record<string, "today" | "overdue">>>(() => {
     const result: Partial<Record<string, "today" | "overdue">> = {};
@@ -67,11 +64,11 @@ export function InboxViewWidget() {
             />
           ) : (
             <div className={styles.sections}>
-              <CollapsibleSection count={todayAndOverdueTasks.length} defaultOpen title="Сегодня">
-                {todayAndOverdueTasks.length === 0 ? (
+              <CollapsibleSection count={activeInboxTasks.length} defaultOpen title="Входящие">
+                {activeInboxTasks.length === 0 ? (
                   <StateCard
-                    description="Срочных задач на сегодня сейчас нет: ни просроченных, ни задач на сегодня, ни важных входящих."
-                    title="Сегодня свободно"
+                    description="Сейчас во входящих нет активных задач."
+                    title="Входящие пусты"
                     variant="empty"
                   />
                 ) : (
@@ -81,33 +78,16 @@ export function InboxViewWidget() {
                     onToggleDone={(taskId) => {
                       void actions.toggleTask(taskId);
                     }}
-                    tasks={todayAndOverdueTasks}
-                  />
-                )}
-              </CollapsibleSection>
-              <CollapsibleSection count={laterTasks.length} defaultOpen title="Позже">
-                {laterTasks.length === 0 ? (
-                  <StateCard
-                    description="Все активные входящие уже разобраны на сегодня."
-                    title="Позже пусто"
-                    variant="empty"
-                  />
-                ) : (
-                  <TaskListEntity
-                    onOpenTask={actions.openTaskEdit}
-                    onToggleDone={(taskId) => {
-                      void actions.toggleTask(taskId);
-                    }}
-                    tasks={laterTasks}
+                    tasks={activeInboxTasks}
                   />
                 )}
               </CollapsibleSection>
               <CollapsibleSection
-                count={completedTasks.length}
+                count={completedInboxTasks.length}
                 defaultOpen={false}
-                title="Выполнено"
+                title="Выполненные"
               >
-                {completedTasks.length === 0 ? (
+                {completedInboxTasks.length === 0 ? (
                   <StateCard
                     description="Когда завершите входящую задачу, она появится здесь."
                     title="Пока ничего не выполнено"
@@ -115,11 +95,12 @@ export function InboxViewWidget() {
                   />
                 ) : (
                   <TaskListEntity
+                    badgeByTaskId={badgeByTaskId}
                     onOpenTask={actions.openTaskEdit}
                     onToggleDone={(taskId) => {
                       void actions.toggleTask(taskId);
                     }}
-                    tasks={completedTasks}
+                    tasks={completedInboxTasks}
                   />
                 )}
               </CollapsibleSection>
