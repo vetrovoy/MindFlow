@@ -5,6 +5,12 @@ import { cn } from "@/shared/lib/cn";
 import { MetaText } from "@/shared/ui/typography";
 import { StatusPill } from "@/shared/ui/primitives";
 import { Icon } from "@/shared/ui/icons";
+import {
+  getTaskPriorityIconName,
+  getTaskPriorityMark,
+  getTaskPriorityTone,
+  getTaskToggleAriaLabel
+} from "./helpers";
 import styles from "./index.module.css";
 
 interface TaskRowProps {
@@ -16,30 +22,6 @@ interface TaskRowProps {
   className?: string;
   onToggleDone: (taskId: string) => void;
   onOpenTask: (taskId: string) => void;
-}
-
-function getPriorityTone(priority: Task["priority"]) {
-  if (priority === "high") {
-    return "alert" as const;
-  }
-
-  if (priority === "medium") {
-    return "lime" as const;
-  }
-
-  return "muted" as const;
-}
-
-function getPriorityMark(priority: Task["priority"]) {
-  if (priority === "high") {
-    return "H";
-  }
-
-  if (priority === "medium") {
-    return "M";
-  }
-
-  return "L";
 }
 
 export function TaskRow({
@@ -65,9 +47,7 @@ export function TaskRow({
     >
       <div className={styles.row}>
         <button
-          aria-label={
-            isDone ? "Вернуть задачу в работу" : "Отметить задачу выполненной"
-          }
+          aria-label={getTaskToggleAriaLabel(task.status)}
           className={cn(styles.checkbox, isDone && styles.checkboxDone)}
           onClick={() => {
             void onToggleDone(task.id);
@@ -95,18 +75,12 @@ export function TaskRow({
           <div className={styles.priorityBadge}>
             <Icon
               className={styles.priorityIcon}
-              name={
-                task.priority === "high"
-                  ? "priority-high"
-                  : task.priority === "medium"
-                    ? "priority-medium"
-                    : "priority-low"
-              }
+              name={getTaskPriorityIconName(task.priority)}
               size={12}
-              tone={getPriorityTone(task.priority)}
+              tone={getTaskPriorityTone(task.priority)}
             />
             <MetaText className={styles.priorityMark}>
-              {getPriorityMark(task.priority)}
+              {getTaskPriorityMark(task.priority)}
             </MetaText>
           </div>
           {trailingSlot}
