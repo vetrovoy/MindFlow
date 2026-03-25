@@ -3,6 +3,7 @@ import type { Project, Task } from "@mindflow/domain";
 import { ProgressBar } from "@/shared/ui/primitives";
 import { ProjectBadge } from "@/shared/ui/project-badge";
 import { Body, MetaText, Title } from "@/shared/ui/typography";
+import { getTaskCountCopy } from "./helpers";
 import styles from "./index.module.css";
 
 interface ProjectCardProps {
@@ -13,18 +14,6 @@ interface ProjectCardProps {
     total: number;
   };
   onOpenProject?: (projectId: string) => void;
-}
-
-function getTaskCountCopy(count: number) {
-  if (count === 1) {
-    return "задача";
-  }
-
-  if (count < 5) {
-    return "задачи";
-  }
-
-  return "задач";
 }
 
 export function ProjectCard({ onOpenProject, progress, project, tasks }: ProjectCardProps) {
