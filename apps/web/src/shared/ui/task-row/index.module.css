@@ -123,6 +123,14 @@
   color: var(--mf-color-text-tertiary);
 }
 
+.priorityMarkHight {
+  color: var(--mf-color-accent-alert)
+}
+
+.priorityMarkMedium {
+  color: var(--mf-color-accent-lime)
+}
+
 @media (max-width: 639px) {
   .item {
     padding: var(--mf-space-xl) var(--mf-space-2xl);

@@ -1,5 +1,6 @@
 import type { IconProps } from "@/shared/ui/icons";
 import type { Task } from "@mindflow/domain";
+import styles from './index.module.css'
 
 export function getTaskPriorityTone(
   priority: Task["priority"]
@@ -25,6 +26,18 @@ export function getTaskPriorityMark(priority: Task["priority"]) {
   }
 
   return "L";
+}
+
+export function getTaskPriorityMarkStyle(priority: Task["priority"]) {
+  if (priority === "high") {
+    return styles.priorityMarkHight;
+  }
+
+  if (priority === "medium") {
+    return styles.priorityMarkMedium;
+  }
+
+  return styles.priorityMark;
 }
 
 export function getTaskPriorityIconName(priority: Task["priority"]) {

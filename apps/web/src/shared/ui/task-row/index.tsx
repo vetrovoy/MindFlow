@@ -8,6 +8,7 @@ import { Icon } from "@/shared/ui/icons";
 import {
   getTaskPriorityIconName,
   getTaskPriorityMark,
+  getTaskPriorityMarkStyle,
   getTaskPriorityTone,
   getTaskToggleAriaLabel
 } from "./helpers";
@@ -79,7 +80,7 @@ export function TaskRow({
               size={12}
               tone={getTaskPriorityTone(task.priority)}
             />
-            <MetaText className={styles.priorityMark}>
+            <MetaText className={getTaskPriorityMarkStyle(task.priority)}>
               {getTaskPriorityMark(task.priority)}
             </MetaText>
           </div>
