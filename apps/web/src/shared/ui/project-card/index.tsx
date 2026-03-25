@@ -1,9 +1,9 @@
+import { Icon } from "@/shared/ui/icons";
 import type { Project, Task } from "@mindflow/domain";
 
 import { ProgressBar } from "@/shared/ui/primitives";
 import { ProjectBadge } from "@/shared/ui/project-badge";
-import { Body, MetaText, Title } from "@/shared/ui/typography";
-import { getTaskCountCopy } from "./helpers";
+import { MetaText, Title } from "@/shared/ui/typography";
 import styles from "./index.module.css";
 
 interface ProjectCardProps {
@@ -16,8 +16,15 @@ interface ProjectCardProps {
   onOpenProject?: (projectId: string) => void;
 }
 
-export function ProjectCard({ onOpenProject, progress, project, tasks }: ProjectCardProps) {
+export function ProjectCard({
+  onOpenProject,
+  progress,
+  project,
+  tasks
+}: ProjectCardProps) {
   const total = progress.total || tasks.length || 0;
+  const progressLabel =
+    total === 0 ? "Пустой список" : `${progress.done} из ${total} выполнено`;
 
   return (
     <button
@@ -31,26 +38,30 @@ export function ProjectCard({ onOpenProject, progress, project, tasks }: Project
         <div className={styles.identity}>
           <ProjectBadge color={project.color} label="" />
           <div className={styles.textWrap}>
-            <Title as="h3" className={styles.title}>
-              {project.name}
-            </Title>
-            <MetaText className={styles.subtitle}>
-              {total === 0 ? "0 задач" : `${total} ${getTaskCountCopy(total)}`}
-            </MetaText>
+            <div className={styles.titleRow}>
+              <Title as="h3" className={styles.title}>
+                {project.name}
+              </Title>
+              {project.isFavorite ? (
+                <span className={styles.favoriteMark}>
+                  <Icon name="favorite" size={12} tone="lime" />
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
-        <MetaText as="strong" className={styles.count}>
-          {progress.done}/{Math.max(total, 1)}
-        </MetaText>
+        <div className={styles.trailing}>
+          <MetaText as="strong" className={styles.count}>
+            {progressLabel}
+          </MetaText>
+          <span className={styles.openIcon}>
+            <Icon name="chevron-right" size={14} tone="muted" />
+          </span>
+        </div>
       </div>
       <div className={styles.progress}>
         <ProgressBar max={Math.max(total, 1)} value={progress.done} />
       </div>
-      <Body className={styles.description}>
-        {tasks.length === 0
-          ? "Готово 0, в работе 0"
-          : `Готово ${progress.done}, в работе ${Math.max(total - progress.done, 0)}.`}
-      </Body>
     </button>
   );
 }
