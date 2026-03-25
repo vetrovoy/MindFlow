@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Navigate,
   NavLink,
@@ -31,10 +31,19 @@ function AppShell() {
 
   const { derived, state } = useMindFlowApp();
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
-  const tasksInListsCount = derived.projectSections.reduce(
-    (total, section) =>
-      total + section.tasks.filter((task) => task.status !== "done").length,
-    0
+  const tasksInListsCount = useMemo(
+    () =>
+      derived.projectSections.reduce(
+        (total, section) =>
+          total + section.tasks.filter((task) => task.status !== "done").length,
+        0
+      ),
+    [derived.projectSections]
+  );
+
+  const tasksInInboxCount = useMemo(
+    () => derived.inboxTasks.filter((task) => task.status !== "done").length,
+    [derived.inboxTasks]
   );
 
   return (
@@ -70,7 +79,7 @@ function AppShell() {
               <section className={styles.statCard}>
                 <MetaText className={styles.statLabel}>Входящие</MetaText>
                 <Display as="strong" className={styles.statValue}>
-                  {derived.inboxTasks.length}
+                  {tasksInInboxCount}
                 </Display>
               </section>
               <section className={styles.statCard}>
