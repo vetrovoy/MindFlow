@@ -1,0 +1,19 @@
+{
+  "name": "@mindflow/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "node -e \"console.log('Mobile shell placeholder')\"",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@mindflow/data": "workspace:*",
+    "@mindflow/domain": "workspace:*",
+    "@mindflow/ui": "workspace:*",
+    "react": "^19.0.0"
+  }
+}
