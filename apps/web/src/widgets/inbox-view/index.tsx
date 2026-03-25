@@ -1,80 +1,16 @@
 import type { Task } from "@mindflow/domain";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { TaskListEntity } from "@/entities/task-list";
 import { getTodayDateKey } from "@/shared/lib/date";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
-  Icon,
-  MetaText,
+  CollapsibleSection,
   SectionTitle,
   StateCard,
   SurfaceCard
 } from "@/shared/ui";
 import styles from "./index.module.css";
-
-interface InboxSectionProps {
-  title: string;
-  count: number;
-  defaultOpen?: boolean;
-  emptyTitle: string;
-  emptyDescription: string;
-  tasks: Task[];
-  badgeByTaskId?: Partial<Record<string, "today" | "overdue">>;
-  onOpenTask: (taskId: string) => void;
-  onToggleDone: (taskId: string) => void;
-}
-
-function InboxSection({
-  badgeByTaskId,
-  count,
-  defaultOpen = true,
-  emptyDescription,
-  emptyTitle,
-  onOpenTask,
-  onToggleDone,
-  tasks,
-  title
-}: InboxSectionProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  return (
-    <section className={styles.section}>
-      <button
-        aria-expanded={isOpen}
-        className={styles.sectionHeader}
-        onClick={() => {
-          setIsOpen((current) => !current);
-        }}
-        type="button"
-      >
-        <div className={styles.sectionHeading}>
-          <strong className={styles.sectionTitle}>{title}</strong>
-          <MetaText className={styles.sectionCount}>{count}</MetaText>
-        </div>
-        <span className={styles.sectionChevron}>
-          <Icon name={isOpen ? "chevron-down" : "chevron-right"} size={16} tone="muted" />
-        </span>
-      </button>
-      {isOpen ? (
-        tasks.length === 0 ? (
-          <StateCard
-            description={emptyDescription}
-            title={emptyTitle}
-            variant="empty"
-          />
-        ) : (
-          <TaskListEntity
-            badgeByTaskId={badgeByTaskId}
-            onOpenTask={onOpenTask}
-            onToggleDone={onToggleDone}
-            tasks={tasks}
-          />
-        )
-      ) : null}
-    </section>
-  );
-}
 
 export function InboxViewWidget() {
   const { actions, derived } = useMindFlowApp();
@@ -131,43 +67,62 @@ export function InboxViewWidget() {
             />
           ) : (
             <div className={styles.sections}>
-              <InboxSection
-                badgeByTaskId={badgeByTaskId}
-                count={todayAndOverdueTasks.length}
-                defaultOpen
-                emptyDescription="Срочных задач на сегодня сейчас нет: ни просроченных, ни задач на сегодня, ни важных входящих."
-                emptyTitle="Сегодня свободно"
-                onOpenTask={actions.openTaskEdit}
-                onToggleDone={(taskId) => {
-                  void actions.toggleTask(taskId);
-                }}
-                tasks={todayAndOverdueTasks}
-                title="Сегодня"
-              />
-              <InboxSection
-                count={laterTasks.length}
-                defaultOpen
-                emptyDescription="Все активные входящие уже разобраны на сегодня."
-                emptyTitle="Позже пусто"
-                onOpenTask={actions.openTaskEdit}
-                onToggleDone={(taskId) => {
-                  void actions.toggleTask(taskId);
-                }}
-                tasks={laterTasks}
-                title="Позже"
-              />
-              <InboxSection
+              <CollapsibleSection count={todayAndOverdueTasks.length} defaultOpen title="Сегодня">
+                {todayAndOverdueTasks.length === 0 ? (
+                  <StateCard
+                    description="Срочных задач на сегодня сейчас нет: ни просроченных, ни задач на сегодня, ни важных входящих."
+                    title="Сегодня свободно"
+                    variant="empty"
+                  />
+                ) : (
+                  <TaskListEntity
+                    badgeByTaskId={badgeByTaskId}
+                    onOpenTask={actions.openTaskEdit}
+                    onToggleDone={(taskId) => {
+                      void actions.toggleTask(taskId);
+                    }}
+                    tasks={todayAndOverdueTasks}
+                  />
+                )}
+              </CollapsibleSection>
+              <CollapsibleSection count={laterTasks.length} defaultOpen title="Позже">
+                {laterTasks.length === 0 ? (
+                  <StateCard
+                    description="Все активные входящие уже разобраны на сегодня."
+                    title="Позже пусто"
+                    variant="empty"
+                  />
+                ) : (
+                  <TaskListEntity
+                    onOpenTask={actions.openTaskEdit}
+                    onToggleDone={(taskId) => {
+                      void actions.toggleTask(taskId);
+                    }}
+                    tasks={laterTasks}
+                  />
+                )}
+              </CollapsibleSection>
+              <CollapsibleSection
                 count={completedTasks.length}
                 defaultOpen={false}
-                emptyDescription="Когда завершите входящую задачу, она появится здесь."
-                emptyTitle="Пока ничего не выполнено"
-                onOpenTask={actions.openTaskEdit}
-                onToggleDone={(taskId) => {
-                  void actions.toggleTask(taskId);
-                }}
-                tasks={completedTasks}
                 title="Выполнено"
-              />
+              >
+                {completedTasks.length === 0 ? (
+                  <StateCard
+                    description="Когда завершите входящую задачу, она появится здесь."
+                    title="Пока ничего не выполнено"
+                    variant="empty"
+                  />
+                ) : (
+                  <TaskListEntity
+                    onOpenTask={actions.openTaskEdit}
+                    onToggleDone={(taskId) => {
+                      void actions.toggleTask(taskId);
+                    }}
+                    tasks={completedTasks}
+                  />
+                )}
+              </CollapsibleSection>
             </div>
           )}
         </div>

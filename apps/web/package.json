@@ -18,6 +18,7 @@
     "@mindflow/domain": "workspace:*",
     "@mindflow/ui": "workspace:*",
     "@radix-ui/react-alert-dialog": "^1.1.15",
+    "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-select": "^2.2.6",
     "date-fns": "^4.1.0",
