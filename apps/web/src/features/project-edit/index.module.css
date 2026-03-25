@@ -47,6 +47,12 @@
   gap: var(--mf-space-lg);
 }
 
+.heroStatsBox {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--mf-space-sm);
+}
+
 .editorGrid {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.8fr);
@@ -71,39 +77,6 @@
   font-size: var(--mf-font-size-meta);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.colorGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--mf-space-sm);
-}
-
-.colorOption {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: var(--mf-space-lg) var(--mf-space-xl);
-  border-radius: var(--mf-radius-lg);
-  border: 1px solid var(--mf-color-border-strong);
-  background: var(--mf-color-surface-deep);
-  color: var(--mf-color-text-primary);
-  cursor: pointer;
-  transition:
-    border-color 140ms ease,
-    background-color 140ms ease,
-    transform 140ms ease;
-}
-
-.colorOption:hover,
-.colorOption:focus-visible {
-  border-color: var(--mf-color-border-medium);
-  transform: translateY(-1px);
-}
-
-.colorOptionActive {
-  border-color: var(--mf-color-accent-lime);
-  background: var(--mf-color-accent-lime-panel);
 }
 
 .contextRow {
@@ -173,7 +146,6 @@
 }
 
 @media (max-width: 639px) {
-  .colorGrid,
   .contextRow {
     grid-template-columns: 1fr;
   }

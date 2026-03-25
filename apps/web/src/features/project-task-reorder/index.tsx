@@ -117,7 +117,7 @@ export function ProjectTaskReorderFeature({
   projectId,
   tasks
 }: ProjectTaskReorderFeatureProps) {
-  const { actions, state } = useMindFlowApp();
+  const { actions } = useMindFlowApp();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, {

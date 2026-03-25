@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
+  ColorPickerField,
   ConfirmDialog,
   DatePickerField,
   EditorSection,
@@ -25,7 +26,9 @@ export function ProjectEditFeature() {
   const [color, setColor] = useState<string>(PROJECT_DECORATIONS[0].color);
   const [deadline, setDeadline] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
-  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null
+  );
   const lastSyncedSignatureRef = useRef<string>("");
   const hydratedProjectIdRef = useRef<string | null>(null);
   const autosaveTimeoutRef = useRef<number | null>(null);
@@ -37,7 +40,9 @@ export function ProjectEditFeature() {
     }
 
     return (
-      derived.projectSections.find((section) => section.project.id === project.id) ?? {
+      derived.projectSections.find(
+        (section) => section.project.id === project.id
+      ) ?? {
         project,
         tasks: state.tasks.filter(
           (task) => task.projectId === project.id && task.archivedAt == null
@@ -93,7 +98,7 @@ export function ProjectEditFeature() {
         color,
         deadline,
         isFavorite
-    }),
+      }),
     [color, deadline, isFavorite, name]
   );
 
@@ -116,19 +121,21 @@ export function ProjectEditFeature() {
     }
 
     autosaveTimeoutRef.current = window.setTimeout(() => {
-      void actions.saveProjectEdit(payload, {
-        closeOnSuccess: false,
-        toastOnSuccess: false
-      }).then((saved) => {
-        if (saved) {
-          lastSyncedSignatureRef.current = JSON.stringify({
-            name: payload.name,
-            color,
-            deadline,
-            isFavorite
-          });
-        }
-      });
+      void actions
+        .saveProjectEdit(payload, {
+          closeOnSuccess: false,
+          toastOnSuccess: false
+        })
+        .then((saved) => {
+          if (saved) {
+            lastSyncedSignatureRef.current = JSON.stringify({
+              name: payload.name,
+              color,
+              deadline,
+              isFavorite
+            });
+          }
+        });
     }, 480);
 
     return () => {
@@ -137,19 +144,33 @@ export function ProjectEditFeature() {
         autosaveTimeoutRef.current = null;
       }
     };
-  }, [actions, color, deadline, draftSignature, isFavorite, name, project, projectId]);
+  }, [
+    actions,
+    color,
+    deadline,
+    draftSignature,
+    isFavorite,
+    name,
+    project,
+    projectId
+  ]);
 
   if (project == null || projectSummary == null) {
     return null;
   }
 
-  const remainingCount = Math.max(projectSummary.progress.total - projectSummary.progress.done, 0);
+  const remainingCount = Math.max(
+    projectSummary.progress.total - projectSummary.progress.done,
+    0
+  );
 
   function buildSavePayload() {
     const normalizedName = name.trim();
 
     if (!normalizedName) {
-      setValidationMessage("У списка должно быть название, чтобы его можно было сохранить.");
+      setValidationMessage(
+        "У списка должно быть название, чтобы его можно было сохранить."
+      );
       return null;
     }
 
@@ -225,12 +246,25 @@ export function ProjectEditFeature() {
           <section className={styles.heroCard}>
             <div className={styles.heroHeader}>
               <div className={styles.heroIdentity}>
-                <ProjectBadge color={color} label={name.trim() || "Новый список"} />
-                {isFavorite ? <StatusPill label="Избранное" variant="today" /> : null}
+                <ProjectBadge
+                  color={color}
+                  label={name.trim() || "Новый список"}
+                />
+                {isFavorite ? (
+                  <StatusPill label="Избранное" variant="today" />
+                ) : null}
               </div>
               <IconButton
-                ariaLabel={isFavorite ? "Убрать список из избранного" : "Добавить список в избранное"}
-                className={isFavorite ? `${styles.favoriteButton} ${styles.favoriteButtonActive}` : styles.favoriteButton}
+                ariaLabel={
+                  isFavorite
+                    ? "Убрать список из избранного"
+                    : "Добавить список в избранное"
+                }
+                className={
+                  isFavorite
+                    ? `${styles.favoriteButton} ${styles.favoriteButtonActive}`
+                    : styles.favoriteButton
+                }
                 icon="favorite"
                 onClick={() => {
                   setIsFavorite((current) => !current);
@@ -239,26 +273,30 @@ export function ProjectEditFeature() {
               />
             </div>
             <div className={styles.heroStats}>
-              <div>
+              <div className={styles.heroStatsBox}>
                 <MetaText className={styles.summaryLabel}>Прогресс</MetaText>
                 <Heading as="strong" className={styles.summaryValue}>
-                  {projectSummary.progress.done}/{Math.max(projectSummary.progress.total, 1)}
+                  {projectSummary.progress.done}/
+                  {Math.max(projectSummary.progress.total, 1)}
                 </Heading>
               </div>
-              <div>
+              <div className={styles.heroStatsBox}>
                 <MetaText className={styles.summaryLabel}>Осталось</MetaText>
                 <Heading as="strong" className={styles.summaryValue}>
                   {remainingCount}
                 </Heading>
               </div>
-              <div>
+              <div className={styles.heroStatsBox}>
                 <MetaText className={styles.summaryLabel}>Дедлайн</MetaText>
                 <Heading as="strong" className={styles.summaryValue}>
                   {deadline
-                    ? new Date(`${deadline}T00:00:00`).toLocaleDateString("ru-RU", {
-                        day: "numeric",
-                        month: "long"
-                      })
+                    ? new Date(`${deadline}T00:00:00`).toLocaleDateString(
+                        "ru-RU",
+                        {
+                          day: "numeric",
+                          month: "long"
+                        }
+                      )
                     : "Не задан"}
                 </Heading>
               </div>
@@ -273,7 +311,10 @@ export function ProjectEditFeature() {
             <div className={styles.mainColumn}>
               <EditorSection title="Идентичность">
                 <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel} htmlFor="project-edit-name">
+                  <label
+                    className={styles.fieldLabel}
+                    htmlFor="project-edit-name"
+                  >
                     Название
                   </label>
                   <TextField
@@ -290,28 +331,28 @@ export function ProjectEditFeature() {
                   />
                 </div>
                 <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>Маркер списка</label>
-                  <div className={styles.colorGrid}>
-                    {PROJECT_DECORATIONS.map((option) => (
-                      <button
-                        key={option.color}
-                        className={
-                          color === option.color
-                            ? `${styles.colorOption} ${styles.colorOptionActive}`
-                            : styles.colorOption
-                        }
-                        onClick={() => {
-                          setColor(option.color);
-                        }}
-                        type="button"
-                      >
-                        <ProjectBadge color={option.color} label={option.label} />
-                      </button>
-                    ))}
-                  </div>
+                  <label
+                    className={styles.fieldLabel}
+                    htmlFor="project-edit-color"
+                    id="project-edit-color-label"
+                  >
+                    Маркер списка
+                  </label>
+                  <ColorPickerField
+                    ariaLabelledBy="project-edit-color-label"
+                    id="project-edit-color"
+                    onChange={setColor}
+                    presets={PROJECT_DECORATIONS.map((option) => ({
+                      value: option.color,
+                      label: option.label
+                    }))}
+                    value={color}
+                  />
                 </div>
                 {validationMessage == null || name.trim() ? null : (
-                  <p className={styles.validationMessage}>{validationMessage}</p>
+                  <p className={styles.validationMessage}>
+                    {validationMessage}
+                  </p>
                 )}
               </EditorSection>
 

@@ -2,6 +2,7 @@ export * from "./action-button";
 export * from "./icon-button";
 export * from "./text-field";
 export * from "./select-field";
+export * from "./color-picker-field";
 export * from "./date-picker-field";
 export * from "./text-area-field";
 export * from "./section-title";
