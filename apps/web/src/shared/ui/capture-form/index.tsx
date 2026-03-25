@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { useForm } from "react-hook-form";
 
 import { Body, Heading, Icon } from "..";
 import { ActionButton } from "@/shared/ui/primitives";
@@ -15,6 +16,10 @@ interface CaptureFormProps {
   leadingIcon?: ReactNode;
 }
 
+interface CaptureFormValues {
+  value: string;
+}
+
 export function CaptureForm({
   afterSubmit,
   description,
@@ -25,19 +30,23 @@ export function CaptureForm({
   submitLabel = "Создать",
   title
 }: CaptureFormProps) {
-  const [value, setValue] = useState("");
+  const { handleSubmit, register, reset, watch } = useForm<CaptureFormValues>({
+    defaultValues: {
+      value: ""
+    }
+  });
+  const value = watch("value") ?? "";
 
   return (
     <form
       className={styles.form}
-      onSubmit={async (event) => {
-        event.preventDefault();
-        const created = await onSubmitValue(value);
+      onSubmit={handleSubmit(async ({ value: nextValue }) => {
+        const created = await onSubmitValue(nextValue);
         if (created) {
-          setValue("");
+          reset();
           afterSubmit?.();
         }
-      }}
+      })}
     >
       <div className={styles.card}>
         <Heading as="h3" className={styles.title}>
@@ -53,11 +62,8 @@ export function CaptureForm({
             </span>
             <input
               className={styles.input}
-              onChange={(event) => {
-                setValue(event.target.value);
-              }}
               placeholder={placeholder}
-              value={value}
+              {...register("value")}
             />
           </label>
           <ActionButton

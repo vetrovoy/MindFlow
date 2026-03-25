@@ -1,5 +1,6 @@
 import type { TaskPriority, TaskStatus } from "@mindflow/domain";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
@@ -32,17 +33,45 @@ const STATUS_OPTIONS: Array<{ value: TaskStatus; label: string; helper: string }
 
 const INBOX_SELECT_VALUE = "__inbox__";
 
+interface TaskEditFormValues {
+  title: string;
+  description: string;
+  projectId: string;
+  dueDate: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+}
+
+const DEFAULT_VALUES: TaskEditFormValues = {
+  title: "",
+  description: "",
+  projectId: INBOX_SELECT_VALUE,
+  dueDate: "",
+  priority: "medium",
+  status: "todo"
+};
+
 export function TaskEditFeature() {
   const { actions, derived, state } = useMindFlowApp();
   const task = derived.editingTask;
   const activeProjects = [...derived.favoriteProjects, ...derived.regularProjects];
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [projectId, setProjectId] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState<TaskPriority>("medium");
-  const [status, setStatus] = useState<TaskStatus>("todo");
-  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const {
+    clearErrors,
+    control,
+    formState: { errors },
+    getValues,
+    reset,
+    setError,
+    setValue
+  } = useForm<TaskEditFormValues>({
+    defaultValues: DEFAULT_VALUES
+  });
+  const title = useWatch({ control, name: "title" }) ?? "";
+  const description = useWatch({ control, name: "description" }) ?? "";
+  const projectId = useWatch({ control, name: "projectId" }) ?? INBOX_SELECT_VALUE;
+  const dueDate = useWatch({ control, name: "dueDate" }) ?? "";
+  const priority = useWatch({ control, name: "priority" }) ?? "medium";
+  const status = useWatch({ control, name: "status" }) ?? "todo";
   const lastSyncedSignatureRef = useRef<string>("");
   const hydratedTaskIdRef = useRef<string | null>(null);
   const autosaveTimeoutRef = useRef<number | null>(null);
@@ -55,7 +84,8 @@ export function TaskEditFeature() {
         window.clearTimeout(autosaveTimeoutRef.current);
         autosaveTimeoutRef.current = null;
       }
-      setValidationMessage(null);
+      clearErrors();
+      reset(DEFAULT_VALUES);
       return;
     }
 
@@ -63,23 +93,21 @@ export function TaskEditFeature() {
       return;
     }
 
-    setTitle(task.title);
-    setDescription(task.description ?? "");
-    setProjectId(task.projectId ?? INBOX_SELECT_VALUE);
-    setDueDate(task.dueDate ?? "");
-    setPriority(task.priority);
-    setStatus(task.status);
-    setValidationMessage(null);
-    hydratedTaskIdRef.current = task.id;
-    lastSyncedSignatureRef.current = JSON.stringify({
+    const nextValues: TaskEditFormValues = {
       title: task.title,
       description: task.description ?? "",
       projectId: task.projectId ?? INBOX_SELECT_VALUE,
       dueDate: task.dueDate ?? "",
       priority: task.priority,
       status: task.status
-    });
-  }, [task]);
+    };
+
+    reset(nextValues);
+    clearErrors();
+    hydratedTaskIdRef.current = task.id;
+    lastSyncedSignatureRef.current = JSON.stringify(nextValues);
+  }, [clearErrors, reset, task]);
+
   const draftSignature = useMemo(
     () =>
       JSON.stringify({
@@ -89,7 +117,7 @@ export function TaskEditFeature() {
         dueDate,
         priority,
         status
-    }),
+      }),
     [description, dueDate, priority, projectId, status, title]
   );
 
@@ -112,21 +140,23 @@ export function TaskEditFeature() {
     }
 
     autosaveTimeoutRef.current = window.setTimeout(() => {
-      void actions.saveTaskEdit(payload, {
-        closeOnSuccess: false,
-        toastOnSuccess: false
-      }).then((saved) => {
-        if (saved) {
-          lastSyncedSignatureRef.current = JSON.stringify({
-            title: payload.title,
-            description: payload.description ?? "",
-            projectId,
-            dueDate,
-            priority,
-            status
-          });
-        }
-      });
+      void actions
+        .saveTaskEdit(payload, {
+          closeOnSuccess: false,
+          toastOnSuccess: false
+        })
+        .then((saved) => {
+          if (saved) {
+            lastSyncedSignatureRef.current = JSON.stringify({
+              title: payload.title,
+              description: payload.description ?? "",
+              projectId,
+              dueDate,
+              priority,
+              status
+            });
+          }
+        });
     }, 480);
 
     return () => {
@@ -135,7 +165,7 @@ export function TaskEditFeature() {
         autosaveTimeoutRef.current = null;
       }
     };
-  }, [actions, description, draftSignature, dueDate, priority, projectId, status, task, taskId, title]);
+  }, [actions, description, draftSignature, dueDate, priority, projectId, status, task, title]);
 
   if (task == null) {
     return null;
@@ -149,24 +179,27 @@ export function TaskEditFeature() {
       })
     : "Без срока";
 
-  function buildSavePayload() {
-    const normalizedTitle = title.trim();
+  function buildSavePayload(values: TaskEditFormValues = getValues()) {
+    const normalizedTitle = values.title.trim();
 
     if (!normalizedTitle) {
-      setValidationMessage("Добавьте короткое название задачи, чтобы сохранить изменения.");
+      setError("title", {
+        type: "required",
+        message: "Добавьте короткое название задачи, чтобы сохранить изменения."
+      });
       return null;
     }
 
-    setValidationMessage(null);
+    clearErrors("title");
 
     return {
       taskId,
       title: normalizedTitle,
-      description: description.trim() ? description.trim() : null,
-      status,
-      priority,
-      dueDate: dueDate || null,
-      projectId: projectId === INBOX_SELECT_VALUE ? null : projectId
+      description: values.description.trim() ? values.description.trim() : null,
+      status: values.status,
+      priority: values.priority,
+      dueDate: values.dueDate || null,
+      projectId: values.projectId === INBOX_SELECT_VALUE ? null : values.projectId
     };
   }
 
@@ -240,34 +273,46 @@ export function TaskEditFeature() {
                   <label className={styles.fieldLabel} htmlFor="task-edit-title">
                     Название
                   </label>
-                  <TextField
-                    autoFocus
-                    id="task-edit-title"
-                    onChange={(event) => {
-                      setTitle(event.target.value);
-                      if (validationMessage != null) {
-                        setValidationMessage(null);
-                      }
-                    }}
-                    placeholder="Что именно нужно сделать?"
-                    value={title}
+                  <Controller
+                    control={control}
+                    name="title"
+                    render={({ field }) => (
+                      <TextField
+                        autoFocus
+                        id="task-edit-title"
+                        onChange={(event) => {
+                          field.onChange(event.target.value);
+                          if (errors.title != null) {
+                            clearErrors("title");
+                          }
+                        }}
+                        placeholder="Что именно нужно сделать?"
+                        value={field.value}
+                      />
+                    )}
                   />
                 </div>
                 <div className={styles.fieldGroup}>
                   <label className={styles.fieldLabel} htmlFor="task-edit-description">
                     Описание
                   </label>
-                  <TextAreaField
-                    id="task-edit-description"
-                    onChange={(event) => {
-                      setDescription(event.target.value);
-                    }}
-                    placeholder="Добавьте детали, ссылки или короткий next step..."
-                    value={description}
+                  <Controller
+                    control={control}
+                    name="description"
+                    render={({ field }) => (
+                      <TextAreaField
+                        id="task-edit-description"
+                        onChange={(event) => {
+                          field.onChange(event.target.value);
+                        }}
+                        placeholder="Добавьте детали, ссылки или короткий next step..."
+                        value={field.value}
+                      />
+                    )}
                   />
                 </div>
-                {validationMessage == null || title.trim() ? null : (
-                  <p className={styles.validationMessage}>{validationMessage}</p>
+                {errors.title?.message == null ? null : (
+                  <p className={styles.validationMessage}>{errors.title.message}</p>
                 )}
               </EditorSection>
 
@@ -281,21 +326,25 @@ export function TaskEditFeature() {
                     >
                       Список
                     </label>
-                    <SelectField
-                      ariaLabelledBy="task-edit-project-label"
-                      id="task-edit-project"
-                      onValueChange={(value) => {
-                        setProjectId(value);
-                      }}
-                      options={[
-                        { value: INBOX_SELECT_VALUE, label: "Входящие" },
-                        ...activeProjects.map((project) => ({
-                          value: project.id,
-                          label: project.name
-                        }))
-                      ]}
-                      placeholder="Выберите список"
-                      value={projectId}
+                    <Controller
+                      control={control}
+                      name="projectId"
+                      render={({ field }) => (
+                        <SelectField
+                          ariaLabelledBy="task-edit-project-label"
+                          id="task-edit-project"
+                          onValueChange={field.onChange}
+                          options={[
+                            { value: INBOX_SELECT_VALUE, label: "Входящие" },
+                            ...activeProjects.map((project) => ({
+                              value: project.id,
+                              label: project.name
+                            }))
+                          ]}
+                          placeholder="Выберите список"
+                          value={field.value}
+                        />
+                      )}
                     />
                   </div>
                   <div className={styles.fieldGroup}>
@@ -306,12 +355,18 @@ export function TaskEditFeature() {
                     >
                       Дата
                     </label>
-                    <DatePickerField
-                      ariaLabelledBy="task-edit-due-date-label"
-                      id="task-edit-due-date"
-                      onChange={setDueDate}
-                      placeholder="Выберите срок"
-                      value={dueDate}
+                    <Controller
+                      control={control}
+                      name="dueDate"
+                      render={({ field }) => (
+                        <DatePickerField
+                          ariaLabelledBy="task-edit-due-date-label"
+                          id="task-edit-due-date"
+                          onChange={field.onChange}
+                          placeholder="Выберите срок"
+                          value={field.value}
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -331,7 +386,7 @@ export function TaskEditFeature() {
                               : styles.choiceButton
                           }
                           onClick={() => {
-                            setPriority(option.value);
+                            setValue("priority", option.value, { shouldDirty: true });
                           }}
                           type="button"
                         >
@@ -353,7 +408,7 @@ export function TaskEditFeature() {
                               : styles.choiceButton
                           }
                           onClick={() => {
-                            setStatus(option.value);
+                            setValue("status", option.value, { shouldDirty: true });
                           }}
                           type="button"
                         >
@@ -368,29 +423,31 @@ export function TaskEditFeature() {
             </div>
 
             <aside className={styles.sideColumn}>
-              <section className={styles.overviewCard}>
-                <MetaText className={styles.overviewLabel}>Обзор</MetaText>
-                <Heading as="strong" className={styles.overviewTitle}>
-                  {title.trim() || "Новая формулировка задачи"}
-                </Heading>
-                <div className={styles.overviewMeta}>
-                  <div className={styles.overviewMetaRow}>
-                    <MetaText className={styles.overviewMetaLabel}>Список</MetaText>
+              <EditorSection title="Обзор">
+                <div className={styles.summaryCard}>
+                  <div>
+                    <MetaText className={styles.summaryLabel}>Список</MetaText>
                     {selectedProject == null ? (
-                      <MetaText className={styles.overviewMetaValue}>Входящие</MetaText>
+                      <Heading as="strong" className={styles.summaryValue}>
+                        Входящие
+                      </Heading>
                     ) : (
-                      <ProjectBadge color={selectedProject.color} label={selectedProject.name} />
+                      <div className={styles.summaryProject}>
+                        <ProjectBadge color={selectedProject.color} label={selectedProject.name} />
+                      </div>
                     )}
                   </div>
-                  <div className={styles.overviewMetaRow}>
-                    <MetaText className={styles.overviewMetaLabel}>Срок</MetaText>
-                    <MetaText className={styles.overviewMetaValue}>{dueDateLabel}</MetaText>
+                  <div>
+                    <MetaText className={styles.summaryLabel}>Срок</MetaText>
+                    <Heading as="strong" className={styles.summaryValue}>
+                      {dueDateLabel}
+                    </Heading>
                   </div>
                 </div>
-              </section>
+              </EditorSection>
 
               <EditorSection title="Действия">
-                <div className={styles.secondaryActions}>
+                <div className={styles.actionsRow}>
                   <ConfirmDialog
                     confirmAriaLabel="Подтвердить архивацию"
                     confirmDisabled={state.isSaving}
@@ -403,7 +460,6 @@ export function TaskEditFeature() {
                     trigger={
                       <IconButton
                         ariaLabel="Архивировать задачу"
-                        className={styles.secondaryActionButton}
                         icon="archive"
                         variant="secondary"
                       />
@@ -422,7 +478,7 @@ export function TaskEditFeature() {
                     trigger={
                       <IconButton
                         ariaLabel="Удалить задачу"
-                        className={styles.secondaryActionButton}
+                        className={styles.deleteButton}
                         icon="trash"
                         variant="secondary"
                       />

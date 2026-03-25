@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
@@ -19,16 +20,38 @@ import {
 } from "@/shared/ui";
 import styles from "./index.module.css";
 
+interface ProjectEditFormValues {
+  name: string;
+  color: string;
+  deadline: string;
+  isFavorite: boolean;
+}
+
+const DEFAULT_VALUES: ProjectEditFormValues = {
+  name: "",
+  color: PROJECT_DECORATIONS[0].color,
+  deadline: "",
+  isFavorite: false
+};
+
 export function ProjectEditFeature() {
   const { actions, derived, state } = useMindFlowApp();
   const project = derived.editingProject;
-  const [name, setName] = useState("");
-  const [color, setColor] = useState<string>(PROJECT_DECORATIONS[0].color);
-  const [deadline, setDeadline] = useState("");
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [validationMessage, setValidationMessage] = useState<string | null>(
-    null
-  );
+  const {
+    clearErrors,
+    control,
+    formState: { errors },
+    getValues,
+    reset,
+    setError,
+    setValue
+  } = useForm<ProjectEditFormValues>({
+    defaultValues: DEFAULT_VALUES
+  });
+  const name = useWatch({ control, name: "name" }) ?? "";
+  const color = useWatch({ control, name: "color" }) ?? PROJECT_DECORATIONS[0].color;
+  const deadline = useWatch({ control, name: "deadline" }) ?? "";
+  const isFavorite = useWatch({ control, name: "isFavorite" }) ?? false;
   const lastSyncedSignatureRef = useRef<string>("");
   const hydratedProjectIdRef = useRef<string | null>(null);
   const autosaveTimeoutRef = useRef<number | null>(null);
@@ -40,9 +63,7 @@ export function ProjectEditFeature() {
     }
 
     return (
-      derived.projectSections.find(
-        (section) => section.project.id === project.id
-      ) ?? {
+      derived.projectSections.find((section) => section.project.id === project.id) ?? {
         project,
         tasks: state.tasks.filter(
           (task) => task.projectId === project.id && task.archivedAt == null
@@ -70,7 +91,8 @@ export function ProjectEditFeature() {
         window.clearTimeout(autosaveTimeoutRef.current);
         autosaveTimeoutRef.current = null;
       }
-      setValidationMessage(null);
+      clearErrors();
+      reset(DEFAULT_VALUES);
       return;
     }
 
@@ -78,19 +100,19 @@ export function ProjectEditFeature() {
       return;
     }
 
-    setName(project.name);
-    setColor(project.color);
-    setDeadline(project.deadline ?? "");
-    setIsFavorite(project.isFavorite);
-    setValidationMessage(null);
-    hydratedProjectIdRef.current = project.id;
-    lastSyncedSignatureRef.current = JSON.stringify({
+    const nextValues: ProjectEditFormValues = {
       name: project.name,
       color: project.color,
       deadline: project.deadline ?? "",
       isFavorite: project.isFavorite
-    });
-  }, [project]);
+    };
+
+    reset(nextValues);
+    clearErrors();
+    hydratedProjectIdRef.current = project.id;
+    lastSyncedSignatureRef.current = JSON.stringify(nextValues);
+  }, [clearErrors, project, reset]);
+
   const draftSignature = useMemo(
     () =>
       JSON.stringify({
@@ -144,16 +166,7 @@ export function ProjectEditFeature() {
         autosaveTimeoutRef.current = null;
       }
     };
-  }, [
-    actions,
-    color,
-    deadline,
-    draftSignature,
-    isFavorite,
-    name,
-    project,
-    projectId
-  ]);
+  }, [actions, color, deadline, draftSignature, isFavorite, name, project]);
 
   if (project == null || projectSummary == null) {
     return null;
@@ -164,24 +177,25 @@ export function ProjectEditFeature() {
     0
   );
 
-  function buildSavePayload() {
-    const normalizedName = name.trim();
+  function buildSavePayload(values: ProjectEditFormValues = getValues()) {
+    const normalizedName = values.name.trim();
 
     if (!normalizedName) {
-      setValidationMessage(
-        "У списка должно быть название, чтобы его можно было сохранить."
-      );
+      setError("name", {
+        type: "required",
+        message: "У списка должно быть название, чтобы его можно было сохранить."
+      });
       return null;
     }
 
-    setValidationMessage(null);
+    clearErrors("name");
 
     return {
       projectId,
       name: normalizedName,
-      color,
-      isFavorite,
-      deadline: deadline || null
+      color: values.color,
+      isFavorite: values.isFavorite,
+      deadline: values.deadline || null
     };
   }
 
@@ -246,13 +260,8 @@ export function ProjectEditFeature() {
           <section className={styles.heroCard}>
             <div className={styles.heroHeader}>
               <div className={styles.heroIdentity}>
-                <ProjectBadge
-                  color={color}
-                  label={name.trim() || "Новый список"}
-                />
-                {isFavorite ? (
-                  <StatusPill label="Избранное" variant="today" />
-                ) : null}
+                <ProjectBadge color={color} label={name.trim() || "Новый список"} />
+                {isFavorite ? <StatusPill label="Избранное" variant="today" /> : null}
               </div>
               <IconButton
                 ariaLabel={
@@ -267,7 +276,7 @@ export function ProjectEditFeature() {
                 }
                 icon="favorite"
                 onClick={() => {
-                  setIsFavorite((current) => !current);
+                  setValue("isFavorite", !isFavorite, { shouldDirty: true });
                 }}
                 variant="secondary"
               />
@@ -276,8 +285,7 @@ export function ProjectEditFeature() {
               <div className={styles.heroStatsBox}>
                 <MetaText className={styles.summaryLabel}>Прогресс</MetaText>
                 <Heading as="strong" className={styles.summaryValue}>
-                  {projectSummary.progress.done}/
-                  {Math.max(projectSummary.progress.total, 1)}
+                  {projectSummary.progress.done}/{Math.max(projectSummary.progress.total, 1)}
                 </Heading>
               </div>
               <div className={styles.heroStatsBox}>
@@ -290,13 +298,10 @@ export function ProjectEditFeature() {
                 <MetaText className={styles.summaryLabel}>Дедлайн</MetaText>
                 <Heading as="strong" className={styles.summaryValue}>
                   {deadline
-                    ? new Date(`${deadline}T00:00:00`).toLocaleDateString(
-                        "ru-RU",
-                        {
-                          day: "numeric",
-                          month: "long"
-                        }
-                      )
+                    ? new Date(`${deadline}T00:00:00`).toLocaleDateString("ru-RU", {
+                        day: "numeric",
+                        month: "long"
+                      })
                     : "Не задан"}
                 </Heading>
               </div>
@@ -311,23 +316,26 @@ export function ProjectEditFeature() {
             <div className={styles.mainColumn}>
               <EditorSection title="Идентичность">
                 <div className={styles.fieldGroup}>
-                  <label
-                    className={styles.fieldLabel}
-                    htmlFor="project-edit-name"
-                  >
+                  <label className={styles.fieldLabel} htmlFor="project-edit-name">
                     Название
                   </label>
-                  <TextField
-                    autoFocus
-                    id="project-edit-name"
-                    onChange={(event) => {
-                      setName(event.target.value);
-                      if (validationMessage != null) {
-                        setValidationMessage(null);
-                      }
-                    }}
-                    placeholder="Например, Landing MVP"
-                    value={name}
+                  <Controller
+                    control={control}
+                    name="name"
+                    render={({ field }) => (
+                      <TextField
+                        autoFocus
+                        id="project-edit-name"
+                        onChange={(event) => {
+                          field.onChange(event.target.value);
+                          if (errors.name != null) {
+                            clearErrors("name");
+                          }
+                        }}
+                        placeholder="Например, Landing MVP"
+                        value={field.value}
+                      />
+                    )}
                   />
                 </div>
                 <div className={styles.fieldGroup}>
@@ -338,21 +346,25 @@ export function ProjectEditFeature() {
                   >
                     Маркер списка
                   </label>
-                  <ColorPickerField
-                    ariaLabelledBy="project-edit-color-label"
-                    id="project-edit-color"
-                    onChange={setColor}
-                    presets={PROJECT_DECORATIONS.map((option) => ({
-                      value: option.color,
-                      label: option.label
-                    }))}
-                    value={color}
+                  <Controller
+                    control={control}
+                    name="color"
+                    render={({ field }) => (
+                      <ColorPickerField
+                        ariaLabelledBy="project-edit-color-label"
+                        id="project-edit-color"
+                        onChange={field.onChange}
+                        presets={PROJECT_DECORATIONS.map((option) => ({
+                          value: option.color,
+                          label: option.label
+                        }))}
+                        value={field.value}
+                      />
+                    )}
                   />
                 </div>
-                {validationMessage == null || name.trim() ? null : (
-                  <p className={styles.validationMessage}>
-                    {validationMessage}
-                  </p>
+                {errors.name?.message == null ? null : (
+                  <p className={styles.validationMessage}>{errors.name.message}</p>
                 )}
               </EditorSection>
 
@@ -366,12 +378,18 @@ export function ProjectEditFeature() {
                     >
                       Дедлайн
                     </label>
-                    <DatePickerField
-                      ariaLabelledBy="project-edit-deadline-label"
-                      id="project-edit-deadline"
-                      onChange={setDeadline}
-                      placeholder="Выберите дедлайн"
-                      value={deadline}
+                    <Controller
+                      control={control}
+                      name="deadline"
+                      render={({ field }) => (
+                        <DatePickerField
+                          ariaLabelledBy="project-edit-deadline-label"
+                          id="project-edit-deadline"
+                          onChange={field.onChange}
+                          placeholder="Выберите дедлайн"
+                          value={field.value}
+                        />
+                      )}
                     />
                   </div>
                 </div>
