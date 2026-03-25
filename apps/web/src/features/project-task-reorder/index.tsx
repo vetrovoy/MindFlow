@@ -16,9 +16,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "@mindflow/domain";
 
-import { cn } from "@/shared/lib/cn";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
-import { Icon } from "@/shared/ui";
+import { Icon, TaskRow } from "@/shared/ui";
 import styles from "./index.module.css";
 
 interface ProjectTaskReorderFeatureProps {
@@ -30,18 +29,6 @@ interface SortableTaskCardProps {
   task: Task;
   onOpenTask: (taskId: string) => void;
   onToggleDone: (taskId: string) => void;
-}
-
-function getPriorityTone(priority: Task["priority"]) {
-  if (priority === "high") {
-    return styles.priorityHigh;
-  }
-
-  if (priority === "medium") {
-    return styles.priorityMedium;
-  }
-
-  return styles.priorityLow;
 }
 
 function SortableTaskCard({
@@ -59,57 +46,33 @@ function SortableTaskCard({
   } = useSortable({
     id: task.id
   });
-  const isDone = task.status === "done";
   return (
-    <article
-      className={cn(
-        styles.card,
-        isDragging && styles.cardDragging,
-        getPriorityTone(task.priority)
-      )}
+    <div
       ref={setNodeRef}
       style={{
         transform: CSS.Transform.toString(transform),
         transition
       }}
     >
-      <div className={styles.cardRow}>
-        <div className={styles.cardMain}>
+      <TaskRow
+        className={styles.card}
+        isDragging={isDragging}
+        onOpenTask={onOpenTask}
+        onToggleDone={onToggleDone}
+        task={task}
+        trailingSlot={
           <button
-            aria-label={
-              isDone ? "Вернуть задачу в работу" : "Отметить задачу выполненной"
-            }
-            className={cn(styles.checkbox, isDone && styles.checkboxDone)}
-            onClick={() => {
-              void onToggleDone(task.id);
-            }}
+            {...attributes}
+            {...listeners}
+            aria-label={`Изменить порядок задачи ${task.title}`}
+            className={styles.dragHandle}
             type="button"
           >
-            {isDone ? <Icon name="check" size={14} tone="contrast" /> : null}
+            <Icon name="drag" size={16} tone="muted" />
           </button>
-          <button
-            className={styles.contentButton}
-            onClick={() => {
-              onOpenTask(task.id);
-            }}
-            type="button"
-          >
-            <strong className={cn(styles.title, isDone && styles.titleDone)}>
-              {task.title}
-            </strong>
-          </button>
-        </div>
-        <button
-          {...attributes}
-          {...listeners}
-          aria-label={`Изменить порядок задачи ${task.title}`}
-          className={styles.dragHandle}
-          type="button"
-        >
-          <Icon name="drag" size={16} tone="muted" />
-        </button>
-      </div>
-    </article>
+        }
+      />
+    </div>
   );
 }
 

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Task } from "@mindflow/domain";
 
 import { cn } from "@/shared/lib/cn";
@@ -9,7 +10,10 @@ import styles from "./index.module.css";
 interface TaskRowProps {
   task: Task;
   selected?: boolean;
+  isDragging?: boolean;
   badgeVariant?: "today" | "overdue";
+  trailingSlot?: ReactNode;
+  className?: string;
   onToggleDone: (taskId: string) => void;
   onOpenTask: (taskId: string) => void;
 }
@@ -40,15 +44,25 @@ function getPriorityMark(priority: Task["priority"]) {
 
 export function TaskRow({
   badgeVariant,
+  className,
+  isDragging = false,
   onOpenTask,
   onToggleDone,
   selected = false,
-  task
+  task,
+  trailingSlot
 }: TaskRowProps) {
   const isDone = task.status === "done";
 
   return (
-    <article className={cn(styles.item, selected && styles.itemSelected)}>
+    <article
+      className={cn(
+        styles.item,
+        selected && styles.itemSelected,
+        isDragging && styles.itemDragging,
+        className
+      )}
+    >
       <div className={styles.row}>
         <button
           aria-label={
@@ -95,6 +109,7 @@ export function TaskRow({
               {getPriorityMark(task.priority)}
             </MetaText>
           </div>
+          {trailingSlot}
         </div>
       </div>
     </article>
