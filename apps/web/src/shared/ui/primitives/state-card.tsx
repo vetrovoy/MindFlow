@@ -2,6 +2,7 @@ import { getFeedbackCardRole } from "@mindflow/ui";
 import type { FeedbackCardVariant } from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
+import { Icon } from "@/shared/ui/icons";
 import { Body, Title } from "@/shared/ui/typography";
 import styles from "./primitives.module.css";
 
@@ -12,6 +13,9 @@ export interface StateCardProps {
 }
 
 export function StateCard({ description, title, variant }: StateCardProps) {
+  const iconName =
+    variant === "error" ? "close" : variant === "loading" ? "search" : "checkbox-empty";
+
   return (
     <div
       aria-live="polite"
@@ -25,16 +29,37 @@ export function StateCard({ description, title, variant }: StateCardProps) {
       )}
       role={getFeedbackCardRole({ variant, title, description })}
     >
-      <Title
-        as="strong"
+      <div
         className={cn(
-          styles.stateTitle,
-          variant === "error" ? styles.stateTitleError : styles.stateTitleDefault
+          styles.stateAccent,
+          variant === "error"
+            ? styles.stateAccentError
+            : variant === "loading"
+              ? styles.stateAccentLoading
+              : styles.stateAccentEmpty
         )}
       >
-        {title}
-      </Title>
-      {description == null ? null : <Body className={styles.stateDescription}>{description}</Body>}
+        <Icon
+          decorative
+          name={iconName}
+          size={16}
+          tone={variant === "error" ? "alert" : variant === "loading" ? "lime" : "muted"}
+        />
+      </div>
+      <div className={styles.stateContent}>
+        <Title
+          as="strong"
+          className={cn(
+            styles.stateTitle,
+            variant === "error" ? styles.stateTitleError : styles.stateTitleDefault
+          )}
+        >
+          {title}
+        </Title>
+        {description == null ? null : (
+          <Body className={styles.stateDescription}>{description}</Body>
+        )}
+      </div>
     </div>
   );
 }

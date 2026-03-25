@@ -37,12 +37,16 @@ export function InboxViewWidget() {
     };
   }, [derived.inboxTasks]);
 
-  const badgeByTaskId = useMemo<Partial<Record<string, "today" | "overdue">>>(() => {
+  const badgeByTaskId = useMemo<
+    Partial<Record<string, "today" | "overdue">>
+  >(() => {
     const result: Partial<Record<string, "today" | "overdue">> = {};
 
     for (const task of todayAndOverdueTasks) {
       result[task.id] =
-        task.dueDate != null && task.dueDate < todayDateKey ? "overdue" : "today";
+        task.dueDate != null && task.dueDate < todayDateKey
+          ? "overdue"
+          : "today";
     }
 
     return result;
@@ -64,24 +68,22 @@ export function InboxViewWidget() {
             />
           ) : (
             <div className={styles.sections}>
-              <CollapsibleSection count={activeInboxTasks.length} defaultOpen title="Входящие">
-                {activeInboxTasks.length === 0 ? (
-                  <StateCard
-                    description="Сейчас во входящих нет активных задач."
-                    title="Входящие пусты"
-                    variant="empty"
-                  />
-                ) : (
-                  <TaskListEntity
-                    badgeByTaskId={badgeByTaskId}
-                    onOpenTask={actions.openTaskEdit}
-                    onToggleDone={(taskId) => {
-                      void actions.toggleTask(taskId);
-                    }}
-                    tasks={activeInboxTasks}
-                  />
-                )}
-              </CollapsibleSection>
+              {activeInboxTasks.length === 0 ? (
+                <StateCard
+                  description="Сейчас во входящих нет активных задач."
+                  title="Входящие пусты"
+                  variant="empty"
+                />
+              ) : (
+                <TaskListEntity
+                  badgeByTaskId={badgeByTaskId}
+                  onOpenTask={actions.openTaskEdit}
+                  onToggleDone={(taskId) => {
+                    void actions.toggleTask(taskId);
+                  }}
+                  tasks={activeInboxTasks}
+                />
+              )}
               <CollapsibleSection
                 count={completedInboxTasks.length}
                 defaultOpen={false}
