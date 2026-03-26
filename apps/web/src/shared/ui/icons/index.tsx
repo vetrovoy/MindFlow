@@ -9,11 +9,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Circle,
+  Flag,
   Star,
   FolderKanban,
   GripVertical,
   LayoutGrid,
   ListTodo,
+  MoreHorizontal,
   Plus,
   Search,
   Sparkles,
@@ -43,10 +45,12 @@ export type IconName =
   | "toast-success"
   | "close"
   | "favorite"
+  | "flag"
   | "nav-inbox"
   | "nav-lists"
   | "nav-today"
   | "drag"
+  | "more"
   | "trash";
 
 export interface IconProps {
@@ -75,10 +79,12 @@ const ICONS: Record<IconName, LucideIcon> = {
   "toast-success": Sparkles,
   close: X,
   favorite: Star,
+  flag: Flag,
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,
   "nav-today": LayoutGrid,
   drag: GripVertical,
+  more: MoreHorizontal,
   trash: Trash2
 };
 

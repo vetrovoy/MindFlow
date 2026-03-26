@@ -1,13 +1,11 @@
 import {
-  Heading,
+  IconButton,
   MetaText,
   Modal,
-  ModalHeader,
   StatusPill
 } from "@/shared/ui";
 import { useTaskEditForm } from "./model/use-task-edit-form";
-import { TaskEditMainColumn } from "./ui/task-edit-main-column";
-import { TaskEditSideColumn } from "./ui/task-edit-side-column";
+import { TaskEditMain } from "./ui/task-edit-main";
 import styles from "./index.module.css";
 
 export function TaskEditFeature() {
@@ -35,47 +33,45 @@ export function TaskEditFeature() {
 
   return (
     <Modal
+      contentClassName={styles.modalContent}
       onClose={() => {
         void handleClose();
       }}
       open
+      showHandle={false}
     >
       <div className={styles.root}>
-        <ModalHeader
-          eyebrow={<MetaText>Рабочая задача</MetaText>}
-          onClose={() => {
-            void handleClose();
-          }}
-          title={
-            <div className={styles.headerTitleWrap}>
-              <Heading as="strong" className={styles.headerTitle}>
-                Редактирование задачи
-              </Heading>
-              {status === "done" ? <StatusPill label="Готово" variant="today" /> : null}
-            </div>
-          }
-        />
+        <div className={styles.headerBar}>
+          <div className={styles.headerMeta}>
+            <MetaText>Редактировать задачу</MetaText>
+            {status === "done" ? <StatusPill label="Готово" variant="today" /> : null}
+          </div>
+          <IconButton
+            ariaLabel="Закрыть редактирование задачи"
+            icon="close"
+            onClick={() => {
+              void handleClose();
+            }}
+            variant="secondary"
+          />
+        </div>
 
         <div className={styles.content}>
-          <div className={styles.editorGrid}>
-            <TaskEditMainColumn
-              activeProjects={activeProjects}
-              clearErrors={clearErrors}
-              control={control}
-              errors={errors}
-              onPriorityChange={setPriority}
-              onStatusChange={setStatus}
-              priority={priority}
-              status={status}
-            />
-            <TaskEditSideColumn
-              dueDateLabel={dueDateLabel}
-              isSaving={state.isSaving}
-              onArchiveTask={handleArchiveTask}
-              onDeleteTask={handleDeleteTask}
-              selectedProject={selectedProject}
-            />
-          </div>
+          <TaskEditMain
+            activeProjects={activeProjects}
+            clearErrors={clearErrors}
+            control={control}
+            dueDateLabel={dueDateLabel}
+            errors={errors}
+            isSaving={state.isSaving}
+            onArchiveTask={handleArchiveTask}
+            onDeleteTask={handleDeleteTask}
+            onPriorityChange={setPriority}
+            onStatusChange={setStatus}
+            priority={priority}
+            selectedProject={selectedProject}
+            status={status}
+          />
         </div>
       </div>
     </Modal>

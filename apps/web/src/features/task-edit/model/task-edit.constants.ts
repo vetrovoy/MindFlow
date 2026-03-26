@@ -3,20 +3,20 @@ import type { TaskPriority, TaskStatus } from "@mindflow/domain";
 export const PRIORITY_OPTIONS: Array<{
   value: TaskPriority;
   label: string;
-  helper: string;
+  helper?: string;
 }> = [
-  { value: "low", label: "Низкий", helper: "Позже" },
-  { value: "medium", label: "Средний", helper: "В работе" },
-  { value: "high", label: "Высокий", helper: "Срочно" }
+  { value: "low", label: "Низкий" },
+  { value: "medium", label: "Средний" },
+  { value: "high", label: "Высокий" }
 ];
 
 export const STATUS_OPTIONS: Array<{
   value: TaskStatus;
   label: string;
-  helper: string;
+  helper?: string;
 }> = [
-  { value: "todo", label: "В работе", helper: "Активна" },
-  { value: "done", label: "Готово", helper: "Завершена" }
+  { value: "todo", label: "В работе" },
+  { value: "done", label: "Готово" }
 ];
 
 export const INBOX_SELECT_VALUE = "__inbox__";

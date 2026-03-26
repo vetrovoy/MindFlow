@@ -101,7 +101,7 @@
 
 .radioCard {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--mf-space-sm);
   min-height: 56px;
