@@ -32,8 +32,8 @@ export function ListsViewWidget() {
                   />
                   {section.tasks.length === 0 ? (
                     <StateCard
-                      description="Перенесите задачи из Входящих или отредактируйте задачу, чтобы привязать её к этому списку."
-                      title="Пока нет задач"
+                      description="Привяжите задачи к этому списку."
+                      title="Пусто"
                       variant="empty"
                     />
                   ) : (

@@ -1,20 +1,19 @@
+import * as Popover from "@radix-ui/react-popover";
 import { useEffect, useMemo, useRef } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
+import { cn } from "@/shared/lib/cn";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   ColorPickerField,
   ConfirmDialog,
   DatePickerField,
-  EditorSection,
-  Heading,
+  Icon,
+  type IconName,
   IconButton,
   MetaText,
   Modal,
-  ModalHeader,
-  ProgressBar,
-  ProjectBadge,
   StatusPill,
   TextField
 } from "@/shared/ui";
@@ -33,6 +32,60 @@ const DEFAULT_VALUES: ProjectEditFormValues = {
   deadline: "",
   isFavorite: false
 };
+
+function getColorLabel(color: string) {
+  return PROJECT_DECORATIONS.find((option) => option.color === color)?.label ?? "Маркер";
+}
+
+function formatDeadlineLabel(deadline: string) {
+  return deadline
+    ? new Date(`${deadline}T00:00:00`).toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long"
+      })
+    : "Без дедлайна";
+}
+
+interface ProjectDockPopoverProps {
+  iconName: IconName;
+  triggerLabel: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+function ProjectDockPopover({
+  children,
+  className,
+  iconName,
+  triggerLabel
+}: ProjectDockPopoverProps) {
+  return (
+    <Popover.Root>
+      <Popover.Trigger asChild>
+        <span
+          aria-label={triggerLabel}
+          className={cn(styles.actionIcon, className)}
+          role="button"
+          tabIndex={0}
+          title={triggerLabel}
+        >
+          <Icon decorative name={iconName} size={18} tone="default" />
+        </span>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          align="start"
+          className={styles.actionPopover}
+          side="top"
+          sideOffset={12}
+        >
+          {children}
+          <Popover.Arrow className={styles.actionPopoverArrow} height={10} width={18} />
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+  );
+}
 
 export function ProjectEditFeature() {
   const { actions, derived, state } = useMindFlowApp();
@@ -176,6 +229,8 @@ export function ProjectEditFeature() {
     projectSummary.progress.total - projectSummary.progress.done,
     0
   );
+  const deadlineLabel = formatDeadlineLabel(deadline);
+  const colorLabel = getColorLabel(color);
 
   function buildSavePayload(values: ProjectEditFormValues = getValues()) {
     const normalizedName = values.name.trim();
@@ -238,166 +293,136 @@ export function ProjectEditFeature() {
 
   return (
     <Modal
+      contentClassName={styles.modalContent}
       onClose={() => {
         void handleClose();
       }}
       open
+      showHandle={false}
     >
       <div className={styles.root}>
-        <ModalHeader
-          eyebrow={<MetaText>Список проекта</MetaText>}
-          onClose={() => {
-            void handleClose();
-          }}
-          title={
-            <Heading as="strong" className={styles.headerTitle}>
-              Редактирование списка
-            </Heading>
-          }
-        />
+        <div className={styles.headerBar}>
+          <div className={styles.headerMeta}>
+            <MetaText>Редактировать список</MetaText>
+            {isFavorite ? <StatusPill label="Избранное" variant="today" /> : null}
+          </div>
+          <IconButton
+            ariaLabel="Закрыть редактирование списка"
+            icon="close"
+            onClick={() => {
+              void handleClose();
+            }}
+            variant="secondary"
+          />
+        </div>
 
         <div className={styles.content}>
-          <section className={styles.heroCard}>
-            <div className={styles.heroHeader}>
-              <div className={styles.heroIdentity}>
-                <ProjectBadge color={color} label={name.trim() || "Новый список"} />
-                {isFavorite ? <StatusPill label="Избранное" variant="today" /> : null}
-              </div>
-              <IconButton
-                ariaLabel={
-                  isFavorite
-                    ? "Убрать список из избранного"
-                    : "Добавить список в избранное"
-                }
-                className={
-                  isFavorite
-                    ? `${styles.favoriteButton} ${styles.favoriteButtonActive}`
-                    : styles.favoriteButton
-                }
-                icon="favorite"
-                onClick={() => {
-                  setValue("isFavorite", !isFavorite, { shouldDirty: true });
-                }}
-                variant="secondary"
-              />
-            </div>
-            <div className={styles.heroStats}>
-              <div className={styles.heroStatsBox}>
-                <MetaText className={styles.summaryLabel}>Прогресс</MetaText>
-                <Heading as="strong" className={styles.summaryValue}>
-                  {projectSummary.progress.done}/{Math.max(projectSummary.progress.total, 1)}
-                </Heading>
-              </div>
-              <div className={styles.heroStatsBox}>
-                <MetaText className={styles.summaryLabel}>Осталось</MetaText>
-                <Heading as="strong" className={styles.summaryValue}>
-                  {remainingCount}
-                </Heading>
-              </div>
-              <div className={styles.heroStatsBox}>
-                <MetaText className={styles.summaryLabel}>Дедлайн</MetaText>
-                <Heading as="strong" className={styles.summaryValue}>
-                  {deadline
-                    ? new Date(`${deadline}T00:00:00`).toLocaleDateString("ru-RU", {
-                        day: "numeric",
-                        month: "long"
-                      })
-                    : "Не задан"}
-                </Heading>
-              </div>
-            </div>
-            <ProgressBar
-              max={Math.max(projectSummary.progress.total, 1)}
-              value={projectSummary.progress.done}
+          <div className={styles.hero}>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <TextField
+                  autoFocus
+                  className={styles.titleField}
+                  id="project-edit-name"
+                  onChange={(event) => {
+                    field.onChange(event.target.value);
+                    if (errors.name != null) {
+                      clearErrors("name");
+                    }
+                  }}
+                  placeholder="Название списка"
+                  value={field.value}
+                />
+              )}
             />
-          </section>
+            {errors.name?.message == null ? null : (
+              <p className={styles.validationMessage}>{errors.name.message}</p>
+            )}
+            <div className={styles.metaInline}>
+            <MetaText className={cn(styles.metaChip, styles.metaChipProgress)}>
+              {projectSummary.progress.done}/{Math.max(projectSummary.progress.total, 1)} выполнено
+            </MetaText>
+            <MetaText className={cn(styles.metaChip, styles.metaChipRemaining)}>
+              Осталось {remainingCount}
+            </MetaText>
+            <span className={cn(styles.metaChip, styles.metaChipColor)}>
+              <span
+                aria-hidden="true"
+                className={styles.metaColorDot}
+                style={{ backgroundColor: color }}
+              />
+              <MetaText>{colorLabel}</MetaText>
+            </span>
+            <MetaText className={cn(styles.metaChip, deadline ? styles.metaChipLime : styles.metaChipMuted)}>
+              {deadlineLabel}
+            </MetaText>
+              {isFavorite ? (
+                <MetaText className={cn(styles.metaChip, styles.metaChipFavorite)}>
+                  Избранное
+                </MetaText>
+              ) : null}
+            </div>
+          </div>
 
-          <div className={styles.editorGrid}>
-            <div className={styles.mainColumn}>
-              <EditorSection title="Идентичность">
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel} htmlFor="project-edit-name">
-                    Название
-                  </label>
-                  <Controller
-                    control={control}
-                    name="name"
-                    render={({ field }) => (
-                      <TextField
-                        autoFocus
-                        id="project-edit-name"
-                        onChange={(event) => {
-                          field.onChange(event.target.value);
-                          if (errors.name != null) {
-                            clearErrors("name");
-                          }
-                        }}
-                        placeholder="Например, Landing MVP"
-                        value={field.value}
-                      />
-                    )}
-                  />
-                </div>
-                <div className={styles.fieldGroup}>
-                  <label
-                    className={styles.fieldLabel}
-                    htmlFor="project-edit-color"
-                    id="project-edit-color-label"
-                  >
-                    Маркер списка
-                  </label>
-                  <Controller
-                    control={control}
-                    name="color"
-                    render={({ field }) => (
-                      <ColorPickerField
-                        ariaLabelledBy="project-edit-color-label"
-                        id="project-edit-color"
-                        onChange={field.onChange}
-                        presets={PROJECT_DECORATIONS.map((option) => ({
-                          value: option.color,
-                          label: option.label
-                        }))}
-                        value={field.value}
-                      />
-                    )}
-                  />
-                </div>
-                {errors.name?.message == null ? null : (
-                  <p className={styles.validationMessage}>{errors.name.message}</p>
-                )}
-              </EditorSection>
-
-              <EditorSection title="Дедлайн">
-                <div className={styles.contextRow}>
-                  <div className={styles.fieldGroup}>
-                    <label
-                      className={styles.fieldLabel}
-                      htmlFor="project-edit-deadline"
-                      id="project-edit-deadline-label"
-                    >
-                      Дедлайн
-                    </label>
-                    <Controller
-                      control={control}
-                      name="deadline"
-                      render={({ field }) => (
-                        <DatePickerField
-                          ariaLabelledBy="project-edit-deadline-label"
-                          id="project-edit-deadline"
-                          onChange={field.onChange}
-                          placeholder="Выберите дедлайн"
-                          value={field.value}
-                        />
-                      )}
+          <div className={styles.toolbar}>
+            <Controller
+              control={control}
+              name="color"
+              render={({ field }) => (
+                <ProjectDockPopover iconName="palette" triggerLabel="Изменить маркер списка">
+                  <div className={styles.popoverBody}>
+                    <MetaText className={styles.popoverLabel}>Маркер списка</MetaText>
+                    <ColorPickerField
+                      ariaLabelledBy="project-edit-color-label"
+                      id="project-edit-color"
+                      onChange={field.onChange}
+                      presets={PROJECT_DECORATIONS.map((option) => ({
+                        value: option.color,
+                        label: option.label
+                      }))}
+                      value={field.value}
                     />
                   </div>
-                </div>
-              </EditorSection>
-            </div>
+                </ProjectDockPopover>
+              )}
+            />
 
-            <aside className={styles.sideColumn}>
-              <EditorSection title="Действия">
+            <Controller
+              control={control}
+              name="deadline"
+              render={({ field }) => (
+                <ProjectDockPopover iconName="today" triggerLabel="Изменить дедлайн">
+                  <div className={styles.popoverBody}>
+                    <MetaText className={styles.popoverLabel}>Дедлайн</MetaText>
+                    <DatePickerField
+                      ariaLabelledBy="project-edit-deadline-label"
+                      id="project-edit-deadline"
+                      onChange={field.onChange}
+                      placeholder="Выберите дедлайн"
+                      value={field.value}
+                    />
+                  </div>
+                </ProjectDockPopover>
+              )}
+            />
+
+            <span
+              aria-label={isFavorite ? "Убрать список из избранного" : "Добавить список в избранное"}
+              className={cn(styles.actionIcon, isFavorite && styles.actionIconActive)}
+              onClick={() => {
+                setValue("isFavorite", !isFavorite, { shouldDirty: true });
+              }}
+              role="button"
+              tabIndex={0}
+              title={isFavorite ? "Убрать список из избранного" : "Добавить список в избранное"}
+            >
+              <Icon decorative name="favorite" size={18} tone={isFavorite ? "lime" : "default"} />
+            </span>
+
+            <ProjectDockPopover iconName="more" triggerLabel="Дополнительные действия">
+              <div className={styles.menuBody}>
                 <ConfirmDialog
                   confirmAriaLabel="Подтвердить архивацию списка"
                   confirmDisabled={state.isSaving}
@@ -410,14 +435,14 @@ export function ProjectEditFeature() {
                   trigger={
                     <IconButton
                       ariaLabel="Архивировать список"
-                      className={styles.archiveButton}
+                      className={styles.menuAction}
                       icon="archive"
                       variant="secondary"
                     />
                   }
                 />
-              </EditorSection>
-            </aside>
+              </div>
+            </ProjectDockPopover>
           </div>
         </div>
       </div>

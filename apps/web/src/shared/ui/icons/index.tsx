@@ -16,6 +16,7 @@ import {
   LayoutGrid,
   ListTodo,
   MoreHorizontal,
+  Palette,
   Plus,
   Search,
   Sparkles,
@@ -46,6 +47,7 @@ export type IconName =
   | "close"
   | "favorite"
   | "flag"
+  | "palette"
   | "nav-inbox"
   | "nav-lists"
   | "nav-today"
@@ -80,6 +82,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   close: X,
   favorite: Star,
   flag: Flag,
+  palette: Palette,
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,
   "nav-today": LayoutGrid,
