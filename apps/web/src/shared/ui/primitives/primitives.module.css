@@ -296,7 +296,7 @@
 .progressBar {
   width: 100%;
   height: var(--mf-space-xl);
-  background: var(--mf-color-surface);
+  background: var(--mf-color-accent-lime-glow);
   border-radius: var(--mf-radius-pill);
   overflow: hidden;
   border: 1px solid var(--mf-color-border-strong);
