@@ -5,7 +5,7 @@
 
 .sections {
   display: grid;
-  gap: var(--mf-space-4xl);
+  gap: var(--mf-space-5xl);
 }
 
 .section {

@@ -33,5 +33,5 @@
 
 .sections {
   display: grid;
-  gap: var(--mf-space-2xl);
+  gap: var(--mf-space-5xl);
 }
