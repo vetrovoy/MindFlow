@@ -17,7 +17,7 @@ import type { RepositoryBundle } from "@mindflow/data";
 
 import { getNowIso } from "@/shared/lib/date";
 import { createId } from "@/shared/lib/ids";
-import { getProjectDecoration } from "@/shared/lib/projects";
+import { getProjectDecoration, getProjectDecorationByColor } from "@/shared/lib/projects";
 import {
   getNextOrderIndex,
   formatError
@@ -65,13 +65,19 @@ export function createMindFlowActions({
 
       const { tasks } = getStore().state;
       const now = getNowIso();
-      const nextTask = createTask({
+      const baseTask = createTask({
         id: createId(),
         title: trimmedTitle,
         dueDate: input.dueDate ?? null,
+        projectId: input.projectId ?? null,
+        priority: input.priority ?? "medium",
         now,
-        orderIndex: getNextOrderIndex(tasks, null)
+        orderIndex: getNextOrderIndex(tasks, input.projectId ?? null)
       });
+      const nextTask =
+        input.status != null && input.status !== "todo"
+          ? setTaskStatus(baseTask, input.status, now)
+          : baseTask;
 
       const saved = await runMutation(async () => {
         await repository.tasks.save(nextTask);
@@ -360,12 +366,15 @@ export function createMindFlowActions({
       const { projects } = getStore().state;
       const now = getNowIso();
       const decoration = getProjectDecoration(projects.length);
+      const resolvedDecoration = input.color
+        ? getProjectDecorationByColor(input.color)
+        : decoration;
       const nextProject = createProjectEntity({
         id: createId(),
         name: trimmedName,
-        color: decoration.color,
+        color: input.color ?? resolvedDecoration.color,
         deadline: input.deadline ?? null,
-        emoji: decoration.emoji,
+        emoji: resolvedDecoration.emoji,
         now
       });
 

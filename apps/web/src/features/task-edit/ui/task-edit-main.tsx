@@ -123,7 +123,11 @@ export function TaskEditMain({
       />
 
       <div className={styles.toolbar}>
-        <TaskDockPopover iconName="nav-lists" triggerLabel="Изменить список">
+        <TaskDockPopover
+          active={projectId !== INBOX_SELECT_VALUE}
+          iconName="nav-lists"
+          triggerLabel="Изменить список"
+        >
           <div className={styles.popoverBody}>
             <SelectField
               ariaLabelledBy="task-edit-project-label"
@@ -144,7 +148,11 @@ export function TaskEditMain({
           </div>
         </TaskDockPopover>
 
-        <TaskDockPopover iconName="today" triggerLabel="Изменить срок">
+        <TaskDockPopover
+          active={Boolean(dueDate)}
+          iconName="today"
+          triggerLabel="Изменить срок"
+        >
           <div className={styles.popoverBody}>
             <DatePickerField
               ariaLabelledBy="task-edit-due-date-label"
@@ -157,6 +165,7 @@ export function TaskEditMain({
         </TaskDockPopover>
 
         <TaskDockPopover
+          active={priority !== "medium"}
           iconName={getTaskPriorityIconName(priority)}
           triggerLabel={`Приоритет: ${priorityLabel}`}
         >
@@ -172,6 +181,7 @@ export function TaskEditMain({
         </TaskDockPopover>
 
         <TaskDockPopover
+          active={status !== "todo"}
           iconName={getTaskStatusIconName(status)}
           triggerLabel={`Статус: ${statusLabel}`}
         >

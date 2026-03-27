@@ -63,7 +63,13 @@ export interface MindFlowDerivedState {
 }
 
 export interface MindFlowActions {
-  addInboxTask: (input: { title: string; dueDate?: string | null }) => Promise<boolean>;
+  addInboxTask: (input: {
+    title: string;
+    dueDate?: string | null;
+    projectId?: string | null;
+    priority?: TaskPriority;
+    status?: Task["status"];
+  }) => Promise<boolean>;
   toggleTask: (taskId: string) => Promise<void>;
   openTaskEdit: (taskId: string) => void;
   closeTaskEdit: () => void;
@@ -81,7 +87,7 @@ export interface MindFlowActions {
     projectName?: string;
   }) => Promise<boolean>;
   reorderProjectTasks: (projectId: string, orderedTaskIds: string[]) => Promise<boolean>;
-  createProject: (input: { name: string; deadline?: string | null }) => Promise<boolean>;
+  createProject: (input: { name: string; deadline?: string | null; color?: string }) => Promise<boolean>;
   dismissToast: () => void;
   clearError: () => void;
   reload: () => Promise<void>;

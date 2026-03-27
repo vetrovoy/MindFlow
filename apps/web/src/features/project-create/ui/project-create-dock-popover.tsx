@@ -2,30 +2,28 @@ import * as Popover from "@radix-ui/react-popover";
 import type { ReactNode } from "react";
 
 import { cn } from "@/shared/lib/cn";
-import { Icon, type IconName } from "@/shared/ui";
-import styles from "../index.module.css";
+import { Icon } from "@/shared/ui";
+import styles from "./project-create-dock-popover.module.css";
 
-interface ProjectDockPopoverProps {
-  iconName: IconName;
+interface ProjectCreateDockPopoverProps {
+  iconName: "palette" | "today";
   triggerLabel: string;
   children: ReactNode;
-  className?: string;
   active?: boolean;
 }
 
-export function ProjectDockPopover({
+export function ProjectCreateDockPopover({
   active = false,
   children,
-  className,
   iconName,
   triggerLabel
-}: ProjectDockPopoverProps) {
+}: ProjectCreateDockPopoverProps) {
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
         <span
           aria-label={triggerLabel}
-          className={cn(styles.actionIcon, active && styles.actionIconActive, className)}
+          className={cn(styles.actionIcon, active && styles.actionIconActive)}
           role="button"
           tabIndex={0}
           title={triggerLabel}

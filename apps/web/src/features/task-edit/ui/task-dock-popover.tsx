@@ -10,9 +10,11 @@ interface TaskDockPopoverProps {
   triggerLabel: string;
   children: ReactNode;
   className?: string;
+  active?: boolean;
 }
 
 export function TaskDockPopover({
+  active = false,
   children,
   className,
   iconName,
@@ -23,12 +25,12 @@ export function TaskDockPopover({
       <Popover.Trigger asChild>
         <span
           aria-label={triggerLabel}
-          className={cn(styles.actionIcon, className)}
+          className={cn(styles.actionIcon, active && styles.actionIconActive, className)}
           role="button"
           tabIndex={0}
           title={triggerLabel}
         >
-          <Icon decorative name={iconName} size={18} tone="default" />
+          <Icon decorative name={iconName} size={18} tone={active ? "lime" : "default"} />
         </span>
       </Popover.Trigger>
       <Popover.Portal>

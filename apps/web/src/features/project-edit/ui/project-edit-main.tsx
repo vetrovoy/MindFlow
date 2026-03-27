@@ -102,7 +102,11 @@ export function ProjectEditMain({
       </div>
 
       <div className={styles.toolbar}>
-        <ProjectDockPopover iconName="palette" triggerLabel="Изменить маркер списка">
+        <ProjectDockPopover
+          active={color !== PROJECT_DECORATIONS[0].color}
+          iconName="palette"
+          triggerLabel="Изменить маркер списка"
+        >
           <div className={styles.popoverBody}>
             <ColorPickerField
               ariaLabelledBy="project-edit-color-label"
@@ -117,7 +121,11 @@ export function ProjectEditMain({
           </div>
         </ProjectDockPopover>
 
-        <ProjectDockPopover iconName="today" triggerLabel="Изменить дедлайн">
+        <ProjectDockPopover
+          active={Boolean(deadline)}
+          iconName="today"
+          triggerLabel="Изменить дедлайн"
+        >
           <div className={styles.popoverBody}>
             <DatePickerField
               ariaLabelledBy="project-edit-deadline-label"

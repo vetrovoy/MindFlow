@@ -11,6 +11,7 @@ import {
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
 import { QuickAddFeature } from "@/features/quick-add";
+import { TaskCreateFeature } from "@/features/task-create";
 import { TaskEditFeature } from "@/features/task-edit";
 import { InboxPage } from "@/pages/inbox";
 import { ListsPage } from "@/pages/lists";
@@ -22,15 +23,16 @@ import { Display, MetaText, SupportText } from "@/shared/ui";
 import { IconButton, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import styles from "@/app/App.module.css";
 import { ProjectCreateFeature } from "@/features/project-create";
+import { ProjectCreateModalFeature } from "@/features/project-create/modal";
 
 function AppShell() {
   const location = useLocation();
   const isLists = location.pathname === "/lists";
-  const isInbox = location.pathname === "/inbox";
   const isToday = location.pathname === "/today";
+  const [isTaskCreateOpen, setIsTaskCreateOpen] = useState(false);
+  const [isProjectCreateOpen, setIsProjectCreateOpen] = useState(false);
 
   const { derived, state } = useMindFlowApp();
-  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const tasksInListsCount = useMemo(
     () =>
       derived.projectSections.reduce(
@@ -62,15 +64,16 @@ function AppShell() {
               </div>
               <div>
                 <IconButton
-                  ariaLabel={
-                    isQuickAddOpen
-                      ? "Скрыть быстрое добавление"
-                      : "Открыть быстрое добавление"
-                  }
+                  ariaLabel={"Открыть создание задачи"}
                   className={styles.addButton}
                   icon="add"
                   onClick={() => {
-                    setIsQuickAddOpen((current) => !current);
+                    if (isLists) {
+                      setIsProjectCreateOpen(true);
+                      return;
+                    }
+
+                    setIsTaskCreateOpen(true);
                   }}
                 />
               </div>
@@ -115,20 +118,18 @@ function AppShell() {
                 Сегодня
               </NavLink>
             </nav>
-            {isQuickAddOpen && isInbox ? (
+            {isToday || location.pathname === "/inbox" ? (
               <QuickAddFeature
+                description={
+                  isToday
+                    ? "Добавляйте задачи на сегодня."
+                    : "Добавляйте задачи без приоритета в течение дня."
+                }
+                preferredDate={isToday ? new Date() : undefined}
                 title="Быстрый захват задач"
-                description="Добавляйте задачи без приоритета в течение дня."
               />
             ) : null}
-            {isQuickAddOpen && isToday ? (
-              <QuickAddFeature
-                title="Быстрый захват задач"
-                description="Добавляйте задачи на сегодня"
-                preferredDate={new Date()}
-              />
-            ) : null}
-            {isQuickAddOpen && isLists ? <ProjectCreateFeature /> : null}
+            {isLists ? <ProjectCreateFeature /> : null}
             <SystemStatusWidget />
           </div>
         </SurfaceCard>
@@ -145,6 +146,19 @@ function AppShell() {
         )}
       </main>
       <BottomNavWidget />
+      <TaskCreateFeature
+        onClose={() => {
+          setIsTaskCreateOpen(false);
+        }}
+        open={isTaskCreateOpen}
+        preferredDate={isToday ? new Date() : undefined}
+      />
+      <ProjectCreateModalFeature
+        onClose={() => {
+          setIsProjectCreateOpen(false);
+        }}
+        open={isProjectCreateOpen}
+      />
       <TaskEditFeature />
       <ProjectEditFeature />
     </div>

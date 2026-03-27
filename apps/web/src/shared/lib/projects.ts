@@ -8,3 +8,11 @@ export const PROJECT_DECORATIONS = [
 export function getProjectDecoration(index: number) {
   return PROJECT_DECORATIONS[index % PROJECT_DECORATIONS.length];
 }
+
+export function getProjectDecorationByColor(color: string) {
+  return (
+    PROJECT_DECORATIONS.find(
+      (decoration) => decoration.color.toUpperCase() === color.toUpperCase()
+    ) ?? PROJECT_DECORATIONS[0]
+  );
+}
