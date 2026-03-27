@@ -11,20 +11,26 @@ import styles from "./index.module.css";
 export function TaskEditFeature() {
   const {
     activeProjects,
-    clearErrors,
-    control,
+    description,
+    dueDate,
     dueDateLabel,
-    errors,
     handleArchiveTask,
     handleClose,
     handleDeleteTask,
     priority,
+    projectId,
     selectedProject,
+    setDescription,
+    setDueDate,
     setPriority,
+    setProjectId,
     setStatus,
     state,
     status,
-    task
+    task,
+    title,
+    titleError,
+    setTitle
   } = useTaskEditForm();
 
   if (task == null) {
@@ -59,18 +65,24 @@ export function TaskEditFeature() {
         <div className={styles.content}>
           <TaskEditMain
             activeProjects={activeProjects}
-            clearErrors={clearErrors}
-            control={control}
+            description={description}
+            dueDate={dueDate}
             dueDateLabel={dueDateLabel}
-            errors={errors}
             isSaving={state.isSaving}
             onArchiveTask={handleArchiveTask}
+            onDescriptionChange={setDescription}
             onDeleteTask={handleDeleteTask}
+            onDueDateChange={setDueDate}
             onPriorityChange={setPriority}
+            onProjectChange={setProjectId}
             onStatusChange={setStatus}
+            onTitleChange={setTitle}
             priority={priority}
+            projectId={projectId}
             selectedProject={selectedProject}
             status={status}
+            title={title}
+            titleError={titleError}
           />
         </div>
       </div>

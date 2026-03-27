@@ -1,6 +1,4 @@
 import type { Project, TaskPriority, TaskStatus } from "@mindflow/domain";
-import type { Control, FieldErrors, UseFormClearErrors } from "react-hook-form";
-import { Controller } from "react-hook-form";
 
 import {
   ConfirmDialog,
@@ -17,7 +15,6 @@ import {
   INBOX_SELECT_VALUE,
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
-  type TaskEditFormValues
 } from "../model/task-edit.constants";
 import {
   getTaskDueDateChipToneClass,
@@ -31,34 +28,46 @@ import { TaskDockPopover } from "./task-dock-popover";
 
 interface TaskEditMainProps {
   activeProjects: Project[];
-  clearErrors: UseFormClearErrors<TaskEditFormValues>;
-  control: Control<TaskEditFormValues>;
+  description: string;
+  dueDate: string;
   dueDateLabel: string;
-  errors: FieldErrors<TaskEditFormValues>;
   isSaving: boolean;
   onArchiveTask: () => void;
   onDeleteTask: () => void;
+  onDescriptionChange: (description: string) => void;
+  onDueDateChange: (dueDate: string) => void;
   onPriorityChange: (priority: TaskPriority) => void;
+  onProjectChange: (projectId: string) => void;
   onStatusChange: (status: TaskStatus) => void;
+  onTitleChange: (title: string) => void;
   priority: TaskPriority;
+  projectId: string;
   selectedProject: Project | null;
   status: TaskStatus;
+  title: string;
+  titleError: string | null;
 }
 
 export function TaskEditMain({
   activeProjects,
-  clearErrors,
-  control,
+  description,
+  dueDate,
   dueDateLabel,
-  errors,
   isSaving,
   onArchiveTask,
+  onDescriptionChange,
   onDeleteTask,
+  onDueDateChange,
   onPriorityChange,
+  onProjectChange,
   onStatusChange,
+  onTitleChange,
   priority,
+  projectId,
   selectedProject,
-  status
+  status,
+  title,
+  titleError
 }: TaskEditMainProps) {
   const projectLabel = selectedProject?.name ?? "Входящие";
   const priorityLabel = getTaskPriorityLabel(priority);
@@ -68,27 +77,18 @@ export function TaskEditMain({
     <div className={styles.mainColumn}>
       <div className={styles.hero}>
         <div className={styles.titleRow}>
-          <Controller
-            control={control}
-            name="title"
-            render={({ field }) => (
-              <TextField
-                autoFocus
-                className={styles.titleField}
-                id="task-edit-title"
-                onChange={(event) => {
-                  field.onChange(event.target.value);
-                  if (errors.title != null) {
-                    clearErrors("title");
-                  }
-                }}
-                placeholder="Что именно нужно сделать?"
-                value={field.value}
-              />
-            )}
+          <TextField
+            autoFocus
+            className={styles.titleField}
+            id="task-edit-title"
+            onChange={(event) => {
+              onTitleChange(event.target.value);
+            }}
+            placeholder="Что именно нужно сделать?"
+            value={title}
           />
-          {errors.title?.message == null ? null : (
-            <p className={styles.validationMessage}>{errors.title.message}</p>
+          {titleError == null ? null : (
+            <p className={styles.validationMessage}>{titleError}</p>
           )}
           <div className={styles.metaInline}>
             <MetaText className={cn(styles.metaChip, styles.metaChipProject)}>
@@ -112,71 +112,53 @@ export function TaskEditMain({
         </div>
       </div>
 
-      <Controller
-        control={control}
-        name="description"
-        render={({ field }) => (
-          <TextAreaField
-            className={styles.descriptionField}
-            id="task-edit-description"
-            onChange={(event) => {
-              field.onChange(event.target.value);
-            }}
-            placeholder="Описание, детали или следующий шаг"
-            value={field.value}
-          />
-        )}
+      <TextAreaField
+        className={styles.descriptionField}
+        id="task-edit-description"
+        onChange={(event) => {
+          onDescriptionChange(event.target.value);
+        }}
+        placeholder="Описание, детали или следующий шаг"
+        value={description}
       />
 
       <div className={styles.toolbar}>
-        <Controller
-          control={control}
-          name="projectId"
-          render={({ field }) => (
-            <TaskDockPopover
-              iconName="nav-lists"
-              triggerLabel="Изменить список"
-            >
-              <div className={styles.popoverBody}>
-                <MetaText className={styles.popoverLabel}>Список</MetaText>
-                <SelectField
-                  ariaLabelledBy="task-edit-project-label"
-                  contentClassName={styles.selectContent}
-                  id="task-edit-project"
-                  onValueChange={field.onChange}
-                  options={[
-                    { value: INBOX_SELECT_VALUE, label: "Входящие" },
-                    ...activeProjects.map((project) => ({
-                      value: project.id,
-                      label: project.name
-                    }))
-                  ]}
-                  placeholder="Выберите список"
-                  value={field.value}
-                />
-              </div>
-            </TaskDockPopover>
-          )}
-        />
+        <TaskDockPopover
+          iconName="nav-lists"
+          triggerLabel="Изменить список"
+        >
+          <div className={styles.popoverBody}>
+            <MetaText className={styles.popoverLabel}>Список</MetaText>
+            <SelectField
+              ariaLabelledBy="task-edit-project-label"
+              contentClassName={styles.selectContent}
+              id="task-edit-project"
+              onValueChange={onProjectChange}
+              options={[
+                { value: INBOX_SELECT_VALUE, label: "Входящие" },
+                ...activeProjects.map((project) => ({
+                  value: project.id,
+                  label: project.name
+                }))
+              ]}
+              placeholder="Выберите список"
+              value={projectId}
+            />
+          </div>
+        </TaskDockPopover>
 
-        <Controller
-          control={control}
-          name="dueDate"
-          render={({ field }) => (
-            <TaskDockPopover iconName="today" triggerLabel="Изменить срок">
-              <div className={styles.popoverBody}>
-                <MetaText className={styles.popoverLabel}>Срок</MetaText>
-                <DatePickerField
-                  ariaLabelledBy="task-edit-due-date-label"
-                  id="task-edit-due-date"
-                  onChange={field.onChange}
-                  placeholder="Выберите срок"
-                  value={field.value}
-                />
-              </div>
-            </TaskDockPopover>
-          )}
-        />
+        <TaskDockPopover iconName="today" triggerLabel="Изменить срок">
+          <div className={styles.popoverBody}>
+            <MetaText className={styles.popoverLabel}>Срок</MetaText>
+            <DatePickerField
+              ariaLabelledBy="task-edit-due-date-label"
+              id="task-edit-due-date"
+              onChange={onDueDateChange}
+              placeholder="Выберите срок"
+              value={dueDate}
+            />
+          </div>
+        </TaskDockPopover>
 
         <TaskDockPopover
           iconName={getTaskPriorityIconName(priority)}

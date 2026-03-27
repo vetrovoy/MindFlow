@@ -7,17 +7,19 @@ import styles from "./index.module.css";
 export function ProjectEditFeature() {
   const {
     actions,
-    clearErrors,
     color,
-    control,
     deadline,
-    errors,
     handleClose,
     isFavorite,
+    name,
+    nameError,
     project,
     projectId,
     projectSummary,
-    setValue,
+    setColor,
+    setDeadline,
+    setFavorite,
+    setName,
     state
   } = useProjectEditForm();
 
@@ -59,19 +61,20 @@ export function ProjectEditFeature() {
         <div className={styles.content}>
           <ProjectEditMain
             actions={actions}
-            clearErrors={clearErrors}
             color={color}
-            control={control}
+            deadline={deadline}
             deadlineLabel={deadlineLabel}
-            errors={errors}
             isFavorite={isFavorite}
+            name={name}
+            nameError={nameError}
+            onColorChange={setColor}
+            onDeadlineChange={setDeadline}
+            onFavoriteChange={setFavorite}
+            onNameChange={setName}
             progressDone={projectSummary.progress.done}
             progressTotal={projectSummary.progress.total}
             projectId={projectId}
             remainingCount={remainingCount}
-            setFavorite={(next) => {
-              setValue("isFavorite", next, { shouldDirty: true });
-            }}
             state={state}
           />
         </div>

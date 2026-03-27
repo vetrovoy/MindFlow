@@ -1,5 +1,3 @@
-import { Controller } from "react-hook-form";
-
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 import { cn } from "@/shared/lib/cn";
 import {
@@ -18,33 +16,39 @@ interface ProjectEditMainProps {
   actions: {
     archiveProject: (projectId: string) => Promise<void>;
   };
-  clearErrors: (name?: "name") => void;
   color: string;
-  control: any;
+  deadline: string;
   deadlineLabel: string;
-  errors: { name?: { message?: string } };
   isFavorite: boolean;
+  name: string;
+  nameError: string | null;
+  onColorChange: (color: string) => void;
+  onDeadlineChange: (deadline: string) => void;
+  onFavoriteChange: (next: boolean) => void;
+  onNameChange: (name: string) => void;
   projectId: string;
   progressDone: number;
   progressTotal: number;
   remainingCount: number;
-  setFavorite: (next: boolean) => void;
   state: { isSaving: boolean };
 }
 
 export function ProjectEditMain({
   actions,
-  clearErrors,
   color,
-  control,
+  deadline,
   deadlineLabel,
-  errors,
   isFavorite,
+  name,
+  nameError,
+  onColorChange,
+  onDeadlineChange,
+  onFavoriteChange,
+  onNameChange,
   progressDone,
   progressTotal,
   projectId,
   remainingCount,
-  setFavorite,
   state
 }: ProjectEditMainProps) {
   const colorLabel =
@@ -53,27 +57,18 @@ export function ProjectEditMain({
   return (
     <div className={styles.content}>
       <div className={styles.hero}>
-        <Controller
-          control={control}
-          name="name"
-          render={({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
-            <TextField
-              autoFocus
-              className={styles.titleField}
-              id="project-edit-name"
-              onChange={(event) => {
-                field.onChange(event.target.value);
-                if (errors.name != null) {
-                  clearErrors("name");
-                }
-              }}
-              placeholder="Название списка"
-              value={field.value}
-            />
-          )}
+        <TextField
+          autoFocus
+          className={styles.titleField}
+          id="project-edit-name"
+          onChange={(event) => {
+            onNameChange(event.target.value);
+          }}
+          placeholder="Название списка"
+          value={name}
         />
-        {errors.name?.message == null ? null : (
-          <p className={styles.validationMessage}>{errors.name.message}</p>
+        {nameError == null ? null : (
+          <p className={styles.validationMessage}>{nameError}</p>
         )}
         <div className={styles.metaInline}>
           <MetaText className={cn(styles.metaChip, styles.metaChipProgress)}>
@@ -107,52 +102,40 @@ export function ProjectEditMain({
       </div>
 
       <div className={styles.toolbar}>
-        <Controller
-          control={control}
-          name="color"
-          render={({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
-            <ProjectDockPopover iconName="palette" triggerLabel="Изменить маркер списка">
-              <div className={styles.popoverBody}>
-                <MetaText className={styles.popoverLabel}>Маркер списка</MetaText>
-                <ColorPickerField
-                  ariaLabelledBy="project-edit-color-label"
-                  id="project-edit-color"
-                  onChange={field.onChange}
-                  presets={PROJECT_DECORATIONS.map((option) => ({
-                    value: option.color,
-                    label: option.label
-                  }))}
-                  value={field.value}
-                />
-              </div>
-            </ProjectDockPopover>
-          )}
-        />
+        <ProjectDockPopover iconName="palette" triggerLabel="Изменить маркер списка">
+          <div className={styles.popoverBody}>
+            <MetaText className={styles.popoverLabel}>Маркер списка</MetaText>
+            <ColorPickerField
+              ariaLabelledBy="project-edit-color-label"
+              id="project-edit-color"
+              onChange={onColorChange}
+              presets={PROJECT_DECORATIONS.map((option) => ({
+                value: option.color,
+                label: option.label
+              }))}
+              value={color}
+            />
+          </div>
+        </ProjectDockPopover>
 
-        <Controller
-          control={control}
-          name="deadline"
-          render={({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
-            <ProjectDockPopover iconName="today" triggerLabel="Изменить дедлайн">
-              <div className={styles.popoverBody}>
-                <MetaText className={styles.popoverLabel}>Дедлайн</MetaText>
-                <DatePickerField
-                  ariaLabelledBy="project-edit-deadline-label"
-                  id="project-edit-deadline"
-                  onChange={field.onChange}
-                  placeholder="Выберите дедлайн"
-                  value={field.value}
-                />
-              </div>
-            </ProjectDockPopover>
-          )}
-        />
+        <ProjectDockPopover iconName="today" triggerLabel="Изменить дедлайн">
+          <div className={styles.popoverBody}>
+            <MetaText className={styles.popoverLabel}>Дедлайн</MetaText>
+            <DatePickerField
+              ariaLabelledBy="project-edit-deadline-label"
+              id="project-edit-deadline"
+              onChange={onDeadlineChange}
+              placeholder="Выберите дедлайн"
+              value={deadline}
+            />
+          </div>
+        </ProjectDockPopover>
 
         <span
           aria-label={isFavorite ? "Убрать список из избранного" : "Добавить список в избранное"}
           className={cn(styles.actionIcon, isFavorite && styles.actionIconActive)}
           onClick={() => {
-            setFavorite(!isFavorite);
+            onFavoriteChange(!isFavorite);
           }}
           role="button"
           tabIndex={0}

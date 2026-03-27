@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useRef } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   DEFAULT_PROJECT_EDIT_VALUES,
@@ -15,25 +13,13 @@ function createDraftSignature(values: ProjectEditFormValues) {
 export function useProjectEditForm() {
   const { actions, derived, state } = useMindFlowApp();
   const project = derived.editingProject;
-  const {
-    clearErrors,
-    control,
-    formState: { errors },
-    getValues,
-    reset,
-    setError,
-    setValue
-  } = useForm<ProjectEditFormValues>({
-    defaultValues: DEFAULT_PROJECT_EDIT_VALUES
-  });
-  const name = useWatch({ control, name: "name" }) ?? "";
-  const color = useWatch({ control, name: "color" }) ?? PROJECT_DECORATIONS[0].color;
-  const deadline = useWatch({ control, name: "deadline" }) ?? "";
-  const isFavorite = useWatch({ control, name: "isFavorite" }) ?? false;
+  const projectId = project?.id ?? "";
+  const [draft, setDraft] = useState<ProjectEditFormValues>(DEFAULT_PROJECT_EDIT_VALUES);
+  const [isDraftReady, setIsDraftReady] = useState(false);
+  const [nameError, setNameError] = useState<string | null>(null);
   const lastSyncedSignatureRef = useRef("");
   const hydratedProjectIdRef = useRef<string | null>(null);
-  const autosaveTimeoutRef = useRef<number | null>(null);
-  const projectId = project?.id ?? "";
+  const autosaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const projectSummary = useMemo(() => {
     if (project == null) {
@@ -66,11 +52,12 @@ export function useProjectEditForm() {
     if (project == null) {
       hydratedProjectIdRef.current = null;
       if (autosaveTimeoutRef.current != null) {
-        window.clearTimeout(autosaveTimeoutRef.current);
+        clearTimeout(autosaveTimeoutRef.current);
         autosaveTimeoutRef.current = null;
       }
-      clearErrors();
-      reset(DEFAULT_PROJECT_EDIT_VALUES);
+      setIsDraftReady(false);
+      setDraft(DEFAULT_PROJECT_EDIT_VALUES);
+      setNameError(null);
       return;
     }
 
@@ -78,41 +65,31 @@ export function useProjectEditForm() {
       return;
     }
 
-    const nextValues: ProjectEditFormValues = {
+    setIsDraftReady(false);
+
+    const nextDraft: ProjectEditFormValues = {
       name: project.name,
       color: project.color,
       deadline: project.deadline ?? "",
       isFavorite: project.isFavorite
     };
 
-    reset(nextValues);
-    clearErrors();
     hydratedProjectIdRef.current = project.id;
-    lastSyncedSignatureRef.current = createDraftSignature(nextValues);
-  }, [clearErrors, project, reset]);
+    lastSyncedSignatureRef.current = createDraftSignature(nextDraft);
+    setDraft(nextDraft);
+    setNameError(null);
+    setIsDraftReady(true);
+  }, [project]);
 
-  const currentDraft = useMemo(
-    () => ({
-      name,
-      color,
-      deadline,
-      isFavorite
-    }),
-    [color, deadline, isFavorite, name]
-  );
-
-  const buildSavePayload = (values: ProjectEditFormValues = getValues()) => {
+  const buildSavePayload = useCallback((values: ProjectEditFormValues = draft) => {
     const normalizedName = values.name.trim();
 
     if (!normalizedName) {
-      setError("name", {
-        type: "required",
-        message: "У списка должно быть название, чтобы его можно было сохранить."
-      });
+      setNameError("У списка должно быть название, чтобы его можно было сохранить.");
       return null;
     }
 
-    clearErrors("name");
+    setNameError(null);
 
     return {
       projectId,
@@ -121,28 +98,24 @@ export function useProjectEditForm() {
       isFavorite: values.isFavorite,
       deadline: values.deadline || null
     };
-  };
+  }, [draft, projectId]);
 
   useEffect(() => {
-    if (project == null) {
+    if (project == null || !isDraftReady || hydratedProjectIdRef.current !== project.id) {
       return;
     }
 
-    if (hydratedProjectIdRef.current !== project.id) {
-      return;
-    }
-
-    const draftSignature = createDraftSignature(currentDraft);
+    const draftSignature = createDraftSignature(draft);
     if (draftSignature === lastSyncedSignatureRef.current) {
       return;
     }
 
-    const payload = buildSavePayload(currentDraft);
+    const payload = buildSavePayload(draft);
     if (payload == null) {
       return;
     }
 
-    autosaveTimeoutRef.current = window.setTimeout(() => {
+    autosaveTimeoutRef.current = setTimeout(() => {
       void actions
         .saveProjectEdit(payload, {
           closeOnSuccess: false,
@@ -157,19 +130,19 @@ export function useProjectEditForm() {
 
     return () => {
       if (autosaveTimeoutRef.current != null) {
-        window.clearTimeout(autosaveTimeoutRef.current);
+        clearTimeout(autosaveTimeoutRef.current);
         autosaveTimeoutRef.current = null;
       }
     };
-  }, [actions, currentDraft, project]);
+  }, [actions, buildSavePayload, draft, isDraftReady, project]);
 
-  const flushAutosave = async () => {
-    const draftSignature = createDraftSignature(getValues());
-    if (draftSignature === lastSyncedSignatureRef.current) {
+  const flushAutosave = useCallback(async () => {
+    const draftSignature = createDraftSignature(draft);
+    if (!isDraftReady || draftSignature === lastSyncedSignatureRef.current) {
       return true;
     }
 
-    const payload = buildSavePayload();
+    const payload = buildSavePayload(draft);
     if (payload == null) {
       return false;
     }
@@ -184,32 +157,44 @@ export function useProjectEditForm() {
     }
 
     return saved;
-  };
+  }, [actions, buildSavePayload, draft, isDraftReady]);
 
-  async function handleClose() {
+  const handleClose = useCallback(async () => {
     if (autosaveTimeoutRef.current != null) {
-      window.clearTimeout(autosaveTimeoutRef.current);
+      clearTimeout(autosaveTimeoutRef.current);
       autosaveTimeoutRef.current = null;
     }
 
     await flushAutosave();
     actions.closeProjectEdit();
-  }
+  }, [actions, flushAutosave]);
 
   return {
     actions,
-    clearErrors,
-    color,
-    control,
-    deadline,
-    errors,
     handleClose,
-    isFavorite,
-    name,
+    color: draft.color,
+    deadline: draft.deadline,
+    isFavorite: draft.isFavorite,
+    name: draft.name,
+    nameError,
     project,
     projectId,
     projectSummary,
-    setValue,
+    setColor(nextColor: string) {
+      setDraft((current) => ({ ...current, color: nextColor }));
+    },
+    setDeadline(nextDeadline: string) {
+      setDraft((current) => ({ ...current, deadline: nextDeadline }));
+    },
+    setFavorite(nextFavorite: boolean) {
+      setDraft((current) => ({ ...current, isFavorite: nextFavorite }));
+    },
+    setName(nextName: string) {
+      setDraft((current) => ({ ...current, name: nextName }));
+      if (nameError != null) {
+        setNameError(null);
+      }
+    },
     state
   };
 }

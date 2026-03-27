@@ -1,6 +1,5 @@
 import type { TaskPriority, TaskStatus } from "@mindflow/domain";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
@@ -8,61 +7,41 @@ import {
   INBOX_SELECT_VALUE,
   type TaskEditFormValues
 } from "./task-edit.constants";
-
-function createDraftSignature(values: TaskEditFormValues) {
-  return JSON.stringify(values);
-}
+import { createTaskEditDraftSignature } from "./task-edit.helpers";
+import {
+  getTaskEditDueDateLabel,
+  getTaskEditSelectedProject
+} from "./task-edit.selectors";
 
 export function useTaskEditForm() {
   const { actions, derived, state } = useMindFlowApp();
+  
   const task = derived.editingTask;
+  const taskId = task?.id ?? "";
+
+  const [draft, setDraft] = useState<TaskEditFormValues>(DEFAULT_VALUES);
+  const [isDraftReady, setIsDraftReady] = useState(false);
+  const [titleError, setTitleError] = useState<string | null>(null);
+
+  const lastSyncedSignatureRef = useRef("");
+  const hydratedTaskIdRef = useRef<string | null>(null);
+  const autosaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const activeProjects = useMemo(
     () => [...derived.favoriteProjects, ...derived.regularProjects],
     [derived.favoriteProjects, derived.regularProjects]
-  );
-  const {
-    clearErrors,
-    control,
-    formState: { errors },
-    getValues,
-    reset,
-    setError,
-    setValue
-  } = useForm<TaskEditFormValues>({
-    defaultValues: DEFAULT_VALUES
-  });
-  const title = useWatch({ control, name: "title" }) ?? "";
-  const description = useWatch({ control, name: "description" }) ?? "";
-  const projectId = useWatch({ control, name: "projectId" }) ?? INBOX_SELECT_VALUE;
-  const dueDate = useWatch({ control, name: "dueDate" }) ?? "";
-  const priority = useWatch({ control, name: "priority" }) ?? "medium";
-  const status = useWatch({ control, name: "status" }) ?? "todo";
-  const lastSyncedSignatureRef = useRef("");
-  const hydratedTaskIdRef = useRef<string | null>(null);
-  const autosaveTimeoutRef = useRef<number | null>(null);
-  const taskId = task?.id ?? "";
-
-  const currentDraft = useMemo<TaskEditFormValues>(
-    () => ({
-      title,
-      description,
-      projectId,
-      dueDate,
-      priority,
-      status
-    }),
-    [description, dueDate, priority, projectId, status, title]
   );
 
   useEffect(() => {
     if (task == null) {
       hydratedTaskIdRef.current = null;
       if (autosaveTimeoutRef.current != null) {
-        window.clearTimeout(autosaveTimeoutRef.current);
+        clearTimeout(autosaveTimeoutRef.current);
         autosaveTimeoutRef.current = null;
       }
-      clearErrors();
-      reset(DEFAULT_VALUES);
+      setIsDraftReady(false);
+      setDraft(DEFAULT_VALUES);
+      setTitleError(null);
       return;
     }
 
@@ -70,7 +49,9 @@ export function useTaskEditForm() {
       return;
     }
 
-    const nextValues: TaskEditFormValues = {
+    setIsDraftReady(false);
+
+    const nextDraft: TaskEditFormValues = {
       title: task.title,
       description: task.description ?? "",
       projectId: task.projectId ?? INBOX_SELECT_VALUE,
@@ -79,59 +60,62 @@ export function useTaskEditForm() {
       status: task.status
     };
 
-    reset(nextValues);
-    clearErrors();
     hydratedTaskIdRef.current = task.id;
-    lastSyncedSignatureRef.current = createDraftSignature(nextValues);
-  }, [clearErrors, reset, task]);
+    lastSyncedSignatureRef.current = createTaskEditDraftSignature(nextDraft);
+    setDraft(nextDraft);
+    setTitleError(null);
+    setIsDraftReady(true);
+  }, [task]);
 
   const buildSavePayload = useCallback(
-    (values: TaskEditFormValues = getValues()) => {
+    (values: TaskEditFormValues = draft) => {
       const normalizedTitle = values.title.trim();
 
       if (!normalizedTitle) {
-        setError("title", {
-          type: "required",
-          message: "Добавьте короткое название задачи, чтобы сохранить изменения."
-        });
+        setTitleError(
+          "Добавьте короткое название задачи, чтобы сохранить изменения."
+        );
         return null;
       }
 
-      clearErrors("title");
+      setTitleError(null);
 
       return {
         taskId,
         title: normalizedTitle,
-        description: values.description.trim() ? values.description.trim() : null,
+        description: values.description.trim()
+          ? values.description.trim()
+          : null,
         status: values.status,
         priority: values.priority,
         dueDate: values.dueDate || null,
-        projectId: values.projectId === INBOX_SELECT_VALUE ? null : values.projectId
+        projectId:
+          values.projectId === INBOX_SELECT_VALUE ? null : values.projectId
       };
     },
-    [clearErrors, getValues, setError, taskId]
+    [draft, taskId]
   );
 
   useEffect(() => {
-    if (task == null) {
+    if (
+      task == null ||
+      !isDraftReady ||
+      hydratedTaskIdRef.current !== task.id
+    ) {
       return;
     }
 
-    if (hydratedTaskIdRef.current !== task.id) {
-      return;
-    }
-
-    const draftSignature = createDraftSignature(currentDraft);
+    const draftSignature = createTaskEditDraftSignature(draft);
     if (draftSignature === lastSyncedSignatureRef.current) {
       return;
     }
 
-    const payload = buildSavePayload(currentDraft);
+    const payload = buildSavePayload(draft);
     if (payload == null) {
       return;
     }
 
-    autosaveTimeoutRef.current = window.setTimeout(() => {
+    autosaveTimeoutRef.current = setTimeout(() => {
       void actions
         .saveTaskEdit(payload, {
           closeOnSuccess: false,
@@ -146,19 +130,19 @@ export function useTaskEditForm() {
 
     return () => {
       if (autosaveTimeoutRef.current != null) {
-        window.clearTimeout(autosaveTimeoutRef.current);
+        clearTimeout(autosaveTimeoutRef.current);
         autosaveTimeoutRef.current = null;
       }
     };
-  }, [actions, buildSavePayload, currentDraft, task]);
+  }, [actions, buildSavePayload, draft, isDraftReady, task]);
 
   const flushAutosave = useCallback(async () => {
-    const draftSignature = createDraftSignature(getValues());
-    if (draftSignature === lastSyncedSignatureRef.current) {
+    const draftSignature = createTaskEditDraftSignature(draft);
+    if (!isDraftReady || draftSignature === lastSyncedSignatureRef.current) {
       return true;
     }
 
-    const payload = buildSavePayload();
+    const payload = buildSavePayload(draft);
     if (payload == null) {
       return false;
     }
@@ -173,11 +157,11 @@ export function useTaskEditForm() {
     }
 
     return saved;
-  }, [actions, buildSavePayload, getValues]);
+  }, [actions, buildSavePayload, draft, isDraftReady]);
 
   const handleClose = useCallback(async () => {
     if (autosaveTimeoutRef.current != null) {
-      window.clearTimeout(autosaveTimeoutRef.current);
+      clearTimeout(autosaveTimeoutRef.current);
       autosaveTimeoutRef.current = null;
     }
 
@@ -185,20 +169,17 @@ export function useTaskEditForm() {
     actions.closeTaskEdit();
   }, [actions, flushAutosave]);
 
-  const selectedProject = activeProjects.find((project) => project.id === projectId) ?? null;
-  const dueDateLabel = dueDate
-    ? new Date(`${dueDate}T00:00:00`).toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long"
-      })
-    : "Без срока";
+  const selectedProject = getTaskEditSelectedProject(
+    activeProjects,
+    draft.projectId
+  );
+  const dueDateLabel = getTaskEditDueDateLabel(draft.dueDate);
 
   return {
     activeProjects,
-    clearErrors,
-    control,
+    description: draft.description,
     dueDateLabel,
-    errors,
+    dueDate: draft.dueDate,
     handleArchiveTask() {
       void actions.archiveTask(taskId);
     },
@@ -206,16 +187,34 @@ export function useTaskEditForm() {
     handleDeleteTask() {
       void actions.deleteTask(taskId);
     },
-    priority,
+    priority: draft.priority,
+    projectId: draft.projectId,
     selectedProject,
+    setDescription(nextDescription: string) {
+      setDraft((current) => ({ ...current, description: nextDescription }));
+    },
+    setDueDate(nextDueDate: string) {
+      setDraft((current) => ({ ...current, dueDate: nextDueDate }));
+    },
     setPriority(nextPriority: TaskPriority) {
-      setValue("priority", nextPriority, { shouldDirty: true });
+      setDraft((current) => ({ ...current, priority: nextPriority }));
+    },
+    setProjectId(nextProjectId: string) {
+      setDraft((current) => ({ ...current, projectId: nextProjectId }));
     },
     setStatus(nextStatus: TaskStatus) {
-      setValue("status", nextStatus, { shouldDirty: true });
+      setDraft((current) => ({ ...current, status: nextStatus }));
+    },
+    setTitle(nextTitle: string) {
+      setDraft((current) => ({ ...current, title: nextTitle }));
+      if (titleError != null) {
+        setTitleError(null);
+      }
     },
     state,
-    status,
-    task
+    status: draft.status,
+    task,
+    title: draft.title,
+    titleError
   };
 }
