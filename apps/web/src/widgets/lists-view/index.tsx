@@ -1,11 +1,7 @@
 import { ProjectTaskReorderFeature } from "@/features/project-task-reorder";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { ProjectCard } from "@/shared/ui";
-import {
-  SectionTitle,
-  StateCard,
-  SurfaceCard
-} from "@/shared/ui/primitives";
+import { SectionTitle, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 export function ListsViewWidget() {
@@ -30,7 +26,8 @@ export function ListsViewWidget() {
                     project={section.project}
                     tasks={section.tasks}
                   />
-                  {section.tasks.length === 0 ? (
+                  {section.tasks.length === 0 &&
+                  derived.favoriteProjects.length === 0 ? (
                     <StateCard
                       description="Привяжите задачи к этому списку."
                       title="Пусто"
@@ -48,12 +45,10 @@ export function ListsViewWidget() {
         </SurfaceCard>
       ) : null}
       <SurfaceCard>
-        <SectionTitle
-          title="Все списки"
-        />
+        <SectionTitle title="Все списки" />
         {derived.regularProjects.length === 0 ? (
           <StateCard
-            description="Создайте первый список, затем перенесите в него выбранные задачи."
+            description="Создайте новый список."
             title="Пусто"
             variant="empty"
           />
