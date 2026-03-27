@@ -220,6 +220,11 @@
   min-width: 220px;
 }
 
+.select {
+  border: none;
+  background-color: transparent;
+}
+
 .content {
   display: grid;
   gap: var(--mf-space-lg);

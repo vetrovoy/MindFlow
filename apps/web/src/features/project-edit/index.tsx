@@ -1,4 +1,4 @@
-import { MetaText, Modal, StatusPill, IconButton } from "@/shared/ui";
+import { MetaText, Modal, IconButton } from "@/shared/ui";
 import { useProjectEditForm } from "./model/use-project-edit-form";
 import { formatProjectDeadlineLabel } from "./model/project-edit.view";
 import { ProjectEditMain } from "./ui/project-edit-main";
@@ -46,7 +46,6 @@ export function ProjectEditFeature() {
         <div className={styles.headerBar}>
           <div className={styles.headerMeta}>
             <MetaText>Редактировать список</MetaText>
-            {isFavorite ? <StatusPill label="Избранное" variant="today" /> : null}
           </div>
           <IconButton
             ariaLabel="Закрыть редактирование списка"

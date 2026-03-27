@@ -1,9 +1,4 @@
-import {
-  IconButton,
-  MetaText,
-  Modal,
-  StatusPill
-} from "@/shared/ui";
+import { IconButton, MetaText, Modal } from "@/shared/ui";
 import { useTaskEditForm } from "./model/use-task-edit-form";
 import { TaskEditMain } from "./ui/task-edit-main";
 import styles from "./index.module.css";
@@ -50,7 +45,6 @@ export function TaskEditFeature() {
         <div className={styles.headerBar}>
           <div className={styles.headerMeta}>
             <MetaText>Редактировать задачу</MetaText>
-            {status === "done" ? <StatusPill label="Готово" variant="today" /> : null}
           </div>
           <IconButton
             ariaLabel="Закрыть редактирование задачи"

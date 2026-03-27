@@ -104,7 +104,6 @@ export function ProjectEditMain({
       <div className={styles.toolbar}>
         <ProjectDockPopover iconName="palette" triggerLabel="Изменить маркер списка">
           <div className={styles.popoverBody}>
-            <MetaText className={styles.popoverLabel}>Маркер списка</MetaText>
             <ColorPickerField
               ariaLabelledBy="project-edit-color-label"
               id="project-edit-color"
@@ -120,7 +119,6 @@ export function ProjectEditMain({
 
         <ProjectDockPopover iconName="today" triggerLabel="Изменить дедлайн">
           <div className={styles.popoverBody}>
-            <MetaText className={styles.popoverLabel}>Дедлайн</MetaText>
             <DatePickerField
               ariaLabelledBy="project-edit-deadline-label"
               id="project-edit-deadline"

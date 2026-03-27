@@ -43,18 +43,12 @@ export function TodayViewWidget() {
           />
         ) : (
           <div className={styles.sections}>
-            <CollapsibleSection
-              count={overdueTasks.length}
-              defaultOpen
-              title="Просрочено"
-            >
-              {overdueTasks.length === 0 ? (
-                <StateCard
-                  description="Просроченных задач нет."
-                  title="Пусто"
-                  variant="empty"
-                />
-              ) : (
+            {overdueTasks.length > 0 && (
+              <CollapsibleSection
+                count={overdueTasks.length}
+                defaultOpen
+                title="Просрочено"
+              >
                 <TaskListEntity
                   badgeByTaskId={badgeByTaskId}
                   onOpenTask={actions.openTaskEdit}
@@ -63,30 +57,51 @@ export function TodayViewWidget() {
                   }}
                   tasks={overdueTasks}
                 />
-              )}
-            </CollapsibleSection>
-            <CollapsibleSection
-              count={todayTasks.length}
-              defaultOpen
-              title="Сегодня"
-            >
-              {todayTasks.length === 0 ? (
-                <StateCard
-                  description="На сегодня сейчас нет задач. Важные входящие и задачи на сегодня появятся здесь автоматически."
-                  title="Сегодня свободно"
-                  variant="empty"
-                />
-              ) : (
-                <TaskListEntity
-                  badgeByTaskId={badgeByTaskId}
-                  onOpenTask={actions.openTaskEdit}
-                  onToggleDone={(taskId) => {
-                    void actions.toggleTask(taskId);
-                  }}
-                  tasks={todayTasks}
-                />
-              )}
-            </CollapsibleSection>
+              </CollapsibleSection>
+            )}
+            {overdueTasks.length > 0 ? (
+              <CollapsibleSection
+                count={todayTasks.length}
+                defaultOpen
+                title="Сегодня"
+              >
+                {todayTasks.length === 0 ? (
+                  <StateCard
+                    description="На сегодня сейчас нет задач. Важные входящие и задачи на сегодня появятся здесь автоматически."
+                    title="Сегодня свободно"
+                    variant="empty"
+                  />
+                ) : (
+                  <TaskListEntity
+                    badgeByTaskId={badgeByTaskId}
+                    onOpenTask={actions.openTaskEdit}
+                    onToggleDone={(taskId) => {
+                      void actions.toggleTask(taskId);
+                    }}
+                    tasks={todayTasks}
+                  />
+                )}
+              </CollapsibleSection>
+            ) : (
+              <>
+                {todayTasks.length === 0 ? (
+                  <StateCard
+                    description="На сегодня сейчас нет задач. Важные входящие и задачи на сегодня появятся здесь автоматически."
+                    title="Сегодня свободно"
+                    variant="empty"
+                  />
+                ) : (
+                  <TaskListEntity
+                    badgeByTaskId={badgeByTaskId}
+                    onOpenTask={actions.openTaskEdit}
+                    onToggleDone={(taskId) => {
+                      void actions.toggleTask(taskId);
+                    }}
+                    tasks={todayTasks}
+                  />
+                )}
+              </>
+            )}
           </div>
         )}
       </div>

@@ -14,7 +14,7 @@ import { cn } from "@/shared/lib/cn";
 import {
   INBOX_SELECT_VALUE,
   PRIORITY_OPTIONS,
-  STATUS_OPTIONS,
+  STATUS_OPTIONS
 } from "../model/task-edit.constants";
 import {
   getTaskDueDateChipToneClass,
@@ -123,14 +123,11 @@ export function TaskEditMain({
       />
 
       <div className={styles.toolbar}>
-        <TaskDockPopover
-          iconName="nav-lists"
-          triggerLabel="Изменить список"
-        >
+        <TaskDockPopover iconName="nav-lists" triggerLabel="Изменить список">
           <div className={styles.popoverBody}>
-            <MetaText className={styles.popoverLabel}>Список</MetaText>
             <SelectField
               ariaLabelledBy="task-edit-project-label"
+              className={styles.select}
               contentClassName={styles.selectContent}
               id="task-edit-project"
               onValueChange={onProjectChange}
@@ -149,12 +146,11 @@ export function TaskEditMain({
 
         <TaskDockPopover iconName="today" triggerLabel="Изменить срок">
           <div className={styles.popoverBody}>
-            <MetaText className={styles.popoverLabel}>Срок</MetaText>
             <DatePickerField
               ariaLabelledBy="task-edit-due-date-label"
               id="task-edit-due-date"
               onChange={onDueDateChange}
-              placeholder="Выберите срок"
+              placeholder="Выберите дату"
               value={dueDate}
             />
           </div>
@@ -165,7 +161,6 @@ export function TaskEditMain({
           triggerLabel={`Приоритет: ${priorityLabel}`}
         >
           <div className={styles.popoverBody}>
-            <MetaText className={styles.popoverLabel}>Приоритет</MetaText>
             <RadioCardGroup
               ariaLabel="Приоритет задачи"
               className={styles.compactRadioGroup}
@@ -181,7 +176,6 @@ export function TaskEditMain({
           triggerLabel={`Статус: ${statusLabel}`}
         >
           <div className={styles.popoverBody}>
-            <MetaText className={styles.popoverLabel}>Статус</MetaText>
             <RadioCardGroup
               ariaLabel="Статус задачи"
               className={styles.compactRadioGroup}
@@ -221,7 +215,7 @@ export function TaskEditMain({
               trigger={
                 <IconButton
                   ariaLabel="Удалить задачу"
-                  className={cn(styles.menuAction, styles.deleteButton)}
+                  className={cn(styles.menuAction)}
                   icon="trash"
                   variant="secondary"
                 />

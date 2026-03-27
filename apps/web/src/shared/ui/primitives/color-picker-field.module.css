@@ -7,8 +7,8 @@
   gap: var(--mf-space-lg);
   padding: var(--mf-space-lg) var(--mf-space-xl);
   border-radius: var(--mf-radius-xl);
-  border: 1px solid var(--mf-color-border-strong);
-  background: var(--mf-color-surface-elevated);
+  border: none;
+  background: transparent;
   color: var(--mf-color-text-primary);
   cursor: pointer;
   transition:
