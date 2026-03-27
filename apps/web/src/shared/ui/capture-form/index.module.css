@@ -88,17 +88,7 @@
 }
 
 @media (max-width: 639px) {
-  .inputShell {
-    align-items: stretch;
-    flex-direction: column;
-    padding: var(--mf-space-lg);
-  }
-
   .dateValue {
     white-space: normal;
-  }
-
-  .submitButton {
-    width: 100% !important;
   }
 }
