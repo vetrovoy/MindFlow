@@ -28,6 +28,7 @@ export function ProjectTaskReorderFeature({
   tasks
 }: ProjectTaskReorderFeatureProps) {
   const { actions } = useMindFlowApp();
+  const sortableTasksCount = tasks.filter((task) => task.status !== "done").length;
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, {
@@ -76,7 +77,7 @@ export function ProjectTaskReorderFeature({
             {tasks.map((task) => (
               <TaskRowSortable
                 key={task.id}
-                showDragIcon={tasks.length !== 1}
+                showDragIcon={sortableTasksCount > 1}
                 onOpenTask={actions.openTaskEdit}
                 onToggleDone={actions.toggleTask}
                 task={task}

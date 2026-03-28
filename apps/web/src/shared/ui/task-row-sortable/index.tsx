@@ -19,6 +19,7 @@ export function TaskRowSortable({
   showDragIcon = true
 }: TaskRowSortableProps) {
   const copy = useCopy();
+  const isDone = task.status === "done";
   const {
     attributes,
     isDragging,
@@ -27,7 +28,8 @@ export function TaskRowSortable({
     transform,
     transition
   } = useSortable({
-    id: task.id
+    id: task.id,
+    disabled: isDone
   });
 
   return (
@@ -45,7 +47,7 @@ export function TaskRowSortable({
         onToggleDone={onToggleDone}
         task={task}
         trailingSlot={
-          showDragIcon && (
+          showDragIcon && !isDone && (
             <button
               {...attributes}
               {...listeners}
