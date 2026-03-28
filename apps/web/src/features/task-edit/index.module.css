@@ -147,47 +147,6 @@
     inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
 }
 
-.actionIcon {
-  width: 46px;
-  height: 46px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-color: transparent;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 90%, black);
-  box-shadow: none;
-  cursor: pointer;
-  outline: none;
-}
-
-.actionIcon:hover,
-.actionIcon:focus-visible {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 26%, transparent),
-    0 0 0 5px color-mix(in srgb, var(--mf-color-accent-lime) 10%, transparent);
-}
-
-.actionPopover {
-  z-index: 40;
-  width: min(220px, calc(100vw - 32px));
-  padding: var(--mf-space-lg);
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--mf-color-accent-lime) 8%, transparent), transparent 42%),
-    color-mix(in srgb, var(--mf-color-surface-elevated) 94%, black);
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.44),
-    inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
-}
-
-.actionPopoverArrow {
-  fill: color-mix(in srgb, var(--mf-color-surface-elevated) 94%, black);
-}
-
 .popoverBody {
   display: grid;
   gap: var(--mf-space-md);
@@ -253,10 +212,6 @@
   .toolbar {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     width: 100%;
-  }
-
-  .actionPopover {
-    width: min(260px, calc(100vw - 24px));
   }
 
   .titleField {

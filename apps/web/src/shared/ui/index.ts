@@ -10,3 +10,4 @@ export * from "./capture-form";
 export * from "./editor-sheet";
 export * from "./confirm-dialog";
 export * from "./collapsible-section";
+export * from "./dock-popover";
