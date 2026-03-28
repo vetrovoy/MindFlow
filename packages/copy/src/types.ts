@@ -38,8 +38,8 @@ export interface CopyDictionary {
     subtitle: string;
     addTaskAriaLabel: string;
     addProjectAriaLabel: string;
+    activeStat: string;
     inboxStat: string;
-    listsStat: string;
     hydrationTitle: string;
     hydrationDescription: string;
   };

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   Navigate,
   NavLink,
@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import { useCopy } from "@/app/providers/language-provider";
+import { AppStats } from "@/app/ui/app-stats";
 import { LanguageToggle } from "@/app/ui/language-toggle";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
@@ -21,7 +22,7 @@ import { TodayPage } from "@/pages/today";
 import { SystemStatusWidget } from "@/widgets/system-status";
 import { BottomNavWidget } from "@/widgets/bottom-nav";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
-import { Display, MetaText, SupportText } from "@/shared/ui";
+import { Display, SupportText } from "@/shared/ui";
 import { IconButton, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import styles from "@/app/App.module.css";
 import { ProjectCreateFeature } from "@/features/project-create";
@@ -35,21 +36,7 @@ function AppShell() {
   const [isProjectCreateOpen, setIsProjectCreateOpen] = useState(false);
 
   const copy = useCopy();
-  const { derived, state } = useMindFlowApp();
-  const tasksInListsCount = useMemo(
-    () =>
-      derived.projectSections.reduce(
-        (total, section) =>
-          total + section.tasks.filter((task) => task.status !== "done").length,
-        0
-      ),
-    [derived.projectSections]
-  );
-
-  const tasksInInboxCount = useMemo(
-    () => derived.inboxTasks.filter((task) => task.status !== "done").length,
-    [derived.inboxTasks]
-  );
+  const { state } = useMindFlowApp();
 
   return (
     <div className={styles.shell}>
@@ -84,20 +71,7 @@ function AppShell() {
                 />
               </div>
             </div>
-            <div className={styles.stats}>
-              <section className={styles.statCard}>
-                <MetaText className={styles.statLabel}>{copy.app.inboxStat}</MetaText>
-                <Display as="strong" className={styles.statValue}>
-                  {tasksInInboxCount}
-                </Display>
-              </section>
-              <section className={styles.statCard}>
-                <MetaText className={styles.statLabel}>{copy.app.listsStat}</MetaText>
-                <Display as="strong" className={styles.statValueAccent}>
-                  {tasksInListsCount}
-                </Display>
-              </section>
-            </div>
+            <AppStats />
             <nav aria-label={copy.navigation.sectionAriaLabel} className={styles.topTabs}>
               <NavLink
                 className={({ isActive }) =>

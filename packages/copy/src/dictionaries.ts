@@ -51,8 +51,8 @@ const ru: CopyDictionary = {
     subtitle: "Сфокусируемся на главном сегодня",
     addTaskAriaLabel: "Открыть создание задачи",
     addProjectAriaLabel: "Открыть создание списка",
-    inboxStat: "Входящие",
-    listsStat: "В списках",
+    activeStat: "В работе",
+    inboxStat: "Во входящих",
     hydrationTitle: "Загружаем локальное пространство",
     hydrationDescription:
       "Поднимаем локальное хранилище и готовим офлайн-рабочее пространство."
@@ -232,8 +232,8 @@ const en: CopyDictionary = {
     subtitle: "Let’s focus on what matters today",
     addTaskAriaLabel: "Open task creation",
     addProjectAriaLabel: "Open list creation",
-    inboxStat: "Inbox",
-    listsStat: "In lists",
+    activeStat: "Active",
+    inboxStat: "In inbox",
     hydrationTitle: "Loading local workspace",
     hydrationDescription:
       "Starting local storage and preparing the offline workspace."
