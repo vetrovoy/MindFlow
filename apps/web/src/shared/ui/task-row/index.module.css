@@ -70,6 +70,7 @@
   min-height: 40px;
   display: grid;
   align-content: center;
+  overflow: hidden;
 }
 
 .contentButton {
@@ -95,11 +96,16 @@
 .title {
   position: relative;
   z-index: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
   color: var(--mf-color-text-primary);
   font-family: var(--mf-font-body);
   font-size: var(--mf-font-size-task);
   font-weight: 600;
   line-height: 1.25;
+  overflow-wrap: anywhere;
   pointer-events: none;
 }
 
@@ -117,6 +123,7 @@
   align-items: center;
   gap: var(--mf-space-md);
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .priorityBadge {

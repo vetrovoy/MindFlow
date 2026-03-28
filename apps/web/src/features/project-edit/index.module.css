@@ -48,6 +48,11 @@
 
 .titleField {
   min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 1lh;
+  resize: none;
+  overflow: hidden;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -58,6 +63,8 @@
   font-weight: 500;
   line-height: 0.96;
   letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .titleField::placeholder {
@@ -90,7 +97,9 @@
   color: var(--mf-color-text-secondary);
   font-size: 11px;
   letter-spacing: 0.02em;
-  white-space: nowrap;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .metaChipColor {

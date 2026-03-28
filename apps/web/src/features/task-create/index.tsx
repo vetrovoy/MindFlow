@@ -14,7 +14,7 @@ import {
   Modal,
   RadioCardGroup,
   SelectField,
-  TextField
+  TextAreaField
 } from "@/shared/ui";
 import {
   INBOX_SELECT_VALUE,
@@ -145,7 +145,7 @@ export function TaskCreateFeature({
         </div>
 
         <div className={styles.hero}>
-          <TextField
+          <TextAreaField
             autoFocus
             className={styles.titleField}
             id="task-create-title"
@@ -162,6 +162,7 @@ export function TaskCreateFeature({
               }
             }}
             placeholder={copy.task.titlePlaceholder}
+            rows={1}
             value={title}
           />
           {titleError == null ? null : (

@@ -8,7 +8,7 @@ import {
   DockIconButton,
   IconButton,
   MetaText,
-  TextField
+  TextAreaField
 } from "@/shared/ui";
 import { getProjectColorLabel } from "../model/project-edit.view";
 import { ProjectDockPopover } from "./project-dock-popover";
@@ -59,7 +59,7 @@ export function ProjectEditMain({
   return (
     <div className={styles.content}>
       <div className={styles.hero}>
-        <TextField
+        <TextAreaField
           autoFocus
           className={styles.titleField}
           id="project-edit-name"
@@ -67,6 +67,7 @@ export function ProjectEditMain({
             onNameChange(event.target.value);
           }}
           placeholder={copy.project.titlePlaceholder}
+          rows={2}
           value={name}
         />
         {nameError == null ? null : (

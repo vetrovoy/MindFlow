@@ -31,6 +31,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--mf-space-xl);
+  min-width: 0;
 }
 
 .identity {
@@ -54,12 +55,17 @@
 }
 
 .title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
   font-family: var(--mf-font-display);
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.03em;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .favoriteMark {
@@ -77,6 +83,9 @@
   color: var(--mf-color-text-secondary);
   text-align: right;
   white-space: nowrap;
+  max-width: 136px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .subtitle {

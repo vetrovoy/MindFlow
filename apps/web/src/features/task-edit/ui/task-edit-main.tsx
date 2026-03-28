@@ -10,7 +10,6 @@ import {
   RadioCardGroup,
   SelectField,
   TextAreaField,
-  TextField
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
 import { INBOX_SELECT_VALUE } from "../model/task-edit.constants";
@@ -80,7 +79,7 @@ export function TaskEditMain({
     <div className={styles.mainColumn}>
       <div className={styles.hero}>
         <div className={styles.titleRow}>
-          <TextField
+          <TextAreaField
             autoFocus
             className={styles.titleField}
             id="task-edit-title"
@@ -88,6 +87,7 @@ export function TaskEditMain({
               onTitleChange(event.target.value);
             }}
             placeholder={copy.task.titlePlaceholder}
+            rows={2}
             value={title}
           />
           {titleError == null ? null : (

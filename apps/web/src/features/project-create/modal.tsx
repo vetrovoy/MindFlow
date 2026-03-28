@@ -13,7 +13,7 @@ import {
   IconButton,
   MetaText,
   Modal,
-  TextField
+  TextAreaField
 } from "@/shared/ui";
 import styles from "./index.module.css";
 import { getProjectColorLabel } from "@/features/project-edit/model/project-edit.view";
@@ -96,7 +96,7 @@ export function ProjectCreateModalFeature({
         </div>
 
         <div className={styles.hero}>
-          <TextField
+          <TextAreaField
             autoFocus
             className={styles.titleField}
             id="project-create-name"
@@ -113,6 +113,7 @@ export function ProjectCreateModalFeature({
               }
             }}
             placeholder={copy.project.titlePlaceholder}
+            rows={1}
             value={name}
           />
           {nameError == null ? null : (
