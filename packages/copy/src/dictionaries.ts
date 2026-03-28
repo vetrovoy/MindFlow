@@ -65,8 +65,8 @@ const ru: CopyDictionary = {
     createProjectTitle: "Создать список",
     createProjectDescription: "Создайте список и планируйте задачи.",
     projectPlaceholder: "Создайте новый список проекта...",
-    dueDateLabel: "Срок",
-    deadlineLabel: "Дедлайн"
+    dueDateLabel: "",
+    deadlineLabel: ""
   },
   inbox: {
     title: "Входящие",

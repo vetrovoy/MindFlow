@@ -8,7 +8,6 @@ export function ProjectCreateFeature() {
 
   return (
     <CaptureForm
-      dateLabel={copy.quickCapture.deadlineLabel}
       disabled={state.isSaving}
       onSubmitValue={({ date, value }) =>
         actions.createProject({

@@ -15,7 +15,6 @@ interface CaptureFormProps {
   placeholder: string;
   submitLabel?: string;
   disabled?: boolean;
-  dateLabel?: string;
   onSubmitValue: (input: {
     value: string;
     date: string | null;
@@ -33,7 +32,6 @@ interface CaptureFormValues {
 
 export function CaptureForm({
   afterSubmit,
-  dateLabel,
   description,
   disabled = false,
   leadingIcon,
@@ -54,7 +52,8 @@ export function CaptureForm({
       }
     });
   const value = watch("value") ?? "";
-  const date = preferredDate ?? (watch("date") ?? "");
+  const date = preferredDate ?? watch("date") ?? "";
+  const isWrappedLayout = value.trim().length > 48;
 
   const resolvedSubmitLabel = submitLabel ?? copy.common.save;
 
@@ -82,7 +81,9 @@ export function CaptureForm({
         {description == null ? null : (
           <Body className={styles.description}>{description}</Body>
         )}
-        <div className={styles.inputShell}>
+        <div
+          className={`${styles.inputShell} ${isWrappedLayout ? styles.inputShellWrapped : ""}`}
+        >
           <label className={styles.inputWrap}>
             <span className={styles.inputLead}>
               {leadingIcon ?? <Icon name="add" size={14} tone="muted" />}
@@ -94,14 +95,15 @@ export function CaptureForm({
             />
           </label>
           {date ? (
-            <span className={styles.dateValue}>
-              <Icon name="today" size={14} tone="lime" />
-              {dateLabel ?? copy.common.chooseDate}: {formatDisplayDate(date, language)}
+            <span
+              className={`${styles.dateValue} ${isWrappedLayout ? styles.secondaryControl : ""}`}
+            >
+              {formatDisplayDate(date, language)}
             </span>
           ) : null}
           {showDatePicker && (
             <DatePickerField
-              className={styles.dateTrigger}
+              className={`${styles.dateTrigger} ${isWrappedLayout ? styles.secondaryControl : ""}`}
               disabled={disabled}
               onChange={(nextValue) => {
                 setValue("date", nextValue, {
@@ -115,7 +117,7 @@ export function CaptureForm({
             />
           )}
           <ActionButton
-            className={styles.submitButton}
+            className={`${styles.submitButton} ${isWrappedLayout ? styles.secondaryControl : ""}`}
             disabled={!value.trim() || disabled}
             type="submit"
           >

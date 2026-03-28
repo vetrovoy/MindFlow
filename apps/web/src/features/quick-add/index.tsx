@@ -37,7 +37,6 @@ export function QuickAddFeature({
 
   return (
     <CaptureForm
-      dateLabel={copy.quickCapture.dueDateLabel}
       disabled={state.isSaving}
       description={description}
       onSubmitValue={({ date, value }) => {
