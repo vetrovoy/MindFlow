@@ -309,6 +309,10 @@
 }
 
 @media (max-width: 639px) {
+  .field {
+    font-size: 16px;
+  }
+
   .radioCardGroup {
     grid-template-columns: 1fr;
   }

@@ -211,3 +211,9 @@
   opacity: 0.35;
   cursor: not-allowed;
 }
+
+@media (max-width: 639px) {
+  .trigger {
+    font-size: 16px;
+  }
+}

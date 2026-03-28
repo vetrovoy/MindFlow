@@ -190,6 +190,10 @@
 }
 
 @media (max-width: 639px) {
+  .triggerLabel {
+    font-size: 16px;
+  }
+
   .content {
     width: min(300px, calc(100vw - 24px));
     padding: var(--mf-space-xl);
