@@ -8,6 +8,7 @@ import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   ActionButton,
   DatePickerField,
+  DockIconButton,
   IconButton,
   MetaText,
   Modal,
@@ -94,11 +95,6 @@ export function TaskCreateFeature({
     { value: "medium", label: copy.priority.medium },
     { value: "high", label: copy.priority.high }
   ];
-  const statusOptions: Array<{ value: TaskStatus; label: string }> = [
-    { value: "todo", label: copy.status.todo },
-    { value: "done", label: copy.status.done }
-  ];
-
   async function handleCreate() {
     const normalizedTitle = title.trim();
 
@@ -239,23 +235,15 @@ export function TaskCreateFeature({
             </div>
           </TaskDockPopover>
 
-          <TaskDockPopover
+          <DockIconButton
             active={status !== "todo"}
+            aria-label={`${copy.task.statusAriaLabel}: ${statusLabel}`}
             iconName={getTaskStatusIconName(status)}
-            triggerLabel={`${copy.task.statusAriaLabel}: ${statusLabel}`}
-          >
-            <div className={styles.popoverBody}>
-              <RadioCardGroup
-                ariaLabel={copy.task.statusAriaLabel}
-                className={styles.compactRadioGroup}
-                onValueChange={(value) => {
-                  setStatus(value as TaskStatus);
-                }}
-                options={statusOptions}
-                value={status}
-              />
-            </div>
-          </TaskDockPopover>
+            onClick={() => {
+              setStatus((current) => (current === "todo" ? "done" : "todo"));
+            }}
+            title={`${copy.task.statusAriaLabel}: ${statusLabel}`}
+          />
 
           <ActionButton
             className={styles.saveButton}

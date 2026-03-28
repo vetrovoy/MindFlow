@@ -4,6 +4,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import {
   ConfirmDialog,
   DatePickerField,
+  DockIconButton,
   IconButton,
   MetaText,
   RadioCardGroup,
@@ -75,11 +76,6 @@ export function TaskEditMain({
     { value: "medium", label: copy.priority.medium },
     { value: "high", label: copy.priority.high }
   ];
-  const statusOptions: Array<{ value: TaskStatus; label: string }> = [
-    { value: "todo", label: copy.status.todo },
-    { value: "done", label: copy.status.done }
-  ];
-
   return (
     <div className={styles.mainColumn}>
       <div className={styles.hero}>
@@ -187,21 +183,15 @@ export function TaskEditMain({
           </div>
         </TaskDockPopover>
 
-        <TaskDockPopover
+        <DockIconButton
           active={status !== "todo"}
+          aria-label={`${copy.task.statusAriaLabel}: ${statusLabel}`}
           iconName={getTaskStatusIconName(status)}
-          triggerLabel={`${copy.task.statusAriaLabel}: ${statusLabel}`}
-        >
-          <div className={styles.popoverBody}>
-            <RadioCardGroup
-              ariaLabel={copy.task.statusAriaLabel}
-              className={styles.compactRadioGroup}
-              onValueChange={onStatusChange}
-              options={statusOptions}
-              value={status}
-            />
-          </div>
-        </TaskDockPopover>
+          onClick={() => {
+            onStatusChange(status === "todo" ? "done" : "todo");
+          }}
+          title={`${copy.task.statusAriaLabel}: ${statusLabel}`}
+        />
 
         <TaskDockPopover iconName="more" triggerLabel={copy.task.moreActionsTrigger}>
           <div className={styles.menuBody}>
