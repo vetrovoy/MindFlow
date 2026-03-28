@@ -3,6 +3,7 @@
   bottom: 0;
   padding: 0 var(--mf-space-4xl) var(--mf-space-4xl);
   pointer-events: none;
+  z-index: 10;
 }
 
 .pill {
