@@ -80,7 +80,7 @@ export function InboxViewWidget() {
               {completedInboxTasks.length > 0 ? (
                 <CollapsibleSection
                   count={completedInboxTasks.length}
-                  defaultOpen={false}
+                  defaultOpen={activeInboxTasks.length === 0}
                   title={copy.inbox.completedTitle}
                 >
                   <TaskListEntity
