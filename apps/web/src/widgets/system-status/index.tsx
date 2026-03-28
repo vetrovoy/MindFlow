@@ -1,10 +1,12 @@
 import * as Toast from "@radix-ui/react-toast";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { Icon, MetaText, Title } from "@/shared/ui";
 import styles from "./index.module.css";
 
 export function SystemStatusWidget() {
+  const copy = useCopy();
   const { actions, state } = useMindFlowApp();
 
   if (!state.isSaving && state.error == null && state.toast == null) {
@@ -12,7 +14,7 @@ export function SystemStatusWidget() {
   }
 
   return (
-    <Toast.Provider label="Системные уведомления">
+    <Toast.Provider label={copy.systemStatus.notificationsLabel}>
       <Toast.Root
         className={styles.card}
         duration={Number.POSITIVE_INFINITY}
@@ -23,13 +25,13 @@ export function SystemStatusWidget() {
           <div className={styles.content}>
             <Toast.Title asChild>
               <Title as="strong" className={styles.text}>
-                Сохранение...
+                {copy.common.loadingTitle}
               </Title>
             </Toast.Title>
           </div>
         </div>
         <Toast.Description asChild>
-          <MetaText className={styles.meta}>ЗАГРУЗКА</MetaText>
+          <MetaText className={styles.meta}>{copy.common.loadingMeta}</MetaText>
         </Toast.Description>
       </Toast.Root>
 
@@ -58,7 +60,7 @@ export function SystemStatusWidget() {
             ) : null}
           </div>
         </div>
-        <MetaText className={styles.metaSuccess}>УСПЕХ</MetaText>
+        <MetaText className={styles.metaSuccess}>{copy.common.successMeta}</MetaText>
       </Toast.Root>
 
       <Toast.Root
@@ -76,7 +78,7 @@ export function SystemStatusWidget() {
           <div className={styles.content}>
             <Toast.Title asChild>
               <Title as="strong" className={styles.text}>
-                Ошибка сохранения
+                {copy.systemStatus.saveErrorTitle}
               </Title>
             </Toast.Title>
             {state.error == null ? null : (
@@ -86,7 +88,7 @@ export function SystemStatusWidget() {
             )}
           </div>
         </div>
-        <MetaText className={styles.metaError}>ОШИБКА</MetaText>
+        <MetaText className={styles.metaError}>{copy.common.errorMeta}</MetaText>
       </Toast.Root>
 
       <Toast.Viewport className={styles.viewport} />

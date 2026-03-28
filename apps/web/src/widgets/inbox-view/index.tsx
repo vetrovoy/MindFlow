@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { TaskListEntity } from "@/entities/task-list";
 import { getTodayDateKey } from "@/shared/lib/date";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
@@ -12,6 +13,7 @@ import {
 import styles from "./index.module.css";
 
 export function InboxViewWidget() {
+  const copy = useCopy();
   const { actions, derived } = useMindFlowApp();
   const todayDateKey = getTodayDateKey();
   const todayAndOverdueTasks = useMemo(
@@ -55,20 +57,20 @@ export function InboxViewWidget() {
   return (
     <div className={styles.root}>
       <SurfaceCard>
-        <SectionTitle title="Входящие" />
+        <SectionTitle title={copy.inbox.title} />
         <div className={styles.content}>
           {derived.inboxTasks.length === 0 ? (
             <StateCard
-              description="Добавьте задачу через быстрое поле, и она появится здесь."
-              title="Пусто"
+              description={copy.inbox.emptyDescription}
+              title={copy.common.empty}
               variant="empty"
             />
           ) : (
             <div className={styles.sections}>
               {activeInboxTasks.length === 0 ? (
                 <StateCard
-                  description="Добавьте задачу через быстрое поле, и она появится здесь."
-                  title="Пусто"
+                  description={copy.inbox.emptyDescription}
+                  title={copy.common.empty}
                   variant="empty"
                 />
               ) : (
@@ -84,12 +86,12 @@ export function InboxViewWidget() {
               <CollapsibleSection
                 count={completedInboxTasks.length}
                 defaultOpen={false}
-                title="Выполненные"
+                title={copy.inbox.completedTitle}
               >
                 {completedInboxTasks.length === 0 ? (
                   <StateCard
-                    description="Завершите задачу и она появится здесь."
-                    title="Пусто"
+                    description={copy.inbox.completedEmptyDescription}
+                    title={copy.common.empty}
                     variant="empty"
                   />
                 ) : (

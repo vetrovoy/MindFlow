@@ -1,3 +1,4 @@
+import { useCopy } from "@/app/providers/language-provider";
 import { useEffect, type ReactNode } from "react";
 
 import { cn } from "@/shared/lib/cn";
@@ -78,6 +79,8 @@ export function ModalHeader({
   onClose,
   title
 }: ModalHeaderProps) {
+  const copy = useCopy();
+
   return (
     <header className={styles.header}>
       <div className={styles.headerCopy}>
@@ -88,7 +91,7 @@ export function ModalHeader({
       <div className={styles.headerActions}>
         {actions}
         <button
-          aria-label="Закрыть модальное окно"
+          aria-label={copy.common.close}
           className={styles.closeButton}
           onClick={onClose}
           type="button"

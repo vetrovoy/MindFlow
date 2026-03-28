@@ -1,6 +1,10 @@
 import { type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 
+import { formatDisplayDate } from "@mindflow/copy";
+
+import { useLanguage } from "@/app/providers/language-provider";
+import { useCopy } from "@/app/providers/language-provider";
 import { Body, Heading, Icon } from "..";
 import { ActionButton, DatePickerField } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
@@ -36,10 +40,12 @@ export function CaptureForm({
   onSubmitValue,
   placeholder,
   preferredDate = null,
-  submitLabel = "Создать",
+  submitLabel,
   title,
   showDatePicker = true
 }: CaptureFormProps) {
+  const copy = useCopy();
+  const { language } = useLanguage();
   const { handleSubmit, register, reset, setValue, watch } =
     useForm<CaptureFormValues>({
       defaultValues: {
@@ -49,6 +55,8 @@ export function CaptureForm({
     });
   const value = watch("value") ?? "";
   const date = preferredDate ?? (watch("date") ?? "");
+
+  const resolvedSubmitLabel = submitLabel ?? copy.common.save;
 
   return (
     <form
@@ -88,7 +96,7 @@ export function CaptureForm({
           {date ? (
             <span className={styles.dateValue}>
               <Icon name="today" size={14} tone="lime" />
-              {dateLabel ?? "Дата"}: {date}
+              {dateLabel ?? copy.common.chooseDate}: {formatDisplayDate(date, language)}
             </span>
           ) : null}
           {showDatePicker && (
@@ -101,7 +109,7 @@ export function CaptureForm({
                   shouldTouch: true
                 });
               }}
-              placeholder="Выберите дату"
+              placeholder={copy.common.chooseDate}
               triggerVariant="icon"
               value={date}
             />
@@ -111,7 +119,7 @@ export function CaptureForm({
             disabled={!value.trim() || disabled}
             type="submit"
           >
-            {submitLabel}
+            {resolvedSubmitLabel}
           </ActionButton>
         </div>
       </div>

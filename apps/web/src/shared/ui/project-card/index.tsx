@@ -1,3 +1,4 @@
+import { useCopy } from "@/app/providers/language-provider";
 import { Icon } from "@/shared/ui/icons";
 import type { Project, Task } from "@mindflow/domain";
 
@@ -22,9 +23,9 @@ export function ProjectCard({
   project,
   tasks
 }: ProjectCardProps) {
+  const copy = useCopy();
   const total = progress.total || tasks.length || 0;
-  const progressLabel =
-    total === 0 ? "Пустой список" : `${progress.done} из ${total} выполнено`;
+  const progressLabel = copy.project.progressLabel(progress.done, total);
 
   return (
     <button

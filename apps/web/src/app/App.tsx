@@ -8,6 +8,9 @@ import {
   useLocation
 } from "react-router-dom";
 
+import { SUPPORTED_LANGUAGES } from "@mindflow/copy";
+
+import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
 import { QuickAddFeature } from "@/features/quick-add";
@@ -32,6 +35,8 @@ function AppShell() {
   const [isTaskCreateOpen, setIsTaskCreateOpen] = useState(false);
   const [isProjectCreateOpen, setIsProjectCreateOpen] = useState(false);
 
+  const copy = useCopy();
+  const { language, setLanguage } = useLanguage();
   const { derived, state } = useMindFlowApp();
   const tasksInListsCount = useMemo(
     () =>
@@ -56,15 +61,38 @@ function AppShell() {
             <div className={styles.heroTop}>
               <div>
                 <Display as="h1" className={styles.title}>
-                  Привет, Андрей
+                  {copy.app.greeting}
                 </Display>
                 <SupportText className={styles.subtitle}>
-                  Сфокусируемся на главном сегодня
+                  {copy.app.subtitle}
                 </SupportText>
               </div>
-              <div>
+              <div className={styles.headerActions}>
+                <div
+                  aria-label={copy.language.label}
+                  className={styles.languageToggle}
+                  role="group"
+                >
+                  {SUPPORTED_LANGUAGES.map((item) => (
+                    <button
+                      className={cn(
+                        styles.languageButton,
+                        language === item && styles.languageButtonActive
+                      )}
+                      key={item}
+                      onClick={() => {
+                        setLanguage(item);
+                      }}
+                      type="button"
+                    >
+                      {item.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
                 <IconButton
-                  ariaLabel={"Открыть создание задачи"}
+                  ariaLabel={
+                    isLists ? copy.app.addProjectAriaLabel : copy.app.addTaskAriaLabel
+                  }
                   className={styles.addButton}
                   icon="add"
                   onClick={() => {
@@ -80,26 +108,26 @@ function AppShell() {
             </div>
             <div className={styles.stats}>
               <section className={styles.statCard}>
-                <MetaText className={styles.statLabel}>Входящие</MetaText>
+                <MetaText className={styles.statLabel}>{copy.app.inboxStat}</MetaText>
                 <Display as="strong" className={styles.statValue}>
                   {tasksInInboxCount}
                 </Display>
               </section>
               <section className={styles.statCard}>
-                <MetaText className={styles.statLabel}>В списках</MetaText>
+                <MetaText className={styles.statLabel}>{copy.app.listsStat}</MetaText>
                 <Display as="strong" className={styles.statValueAccent}>
                   {tasksInListsCount}
                 </Display>
               </section>
             </div>
-            <nav aria-label="Переключение разделов" className={styles.topTabs}>
+            <nav aria-label={copy.navigation.sectionAriaLabel} className={styles.topTabs}>
               <NavLink
                 className={({ isActive }) =>
                   cn(styles.topTab, isActive && styles.topTabActive)
                 }
                 to="/inbox"
               >
-                Входящие
+                {copy.navigation.inbox}
               </NavLink>
               <NavLink
                 className={({ isActive }) =>
@@ -107,7 +135,7 @@ function AppShell() {
                 }
                 to="/lists"
               >
-                Списки
+                {copy.navigation.lists}
               </NavLink>
               <NavLink
                 className={({ isActive }) =>
@@ -115,18 +143,18 @@ function AppShell() {
                 }
                 to="/today"
               >
-                Сегодня
+                {copy.navigation.today}
               </NavLink>
             </nav>
             {isToday || location.pathname === "/inbox" ? (
               <QuickAddFeature
                 description={
                   isToday
-                    ? "Добавляйте задачи на сегодня."
-                    : "Добавляйте задачи без приоритета в течение дня."
+                    ? copy.quickCapture.todayDescription
+                    : copy.quickCapture.inboxDescription
                 }
                 preferredDate={isToday ? new Date() : undefined}
-                title="Быстрый захват задач"
+                title={copy.quickCapture.title}
               />
             ) : null}
             {isLists ? <ProjectCreateFeature /> : null}
@@ -137,8 +165,8 @@ function AppShell() {
       <main className={`${styles.container} ${styles.main}`}>
         {!state.isHydrated ? (
           <StateCard
-            description="Поднимаем локальное хранилище и готовим офлайн-рабочее пространство."
-            title="Загружаем локальное пространство"
+            description={copy.app.hydrationDescription}
+            title={copy.app.hydrationTitle}
             variant="loading"
           />
         ) : (

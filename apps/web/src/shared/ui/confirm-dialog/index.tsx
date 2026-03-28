@@ -1,6 +1,7 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import type { ReactNode } from "react";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { IconButton } from "@/shared/ui/primitives";
 import { Body, Heading } from "@/shared/ui/typography";
@@ -27,6 +28,8 @@ export function ConfirmDialog({
   title,
   trigger
 }: ConfirmDialogProps) {
+  const copy = useCopy();
+
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
@@ -47,7 +50,7 @@ export function ConfirmDialog({
             <div className={styles.actions}>
               <AlertDialog.Cancel asChild>
                 <IconButton
-                  ariaLabel="Отменить подтверждение"
+                  ariaLabel={copy.editor.confirmCancelAriaLabel}
                   icon="close"
                   variant="secondary"
                 />

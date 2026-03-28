@@ -1,3 +1,4 @@
+import { getRuntimeCopy } from "@/shared/lib/language";
 import {
   buildTodayFeed,
   getProjectProgress,
@@ -84,7 +85,7 @@ export function formatError(error: unknown) {
     return error.message;
   }
 
-  return "Непредвиденная ошибка в локальных данных";
+  return getRuntimeCopy().common.unexpectedLocalDataError;
 }
 
 export async function readSnapshot(repository: RepositoryBundle) {

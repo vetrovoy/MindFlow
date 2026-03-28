@@ -1,5 +1,6 @@
 import * as Select from "@radix-ui/react-select";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
 import styles from "./select-field.module.css";
@@ -29,9 +30,12 @@ export function SelectField({
   id,
   onValueChange,
   options,
-  placeholder = "Выберите значение",
+  placeholder,
   value
 }: SelectFieldProps) {
+  const copy = useCopy();
+  const resolvedPlaceholder = placeholder ?? copy.common.chooseValue;
+
   return (
     <Select.Root disabled={disabled} onValueChange={onValueChange} value={value}>
       <Select.Trigger
@@ -39,7 +43,7 @@ export function SelectField({
         className={cn(styles.trigger, className)}
         id={id}
       >
-        <Select.Value placeholder={placeholder} />
+        <Select.Value placeholder={resolvedPlaceholder} />
         <Select.Icon asChild>
           <span className={styles.iconWrap}>
             <Icon name="chevron-down" size={16} tone="muted" />

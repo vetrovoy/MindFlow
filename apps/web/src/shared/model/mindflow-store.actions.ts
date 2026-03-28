@@ -17,6 +17,7 @@ import type { RepositoryBundle } from "@mindflow/data";
 
 import { getNowIso } from "@/shared/lib/date";
 import { createId } from "@/shared/lib/ids";
+import { getRuntimeCopy } from "@/shared/lib/language";
 import { getProjectDecoration, getProjectDecorationByColor } from "@/shared/lib/projects";
 import {
   getNextOrderIndex,
@@ -84,9 +85,10 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         setToast({
-          title: "Задача добавлена",
-          description: "Новая задача уже ждёт во Входящих."
+          title: copy.task.addedToastTitle,
+          description: copy.task.addedToastDescription
         });
       }
 
@@ -153,14 +155,15 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         if (closeOnSuccess) {
           patchState({ editingTaskId: null });
         }
 
         if (toastOnSuccess) {
           setToast({
-            title: "Задача обновлена",
-            description: "Изменения сохранены локально."
+            title: copy.task.updatedToastTitle,
+            description: copy.task.updatedToastDescription
           });
         }
       }
@@ -191,14 +194,15 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         if (closeOnSuccess) {
           patchState({ editingProjectId: null });
         }
 
         if (toastOnSuccess) {
           setToast({
-            title: "Список обновлён",
-            description: "Изменения списка сохранены локально."
+            title: copy.project.updatedToastTitle,
+            description: copy.project.updatedToastDescription
           });
         }
       }
@@ -217,10 +221,11 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         patchState({ editingTaskId: null });
         setToast({
-          title: "Задача архивирована",
-          description: "Она скрыта из активных экранов."
+          title: copy.task.archivedToastTitle,
+          description: copy.task.archivedToastDescription
         });
       }
     },
@@ -236,10 +241,11 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         patchState({ editingProjectId: null });
         setToast({
-          title: "Список архивирован",
-          description: "Он скрыт из активных экранов вместе со своими задачами."
+          title: copy.project.archivedToastTitle,
+          description: copy.project.archivedToastDescription
         });
       }
     },
@@ -255,10 +261,11 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         patchState({ editingTaskId: null });
         setToast({
-          title: "Задача удалена",
-          description: "Мы убрали её из локального плана."
+          title: copy.task.deletedToastTitle,
+          description: copy.task.deletedToastDescription
         });
       }
     },
@@ -320,13 +327,14 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         patchState({ selectedInboxTaskIds: [] });
         setToast({
-          title: "Задачи перенесены",
+          title: copy.messages.movedTasksTitle,
           description:
             nextProject == null
-              ? "Выбранные задачи перенесены в нужный список."
-              : "Новый список создан и сразу заполнен задачами."
+              ? copy.messages.movedTasksDescriptionExistingProject
+              : copy.messages.movedTasksDescriptionCreatedProject
         });
       }
 
@@ -348,10 +356,10 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         setToast({
-          title: "Порядок обновлён",
-          description:
-            "Ручная сортировка теперь отражает реальную последовательность работы."
+          title: copy.taskReorder.saved,
+          description: copy.taskReorder.description
         });
       }
 
@@ -383,9 +391,10 @@ export function createMindFlowActions({
       });
 
       if (saved) {
+        const copy = getRuntimeCopy();
         setToast({
-          title: "Список создан",
-          description: "Теперь в него можно переносить задачи из Входящих."
+          title: copy.project.createdToastTitle,
+          description: copy.project.createdToastDescription
         });
       }
 

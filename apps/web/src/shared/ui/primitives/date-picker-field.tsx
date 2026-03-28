@@ -1,8 +1,9 @@
 import * as Popover from "@radix-ui/react-popover";
 import { format, parseISO } from "date-fns";
-import { ru } from "date-fns/locale";
+import { getCopy, getDateFnsLocale } from "@mindflow/copy";
 import { DayPicker } from "react-day-picker";
 
+import { useLanguage } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
 import styles from "./date-picker-field.module.css";
@@ -18,12 +19,12 @@ export interface DatePickerFieldProps {
   onChange: (value: string) => void;
 }
 
-function formatDateLabel(value: string) {
+function formatDateLabel(value: string, language: ReturnType<typeof useLanguage>["language"]) {
   if (!value) {
-    return "Выберите дату";
+    return getCopy(language).common.chooseDate;
   }
 
-  return format(parseISO(value), "d MMMM yyyy", { locale: ru });
+  return format(parseISO(value), "d MMMM yyyy", { locale: getDateFnsLocale(language) });
 }
 
 export function DatePickerField({
@@ -32,10 +33,13 @@ export function DatePickerField({
   disabled = false,
   id,
   onChange,
-  placeholder = "Выберите дату",
+  placeholder,
   triggerVariant = "default",
   value
 }: DatePickerFieldProps) {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+  const resolvedPlaceholder = placeholder ?? copy.common.chooseDate;
   const selectedDate = value ? parseISO(value) : undefined;
   const isIconTrigger = triggerVariant === "icon";
 
@@ -44,7 +48,7 @@ export function DatePickerField({
       <Popover.Trigger asChild>
         <button
           aria-labelledby={ariaLabelledBy}
-          aria-label={isIconTrigger && !ariaLabelledBy ? "Выбрать дату" : undefined}
+          aria-label={isIconTrigger && !ariaLabelledBy ? copy.common.chooseDate : undefined}
           className={cn(
             styles.trigger,
             isIconTrigger && styles.triggerIcon,
@@ -60,7 +64,7 @@ export function DatePickerField({
             <>
               <span className={styles.triggerValue}>
                 <Icon name="today" size={16} tone={value ? "lime" : "muted"} />
-                {value ? formatDateLabel(value) : placeholder}
+                {value ? formatDateLabel(value, language) : resolvedPlaceholder}
               </span>
               <Icon name="chevron-down" size={16} tone="muted" />
             </>
@@ -78,7 +82,7 @@ export function DatePickerField({
                 }}
                 type="button"
               >
-                Очистить
+                {copy.common.clear}
               </button>
             ) : null}
           </div>
@@ -101,7 +105,7 @@ export function DatePickerField({
               weekdays: styles.weekdays,
               week: styles.week
             }}
-            locale={ru}
+            locale={getDateFnsLocale(language)}
             mode="single"
             onSelect={(date) => {
               if (date == null) {

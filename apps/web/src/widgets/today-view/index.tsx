@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { TaskListEntity } from "@/entities/task-list";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { CollapsibleSection } from "@/shared/ui";
@@ -7,6 +8,7 @@ import { SectionTitle, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 export function TodayViewWidget() {
+  const copy = useCopy();
   const { actions, derived } = useMindFlowApp();
   const { badgeByTaskId, overdueTasks, todayTasks } = useMemo(() => {
     const result: Partial<Record<string, "today" | "overdue">> = {};
@@ -34,11 +36,11 @@ export function TodayViewWidget() {
   return (
     <SurfaceCard>
       <div className={styles.root}>
-        <SectionTitle title="Сегодня" />
+        <SectionTitle title={copy.today.title} />
         {derived.todayFeed.length === 0 ? (
           <StateCard
-            description="Задач на сегодня нет."
-            title="Пусто"
+            description={copy.today.emptyDescription}
+            title={copy.common.empty}
             variant="empty"
           />
         ) : (
@@ -47,7 +49,7 @@ export function TodayViewWidget() {
               <CollapsibleSection
                 count={overdueTasks.length}
                 defaultOpen
-                title="Просрочено"
+                title={copy.today.overdueTitle}
               >
                 <TaskListEntity
                   badgeByTaskId={badgeByTaskId}
@@ -63,12 +65,12 @@ export function TodayViewWidget() {
               <CollapsibleSection
                 count={todayTasks.length}
                 defaultOpen
-                title="Сегодня"
+                title={copy.today.sectionTitle}
               >
                 {todayTasks.length === 0 ? (
                   <StateCard
-                    description="На сегодня сейчас нет задач. Важные входящие и задачи на сегодня появятся здесь автоматически."
-                    title="Сегодня свободно"
+                    description={copy.today.emptyDescription}
+                    title={copy.today.emptyTitle}
                     variant="empty"
                   />
                 ) : (
@@ -86,8 +88,8 @@ export function TodayViewWidget() {
               <>
                 {todayTasks.length === 0 ? (
                   <StateCard
-                    description="На сегодня сейчас нет задач. Важные входящие и задачи на сегодня появятся здесь автоматически."
-                    title="Сегодня свободно"
+                    description={copy.today.emptyDescription}
+                    title={copy.today.emptyTitle}
                     variant="empty"
                   />
                 ) : (

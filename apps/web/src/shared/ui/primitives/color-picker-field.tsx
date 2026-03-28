@@ -1,6 +1,7 @@
 import * as Popover from "@radix-ui/react-popover";
 import { HexColorPicker } from "react-colorful";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
 import { MetaText } from "@/shared/ui/typography";
@@ -40,6 +41,7 @@ export function ColorPickerField({
   presets = [],
   value
 }: ColorPickerFieldProps) {
+  const copy = useCopy();
   const normalizedValue = isValidHex(value) ? normalizeHex(value) : "#7C3AED";
 
   return (
@@ -50,10 +52,10 @@ export function ColorPickerField({
         id={id}
         type="button"
       >
-        <span className={styles.triggerValue}>
+          <span className={styles.triggerValue}>
           <span className={styles.swatch} style={{ backgroundColor: normalizedValue }} />
           <span className={styles.triggerCopy}>
-            <span className={styles.triggerLabel}>Маркер</span>
+            <span className={styles.triggerLabel}>{copy.project.defaultMarkerLabel}</span>
             <MetaText className={styles.triggerHex}>{normalizedValue}</MetaText>
           </span>
         </span>
@@ -70,7 +72,7 @@ export function ColorPickerField({
         >
           <div className={styles.header}>
             <div>
-              <MetaText className={styles.eyebrow}>Маркер списка</MetaText>
+              <MetaText className={styles.eyebrow}>{copy.project.changeMarkerTrigger}</MetaText>
               <strong className={styles.valueLabel}>{normalizedValue}</strong>
             </div>
             <span className={styles.headerSwatch} style={{ backgroundColor: normalizedValue }} />
@@ -86,7 +88,7 @@ export function ColorPickerField({
 
           {presets.length === 0 ? null : (
             <div className={styles.presets}>
-              <MetaText className={styles.presetsLabel}>Быстрые цвета</MetaText>
+              <MetaText className={styles.presetsLabel}>{copy.project.defaultMarkerLabel}</MetaText>
               <div className={styles.presetGrid}>
                 {presets.map((preset) => {
                   const isActive = normalizeHex(preset.value) === normalizedValue;

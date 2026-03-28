@@ -3,6 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { Icon, TaskRow } from "@/shared/ui";
 import type { Task } from "@mindflow/domain";
 
+import { useCopy } from "@/app/providers/language-provider";
 import styles from "./index.module.css";
 
 interface TaskRowSortableProps {
@@ -17,6 +18,7 @@ export function TaskRowSortable({
   task,
   showDragIcon = true
 }: TaskRowSortableProps) {
+  const copy = useCopy();
   const {
     attributes,
     isDragging,
@@ -47,7 +49,7 @@ export function TaskRowSortable({
             <button
               {...attributes}
               {...listeners}
-              aria-label={`Изменить порядок задачи ${task.title}`}
+              aria-label={`${copy.taskReorder.title}: ${task.title}`}
               className={styles.dragHandle}
               type="button"
             >

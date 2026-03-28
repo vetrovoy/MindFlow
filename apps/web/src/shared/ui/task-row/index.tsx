@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { Task } from "@mindflow/domain";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { MetaText } from "@/shared/ui/typography";
 import { StatusPill } from "@/shared/ui/primitives";
@@ -35,6 +36,7 @@ export function TaskRow({
   task,
   trailingSlot
 }: TaskRowProps) {
+  const copy = useCopy();
   const isDone = task.status === "done";
 
   return (
@@ -48,7 +50,7 @@ export function TaskRow({
     >
       <div className={styles.row}>
         <button
-          aria-label={getTaskToggleAriaLabel(task.status)}
+          aria-label={getTaskToggleAriaLabel(copy, task.status)}
           className={cn(styles.checkbox, isDone && styles.checkboxDone)}
           onClick={() => {
             void onToggleDone(task.id);
@@ -69,7 +71,9 @@ export function TaskRow({
         <div className={styles.trailing}>
           {badgeVariant == null ? null : (
             <StatusPill
-              label={badgeVariant === "overdue" ? "Просрочено" : "Сегодня"}
+              label={
+                badgeVariant === "overdue" ? copy.task.badgeOverdue : copy.task.badgeToday
+              }
               variant={badgeVariant}
             />
           )}

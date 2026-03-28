@@ -1,3 +1,4 @@
+import type { CopyDictionary } from "@mindflow/copy";
 import type { IconProps } from "@/shared/ui/icons";
 import type { Task } from "@mindflow/domain";
 import styles from './index.module.css'
@@ -52,8 +53,11 @@ export function getTaskPriorityIconName(priority: Task["priority"]) {
   return "priority-low" as const;
 }
 
-export function getTaskToggleAriaLabel(status: Task["status"]) {
+export function getTaskToggleAriaLabel(
+  copy: CopyDictionary,
+  status: Task["status"]
+) {
   return status === "done"
-    ? "Вернуть задачу в работу"
-    : "Отметить задачу выполненной";
+    ? copy.task.restoreAriaLabel
+    : copy.task.toggleDoneAriaLabel;
 }

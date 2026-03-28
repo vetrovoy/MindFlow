@@ -1,15 +1,17 @@
+import { useCopy } from "@/app/providers/language-provider";
 import { BottomNavItem } from "@/shared/ui";
 import styles from "./index.module.css";
 
-const items = [
-  { to: "/inbox", label: "Входящие", icon: "nav-inbox" },
-  { to: "/lists", label: "Списки", icon: "nav-lists" },
-  { to: "/today", label: "Сегодня", icon: "nav-today" }
-] as const;
-
 export function BottomNavWidget() {
+  const copy = useCopy();
+  const items = [
+    { to: "/inbox", label: copy.navigation.inbox, icon: "nav-inbox" },
+    { to: "/lists", label: copy.navigation.lists, icon: "nav-lists" },
+    { to: "/today", label: copy.navigation.today, icon: "nav-today" }
+  ] as const;
+
   return (
-    <nav aria-label="Основная навигация" className={styles.nav}>
+    <nav aria-label={copy.navigation.mainAriaLabel} className={styles.nav}>
       <div className={styles.pill}>
         {items.map((item) => (
           <BottomNavItem

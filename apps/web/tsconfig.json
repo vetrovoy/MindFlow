@@ -4,6 +4,7 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
+      "@mindflow/copy": ["../../packages/copy/src/index.ts"],
       "@mindflow/domain": ["../../packages/domain/src/index.ts"],
       "@mindflow/data": ["../../packages/data/src/index.ts"],
       "@mindflow/ui": ["../../packages/ui/src/index.ts"],
