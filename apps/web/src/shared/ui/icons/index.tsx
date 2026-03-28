@@ -2,6 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Archive,
   Calendar,
+  CalendarDays,
   CalendarClock,
   Check,
   CheckCircle2,
@@ -14,16 +15,13 @@ import {
   Languages,
   FolderKanban,
   GripVertical,
-  LayoutGrid,
   ListTodo,
   MoreHorizontal,
   Palette,
   Plus,
   Search,
-  Sparkles,
   Trash2,
   X,
-  TriangleAlert
 } from "lucide-react";
 
 import { cn } from "@/shared/lib/cn";
@@ -74,13 +72,13 @@ const ICONS: Record<IconName, LucideIcon> = {
   "chevron-down": ChevronDown,
   "chevron-left": ChevronLeft,
   "chevron-right": ChevronRight,
-  "priority-low": Circle,
-  "priority-medium": Calendar,
-  "priority-high": TriangleAlert,
+  "priority-low": Flag,
+  "priority-medium": Flag,
+  "priority-high": Flag,
   search: Search,
   today: Calendar,
   overdue: CalendarClock,
-  "toast-success": Sparkles,
+  "toast-success": CheckCircle2,
   close: X,
   favorite: Star,
   flag: Flag,
@@ -88,7 +86,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   palette: Palette,
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,
-  "nav-today": LayoutGrid,
+  "nav-today": CalendarDays,
   drag: GripVertical,
   more: MoreHorizontal,
   trash: Trash2
