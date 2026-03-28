@@ -21,7 +21,7 @@ export default defineConfig({
         theme_color: "#0A0A0A",
         background_color: "#0A0A0A",
         display: "standalone",
-        start_url: "/inbox"
+        start_url: "/"
       },
       devOptions: {
         enabled: true

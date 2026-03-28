@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import { MindFlowProvider } from "@/shared/model/mindflow-provider";
+import { AuthProvider } from "@/app/providers/auth-provider";
 import { ThemeVariables } from "@/app/providers/theme-variables";
 import { LanguageProvider } from "@/app/providers/language-provider";
 import "./styles/global.css";
@@ -13,9 +14,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <ThemeVariables />
       <LanguageProvider>
-        <MindFlowProvider>
-          <App />
-        </MindFlowProvider>
+        <AuthProvider>
+          <MindFlowProvider>
+            <App />
+          </MindFlowProvider>
+        </AuthProvider>
       </LanguageProvider>
     </BrowserRouter>
   </React.StrictMode>

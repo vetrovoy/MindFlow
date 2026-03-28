@@ -47,7 +47,7 @@ const ru: CopyDictionary = {
     today: "Сегодня"
   },
   app: {
-    greeting: "Привет, Андрей",
+    greeting: "Привет,",
     subtitle: "Сфокусируемся на главном сегодня",
     addTaskAriaLabel: "Открыть создание задачи",
     addProjectAriaLabel: "Открыть создание списка",
@@ -56,6 +56,33 @@ const ru: CopyDictionary = {
     hydrationTitle: "Загружаем локальное пространство",
     hydrationDescription:
       "Поднимаем локальное хранилище и готовим офлайн-рабочее пространство."
+  },
+  auth: {
+    title: "Войдите в своё рабочее пространство",
+    subtitle:
+      "Локальный аккаунт хранит ваши задачи и списки отдельно в этом браузере.",
+    signInTab: "Вход",
+    signUpTab: "Регистрация",
+    signInHint: "Войдите в существующий локальный аккаунт.",
+    signUpHint: "Создайте новый локальный аккаунт без сервера и облака.",
+    nameLabel: "Имя",
+    namePlaceholder: "Как к вам обращаться?",
+    emailLabel: "Email",
+    emailPlaceholder: "you@example.com",
+    passwordLabel: "Пароль",
+    passwordPlaceholder: "Не меньше 8 символов",
+    confirmPasswordLabel: "Подтвердите пароль",
+    confirmPasswordPlaceholder: "Повторите пароль",
+    signInSubmit: "Войти",
+    signUpSubmit: "Создать аккаунт",
+    invalidEmailError: "Введите корректный email.",
+    passwordTooShortError: "Пароль должен содержать не меньше 8 символов.",
+    passwordMismatchError: "Пароли не совпадают.",
+    nameRequiredError: "Добавьте имя для локального аккаунта.",
+    duplicateEmailError: "Аккаунт с этим email уже существует.",
+    invalidCredentialsError: "Неверный email или пароль.",
+    signOutAriaLabel: "Выйти из локального аккаунта",
+    signOutLabel: "Выйти"
   },
   quickCapture: {
     title: "Быстрый захват задач",
@@ -228,7 +255,7 @@ const en: CopyDictionary = {
     today: "Today"
   },
   app: {
-    greeting: "Hello, Andrey",
+    greeting: "Hello,",
     subtitle: "Let’s focus on what matters today",
     addTaskAriaLabel: "Open task creation",
     addProjectAriaLabel: "Open list creation",
@@ -237,6 +264,33 @@ const en: CopyDictionary = {
     hydrationTitle: "Loading local workspace",
     hydrationDescription:
       "Starting local storage and preparing the offline workspace."
+  },
+  auth: {
+    title: "Sign in to your workspace",
+    subtitle:
+      "A local account keeps your tasks and lists isolated in this browser.",
+    signInTab: "Sign in",
+    signUpTab: "Sign up",
+    signInHint: "Sign in to an existing local account.",
+    signUpHint: "Create a new local account without a server or cloud.",
+    nameLabel: "Name",
+    namePlaceholder: "What should we call you?",
+    emailLabel: "Email",
+    emailPlaceholder: "you@example.com",
+    passwordLabel: "Password",
+    passwordPlaceholder: "At least 8 characters",
+    confirmPasswordLabel: "Confirm password",
+    confirmPasswordPlaceholder: "Repeat the password",
+    signInSubmit: "Sign in",
+    signUpSubmit: "Create account",
+    invalidEmailError: "Enter a valid email address.",
+    passwordTooShortError: "Password must be at least 8 characters long.",
+    passwordMismatchError: "Passwords do not match.",
+    nameRequiredError: "Add a name for the local account.",
+    duplicateEmailError: "An account with this email already exists.",
+    invalidCredentialsError: "Incorrect email or password.",
+    signOutAriaLabel: "Sign out of the local account",
+    signOutLabel: "Sign out"
   },
   quickCapture: {
     title: "Quick task capture",

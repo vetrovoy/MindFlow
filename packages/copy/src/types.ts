@@ -43,6 +43,32 @@ export interface CopyDictionary {
     hydrationTitle: string;
     hydrationDescription: string;
   };
+  auth: {
+    title: string;
+    subtitle: string;
+    signInTab: string;
+    signUpTab: string;
+    signInHint: string;
+    signUpHint: string;
+    nameLabel: string;
+    namePlaceholder: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    passwordLabel: string;
+    passwordPlaceholder: string;
+    confirmPasswordLabel: string;
+    confirmPasswordPlaceholder: string;
+    signInSubmit: string;
+    signUpSubmit: string;
+    invalidEmailError: string;
+    passwordTooShortError: string;
+    passwordMismatchError: string;
+    nameRequiredError: string;
+    duplicateEmailError: string;
+    invalidCredentialsError: string;
+    signOutAriaLabel: string;
+    signOutLabel: string;
+  };
   quickCapture: {
     title: string;
     inboxDescription: string;

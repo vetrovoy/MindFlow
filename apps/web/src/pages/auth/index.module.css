@@ -1,0 +1,270 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--mf-space-5xl);
+  padding: var(--mf-space-4xl) 16px var(--mf-space-5xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.pageHeader {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.main {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.cardWrap {
+  width: min(760px, 100%);
+  position: relative;
+}
+
+.cardWrap::before,
+.cardWrap::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(52px);
+  opacity: 0.8;
+}
+
+.cardWrap::before {
+  width: 220px;
+  height: 220px;
+  top: -56px;
+  right: -28px;
+  background: color-mix(in srgb, var(--mf-color-accent-lime) 32%, transparent);
+}
+
+.cardWrap::after {
+  width: 180px;
+  height: 180px;
+  left: -48px;
+  bottom: -36px;
+  background: color-mix(in srgb, var(--mf-color-text-secondary) 10%, transparent);
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--mf-space-5xl);
+}
+
+.heading {
+  display: grid;
+  gap: var(--mf-space-lg);
+  padding-right: var(--mf-space-5xl);
+}
+
+.title {
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.subtitle {
+  max-width: 48ch;
+  color: color-mix(in srgb, var(--mf-color-text-primary) 76%, var(--mf-color-text-secondary));
+}
+
+.formPanel {
+  display: grid;
+  gap: var(--mf-space-4xl);
+  padding: var(--mf-space-3xl);
+  border-radius: 28px;
+  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 84%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mf-color-surface-elevated) 92%, transparent),
+      color-mix(in srgb, var(--mf-color-surface) 96%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 4%, transparent),
+    0 24px 60px color-mix(in srgb, var(--mf-color-background) 42%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.modeToggle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 6px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 84%, transparent);
+  background: color-mix(in srgb, var(--mf-color-surface-deep) 94%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 3%, transparent);
+}
+
+.modeButton {
+  appearance: none;
+  border: 0;
+  min-height: 48px;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--mf-color-text-secondary);
+  cursor: pointer;
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-badge);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.modeButton:hover,
+.modeButton:focus-visible {
+  color: var(--mf-color-text-primary);
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 80%, transparent);
+  outline: none;
+}
+
+.modeButtonActive {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mf-color-accent-lime) 92%, white 6%),
+      var(--mf-color-accent-lime)
+    );
+  color: var(--mf-color-background);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+    0 8px 20px color-mix(in srgb, var(--mf-color-accent-lime) 22%, transparent);
+}
+
+.form {
+  display: grid;
+  gap: var(--mf-space-3xl);
+}
+
+.fields {
+  display: grid;
+  gap: var(--mf-space-2xl);
+}
+
+.fieldsSignup {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fieldGroup {
+  display: grid;
+  gap: var(--mf-space-sm);
+  min-width: 0;
+  position: relative;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.fieldLabel {
+  color: var(--mf-color-text-secondary);
+  padding-left: 2px;
+}
+
+.input {
+  min-height: 60px;
+  padding-inline: var(--mf-space-3xl);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--mf-color-surface-deep) 88%, transparent);
+  border-color: color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 3%, transparent),
+    0 0 0 1px transparent;
+}
+
+.input:hover {
+  border-color: color-mix(in srgb, var(--mf-color-border-strong) 92%, transparent);
+  background: color-mix(in srgb, var(--mf-color-surface-deep) 94%, transparent);
+}
+
+.passwordInput {
+  padding-right: 60px;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 14px;
+  bottom: 11px;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.passwordToggle:hover,
+.passwordToggle:focus-visible {
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 82%, transparent);
+  outline: none;
+}
+
+.submitButton {
+  width: 100%;
+  justify-content: center;
+  min-height: 56px;
+  border-radius: 18px;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
+    0 14px 32px color-mix(in srgb, var(--mf-color-accent-lime) 20%, transparent);
+}
+
+.error {
+  padding: var(--mf-space-lg) var(--mf-space-xl);
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--mf-color-accent-alert) 48%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-alert) 10%, var(--mf-color-surface));
+  color: var(--mf-color-text-primary);
+}
+
+@media (max-width: 639px) {
+  .page {
+    padding-top: var(--mf-space-3xl);
+  }
+
+  .card {
+    gap: var(--mf-space-4xl);
+  }
+
+  .heading {
+    padding-right: 0;
+  }
+
+  .formPanel {
+    padding: var(--mf-space-2xl);
+    border-radius: 24px;
+  }
+
+  .modeButton {
+    min-height: 44px;
+  }
+
+  .fieldsSignup {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .input {
+    min-height: 56px;
+    border-radius: 18px;
+  }
+}

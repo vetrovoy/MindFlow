@@ -10,16 +10,19 @@ import {
   ChevronLeft,
   ChevronRight,
   Circle,
+  Eye,
+  EyeOff,
   Flag,
-  Star,
-  Languages,
   FolderKanban,
   GripVertical,
+  Languages,
   ListTodo,
+  LogOut,
   MoreHorizontal,
   Palette,
   Plus,
   Search,
+  Star,
   Trash2,
   X,
 } from "lucide-react";
@@ -51,7 +54,10 @@ export type IconName =
   | "nav-inbox"
   | "nav-lists"
   | "nav-today"
+  | "sign-out"
   | "drag"
+  | "eye"
+  | "eye-off"
   | "more"
   | "trash";
 
@@ -72,6 +78,8 @@ const ICONS: Record<IconName, LucideIcon> = {
   "chevron-down": ChevronDown,
   "chevron-left": ChevronLeft,
   "chevron-right": ChevronRight,
+  eye: Eye,
+  "eye-off": EyeOff,
   "priority-low": Flag,
   "priority-medium": Flag,
   "priority-high": Flag,
@@ -87,6 +95,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,
   "nav-today": CalendarDays,
+  "sign-out": LogOut,
   drag: GripVertical,
   more: MoreHorizontal,
   trash: Trash2
