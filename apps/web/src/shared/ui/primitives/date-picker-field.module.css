@@ -1,6 +1,6 @@
 .trigger {
   width: 100%;
-  min-height: 56px;
+  min-height: var(--mf-size-field);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -35,8 +35,8 @@
 .trigger:hover,
 .trigger:focus-visible,
 .trigger[data-state="open"] {
-  border-color: var(--mf-color-accent-lime);
-  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+  border-color: var(--mf-color-accent-primary);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-glow);
 }
 
 .trigger:disabled {
@@ -54,7 +54,7 @@
 .content {
   z-index: 40;
   width: min(340px, calc(100vw - 32px));
-  border-radius: var(--mf-radius-card);
+  border-radius: var(--mf-shape-popover-radius);
   border: 1px solid var(--mf-color-border-medium);
   background: linear-gradient(
     180deg,
@@ -84,7 +84,7 @@
 .clearButton {
   border: none;
   background: transparent;
-  color: var(--mf-color-accent-lime);
+  color: var(--mf-color-accent-primary);
   font-family: var(--mf-font-meta);
   font-size: var(--mf-font-size-badge);
   cursor: pointer;
@@ -96,7 +96,7 @@
 }
 
 .clearButton:hover {
-  background: var(--mf-color-accent-lime-panel);
+  background: var(--mf-color-surface-interactive-hover);
   color: var(--mf-color-text-primary);
 }
 
@@ -125,8 +125,8 @@
 }
 
 .navButton {
-  width: 32px;
-  height: 32px;
+  width: var(--mf-size-calendar-nav);
+  height: var(--mf-size-calendar-nav);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -143,8 +143,8 @@
 }
 
 .navButton:hover {
-  border-color: var(--mf-color-accent-lime);
-  background: var(--mf-color-accent-lime-panel);
+  border-color: var(--mf-color-accent-primary);
+  background: var(--mf-color-surface-interactive-hover);
   color: var(--mf-color-text-primary);
 }
 
@@ -194,17 +194,17 @@
 }
 
 .dayButton:hover {
-  background: var(--mf-color-accent-lime-panel);
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 32%, transparent);
+  background: var(--mf-color-surface-interactive-hover);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 32%, transparent);
 }
 
 .daySelected .dayButton {
-  background: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-primary);
   color: var(--mf-color-background);
 }
 
 .dayToday .dayButton {
-  border-color: var(--mf-color-accent-lime);
+  border-color: var(--mf-color-accent-primary);
 }
 
 .dayDisabled .dayButton {

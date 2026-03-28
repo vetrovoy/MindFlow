@@ -26,8 +26,8 @@
 .dragHandle:hover,
 .dragHandle:focus-visible {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 34%, var(--mf-color-border-medium));
-  background: var(--mf-color-accent-lime-panel);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 34%, var(--mf-color-border-medium));
+  background: var(--mf-color-surface-interactive-hover);
 }
 
 .card {

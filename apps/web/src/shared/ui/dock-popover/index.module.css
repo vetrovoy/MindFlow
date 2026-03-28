@@ -1,13 +1,13 @@
 .trigger {
-  width: 46px;
-  height: 46px;
+  width: var(--mf-size-dock-button);
+  height: var(--mf-size-dock-button);
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 0;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 90%, black);
+  background: var(--mf-surface-shell);
   box-shadow: none;
   cursor: pointer;
   outline: none;
@@ -15,37 +15,29 @@
 
 .trigger:hover,
 .trigger:focus-visible {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 26%, transparent),
-    0 0 0 5px color-mix(in srgb, var(--mf-color-accent-lime) 10%, transparent);
+  box-shadow: var(--mf-highlight-hover);
 }
 
 .triggerActive {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 28%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 24%, transparent);
+  box-shadow: var(--mf-highlight-active);
 }
 
 .content {
   z-index: 40;
-  width: min(240px, calc(100vw - 32px));
+  width: min(var(--mf-layout-popover-width), calc(100vw - 32px));
   padding: var(--mf-space-lg);
   border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--mf-color-accent-lime) 8%, transparent), transparent 42%),
-    color-mix(in srgb, var(--mf-color-surface-elevated) 94%, black);
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.44),
-    inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+  border-radius: var(--mf-shape-popover-radius);
+  background: var(--mf-surface-popover);
+  box-shadow: 0 30px 80px var(--mf-color-shadow-strong), var(--mf-inset-highlight-soft);
 }
 
 .arrow {
-  fill: color-mix(in srgb, var(--mf-color-surface-elevated) 94%, black);
+  fill: color-mix(in srgb, var(--mf-color-surface-card) 94%, transparent);
 }
 
 @media (max-width: 639px) {
   .content {
-    width: min(260px, calc(100vw - 24px));
+    width: min(var(--mf-layout-popover-width-mobile), calc(100vw - 24px));
   }
 }

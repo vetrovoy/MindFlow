@@ -15,6 +15,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import { AppStats } from "@/app/ui/app-stats";
 import { LanguageToggle } from "@/app/ui/language-toggle";
 import { RequireAuth } from "@/app/ui/require-auth";
+import { ThemeOptions, ThemeToggle } from "@/app/ui/theme-toggle";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
 import { QuickAddFeature } from "@/features/quick-add";
@@ -75,6 +76,7 @@ function AppShell() {
                 </SupportText>
               </div>
               <div className={styles.headerActions}>
+                <ThemeToggle />
                 <LanguageToggle />
                 <IconButton
                   ariaLabel={copy.auth.signOutAriaLabel}
@@ -119,18 +121,51 @@ function AppShell() {
                       sideOffset={12}
                     >
                       <div className={styles.headerMenuActions}>
-                        <LanguageToggle />
-                        <IconButton
-                          ariaLabel={copy.auth.signOutAriaLabel}
-                          className={styles.headerMenuAction}
-                          icon="sign-out"
-                          iconTone="lime"
-                          onClick={() => {
-                            setIsHeaderMenuOpen(false);
-                            handleSignOut();
-                          }}
-                          variant="secondary"
-                        />
+                        <div className={styles.headerMenuUtilityRow}>
+                          <Popover.Root>
+                            <Popover.Trigger asChild>
+                              <IconButton
+                                ariaLabel={copy.theme.label}
+                                className={styles.headerMenuAction}
+                                icon="palette"
+                                iconTone="lime"
+                                variant="secondary"
+                              />
+                            </Popover.Trigger>
+                            <Popover.Portal>
+                              <Popover.Content
+                                align="end"
+                                className={styles.headerMenuThemePopover}
+                                side="bottom"
+                                sideOffset={12}
+                              >
+                                <ThemeOptions
+                                  className={styles.headerMenuThemeOptions}
+                                  onSelect={() => {
+                                    setIsHeaderMenuOpen(false);
+                                  }}
+                                />
+                                <Popover.Arrow
+                                  className={styles.headerMenuPopoverArrow}
+                                  height={10}
+                                  width={18}
+                                />
+                              </Popover.Content>
+                            </Popover.Portal>
+                          </Popover.Root>
+                          <LanguageToggle />
+                          <IconButton
+                            ariaLabel={copy.auth.signOutAriaLabel}
+                            className={styles.headerMenuAction}
+                            icon="sign-out"
+                            iconTone="lime"
+                            onClick={() => {
+                              setIsHeaderMenuOpen(false);
+                              handleSignOut();
+                            }}
+                            variant="secondary"
+                          />
+                        </div>
                       </div>
                       <Popover.Arrow
                         className={styles.headerMenuPopoverArrow}

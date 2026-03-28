@@ -1,6 +1,6 @@
 .trigger {
   width: 100%;
-  min-height: 56px;
+  min-height: var(--mf-size-field);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -23,8 +23,8 @@
 .trigger:hover,
 .trigger:focus-visible,
 [data-state="open"].trigger {
-  border-color: var(--mf-color-accent-lime);
-  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+  border-color: var(--mf-color-accent-primary);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-glow);
 }
 
 .trigger[data-disabled] {
@@ -43,7 +43,7 @@
   min-width: var(--radix-select-trigger-width);
   max-height: min(320px, var(--radix-select-content-available-height));
   overflow: hidden;
-  border-radius: var(--mf-radius-xl);
+  border-radius: var(--mf-shape-popover-radius);
   border: 1px solid var(--mf-color-border-medium);
   background: linear-gradient(
     180deg,
@@ -65,7 +65,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--mf-space-lg);
-  min-height: 46px;
+  min-height: var(--mf-size-compact-field);
   padding: var(--mf-space-lg) var(--mf-space-xl);
   border-radius: var(--mf-radius-lg);
   border: 1px solid transparent;
@@ -83,25 +83,25 @@
 }
 
 .item:hover {
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 16%, var(--mf-color-surface-elevated));
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 34%, var(--mf-color-border-medium));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 18%, transparent);
+  background: var(--mf-color-surface-interactive-hover);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 34%, var(--mf-color-border-medium));
+  box-shadow: inset 0 0 0 1px var(--mf-color-accent-primary-ring-soft);
   color: var(--mf-color-text-primary);
 }
 
 .item[data-highlighted] {
-  background: var(--mf-color-accent-lime-panel);
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 40%, var(--mf-color-border-medium));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 22%, transparent);
+  background: var(--mf-color-surface-interactive-active);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 40%, var(--mf-color-border-medium));
+  box-shadow: inset 0 0 0 1px var(--mf-color-accent-primary-ring-medium);
   color: var(--mf-color-text-primary);
 }
 
 .item[data-state="checked"] {
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 12%, var(--mf-color-surface-deep));
+  background: var(--mf-color-surface-interactive);
 }
 
 .item[data-state="checked"]:hover {
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 18%, var(--mf-color-surface-deep));
+  background: var(--mf-color-surface-interactive-hover);
 }
 
 .itemIndicator {

@@ -12,11 +12,7 @@
   padding: var(--mf-space-2xl);
   border-radius: var(--mf-radius-xl);
   border: 1px solid var(--mf-color-border-strong);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--mf-color-surface-elevated) 88%, transparent),
-    color-mix(in srgb, var(--mf-color-surface) 96%, transparent)
-  );
+  background: var(--mf-surface-shell);
 }
 
 .introCopy {
@@ -64,8 +60,8 @@
 }
 
 .stateChipSaving {
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 30%, var(--mf-color-border-medium));
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 10%, var(--mf-color-surface-elevated));
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 30%, var(--mf-color-border-medium));
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 10%, var(--mf-color-surface-elevated));
   color: var(--mf-color-text-primary);
 }
 

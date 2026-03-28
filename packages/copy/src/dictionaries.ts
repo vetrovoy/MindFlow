@@ -25,6 +25,12 @@ const ru: CopyDictionary = {
     ru: "Русский",
     en: "English"
   },
+  theme: {
+    label: "Тема",
+    graphite: "Графит",
+    gilded: "Позолота",
+    minimal: "Минимал"
+  },
   common: {
     save: "Сохранить",
     close: "Закрыть",
@@ -232,6 +238,12 @@ const en: CopyDictionary = {
     label: "Language",
     ru: "Russian",
     en: "English"
+  },
+  theme: {
+    label: "Theme",
+    graphite: "Graphite",
+    gilded: "Gilded",
+    minimal: "Minimal"
   },
   common: {
     save: "Save",

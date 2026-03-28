@@ -1,6 +1,6 @@
 .trigger {
   width: 100%;
-  min-height: 56px;
+  min-height: var(--mf-size-field);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -20,8 +20,8 @@
 .trigger:hover,
 .trigger:focus-visible,
 [data-state="open"].trigger {
-  border-color: var(--mf-color-accent-lime);
-  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+  border-color: var(--mf-color-accent-primary);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-glow);
 }
 
 .triggerValue {
@@ -35,8 +35,8 @@
 .headerSwatch,
 .presetSwatch {
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, white 18%, transparent);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid color-mix(in srgb, var(--mf-color-text-primary) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mf-color-background) 8%, transparent);
 }
 
 .swatch {
@@ -73,7 +73,7 @@
   display: grid;
   gap: var(--mf-space-xl);
   padding: var(--mf-space-2xl);
-  border-radius: var(--mf-radius-card);
+  border-radius: var(--mf-shape-popover-radius);
   border: 1px solid var(--mf-color-border-medium);
   background: linear-gradient(
     180deg,
@@ -104,8 +104,8 @@
 }
 
 .headerSwatch {
-  width: 32px;
-  height: 32px;
+  width: var(--mf-size-calendar-nav);
+  height: var(--mf-size-calendar-nav);
   flex-shrink: 0;
 }
 
@@ -127,8 +127,8 @@
 .picker :global(.react-colorful__pointer) {
   width: 18px;
   height: 18px;
-  border: 2px solid white;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  border: 2px solid var(--mf-color-text-primary);
+  box-shadow: 0 4px 18px var(--mf-color-shadow-strong);
 }
 
 .presets {
@@ -170,8 +170,8 @@
 }
 
 .presetActive {
-  border-color: var(--mf-color-accent-lime);
-  background: var(--mf-color-accent-lime-panel);
+  border-color: var(--mf-color-accent-primary);
+  background: var(--mf-color-surface-interactive-active);
 }
 
 .presetSwatch {

@@ -4,6 +4,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/app/providers/auth-provider";
 import { useCopy } from "@/app/providers/language-provider";
 import { LanguageToggle } from "@/app/ui/language-toggle";
+import { ThemeToggle } from "@/app/ui/theme-toggle";
 import { cn } from "@/shared/lib/cn";
 import { Display, Icon, MetaText, SupportText } from "@/shared/ui";
 import { ActionButton, SurfaceCard, TextField } from "@/shared/ui/primitives";
@@ -72,6 +73,7 @@ export function AuthPage() {
   return (
     <div className={styles.page}>
       <div className={styles.pageHeader}>
+        <ThemeToggle />
         <LanguageToggle />
       </div>
       <main className={styles.main}>

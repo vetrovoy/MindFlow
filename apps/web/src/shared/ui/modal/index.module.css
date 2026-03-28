@@ -11,7 +11,7 @@
 }
 
 .content {
-  width: min(860px, 100%);
+  width: min(var(--mf-layout-modal-width-wide), 100%);
   max-height: min(88vh, 920px);
   overflow: auto;
   border-radius: var(--mf-radius-card);
@@ -21,12 +21,12 @@
     var(--mf-gradient-overlay-depth-start),
     var(--mf-gradient-overlay-depth-end)
   );
-  box-shadow: 0 -24px 80px var(--mf-color-shadow-overlay);
+  box-shadow: 0 -24px 80px var(--mf-color-shadow-strong);
   padding: 14px var(--mf-space-5xl) calc(var(--mf-space-5xl) + env(safe-area-inset-bottom));
 }
 
 .handle {
-  width: 56px;
+  width: var(--mf-size-field);
   height: 5px;
   border-radius: 999px;
   background: var(--mf-color-overlay-handle);
@@ -46,7 +46,7 @@
 }
 
 .eyebrow {
-  color: var(--mf-color-accent-lime);
+  color: var(--mf-color-accent-primary);
 }
 
 .title,
@@ -61,8 +61,8 @@
 }
 
 .closeButton {
-  width: 40px;
-  height: 40px;
+  width: var(--mf-size-inline-button);
+  height: var(--mf-size-inline-button);
   border-radius: var(--mf-radius-md);
   border: 1px solid var(--mf-color-border-strong);
   background: var(--mf-color-overlay-ghost);

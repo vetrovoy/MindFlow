@@ -1,34 +1,4 @@
-export const colors = {
-  background: "#0A0A0A",
-  surface: "#18181B",
-  surfaceElevated: "#27272A",
-  borderSoft: "#31313A",
-  borderMedium: "#32323A",
-  borderStrong: "#34343B",
-  borderMuted: "#3F3F46",
-  textPrimary: "#FFFFFF",
-  textLight: "#D4D4D8",
-  textSoft: "#B3B3BC",
-  textSecondary: "#A1A1AA",
-  textTertiary: "#71717A",
-  textMuted: "#52525B",
-  accentLime: "#C4F82A",
-  accentLimeGlow: "#C4F82A25",
-  accentAlert: "#FA541C",
-  accentSuccessDeep: "#C4F82A",
-  accentSuccessBright: "#C4F82A",
-  accentFeaturedPurple: "#7C3AED",
-  accentFeaturedBlue: "#2563EB"
-} as const;
-
-export const gradients = {
-  featuredProject: ["#7C3AED", "#2563EB"],
-  success: ["#c5f82ace", "#C4F82A"],
-  premiumSection: ["#1A1A1D", "#141417"],
-  premiumCard: ["#1C1C21", "#141419"],
-  overlayDepth: ["#111214", "#0A0A0A"],
-  bottomFade: ["#0A0A0A00", "#0A0A0A"]
-} as const;
+import { DEFAULT_THEME, getTheme } from "./themes";
 
 export const typography = {
   fontFamily: {
@@ -78,16 +48,48 @@ export const spacing = {
   "5xl": 24
 } as const;
 
-export const effects = {
-  limeGlow: colors.accentLimeGlow,
-  backgroundBlur: "blur(16px)"
+export const controlSizes = {
+  iconButton: 52,
+  dockButton: 46,
+  field: 56,
+  compactField: 46,
+  inlineButton: 40,
+  calendarNav: 32,
+  checkbox: 32
 } as const;
 
+export const layoutSizes = {
+  popoverWidth: 220,
+  popoverWidthMobile: 260,
+  modalWidthTask: 720,
+  modalWidthWide: 860,
+  statusViewportWidth: 560
+} as const;
+
+export const shape = {
+  shellRadius: 28,
+  popoverRadius: 24,
+  capsuleRadius: 22,
+  controlRadius: 16,
+  compactRadius: 12
+} as const;
+
+export const effects = {
+  backgroundBlur: "blur(16px)",
+  shellBlur: "blur(18px)",
+  heroGlowBlur: "blur(52px)"
+} as const;
+
+const defaultTheme = getTheme(DEFAULT_THEME);
+
 export const tokens = {
-  colors,
-  gradients,
+  colors: defaultTheme.colors,
+  gradients: defaultTheme.gradients,
   typography,
   radii,
   spacing,
+  controlSizes,
+  layoutSizes,
+  shape,
   effects
 } as const;

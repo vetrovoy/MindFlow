@@ -19,8 +19,8 @@
 }
 
 .buttonPrimary {
-  border: 1px solid var(--mf-color-accent-lime);
-  background: var(--mf-color-accent-lime);
+  border: 1px solid var(--mf-color-accent-primary);
+  background: var(--mf-color-accent-primary);
   color: var(--mf-color-background);
   padding: var(--mf-space-lg) var(--mf-space-4xl);
 }
@@ -38,19 +38,19 @@
 }
 
 .iconButton {
-  width: 52px;
-  height: 52px;
+  width: var(--mf-size-icon-button);
+  height: var(--mf-size-icon-button);
   padding: 0;
   align-items: center;
   display: inline-flex;
   justify-content: center;
-  border-radius: 16px;
-  box-shadow: 0 0 0 1px var(--mf-color-accent-lime-ring-soft);
+  border-radius: var(--mf-shape-control-radius);
+  box-shadow: 0 0 0 1px var(--mf-color-accent-primary-ring-soft);
 }
 
 .iconButton:hover:not(:disabled),
 .iconButton:focus-visible:not(:disabled) {
-  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-ring-strong);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-ring-strong);
   filter: saturate(1.08);
 }
 
@@ -68,6 +68,7 @@
 
 .field {
   width: 100%;
+  min-height: var(--mf-size-field);
   border-radius: var(--mf-radius-xl);
   border: 1px solid var(--mf-color-border-strong);
   background: var(--mf-color-surface-elevated);
@@ -83,8 +84,8 @@
 }
 
 .field:focus {
-  border-color: var(--mf-color-accent-lime);
-  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+  border-color: var(--mf-color-accent-primary);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-glow);
 }
 
 .textareaField {
@@ -104,7 +105,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--mf-space-sm);
-  min-height: 56px;
+  min-height: var(--mf-size-field);
   padding: var(--mf-space-md) var(--mf-space-lg);
   border-radius: var(--mf-radius-md);
   border: 1px solid var(--mf-color-border-strong);
@@ -127,8 +128,8 @@
 
 .radioCardActive,
 .radioCard[data-state="checked"] {
-  border-color: var(--mf-color-accent-lime);
-  background: var(--mf-color-accent-lime-panel);
+  border-color: var(--mf-color-accent-primary);
+  background: var(--mf-color-surface-interactive-active);
 }
 
 .radioCardCopy {
@@ -166,7 +167,7 @@
   width: 7px;
   height: 7px;
   border-radius: 999px;
-  background: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-primary);
 }
 
 .sectionTitle {
@@ -193,7 +194,7 @@
     var(--mf-gradient-premium-section-end)
   );
   padding: var(--mf-space-5xl);
-  box-shadow: 0 18px 60px var(--mf-color-background);
+  box-shadow: 0 18px 60px var(--mf-color-shadow-soft);
 }
 
 .stateCard {
@@ -212,7 +213,7 @@
 
 .stateCardLoading {
   border: 1px solid var(--mf-color-border-medium);
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 4%, var(--mf-color-surface));
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 4%, var(--mf-color-surface));
   border-radius: var(--mf-radius-card);
   padding: var(--mf-space-3xl);
 }
@@ -237,8 +238,8 @@
 }
 
 .stateAccentLoading {
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 34%, transparent);
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 10%, var(--mf-color-surface-elevated));
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 34%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 10%, var(--mf-color-surface-elevated));
 }
 
 .stateAccentEmpty {
@@ -283,7 +284,7 @@
 
 .statusPillToday {
   background: var(--mf-color-surface-elevated);
-  color: var(--mf-color-accent-lime);
+  color: var(--mf-color-accent-primary);
   border: 1px solid var(--mf-color-border-strong);
 }
 
@@ -296,7 +297,7 @@
 .progressBar {
   width: 100%;
   height: var(--mf-space-xl);
-  background: var(--mf-color-accent-lime-glow);
+  background: var(--mf-color-accent-primary-glow);
   border-radius: var(--mf-radius-pill);
   overflow: hidden;
   border: 1px solid var(--mf-color-border-strong);
@@ -305,7 +306,7 @@
 .progressBarFill {
   width: calc(var(--progress, 0) * 100%);
   height: 100%;
-  background: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-primary);
 }
 
 @media (max-width: 639px) {

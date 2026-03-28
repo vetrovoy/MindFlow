@@ -15,8 +15,8 @@
   padding: var(--mf-space-sm);
   border-radius: var(--mf-radius-card);
   border: 1px solid var(--mf-color-border-strong);
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 86%, black);
-  box-shadow: 0 18px 40px color-mix(in srgb, var(--mf-color-background) 72%, transparent);
+  background: var(--mf-surface-shell-strong);
+  box-shadow: 0 18px 40px var(--mf-color-shadow-soft);
   pointer-events: auto;
 }
 

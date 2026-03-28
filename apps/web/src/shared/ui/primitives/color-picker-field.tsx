@@ -1,4 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
+import { projectMarkers } from "@mindflow/ui";
 import { HexColorPicker } from "react-colorful";
 
 import { useCopy } from "@/app/providers/language-provider";
@@ -42,7 +43,9 @@ export function ColorPickerField({
   value
 }: ColorPickerFieldProps) {
   const copy = useCopy();
-  const normalizedValue = isValidHex(value) ? normalizeHex(value) : "#7C3AED";
+  const normalizedValue = isValidHex(value)
+    ? normalizeHex(value)
+    : normalizeHex(projectMarkers[0].color);
 
   return (
     <Popover.Root>

@@ -13,6 +13,7 @@
   margin: 0 auto;
   display: flex;
   justify-content: flex-end;
+  gap: var(--mf-space-md);
 }
 
 .main {
@@ -32,7 +33,7 @@
   position: absolute;
   border-radius: 999px;
   pointer-events: none;
-  filter: blur(52px);
+  filter: var(--mf-effect-hero-glow-blur);
   opacity: 0.8;
 }
 
@@ -41,7 +42,7 @@
   height: 220px;
   top: -56px;
   right: -28px;
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 32%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 32%, transparent);
 }
 
 .cardWrap::after {
@@ -78,18 +79,11 @@
   display: grid;
   gap: var(--mf-space-4xl);
   padding: var(--mf-space-3xl);
-  border-radius: 28px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 84%, transparent);
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--mf-color-surface-elevated) 92%, transparent),
-      color-mix(in srgb, var(--mf-color-surface) 96%, transparent)
-    );
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 4%, transparent),
-    0 24px 60px color-mix(in srgb, var(--mf-color-background) 42%, transparent);
-  backdrop-filter: blur(16px);
+  border-radius: var(--mf-shape-shell-radius);
+  border: 1px solid var(--mf-border-shell);
+  background: var(--mf-surface-shell-strong);
+  box-shadow: var(--mf-inset-highlight-soft), 0 24px 60px var(--mf-color-shadow-strong);
+  backdrop-filter: var(--mf-effect-background-blur);
 }
 
 .modeToggle {
@@ -99,8 +93,8 @@
   padding: 6px;
   border-radius: 18px;
   border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 84%, transparent);
-  background: color-mix(in srgb, var(--mf-color-surface-deep) 94%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 3%, transparent);
+  background: var(--mf-surface-panel-muted);
+  box-shadow: var(--mf-inset-highlight-soft);
 }
 
 .modeButton {
@@ -126,7 +120,7 @@
 .modeButton:hover,
 .modeButton:focus-visible {
   color: var(--mf-color-text-primary);
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 80%, transparent);
+  background: var(--mf-color-surface-interactive-hover);
   outline: none;
 }
 
@@ -134,13 +128,13 @@
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--mf-color-accent-lime) 92%, white 6%),
-      var(--mf-color-accent-lime)
+      color-mix(in srgb, var(--mf-color-accent-primary) 92%, white 6%),
+      var(--mf-color-accent-primary)
     );
   color: var(--mf-color-background);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
-    0 8px 20px color-mix(in srgb, var(--mf-color-accent-lime) 22%, transparent);
+    var(--mf-inset-highlight-strong),
+    0 8px 20px color-mix(in srgb, var(--mf-color-accent-primary) 22%, transparent);
 }
 
 .form {
@@ -174,13 +168,13 @@
 }
 
 .input {
-  min-height: 60px;
+  min-height: var(--mf-size-field);
   padding-inline: var(--mf-space-3xl);
   border-radius: 20px;
   background: color-mix(in srgb, var(--mf-color-surface-deep) 88%, transparent);
   border-color: color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 3%, transparent),
+    var(--mf-inset-highlight-soft),
     0 0 0 1px transparent;
 }
 
@@ -220,13 +214,13 @@
 .submitButton {
   width: 100%;
   justify-content: center;
-  min-height: 56px;
+  min-height: var(--mf-size-field);
   border-radius: 18px;
   font-size: 15px;
   letter-spacing: 0.01em;
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
-    0 14px 32px color-mix(in srgb, var(--mf-color-accent-lime) 20%, transparent);
+    var(--mf-inset-highlight-strong),
+    0 14px 32px color-mix(in srgb, var(--mf-color-accent-primary) 20%, transparent);
 }
 
 .error {
@@ -252,7 +246,7 @@
 
   .formPanel {
     padding: var(--mf-space-2xl);
-    border-radius: 24px;
+    border-radius: var(--mf-shape-popover-radius);
   }
 
   .modeButton {
@@ -264,7 +258,7 @@
   }
 
   .input {
-    min-height: 56px;
+    min-height: var(--mf-size-field);
     border-radius: 18px;
   }
 }

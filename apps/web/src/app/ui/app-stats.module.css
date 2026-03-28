@@ -28,7 +28,7 @@
 .statValueAccent {
   font-size: 36px;
   line-height: 1;
-  color: var(--mf-color-accent-lime);
+  color: var(--mf-color-accent-primary);
 }
 
 @media (max-width: 639px) {

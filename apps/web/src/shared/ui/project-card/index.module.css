@@ -15,15 +15,15 @@
 }
 
 .card:hover {
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 28%, var(--mf-color-border-medium));
-  background: color-mix(in srgb, var(--mf-color-surface-deep) 92%, var(--mf-color-accent-lime) 8%);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 28%, var(--mf-color-border-medium));
+  background: color-mix(in srgb, var(--mf-color-surface-deep) 92%, var(--mf-color-accent-primary) 8%);
   box-shadow: 0 14px 28px color-mix(in srgb, var(--mf-color-background) 72%, transparent);
 }
 
 .card:focus-visible {
   outline: none;
-  border-color: var(--mf-color-accent-lime);
-  box-shadow: 0 0 0 3px var(--mf-color-accent-lime-glow);
+  border-color: var(--mf-color-accent-primary);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-glow);
 }
 
 .header {
@@ -75,7 +75,7 @@
   width: 18px;
   height: 18px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 14%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 14%, transparent);
   flex-shrink: 0;
 }
 

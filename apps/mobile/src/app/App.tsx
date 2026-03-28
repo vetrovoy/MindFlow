@@ -1,5 +1,10 @@
+import { ThemeProvider } from "./providers/theme-provider";
 import { HomeScreen } from "../pages/home";
 
 export function App() {
-  return <HomeScreen />;
+  return (
+    <ThemeProvider>
+      <HomeScreen />
+    </ThemeProvider>
+  );
 }

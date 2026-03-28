@@ -1,9 +1,6 @@
-export const PROJECT_DECORATIONS = [
-  { id: "violet", emoji: "🚀", color: "#7C3AED" },
-  { id: "blue", emoji: "🧠", color: "#2563EB" },
-  { id: "green", emoji: "⚡", color: "#22C55E" },
-  { id: "orange", emoji: "🗂", color: "#FA541C" }
-] as const;
+import { projectMarkers } from "@mindflow/ui";
+
+export const PROJECT_DECORATIONS = projectMarkers;
 
 export type ProjectDecorationId = (typeof PROJECT_DECORATIONS)[number]["id"];
 

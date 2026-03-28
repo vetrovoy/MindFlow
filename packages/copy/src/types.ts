@@ -12,6 +12,12 @@ export interface CopyDictionary {
     ru: string;
     en: string;
   };
+  theme: {
+    label: string;
+    graphite: string;
+    gilded: string;
+    minimal: string;
+  };
   common: {
     save: string;
     close: string;

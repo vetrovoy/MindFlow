@@ -8,7 +8,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
   padding: 0 12px;
   border: 1px solid var(--mf-border-shell);
   border-radius: var(--mf-shape-control-radius);
@@ -26,20 +25,16 @@
 .trigger:hover,
 .trigger:focus-visible {
   color: var(--mf-color-text-primary);
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 40%, var(--mf-color-border-strong));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 40%,
+    var(--mf-color-border-strong)
+  );
   transform: translateY(-1px);
 }
 
 .triggerIcon {
   color: color-mix(in srgb, var(--mf-color-accent-primary) 78%, white 8%);
-}
-
-.triggerValue {
-  font-family: var(--mf-font-body);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .popover {
@@ -52,22 +47,22 @@
   z-index: 80;
 }
 
-.popoverHeader {
-  padding: 2px 4px 10px;
-}
-
 .options {
   display: grid;
   gap: 6px;
 }
 
+.optionsCompact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .option {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 12px;
   border: 1px solid transparent;
   border-radius: 16px;
@@ -90,42 +85,81 @@
   box-shadow: var(--mf-inset-highlight-soft);
 }
 
+.optionCompact {
+  width: 100%;
+  min-height: var(--mf-size-icon-button);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--mf-shape-control-radius);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.optionCompact:hover,
+.optionCompact:focus-visible {
+  background: var(--mf-color-surface-interactive-hover);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 20%, var(--mf-color-border-strong));
+  transform: translateY(-1px);
+  box-shadow: var(--mf-inset-highlight-soft);
+}
+
 .optionActive {
-  color: var(--mf-color-background);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-accent-primary) 88%, white 6%), var(--mf-color-accent-primary));
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 88%, transparent);
-  box-shadow:
-    var(--mf-inset-highlight-strong),
-    0 10px 20px color-mix(in srgb, var(--mf-color-accent-primary) 18%, transparent);
+  color: var(--mf-color-text-primary);
+  background: var(--mf-color-surface-interactive-active);
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 28%, var(--mf-color-border-strong));
+  box-shadow: var(--mf-inset-highlight-soft);
 }
 
 .optionActive:hover,
 .optionActive:focus-visible {
-  color: var(--mf-color-background);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-accent-primary) 88%, white 6%), var(--mf-color-accent-primary));
   transform: none;
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 88%, transparent);
-  box-shadow:
-    var(--mf-inset-highlight-strong),
-    0 10px 20px color-mix(in srgb, var(--mf-color-accent-primary) 18%, transparent);
 }
 
-.optionCode {
-  font-family: var(--mf-font-body);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.swatch {
+  width: 28px;
+  height: 18px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 0.85fr;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--mf-color-text-primary) 14%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--mf-color-text-primary) 10%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--mf-color-background) 12%, transparent);
+}
+
+.optionCompact .swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 12px;
+}
+
+.swatchBackground {
+  background: var(--preview-background);
+}
+
+.swatchSurface {
+  background: var(--preview-surface);
+}
+
+.swatchAccent {
+  background: var(--preview-accent);
 }
 
 .optionLabel {
   font-family: var(--mf-font-body);
   font-size: 13px;
   font-weight: 600;
+  text-align: left;
 }
 
 .popoverArrow {
-  fill: color-mix(in srgb, var(--mf-color-surface-elevated) 92%, transparent);
+  fill: color-mix(in srgb, var(--mf-color-surface-card) 96%, transparent);
 }

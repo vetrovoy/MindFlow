@@ -37,52 +37,58 @@
 }
 
 .headerMenuIcon {
-  min-width: 52px;
-  min-height: 52px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 88%, transparent);
-  border-radius: 16px;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--mf-color-surface-elevated) 78%, transparent),
-      color-mix(in srgb, var(--mf-color-surface) 92%, transparent)
-    );
+  min-width: var(--mf-size-icon-button);
+  min-height: var(--mf-size-icon-button);
+  border: 1px solid var(--mf-border-shell);
+  border-radius: var(--mf-shape-control-radius);
+  background: var(--mf-surface-shell);
   color: var(--mf-color-text-secondary);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 9%, transparent),
-    0 10px 24px color-mix(in srgb, black 12%, transparent);
+  box-shadow: var(--mf-shadow-shell);
 }
 
 .headerMenuPopover {
-  width: min(72px, calc(100vw - 32px));
-  padding: 10px;
-  border-radius: 22px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 84%, transparent);
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--mf-color-surface-elevated) 86%, transparent),
-      color-mix(in srgb, var(--mf-color-surface) 96%, transparent)
-    );
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
-    0 20px 44px color-mix(in srgb, black 18%, transparent);
+  width: auto;
+  padding: var(--mf-space-lg);
+  border-radius: var(--mf-shape-capsule-radius);
+  border: 1px solid var(--mf-border-shell);
+  background: var(--mf-surface-shell-strong);
+  box-shadow: var(--mf-shadow-floating);
   z-index: 80;
 }
 
 .headerMenuActions {
   display: grid;
-  justify-items: end;
+  gap: var(--mf-space-lg);
+}
+
+.headerMenuThemeOptions {
+  width: var(--mf-layout-popover-width);
+}
+
+.headerMenuThemePopover {
+  width: auto;
+  min-width: 0;
+  padding: var(--mf-space-lg);
+  border-radius: var(--mf-shape-capsule-radius);
+  border: 1px solid var(--mf-border-shell);
+  background: var(--mf-surface-shell-strong);
+  box-shadow: var(--mf-shadow-floating);
+  z-index: 90;
+}
+
+.headerMenuUtilityRow {
+  display: flex;
+  justify-content: flex-end;
   gap: var(--mf-space-md);
 }
 
 .headerMenuAction {
-  min-width: 52px;
-  min-height: 52px;
+  min-width: var(--mf-size-icon-button);
+  min-height: var(--mf-size-icon-button);
 }
 
 .headerMenuPopoverArrow {
-  fill: color-mix(in srgb, var(--mf-color-surface-elevated) 92%, transparent);
+  fill: color-mix(in srgb, var(--mf-color-surface-card) 96%, transparent);
 }
 
 .title {
@@ -97,20 +103,13 @@
 }
 
 .signOutButton {
-  min-width: 52px;
-  min-height: 52px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 88%, transparent);
-  border-radius: 16px;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--mf-color-surface-elevated) 78%, transparent),
-      color-mix(in srgb, var(--mf-color-surface) 92%, transparent)
-    );
-  color: color-mix(in srgb, var(--mf-color-accent-lime) 78%, white 8%);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 9%, transparent),
-    0 10px 24px color-mix(in srgb, black 12%, transparent);
+  min-width: var(--mf-size-icon-button);
+  min-height: var(--mf-size-icon-button);
+  border: 1px solid var(--mf-border-shell);
+  border-radius: var(--mf-shape-control-radius);
+  background: var(--mf-surface-shell);
+  color: color-mix(in srgb, var(--mf-color-accent-primary) 78%, white 8%);
+  box-shadow: var(--mf-shadow-shell);
 }
 
 .signOutButton:hover:not(:disabled),
@@ -118,7 +117,7 @@
   color: var(--mf-color-text-primary);
   border-color: color-mix(
     in srgb,
-    var(--mf-color-accent-lime) 40%,
+    var(--mf-color-accent-primary) 40%,
     var(--mf-color-border-strong)
   );
   background:
@@ -129,8 +128,8 @@
     );
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, white 9%, transparent),
-    0 10px 24px color-mix(in srgb, black 12%, transparent),
-    0 0 0 3px var(--mf-color-accent-lime-ring-strong);
+    0 10px 24px var(--mf-color-shadow-soft),
+    0 0 0 3px var(--mf-color-accent-primary-ring-strong);
   filter: none;
   transform: translateY(-1px);
 }
@@ -171,7 +170,7 @@
 }
 
 .topTabActive {
-  background: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-primary);
   color: var(--mf-color-background);
 }
 

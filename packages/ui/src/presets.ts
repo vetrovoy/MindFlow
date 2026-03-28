@@ -4,7 +4,10 @@ import type {
   InlineStatusVariant,
   StatusBadgeVariant
 } from "./contracts";
-import { colors, gradients, radii, spacing, typography } from "./tokens";
+import { DEFAULT_THEME, getTheme } from "./themes";
+import { radii, spacing, typography } from "./tokens";
+
+const defaultTheme = getTheme(DEFAULT_THEME);
 
 export const buttonPresets: Record<
   ButtonVariant,
@@ -18,17 +21,17 @@ export const buttonPresets: Record<
   }
 > = {
   primary: {
-    background: colors.accentLime,
-    foreground: colors.background,
-    borderColor: colors.accentLime,
+    background: defaultTheme.colors.accentPrimary,
+    foreground: defaultTheme.colors.background,
+    borderColor: defaultTheme.colors.accentPrimary,
     radius: radii.xl,
     paddingX: spacing["4xl"],
     paddingY: spacing.lg
   },
   secondary: {
-    background: colors.surfaceElevated,
-    foreground: colors.textPrimary,
-    borderColor: colors.borderStrong,
+    background: defaultTheme.colors.surfaceElevated,
+    foreground: defaultTheme.colors.textPrimary,
+    borderColor: defaultTheme.colors.borderStrong,
     radius: radii.xl,
     paddingX: spacing["4xl"],
     paddingY: spacing.lg
@@ -44,14 +47,14 @@ export const statusBadgePresets: Record<
   }
 > = {
   today: {
-    background: colors.surfaceElevated,
-    foreground: colors.accentLime,
-    borderColor: colors.borderStrong
+    background: defaultTheme.colors.surfaceElevated,
+    foreground: defaultTheme.colors.accentPrimary,
+    borderColor: defaultTheme.colors.borderStrong
   },
   overdue: {
-    background: colors.surfaceElevated,
-    foreground: colors.accentAlert,
-    borderColor: colors.borderStrong
+    background: defaultTheme.colors.surfaceElevated,
+    foreground: defaultTheme.colors.accentAlert,
+    borderColor: defaultTheme.colors.borderStrong
   }
 };
 
@@ -65,22 +68,22 @@ export const feedbackCardPresets: Record<
   }
 > = {
   error: {
-    titleColor: colors.accentAlert,
-    descriptionColor: colors.textSecondary,
-    borderColor: colors.accentAlert,
-    background: colors.surface
+    titleColor: defaultTheme.colors.accentAlert,
+    descriptionColor: defaultTheme.colors.textSecondary,
+    borderColor: defaultTheme.colors.accentAlert,
+    background: defaultTheme.colors.surface
   },
   loading: {
-    titleColor: colors.textPrimary,
-    descriptionColor: colors.textSecondary,
-    borderColor: colors.borderMedium,
-    background: colors.surface
+    titleColor: defaultTheme.colors.textPrimary,
+    descriptionColor: defaultTheme.colors.textSecondary,
+    borderColor: defaultTheme.colors.borderMedium,
+    background: defaultTheme.colors.surface
   },
   empty: {
-    titleColor: colors.textPrimary,
-    descriptionColor: colors.textSecondary,
-    borderColor: colors.borderMuted,
-    background: colors.surface
+    titleColor: defaultTheme.colors.textPrimary,
+    descriptionColor: defaultTheme.colors.textSecondary,
+    borderColor: defaultTheme.colors.borderMuted,
+    background: defaultTheme.colors.surface
   }
 };
 
@@ -93,21 +96,21 @@ export const inlineStatusPresets: Record<
   }
 > = {
   loading: {
-    color: colors.textSecondary,
+    color: defaultTheme.colors.textSecondary,
     fontFamily: typography.fontFamily.meta,
     fontSize: typography.fontSize.meta
   },
   error: {
-    color: colors.accentAlert,
+    color: defaultTheme.colors.accentAlert,
     fontFamily: typography.fontFamily.meta,
     fontSize: typography.fontSize.meta
   }
 };
 
 export const projectCardPreset = {
-  backgroundGradient: gradients.featuredProject,
-  foreground: colors.textPrimary,
-  borderColor: colors.borderStrong,
+  backgroundGradient: defaultTheme.gradients.featuredProject,
+  foreground: defaultTheme.colors.textPrimary,
+  borderColor: defaultTheme.colors.borderStrong,
   radius: radii.card,
   padding: spacing["4xl"]
 } as const;

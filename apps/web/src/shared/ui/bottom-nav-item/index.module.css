@@ -33,7 +33,7 @@
 }
 
 .linkActive {
-  background: var(--mf-color-accent-lime);
+  background: var(--mf-color-accent-primary);
   color: var(--mf-color-background);
 }
 
