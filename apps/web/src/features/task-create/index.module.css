@@ -198,6 +198,7 @@
   .toolbar {
     width: 100%;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-radius: var(--mf-radius-card);
   }
 
   .titleField {

@@ -113,7 +113,7 @@ export function ProjectCreateModalFeature({
               }
             }}
             placeholder={copy.project.titlePlaceholder}
-            rows={1}
+            rows={2}
             value={name}
           />
           {nameError == null ? null : (

@@ -162,7 +162,7 @@ export function TaskCreateFeature({
               }
             }}
             placeholder={copy.task.titlePlaceholder}
-            rows={1}
+            rows={2}
             value={title}
           />
           {titleError == null ? null : (
