@@ -1,0 +1,137 @@
+.wrap {
+  position: relative;
+}
+
+.trigger {
+  min-width: 52px;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 88%, transparent);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-surface-elevated) 78%, transparent), color-mix(in srgb, var(--mf-color-surface) 92%, transparent));
+  color: var(--mf-color-text-secondary);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 9%, transparent),
+    0 10px 24px color-mix(in srgb, black 12%, transparent);
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    background-color 140ms ease;
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+  color: var(--mf-color-text-primary);
+  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 40%, var(--mf-color-border-strong));
+  transform: translateY(-1px);
+}
+
+.triggerIcon {
+  color: color-mix(in srgb, var(--mf-color-accent-lime) 78%, white 8%);
+}
+
+.triggerValue {
+  font-family: var(--mf-font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.popover {
+  width: min(220px, calc(100vw - 32px));
+  padding: 10px;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 84%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-surface-elevated) 86%, transparent), color-mix(in srgb, var(--mf-color-surface) 96%, transparent));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
+    0 20px 44px color-mix(in srgb, black 18%, transparent);
+  z-index: 80;
+}
+
+.popoverHeader {
+  padding: 2px 4px 10px;
+}
+
+.options {
+  display: grid;
+  gap: 6px;
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--mf-color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.option:hover,
+.option:focus-visible {
+  color: var(--mf-color-text-primary);
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 92%, transparent);
+  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 20%, var(--mf-color-border-strong));
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+}
+
+.optionActive {
+  color: var(--mf-color-background);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-accent-lime) 88%, white 6%), var(--mf-color-accent-lime));
+  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 26%, transparent),
+    0 10px 20px color-mix(in srgb, var(--mf-color-accent-lime) 18%, transparent);
+}
+
+.optionActive:hover,
+.optionActive:focus-visible {
+  color: var(--mf-color-background);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-accent-lime) 88%, white 6%), var(--mf-color-accent-lime));
+  transform: none;
+  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 26%, transparent),
+    0 10px 20px color-mix(in srgb, var(--mf-color-accent-lime) 18%, transparent);
+}
+
+.optionCode {
+  font-family: var(--mf-font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.optionLabel {
+  font-family: var(--mf-font-body);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.popoverArrow {
+  fill: color-mix(in srgb, var(--mf-color-surface-elevated) 92%, transparent);
+}

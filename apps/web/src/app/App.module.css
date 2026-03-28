@@ -43,45 +43,6 @@
 .addButton {
 }
 
-.languageToggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid var(--mf-color-border-strong);
-  background: var(--mf-color-surface);
-}
-
-.languageButton {
-  min-width: 44px;
-  min-height: 36px;
-  padding: 0 12px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--mf-color-text-secondary);
-  cursor: pointer;
-  transition:
-    background-color 140ms ease,
-    color 140ms ease;
-}
-
-.languageButton:hover,
-.languageButton:focus-visible {
-  color: var(--mf-color-text-primary);
-}
-
-.languageButtonActive {
-  background: var(--mf-color-accent-lime);
-  color: var(--mf-color-background);
-}
-
-.languageButtonActive:hover,
-.languageButtonActive:focus-visible {
-  color: var(--mf-color-background);
-}
-
 .stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -11,6 +11,7 @@ import {
   Circle,
   Flag,
   Star,
+  Languages,
   FolderKanban,
   GripVertical,
   LayoutGrid,
@@ -47,6 +48,7 @@ export type IconName =
   | "close"
   | "favorite"
   | "flag"
+  | "language"
   | "palette"
   | "nav-inbox"
   | "nav-lists"
@@ -82,6 +84,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   close: X,
   favorite: Star,
   flag: Flag,
+  language: Languages,
   palette: Palette,
   "nav-inbox": ListTodo,
   "nav-lists": FolderKanban,

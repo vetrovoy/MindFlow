@@ -8,9 +8,8 @@ import {
   useLocation
 } from "react-router-dom";
 
-import { SUPPORTED_LANGUAGES } from "@mindflow/copy";
-
-import { useCopy, useLanguage } from "@/app/providers/language-provider";
+import { useCopy } from "@/app/providers/language-provider";
+import { LanguageToggle } from "@/app/ui/language-toggle";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
 import { QuickAddFeature } from "@/features/quick-add";
@@ -36,7 +35,6 @@ function AppShell() {
   const [isProjectCreateOpen, setIsProjectCreateOpen] = useState(false);
 
   const copy = useCopy();
-  const { language, setLanguage } = useLanguage();
   const { derived, state } = useMindFlowApp();
   const tasksInListsCount = useMemo(
     () =>
@@ -68,27 +66,7 @@ function AppShell() {
                 </SupportText>
               </div>
               <div className={styles.headerActions}>
-                <div
-                  aria-label={copy.language.label}
-                  className={styles.languageToggle}
-                  role="group"
-                >
-                  {SUPPORTED_LANGUAGES.map((item) => (
-                    <button
-                      className={cn(
-                        styles.languageButton,
-                        language === item && styles.languageButtonActive
-                      )}
-                      key={item}
-                      onClick={() => {
-                        setLanguage(item);
-                      }}
-                      type="button"
-                    >
-                      {item.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
+                <LanguageToggle />
                 <IconButton
                   ariaLabel={
                     isLists ? copy.app.addProjectAriaLabel : copy.app.addTaskAriaLabel
