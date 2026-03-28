@@ -3,7 +3,7 @@ import { formatDisplayDate } from "@mindflow/copy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useCopy, useLanguage } from "@/app/providers/language-provider";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import {
   DEFAULT_VALUES,
   INBOX_SELECT_VALUE,
@@ -15,7 +15,7 @@ import { getTaskEditSelectedProject } from "./task-edit.selectors";
 export function useTaskEditForm() {
   const copy = useCopy();
   const { language } = useLanguage();
-  const { actions, derived, state } = useMindFlowApp();
+  const { actions, derived, state } = useAppState();
   
   const task = derived.editingTask;
   const taskId = task?.id ?? "";

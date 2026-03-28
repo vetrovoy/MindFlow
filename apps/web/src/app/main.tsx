@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import { MindFlowProvider } from "@/shared/model/mindflow-provider";
+import { AppStoreProvider } from "@/shared/model/app-store-provider";
 import { AuthProvider } from "@/app/providers/auth-provider";
 import { ThemeVariables } from "@/app/providers/theme-variables";
 import { LanguageProvider } from "@/app/providers/language-provider";
@@ -15,9 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ThemeVariables />
       <LanguageProvider>
         <AuthProvider>
-          <MindFlowProvider>
+          <AppStoreProvider>
             <App />
-          </MindFlowProvider>
+          </AppStoreProvider>
         </AuthProvider>
       </LanguageProvider>
     </BrowserRouter>

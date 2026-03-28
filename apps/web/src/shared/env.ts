@@ -1,1 +1,1 @@
-export const WEB_APP_NAME = "MindFlowApp";
+export const WEB_APP_NAME = "Task Planner";

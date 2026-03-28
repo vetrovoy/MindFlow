@@ -5,14 +5,18 @@ import {
   type AppLanguage
 } from "@mindflow/copy";
 
-export const LANGUAGE_STORAGE_KEY = "mindflow-language";
+export const LEGACY_LANGUAGE_STORAGE_KEY = "mindflow-language";
+export const APP_LANGUAGE_STORAGE_KEY = "planner-language";
 
 export function readStoredLanguage() {
   if (typeof window === "undefined") {
     return null;
   }
 
-  return window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  return (
+    window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) ??
+    window.localStorage.getItem(LEGACY_LANGUAGE_STORAGE_KEY)
+  );
 }
 
 export function getBrowserLanguage() {
@@ -44,7 +48,7 @@ export function persistLanguage(language: AppLanguage) {
     return;
   }
 
-  window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  window.localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, language);
 }
 
 export function applyDocumentLanguage(language: AppLanguage) {

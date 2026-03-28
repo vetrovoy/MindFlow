@@ -1,13 +1,13 @@
 import { useCopy } from "@/app/providers/language-provider";
 import { ProjectTaskReorderFeature } from "@/features/project-task-reorder";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { ProjectCard } from "@/shared/ui";
 import { SectionTitle, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 export function ListsViewWidget() {
   const copy = useCopy();
-  const { actions, derived } = useMindFlowApp();
+  const { actions, derived } = useAppState();
   const favoriteSections = derived.projectSections.filter((section) => section.project.isFavorite);
   const regularSections = derived.projectSections.filter((section) => !section.project.isFavorite);
 

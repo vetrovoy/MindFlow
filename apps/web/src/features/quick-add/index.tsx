@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useCopy } from "@/app/providers/language-provider";
 import { getTodayDateKey } from "@/shared/lib/date";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { CaptureForm } from "@/shared/ui";
 
 interface QuickAddFeatureProps {
@@ -29,7 +29,7 @@ export function QuickAddFeature({
   preferredDate
 }: QuickAddFeatureProps) {
   const copy = useCopy();
-  const { actions, state } = useMindFlowApp();
+  const { actions, state } = useAppState();
   const resolvedPreferredDate = useMemo(
     () => resolvePreferredDate(preferredDate),
     [preferredDate]

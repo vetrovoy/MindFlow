@@ -25,7 +25,7 @@ import { ListsPage } from "@/pages/lists";
 import { TodayPage } from "@/pages/today";
 import { SystemStatusWidget } from "@/widgets/system-status";
 import { BottomNavWidget } from "@/widgets/bottom-nav";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { Display, SupportText } from "@/shared/ui";
 import { IconButton, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import { ProjectCreateFeature } from "@/features/project-create";
@@ -42,7 +42,7 @@ function AppShell() {
 
   const copy = useCopy();
   const { session, signOut } = useAuth();
-  const { state } = useMindFlowApp();
+  const { state } = useAppState();
 
   return (
     <div className={styles.shell}>

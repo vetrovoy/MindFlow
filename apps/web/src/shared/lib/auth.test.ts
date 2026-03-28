@@ -16,7 +16,7 @@ describe("auth helpers", () => {
   });
 
   it("hashes passwords with per-user salts and verifies credentials", async () => {
-    const password = "mindflow-secret";
+    const password = "planner-secret";
     const salt = createPasswordSalt();
     const passwordHash = await hashPassword(password, salt);
 

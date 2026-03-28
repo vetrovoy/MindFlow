@@ -11,7 +11,7 @@ import type {
   Transaction
 } from "./contracts";
 
-class MindFlowDexieDatabase extends Dexie {
+class TaskDatabase extends Dexie {
   tasks!: Table<Task, string>;
   projects!: Table<Project, string>;
 
@@ -37,7 +37,7 @@ function sortByCreatedAtAsc<T extends { createdAt: string }>(items: T[]) {
 }
 
 class DexieTaskRepository implements TaskRepository {
-  constructor(private readonly database: MindFlowDexieDatabase) {}
+  constructor(private readonly database: TaskDatabase) {}
 
   async getById(id: string) {
     const task = await this.database.tasks.get(id);
@@ -77,7 +77,7 @@ class DexieTaskRepository implements TaskRepository {
 }
 
 class DexieProjectRepository implements ProjectRepository {
-  constructor(private readonly database: MindFlowDexieDatabase) {}
+  constructor(private readonly database: TaskDatabase) {}
 
   async getById(id: string) {
     const project = await this.database.projects.get(id);
@@ -113,7 +113,7 @@ class DexieProjectRepository implements ProjectRepository {
 }
 
 class DexieTransaction implements Transaction {
-  constructor(private readonly database: MindFlowDexieDatabase) {}
+  constructor(private readonly database: TaskDatabase) {}
 
   async run<T>(work: () => Promise<T>) {
     return this.database.transaction("rw", this.database.tasks, this.database.projects, work);
@@ -131,7 +131,7 @@ export function createDexieRepositoryBundle(
     name: string;
   }>
 ): RepositoryBundle {
-  const database = new MindFlowDexieDatabase(options?.name ?? "mindflow-web");
+  const database = new TaskDatabase(options?.name ?? "planner-local");
 
   return {
     tasks: new DexieTaskRepository(database),

@@ -15,8 +15,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: "MindFlowApp",
-        short_name: "MindFlow",
+        name: "Task Planner",
+        short_name: "Planner",
         description: "Offline-first task planning across Inbox, Lists, and Today.",
         theme_color: "#0A0A0A",
         background_color: "#0A0A0A",

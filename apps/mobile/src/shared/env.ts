@@ -1,1 +1,1 @@
-export const MOBILE_APP_NAME = "MindFlowApp";
+export const MOBILE_APP_NAME = "Task Planner";

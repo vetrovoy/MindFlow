@@ -1,13 +1,13 @@
 import * as Toast from "@radix-ui/react-toast";
 
 import { useCopy } from "@/app/providers/language-provider";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { Icon, MetaText, Title } from "@/shared/ui";
 import styles from "./index.module.css";
 
 export function SystemStatusWidget() {
   const copy = useCopy();
-  const { actions, state } = useMindFlowApp();
+  const { actions, state } = useAppState();
 
   if (!state.isSaving && state.error == null && state.toast == null) {
     return null;

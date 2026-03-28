@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useCopy } from "@/app/providers/language-provider";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import {
   DEFAULT_PROJECT_EDIT_VALUES,
   type ProjectEditFormValues
@@ -13,7 +13,7 @@ function createDraftSignature(values: ProjectEditFormValues) {
 
 export function useProjectEditForm() {
   const copy = useCopy();
-  const { actions, derived, state } = useMindFlowApp();
+  const { actions, derived, state } = useAppState();
   const project = derived.editingProject;
   const projectId = project?.id ?? "";
   const [draft, setDraft] = useState<ProjectEditFormValues>(DEFAULT_PROJECT_EDIT_VALUES);

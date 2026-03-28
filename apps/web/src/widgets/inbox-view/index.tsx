@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useCopy } from "@/app/providers/language-provider";
 import { TaskListEntity } from "@/entities/task-list";
 import { getTodayDateKey } from "@/shared/lib/date";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import {
   CollapsibleSection,
   SectionTitle,
@@ -14,7 +14,7 @@ import styles from "./index.module.css";
 
 export function InboxViewWidget() {
   const copy = useCopy();
-  const { actions, derived } = useMindFlowApp();
+  const { actions, derived } = useAppState();
   const todayDateKey = getTodayDateKey();
   const todayAndOverdueTasks = useMemo(
     () => derived.todayFeed.map((item) => item.task),

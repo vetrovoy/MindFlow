@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 
 import { useCopy } from "@/app/providers/language-provider";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { Display, MetaText } from "@/shared/ui";
 import styles from "./app-stats.module.css";
 
 export function AppStats() {
   const copy = useCopy();
-  const { derived } = useMindFlowApp();
+  const { derived } = useAppState();
 
   const activeTasksCount = useMemo(
     () =>

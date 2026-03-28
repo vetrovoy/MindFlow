@@ -22,31 +22,31 @@ import { getProjectDecoration, getProjectDecorationByColor } from "@/shared/lib/
 import {
   getNextOrderIndex,
   formatError
-} from "./mindflow-store.helpers";
+} from "./task-store.helpers";
 import type {
-  MindFlowActions,
-  MindFlowState,
-  MindFlowStore,
+  AppActions,
+  AppState,
+  AppStore,
   ToastState
-} from "./mindflow-store.types";
+} from "./task-store.types";
 
-interface CreateMindFlowActionsParams {
+interface CreateTaskStoreActionsParams {
   repository: RepositoryBundle;
-  getStore: () => MindFlowStore;
-  patchState: (patch: Partial<MindFlowState>) => void;
+  getStore: () => AppStore;
+  patchState: (patch: Partial<AppState>) => void;
   runMutation: (work: () => Promise<void>) => Promise<boolean>;
   applySnapshot: () => Promise<void>;
   setToast: (toast: ToastState | null) => void;
 }
 
-export function createMindFlowActions({
+export function createAppActions({
   applySnapshot,
   getStore,
   patchState,
   repository,
   runMutation,
   setToast
-}: CreateMindFlowActionsParams): MindFlowActions {
+}: CreateTaskStoreActionsParams): AppActions {
   return {
     async reload() {
       try {

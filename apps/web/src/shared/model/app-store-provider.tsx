@@ -9,16 +9,15 @@ import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
 import { useAuth } from "@/app/providers/auth-provider";
-import { getMindFlowDatabaseName } from "./mindflow-store.config";
-import { createMindFlowStore, type MindFlowStoreApi } from "./mindflow-store";
+import { getUserDatabaseName } from "./app-storage.config";
+import { createAppStore, type AppStoreApi } from "./task-store";
 
-const MindFlowStoreContext = createContext<MindFlowStoreApi | null>(null);
+const AppStoreContext = createContext<AppStoreApi | null>(null);
 
-export function MindFlowProvider({ children }: PropsWithChildren) {
+export function AppStoreProvider({ children }: PropsWithChildren) {
   const { session } = useAuth();
   const store = useMemo(
-    () =>
-      session == null ? null : createMindFlowStore(getMindFlowDatabaseName(session.userId)),
+    () => (session == null ? null : createAppStore(getUserDatabaseName(session.userId))),
     [session?.userId]
   );
 
@@ -31,15 +30,15 @@ export function MindFlowProvider({ children }: PropsWithChildren) {
   }, [store]);
 
   return (
-    <MindFlowStoreContext.Provider value={store}>{children}</MindFlowStoreContext.Provider>
+    <AppStoreContext.Provider value={store}>{children}</AppStoreContext.Provider>
   );
 }
 
-export function useMindFlowApp() {
-  const store = useContext(MindFlowStoreContext);
+export function useAppState() {
+  const store = useContext(AppStoreContext);
 
   if (store == null) {
-    throw new Error("useMindFlowApp must be used within an authenticated MindFlowProvider");
+    throw new Error("useAppState must be used within an authenticated AppStoreProvider");
   }
 
   return useStore(

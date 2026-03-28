@@ -1,32 +1,40 @@
 import { createDexieRepositoryBundle } from "@mindflow/data";
 
 import {
-  LEGACY_MINDFLOW_DATABASE_NAME,
-  getMindFlowDatabaseName
-} from "@/shared/model/mindflow-store.config";
+  LEGACY_DATABASE_NAME,
+  getLegacyUserDatabaseName,
+  getUserDatabaseName
+} from "@/shared/model/app-storage.config";
 
 export async function migrateLegacyAnonymousData(userId: string) {
   const legacyRepository = createDexieRepositoryBundle({
-    name: LEGACY_MINDFLOW_DATABASE_NAME
+    name: LEGACY_DATABASE_NAME
   });
   const userRepository = createDexieRepositoryBundle({
-    name: getMindFlowDatabaseName(userId)
+    name: getUserDatabaseName(userId)
   });
-  const [legacyTasks, legacyProjects, userTasks, userProjects] = await Promise.all([
+  const legacyUserRepository = createDexieRepositoryBundle({
+    name: getLegacyUserDatabaseName(userId)
+  });
+  const [legacyTasks, legacyProjects, legacyUserTasks, legacyUserProjects, userTasks, userProjects] = await Promise.all([
     legacyRepository.tasks.listAll(),
     legacyRepository.projects.listAll(),
+    legacyUserRepository.tasks.listAll(),
+    legacyUserRepository.projects.listAll(),
     userRepository.tasks.listAll(),
     userRepository.projects.listAll()
   ]);
+  const mergedLegacyTasks = [...legacyTasks, ...legacyUserTasks];
+  const mergedLegacyProjects = [...legacyProjects, ...legacyUserProjects];
 
-  if (legacyTasks.length === 0 && legacyProjects.length === 0) {
+  if (mergedLegacyTasks.length === 0 && mergedLegacyProjects.length === 0) {
     return;
   }
 
   const userTaskIds = new Set(userTasks.map((task) => task.id));
   const userProjectIds = new Set(userProjects.map((project) => project.id));
-  const tasksToImport = legacyTasks.filter((task) => !userTaskIds.has(task.id));
-  const projectsToImport = legacyProjects.filter((project) => !userProjectIds.has(project.id));
+  const tasksToImport = mergedLegacyTasks.filter((task) => !userTaskIds.has(task.id));
+  const projectsToImport = mergedLegacyProjects.filter((project) => !userProjectIds.has(project.id));
 
   if (tasksToImport.length === 0 && projectsToImport.length === 0) {
     return;

@@ -3,5 +3,5 @@ export function createId() {
     return crypto.randomUUID();
   }
 
-  return `mindflow-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  return `planner-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }

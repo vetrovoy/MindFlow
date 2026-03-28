@@ -14,7 +14,7 @@ import {
 } from "@dnd-kit/sortable";
 import type { Task } from "@mindflow/domain";
 import { TaskRowSortable } from "@/shared/ui/task-row-sortable";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import styles from "./index.module.css";
 import { useCallback } from "react";
 
@@ -27,7 +27,7 @@ export function ProjectTaskReorderFeature({
   projectId,
   tasks
 }: ProjectTaskReorderFeatureProps) {
-  const { actions } = useMindFlowApp();
+  const { actions } = useAppState();
   const sortableTasksCount = tasks.filter((task) => task.status !== "done").length;
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),

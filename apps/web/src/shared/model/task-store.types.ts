@@ -40,7 +40,7 @@ export interface SaveOptions {
   toastOnSuccess?: boolean;
 }
 
-export interface MindFlowState {
+export interface AppState {
   tasks: Task[];
   projects: Project[];
   isHydrated: boolean;
@@ -52,7 +52,7 @@ export interface MindFlowState {
   toast: ToastState | null;
 }
 
-export interface MindFlowDerivedState {
+export interface AppDerivedState {
   inboxTasks: Task[];
   todayFeed: TodayTaskGroup[];
   favoriteProjects: Project[];
@@ -62,7 +62,7 @@ export interface MindFlowDerivedState {
   editingProject: Project | null;
 }
 
-export interface MindFlowActions {
+export interface AppActions {
   addInboxTask: (input: {
     title: string;
     dueDate?: string | null;
@@ -93,8 +93,8 @@ export interface MindFlowActions {
   reload: () => Promise<void>;
 }
 
-export interface MindFlowStore {
-  state: MindFlowState;
-  derived: MindFlowDerivedState;
-  actions: MindFlowActions;
+export interface AppStore {
+  state: AppState;
+  derived: AppDerivedState;
+  actions: AppActions;
 }

@@ -2,14 +2,14 @@ import { useMemo } from "react";
 
 import { useCopy } from "@/app/providers/language-provider";
 import { TaskListEntity } from "@/entities/task-list";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { CollapsibleSection } from "@/shared/ui";
 import { SectionTitle, StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 export function TodayViewWidget() {
   const copy = useCopy();
-  const { actions, derived } = useMindFlowApp();
+  const { actions, derived } = useAppState();
   const { badgeByTaskId, overdueTasks, todayTasks } = useMemo(() => {
     const result: Partial<Record<string, "today" | "overdue">> = {};
     const overdue = [];

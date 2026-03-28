@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { getTodayDateKey } from "@/shared/lib/date";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import {
   ActionButton,
   DatePickerField,
@@ -53,7 +53,7 @@ export function TaskCreateFeature({
 }: TaskCreateFeatureProps) {
   const copy = useCopy();
   const { language } = useLanguage();
-  const { actions, derived } = useMindFlowApp();
+  const { actions, derived } = useAppState();
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState<string | null>(null);
   const [date, setDate] = useState("");

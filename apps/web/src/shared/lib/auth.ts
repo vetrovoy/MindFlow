@@ -1,7 +1,8 @@
 import { getNowIso } from "@/shared/lib/date";
 import { createId } from "@/shared/lib/ids";
 
-export const AUTH_STORAGE_KEY = "mindflow-auth";
+export const LEGACY_AUTH_STORAGE_KEY = "mindflow-auth";
+export const APP_AUTH_STORAGE_KEY = "planner-auth";
 export const AUTH_MIN_PASSWORD_LENGTH = 8;
 
 export interface LocalAuthUser {
@@ -109,7 +110,9 @@ export function readStoredAuthSnapshot() {
     return createEmptyAuthSnapshot();
   }
 
-  const raw = window.localStorage.getItem(AUTH_STORAGE_KEY);
+  const raw =
+    window.localStorage.getItem(APP_AUTH_STORAGE_KEY) ??
+    window.localStorage.getItem(LEGACY_AUTH_STORAGE_KEY);
   if (raw == null) {
     return createEmptyAuthSnapshot();
   }
@@ -126,7 +129,7 @@ export function persistAuthSnapshot(snapshot: AuthStorageSnapshot) {
     return;
   }
 
-  window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(snapshot));
+  window.localStorage.setItem(APP_AUTH_STORAGE_KEY, JSON.stringify(snapshot));
 }
 
 export function createAuthSession(user: LocalAuthUser): AuthSession {

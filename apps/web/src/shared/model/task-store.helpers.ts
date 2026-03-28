@@ -9,11 +9,11 @@ import type { RepositoryBundle } from "@mindflow/data";
 
 import { getTodayDateKey } from "@/shared/lib/date";
 import type {
-  MindFlowDerivedState,
-  MindFlowState
-} from "./mindflow-store.types";
+  AppDerivedState,
+  AppState
+} from "./task-store.types";
 
-export const INITIAL_STATE: MindFlowState = {
+export const INITIAL_STATE: AppState = {
   tasks: [],
   projects: [],
   isHydrated: false,
@@ -97,7 +97,7 @@ export async function readSnapshot(repository: RepositoryBundle) {
   return { tasks, projects };
 }
 
-export function computeDerived(state: MindFlowState): MindFlowDerivedState {
+export function computeDerived(state: AppState): AppDerivedState {
   const visibleTasks = getVisibleTasks(state.tasks, state.projects);
   const activeProjects = sortProjects(
     state.projects.filter((project) => project.archivedAt == null)

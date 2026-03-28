@@ -9,23 +9,23 @@ import {
   INITIAL_STATE,
   readSnapshot,
   sortTasks
-} from "./mindflow-store.helpers";
-import { createMindFlowActions } from "./mindflow-store.actions";
+} from "./task-store.helpers";
+import { createAppActions } from "./task-store.actions";
 import type {
-  MindFlowState,
-  MindFlowStore,
+  AppState,
+  AppStore,
   ToastState
-} from "./mindflow-store.types";
+} from "./task-store.types";
 
-export type MindFlowStoreApi = StoreApi<MindFlowStore>;
+export type AppStoreApi = StoreApi<AppStore>;
 
-export function createMindFlowStore(databaseName: string): MindFlowStoreApi {
+export function createAppStore(databaseName: string): AppStoreApi {
   const repository = createDexieRepositoryBundle({ name: databaseName });
 
-  return createStore<MindFlowStore>((set, get) => {
+  return createStore<AppStore>((set, get) => {
     let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    const patchState = (patch: Partial<MindFlowState>) => {
+    const patchState = (patch: Partial<AppState>) => {
       set((store) => {
         const nextState = { ...store.state, ...patch };
 
@@ -105,7 +105,7 @@ export function createMindFlowStore(databaseName: string): MindFlowStoreApi {
     return {
       state: INITIAL_STATE,
       derived: computeDerived(INITIAL_STATE),
-      actions: createMindFlowActions({
+      actions: createAppActions({
         repository,
         getStore: get,
         patchState,

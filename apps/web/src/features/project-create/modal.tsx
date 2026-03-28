@@ -5,7 +5,7 @@ import { formatDisplayDate } from "@mindflow/copy";
 import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 import { cn } from "@/shared/lib/cn";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import {
   ActionButton,
   ColorPickerField,
@@ -30,7 +30,7 @@ export function ProjectCreateModalFeature({
 }: ProjectCreateModalFeatureProps) {
   const copy = useCopy();
   const { language } = useLanguage();
-  const { actions } = useMindFlowApp();
+  const { actions } = useAppState();
   const [name, setName] = useState("");
   const [deadline, setDeadline] = useState("");
   const [color, setColor] = useState<string>(PROJECT_DECORATIONS[0].color);

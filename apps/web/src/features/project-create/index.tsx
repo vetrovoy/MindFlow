@@ -1,10 +1,10 @@
 import { useCopy } from "@/app/providers/language-provider";
-import { useMindFlowApp } from "@/shared/model/mindflow-provider";
+import { useAppState } from "@/shared/model/app-store-provider";
 import { CaptureForm } from "@/shared/ui";
 
 export function ProjectCreateFeature() {
   const copy = useCopy();
-  const { actions, state } = useMindFlowApp();
+  const { actions, state } = useAppState();
 
   return (
     <CaptureForm
