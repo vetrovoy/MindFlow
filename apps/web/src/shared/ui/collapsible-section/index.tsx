@@ -33,6 +33,7 @@ export function CollapsibleSection({
           <Icon decorative name="chevron-right" size={16} tone="muted" />
         </span>
       </Collapsible.Trigger>
+      <div aria-hidden="true" className={styles.divider} />
       <Collapsible.Content className={cn(styles.content, contentClassName)}>
         {children}
       </Collapsible.Content>
