@@ -176,6 +176,10 @@
   background: color-mix(in srgb, var(--mf-color-surface-deep) 94%, black);
 }
 
+.favoriteButton {
+  flex-shrink: 0;
+}
+
 @media (max-width: 639px) {
   .modalContent {
     padding-inline: var(--mf-space-3xl);

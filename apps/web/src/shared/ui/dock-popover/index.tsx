@@ -1,5 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
-import { useState, type ReactNode } from "react";
+import { type ButtonHTMLAttributes, useState, type ReactNode } from "react";
 
 import { cn } from "@/shared/lib/cn";
 import { Icon, type IconName } from "@/shared/ui/icons";
@@ -13,6 +13,31 @@ interface DockPopoverProps {
   triggerClassName?: string;
   contentClassName?: string;
   arrowClassName?: string;
+}
+
+interface DockIconButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+  iconName: IconName;
+  active?: boolean;
+  className?: string;
+}
+
+export function DockIconButton({
+  active = false,
+  className,
+  iconName,
+  type = "button",
+  ...props
+}: DockIconButtonProps) {
+  return (
+    <button
+      className={cn(styles.trigger, active && styles.triggerActive, className)}
+      type={type}
+      {...props}
+    >
+      <Icon decorative name={iconName} size={18} tone={active ? "lime" : "default"} />
+    </button>
+  );
 }
 
 export function DockPopover({
@@ -30,18 +55,13 @@ export function DockPopover({
   return (
     <Popover.Root onOpenChange={setOpen} open={open}>
       <Popover.Trigger asChild>
-        <button
+        <DockIconButton
+          active={isHighlighted}
           aria-label={triggerLabel}
-          className={cn(
-            styles.trigger,
-            isHighlighted && styles.triggerActive,
-            triggerClassName
-          )}
+          className={triggerClassName}
+          iconName={iconName}
           title={triggerLabel}
-          type="button"
-        >
-          <Icon decorative name={iconName} size={18} tone={isHighlighted ? "lime" : "default"} />
-        </button>
+        />
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content

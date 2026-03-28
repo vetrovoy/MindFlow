@@ -5,7 +5,7 @@ import {
   ColorPickerField,
   ConfirmDialog,
   DatePickerField,
-  Icon,
+  DockIconButton,
   IconButton,
   MetaText,
   TextField
@@ -141,14 +141,16 @@ export function ProjectEditMain({
           </div>
         </ProjectDockPopover>
 
-        <button
+        <DockIconButton
+          active={isFavorite}
           aria-label={
             isFavorite
               ? copy.project.removeFavoriteAriaLabel
               : copy.project.addFavoriteAriaLabel
           }
           aria-pressed={isFavorite}
-          className={cn(styles.actionIcon, isFavorite && styles.actionIconActive)}
+          className={styles.favoriteButton}
+          iconName="favorite"
           onClick={() => {
             onFavoriteChange(!isFavorite);
           }}
@@ -157,10 +159,7 @@ export function ProjectEditMain({
               ? copy.project.removeFavoriteAriaLabel
               : copy.project.addFavoriteAriaLabel
           }
-          type="button"
-        >
-          <Icon decorative name="favorite" size={18} tone={isFavorite ? "lime" : "default"} />
-        </button>
+        />
 
         <ProjectDockPopover iconName="more" triggerLabel={copy.project.moreActionsTrigger}>
           <div className={styles.menuBody}>
