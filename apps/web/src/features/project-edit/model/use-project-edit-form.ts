@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   DEFAULT_PROJECT_EDIT_VALUES,
@@ -11,6 +12,7 @@ function createDraftSignature(values: ProjectEditFormValues) {
 }
 
 export function useProjectEditForm() {
+  const copy = useCopy();
   const { actions, derived, state } = useMindFlowApp();
   const project = derived.editingProject;
   const projectId = project?.id ?? "";
@@ -85,7 +87,7 @@ export function useProjectEditForm() {
     const normalizedName = values.name.trim();
 
     if (!normalizedName) {
-      setNameError("У списка должно быть название, чтобы его можно было сохранить.");
+      setNameError(copy.project.titleRequired);
       return null;
     }
 
@@ -98,7 +100,7 @@ export function useProjectEditForm() {
       isFavorite: values.isFavorite,
       deadline: values.deadline || null
     };
-  }, [draft, projectId]);
+  }, [copy, draft, projectId]);
 
   useEffect(() => {
     if (project == null || !isDraftReady || hydratedProjectIdRef.current !== project.id) {

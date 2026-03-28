@@ -1,3 +1,4 @@
+import { useCopy } from "@/app/providers/language-provider";
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 import { cn } from "@/shared/lib/cn";
 import {
@@ -9,6 +10,7 @@ import {
   MetaText,
   TextField
 } from "@/shared/ui";
+import { getProjectColorLabel } from "../model/project-edit.view";
 import { ProjectDockPopover } from "./project-dock-popover";
 import styles from "../index.module.css";
 
@@ -51,8 +53,8 @@ export function ProjectEditMain({
   remainingCount,
   state
 }: ProjectEditMainProps) {
-  const colorLabel =
-    PROJECT_DECORATIONS.find((option) => option.color === color)?.label ?? "Маркер";
+  const copy = useCopy();
+  const colorLabel = getProjectColorLabel(copy, color);
 
   return (
     <div className={styles.content}>
@@ -64,7 +66,7 @@ export function ProjectEditMain({
           onChange={(event) => {
             onNameChange(event.target.value);
           }}
-          placeholder="Название списка"
+          placeholder={copy.project.titlePlaceholder}
           value={name}
         />
         {nameError == null ? null : (
@@ -72,10 +74,10 @@ export function ProjectEditMain({
         )}
         <div className={styles.metaInline}>
           <MetaText className={cn(styles.metaChip, styles.metaChipProgress)}>
-            {progressDone}/{Math.max(progressTotal, 1)} выполнено
+            {copy.project.progressLabel(progressDone, progressTotal)}
           </MetaText>
           <MetaText className={cn(styles.metaChip, styles.metaChipRemaining)}>
-            Осталось {remainingCount}
+            {copy.project.inProgressLabel(remainingCount)}
           </MetaText>
           <span className={cn(styles.metaChip, styles.metaChipColor)}>
             <span
@@ -88,14 +90,16 @@ export function ProjectEditMain({
           <MetaText
             className={cn(
               styles.metaChip,
-              deadlineLabel === "Без дедлайна" ? styles.metaChipMuted : styles.metaChipLime
+              deadlineLabel === copy.project.noDeadline
+                ? styles.metaChipMuted
+                : styles.metaChipLime
             )}
           >
             {deadlineLabel}
           </MetaText>
           {isFavorite ? (
             <MetaText className={cn(styles.metaChip, styles.metaChipFavorite)}>
-              Избранное
+              {copy.lists.favoritesTitle}
             </MetaText>
           ) : null}
         </div>
@@ -105,7 +109,7 @@ export function ProjectEditMain({
         <ProjectDockPopover
           active={color !== PROJECT_DECORATIONS[0].color}
           iconName="palette"
-          triggerLabel="Изменить маркер списка"
+          triggerLabel={copy.project.changeMarkerTrigger}
         >
           <div className={styles.popoverBody}>
             <ColorPickerField
@@ -114,7 +118,7 @@ export function ProjectEditMain({
               onChange={onColorChange}
               presets={PROJECT_DECORATIONS.map((option) => ({
                 value: option.color,
-                label: option.label
+                label: copy.project.colors[option.id]
               }))}
               value={color}
             />
@@ -124,46 +128,54 @@ export function ProjectEditMain({
         <ProjectDockPopover
           active={Boolean(deadline)}
           iconName="today"
-          triggerLabel="Изменить дедлайн"
+          triggerLabel={copy.project.changeDeadlineTrigger}
         >
           <div className={styles.popoverBody}>
             <DatePickerField
               ariaLabelledBy="project-edit-deadline-label"
               id="project-edit-deadline"
               onChange={onDeadlineChange}
-              placeholder="Выберите дедлайн"
+              placeholder={copy.editor.selectDeadlinePlaceholder}
               value={deadline}
             />
           </div>
         </ProjectDockPopover>
 
-        <span
-          aria-label={isFavorite ? "Убрать список из избранного" : "Добавить список в избранное"}
+        <button
+          aria-label={
+            isFavorite
+              ? copy.project.removeFavoriteAriaLabel
+              : copy.project.addFavoriteAriaLabel
+          }
+          aria-pressed={isFavorite}
           className={cn(styles.actionIcon, isFavorite && styles.actionIconActive)}
           onClick={() => {
             onFavoriteChange(!isFavorite);
           }}
-          role="button"
-          tabIndex={0}
-          title={isFavorite ? "Убрать список из избранного" : "Добавить список в избранное"}
+          title={
+            isFavorite
+              ? copy.project.removeFavoriteAriaLabel
+              : copy.project.addFavoriteAriaLabel
+          }
+          type="button"
         >
           <Icon decorative name="favorite" size={18} tone={isFavorite ? "lime" : "default"} />
-        </span>
+        </button>
 
-        <ProjectDockPopover iconName="more" triggerLabel="Дополнительные действия">
+        <ProjectDockPopover iconName="more" triggerLabel={copy.project.moreActionsTrigger}>
           <div className={styles.menuBody}>
             <ConfirmDialog
-              confirmAriaLabel="Подтвердить архивацию списка"
+              confirmAriaLabel={copy.editor.confirmAriaLabel}
               confirmDisabled={state.isSaving}
               confirmIcon="archive"
-              description="Список уйдёт из активных экранов, а задачи внутри станут видны только после восстановления из архива."
+              description={copy.project.archiveConfirmDescription}
               onConfirm={() => {
                 void actions.archiveProject(projectId);
               }}
-              title="Подтвердите архивацию"
+              title={copy.project.archiveConfirmTitle}
               trigger={
                 <IconButton
-                  ariaLabel="Архивировать список"
+                  ariaLabel={copy.project.archiveAriaLabel}
                   className={styles.menuAction}
                   icon="archive"
                   variant="secondary"

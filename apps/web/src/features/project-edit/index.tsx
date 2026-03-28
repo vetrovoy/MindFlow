@@ -1,3 +1,4 @@
+import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { MetaText, Modal, IconButton } from "@/shared/ui";
 import { useProjectEditForm } from "./model/use-project-edit-form";
 import { formatProjectDeadlineLabel } from "./model/project-edit.view";
@@ -5,6 +6,8 @@ import { ProjectEditMain } from "./ui/project-edit-main";
 import styles from "./index.module.css";
 
 export function ProjectEditFeature() {
+  const copy = useCopy();
+  const { language } = useLanguage();
   const {
     actions,
     color,
@@ -31,7 +34,7 @@ export function ProjectEditFeature() {
     projectSummary.progress.total - projectSummary.progress.done,
     0
   );
-  const deadlineLabel = formatProjectDeadlineLabel(deadline);
+  const deadlineLabel = formatProjectDeadlineLabel(copy, language, deadline);
 
   return (
     <Modal
@@ -45,10 +48,10 @@ export function ProjectEditFeature() {
       <div className={styles.root}>
         <div className={styles.headerBar}>
           <div className={styles.headerMeta}>
-            <MetaText>Редактировать список</MetaText>
+            <MetaText>{copy.project.editTitle}</MetaText>
           </div>
           <IconButton
-            ariaLabel="Закрыть редактирование списка"
+            ariaLabel={copy.project.editCloseAriaLabel}
             icon="close"
             onClick={() => {
               void handleClose();

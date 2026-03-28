@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useCopy } from "@/app/providers/language-provider";
 import { getTodayDateKey } from "@/shared/lib/date";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { CaptureForm } from "@/shared/ui";
@@ -27,6 +28,7 @@ export function QuickAddFeature({
   title,
   preferredDate
 }: QuickAddFeatureProps) {
+  const copy = useCopy();
   const { actions, state } = useMindFlowApp();
   const resolvedPreferredDate = useMemo(
     () => resolvePreferredDate(preferredDate),
@@ -35,7 +37,7 @@ export function QuickAddFeature({
 
   return (
     <CaptureForm
-      dateLabel="Срок"
+      dateLabel={copy.quickCapture.dueDateLabel}
       disabled={state.isSaving}
       description={description}
       onSubmitValue={({ date, value }) => {
@@ -44,7 +46,7 @@ export function QuickAddFeature({
           dueDate: resolvedPreferredDate ?? date
         });
       }}
-      placeholder="Новая задача..."
+      placeholder={copy.quickCapture.taskPlaceholder}
       preferredDate={resolvedPreferredDate}
       showDatePicker={resolvedPreferredDate == null}
       title={title}

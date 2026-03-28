@@ -1,9 +1,11 @@
 .actionIcon {
   width: 46px;
   height: 46px;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: 0;
   border-color: transparent;
   border-radius: 999px;
   background: color-mix(in srgb, var(--mf-color-surface-elevated) 90%, black);

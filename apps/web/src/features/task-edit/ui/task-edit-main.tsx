@@ -1,5 +1,6 @@
 import type { Project, TaskPriority, TaskStatus } from "@mindflow/domain";
 
+import { useCopy } from "@/app/providers/language-provider";
 import {
   ConfirmDialog,
   DatePickerField,
@@ -11,11 +12,7 @@ import {
   TextField
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
-import {
-  INBOX_SELECT_VALUE,
-  PRIORITY_OPTIONS,
-  STATUS_OPTIONS
-} from "../model/task-edit.constants";
+import { INBOX_SELECT_VALUE } from "../model/task-edit.constants";
 import {
   getTaskDueDateChipToneClass,
   getTaskPriorityIconName,
@@ -69,9 +66,19 @@ export function TaskEditMain({
   title,
   titleError
 }: TaskEditMainProps) {
-  const projectLabel = selectedProject?.name ?? "Входящие";
-  const priorityLabel = getTaskPriorityLabel(priority);
-  const statusLabel = getTaskStatusLabel(status);
+  const copy = useCopy();
+  const projectLabel = selectedProject?.name ?? copy.task.inbox;
+  const priorityLabel = getTaskPriorityLabel(copy, priority);
+  const statusLabel = getTaskStatusLabel(copy, status);
+  const priorityOptions: Array<{ value: TaskPriority; label: string }> = [
+    { value: "low", label: copy.priority.low },
+    { value: "medium", label: copy.priority.medium },
+    { value: "high", label: copy.priority.high }
+  ];
+  const statusOptions: Array<{ value: TaskStatus; label: string }> = [
+    { value: "todo", label: copy.status.todo },
+    { value: "done", label: copy.status.done }
+  ];
 
   return (
     <div className={styles.mainColumn}>
@@ -84,7 +91,7 @@ export function TaskEditMain({
             onChange={(event) => {
               onTitleChange(event.target.value);
             }}
-            placeholder="Что именно нужно сделать?"
+            placeholder={copy.task.titlePlaceholder}
             value={title}
           />
           {titleError == null ? null : (
@@ -97,7 +104,7 @@ export function TaskEditMain({
             <MetaText
               className={cn(
                 styles.metaChip,
-                getTaskDueDateChipToneClass(dueDateLabel)
+                getTaskDueDateChipToneClass(dueDate)
               )}
             >
               {dueDateLabel}
@@ -118,7 +125,7 @@ export function TaskEditMain({
         onChange={(event) => {
           onDescriptionChange(event.target.value);
         }}
-        placeholder="Описание, детали или следующий шаг"
+        placeholder={copy.task.descriptionPlaceholder}
         value={description}
       />
 
@@ -126,7 +133,7 @@ export function TaskEditMain({
         <TaskDockPopover
           active={projectId !== INBOX_SELECT_VALUE}
           iconName="nav-lists"
-          triggerLabel="Изменить список"
+          triggerLabel={copy.task.changeProjectTrigger}
         >
           <div className={styles.popoverBody}>
             <SelectField
@@ -136,13 +143,13 @@ export function TaskEditMain({
               id="task-edit-project"
               onValueChange={onProjectChange}
               options={[
-                { value: INBOX_SELECT_VALUE, label: "Входящие" },
+                { value: INBOX_SELECT_VALUE, label: copy.task.inbox },
                 ...activeProjects.map((project) => ({
                   value: project.id,
                   label: project.name
                 }))
               ]}
-              placeholder="Выберите список"
+              placeholder={copy.editor.selectListPlaceholder}
               value={projectId}
             />
           </div>
@@ -151,14 +158,14 @@ export function TaskEditMain({
         <TaskDockPopover
           active={Boolean(dueDate)}
           iconName="today"
-          triggerLabel="Изменить срок"
+          triggerLabel={copy.task.changeDueDateTrigger}
         >
           <div className={styles.popoverBody}>
             <DatePickerField
               ariaLabelledBy="task-edit-due-date-label"
               id="task-edit-due-date"
               onChange={onDueDateChange}
-              placeholder="Выберите дату"
+              placeholder={copy.editor.selectDatePlaceholder}
               value={dueDate}
             />
           </div>
@@ -167,14 +174,14 @@ export function TaskEditMain({
         <TaskDockPopover
           active={priority !== "medium"}
           iconName={getTaskPriorityIconName(priority)}
-          triggerLabel={`Приоритет: ${priorityLabel}`}
+          triggerLabel={`${copy.task.priorityAriaLabel}: ${priorityLabel}`}
         >
           <div className={styles.popoverBody}>
             <RadioCardGroup
-              ariaLabel="Приоритет задачи"
+              ariaLabel={copy.task.priorityAriaLabel}
               className={styles.compactRadioGroup}
               onValueChange={onPriorityChange}
-              options={PRIORITY_OPTIONS}
+              options={priorityOptions}
               value={priority}
             />
           </div>
@@ -183,31 +190,31 @@ export function TaskEditMain({
         <TaskDockPopover
           active={status !== "todo"}
           iconName={getTaskStatusIconName(status)}
-          triggerLabel={`Статус: ${statusLabel}`}
+          triggerLabel={`${copy.task.statusAriaLabel}: ${statusLabel}`}
         >
           <div className={styles.popoverBody}>
             <RadioCardGroup
-              ariaLabel="Статус задачи"
+              ariaLabel={copy.task.statusAriaLabel}
               className={styles.compactRadioGroup}
               onValueChange={onStatusChange}
-              options={STATUS_OPTIONS}
+              options={statusOptions}
               value={status}
             />
           </div>
         </TaskDockPopover>
 
-        <TaskDockPopover iconName="more" triggerLabel="Дополнительные действия">
+        <TaskDockPopover iconName="more" triggerLabel={copy.task.moreActionsTrigger}>
           <div className={styles.menuBody}>
             <ConfirmDialog
-              confirmAriaLabel="Подтвердить архивацию"
+              confirmAriaLabel={copy.editor.confirmAriaLabel}
               confirmDisabled={isSaving}
               confirmIcon="archive"
-              description="Задача исчезнет из активных экранов, но сохранится в архиве локально."
+              description={copy.task.archiveConfirmDescription}
               onConfirm={onArchiveTask}
-              title="Подтвердите архивацию"
+              title={copy.task.archiveConfirmTitle}
               trigger={
                 <IconButton
-                  ariaLabel="Архивировать задачу"
+                  ariaLabel={copy.task.archiveAriaLabel}
                   className={styles.menuAction}
                   icon="archive"
                   variant="secondary"
@@ -215,16 +222,16 @@ export function TaskEditMain({
               }
             />
             <ConfirmDialog
-              confirmAriaLabel="Подтвердить удаление"
+              confirmAriaLabel={copy.editor.confirmAriaLabel}
               confirmDisabled={isSaving}
               confirmIcon="trash"
               confirmTone="alert"
-              description="Удаление уберёт задачу из локального плана без возможности восстановить её из активного интерфейса."
+              description={copy.task.deleteConfirmDescription}
               onConfirm={onDeleteTask}
-              title="Подтвердите удаление"
+              title={copy.task.deleteConfirmTitle}
               trigger={
                 <IconButton
-                  ariaLabel="Удалить задачу"
+                  ariaLabel={copy.task.deleteAriaLabel}
                   className={cn(styles.menuAction)}
                   icon="trash"
                   variant="secondary"

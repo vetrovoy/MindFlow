@@ -1,9 +1,11 @@
+import { useCopy } from "@/app/providers/language-provider";
 import { IconButton, MetaText, Modal } from "@/shared/ui";
 import { useTaskEditForm } from "./model/use-task-edit-form";
 import { TaskEditMain } from "./ui/task-edit-main";
 import styles from "./index.module.css";
 
 export function TaskEditFeature() {
+  const copy = useCopy();
   const {
     activeProjects,
     description,
@@ -44,10 +46,10 @@ export function TaskEditFeature() {
       <div className={styles.root}>
         <div className={styles.headerBar}>
           <div className={styles.headerMeta}>
-            <MetaText>Редактировать задачу</MetaText>
+            <MetaText>{copy.task.editTitle}</MetaText>
           </div>
           <IconButton
-            ariaLabel="Закрыть редактирование задачи"
+            ariaLabel={copy.task.editCloseAriaLabel}
             icon="close"
             onClick={() => {
               void handleClose();

@@ -1,6 +1,8 @@
 import type { TaskPriority, TaskStatus } from "@mindflow/domain";
+import { formatDisplayDate } from "@mindflow/copy";
 import { useEffect, useMemo, useState } from "react";
 
+import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { getTodayDateKey } from "@/shared/lib/date";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
@@ -15,8 +17,6 @@ import {
 } from "@/shared/ui";
 import {
   INBOX_SELECT_VALUE,
-  PRIORITY_OPTIONS,
-  STATUS_OPTIONS
 } from "@/features/task-edit/model/task-edit.constants";
 import {
   getTaskPriorityIconName,
@@ -50,6 +50,8 @@ export function TaskCreateFeature({
   open,
   preferredDate
 }: TaskCreateFeatureProps) {
+  const copy = useCopy();
+  const { language } = useLanguage();
   const { actions, derived } = useMindFlowApp();
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState<string | null>(null);
@@ -64,7 +66,16 @@ export function TaskCreateFeature({
   );
 
   useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    setTitle("");
+    setTitleError(null);
     setDate(resolvedPreferredDate);
+    setProjectId(INBOX_SELECT_VALUE);
+    setPriority("medium");
+    setStatus("todo");
   }, [resolvedPreferredDate, open]);
 
   const activeProjects = useMemo(
@@ -72,23 +83,27 @@ export function TaskCreateFeature({
     [derived.favoriteProjects, derived.regularProjects]
   );
 
-  const dateLabel = date
-    ? new Date(`${date}T00:00:00`).toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long"
-      })
-    : "";
+  const dateLabel = date ? formatDisplayDate(date, language) : "";
   const selectedProject =
     activeProjects.find((project) => project.id === projectId) ?? null;
-  const projectLabel = selectedProject?.name ?? "Входящие";
-  const priorityLabel = getTaskPriorityLabel(priority);
-  const statusLabel = getTaskStatusLabel(status);
+  const projectLabel = selectedProject?.name ?? copy.task.inbox;
+  const priorityLabel = getTaskPriorityLabel(copy, priority);
+  const statusLabel = getTaskStatusLabel(copy, status);
+  const priorityOptions: Array<{ value: TaskPriority; label: string }> = [
+    { value: "low", label: copy.priority.low },
+    { value: "medium", label: copy.priority.medium },
+    { value: "high", label: copy.priority.high }
+  ];
+  const statusOptions: Array<{ value: TaskStatus; label: string }> = [
+    { value: "todo", label: copy.status.todo },
+    { value: "done", label: copy.status.done }
+  ];
 
   async function handleCreate() {
     const normalizedTitle = title.trim();
 
     if (!normalizedTitle) {
-      setTitleError("Добавьте название задачи.");
+      setTitleError(copy.task.titleRequired);
       return;
     }
 
@@ -123,10 +138,10 @@ export function TaskCreateFeature({
       <div className={styles.root}>
         <div className={styles.headerBar}>
           <div className={styles.headerMeta}>
-            <MetaText>Создать задачу</MetaText>
+            <MetaText>{copy.task.createTitle}</MetaText>
           </div>
           <IconButton
-            ariaLabel="Закрыть создание задачи"
+            ariaLabel={copy.task.createCloseAriaLabel}
             icon="close"
             onClick={onClose}
             variant="secondary"
@@ -150,7 +165,7 @@ export function TaskCreateFeature({
                 void handleCreate();
               }
             }}
-            placeholder="Что именно нужно сделать?"
+            placeholder={copy.task.titlePlaceholder}
             value={title}
           />
           {titleError == null ? null : (
@@ -170,7 +185,7 @@ export function TaskCreateFeature({
           <TaskDockPopover
             active={projectId !== INBOX_SELECT_VALUE}
             iconName="nav-lists"
-            triggerLabel="Изменить список"
+            triggerLabel={copy.task.changeProjectTrigger}
           >
             <div className={styles.popoverBody}>
               <SelectField
@@ -179,13 +194,13 @@ export function TaskCreateFeature({
                 id="task-create-project"
                 onValueChange={setProjectId}
                 options={[
-                  { value: INBOX_SELECT_VALUE, label: "Входящие" },
+                  { value: INBOX_SELECT_VALUE, label: copy.task.inbox },
                   ...activeProjects.map((project) => ({
                     value: project.id,
                     label: project.name
                   }))
                 ]}
-                placeholder="Выберите список"
+                placeholder={copy.editor.selectListPlaceholder}
                 value={projectId}
               />
             </div>
@@ -194,13 +209,13 @@ export function TaskCreateFeature({
           <TaskDockPopover
             active={Boolean(date)}
             iconName="today"
-            triggerLabel="Изменить срок"
+            triggerLabel={copy.task.changeDueDateTrigger}
           >
             <div className={styles.popoverBody}>
               <DatePickerField
                 id="task-create-date"
                 onChange={setDate}
-                placeholder="Выберите дату"
+                placeholder={copy.editor.selectDatePlaceholder}
                 value={date}
               />
             </div>
@@ -209,16 +224,16 @@ export function TaskCreateFeature({
           <TaskDockPopover
             active={priority !== "medium"}
             iconName={getTaskPriorityIconName(priority)}
-            triggerLabel={`Приоритет: ${priorityLabel}`}
+            triggerLabel={`${copy.task.priorityAriaLabel}: ${priorityLabel}`}
           >
             <div className={styles.popoverBody}>
               <RadioCardGroup
-                ariaLabel="Приоритет новой задачи"
+                ariaLabel={copy.task.priorityAriaLabel}
                 className={styles.compactRadioGroup}
                 onValueChange={(value) => {
                   setPriority(value as TaskPriority);
                 }}
-                options={PRIORITY_OPTIONS}
+                options={priorityOptions}
                 value={priority}
               />
             </div>
@@ -227,16 +242,16 @@ export function TaskCreateFeature({
           <TaskDockPopover
             active={status !== "todo"}
             iconName={getTaskStatusIconName(status)}
-            triggerLabel={`Статус: ${statusLabel}`}
+            triggerLabel={`${copy.task.statusAriaLabel}: ${statusLabel}`}
           >
             <div className={styles.popoverBody}>
               <RadioCardGroup
-                ariaLabel="Статус новой задачи"
+                ariaLabel={copy.task.statusAriaLabel}
                 className={styles.compactRadioGroup}
                 onValueChange={(value) => {
                   setStatus(value as TaskStatus);
                 }}
-                options={STATUS_OPTIONS}
+                options={statusOptions}
                 value={status}
               />
             </div>
@@ -248,7 +263,7 @@ export function TaskCreateFeature({
               void handleCreate();
             }}
           >
-            Сохранить
+            {copy.common.save}
           </ActionButton>
         </div>
       </div>

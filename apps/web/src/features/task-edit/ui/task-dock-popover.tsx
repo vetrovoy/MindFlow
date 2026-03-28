@@ -23,15 +23,14 @@ export function TaskDockPopover({
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <span
+        <button
           aria-label={triggerLabel}
           className={cn(styles.actionIcon, active && styles.actionIconActive, className)}
-          role="button"
-          tabIndex={0}
           title={triggerLabel}
+          type="button"
         >
           <Icon decorative name={iconName} size={18} tone={active ? "lime" : "default"} />
-        </span>
+        </button>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content

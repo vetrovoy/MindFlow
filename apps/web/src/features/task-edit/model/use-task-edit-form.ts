@@ -1,6 +1,8 @@
 import type { TaskPriority, TaskStatus } from "@mindflow/domain";
+import { formatDisplayDate } from "@mindflow/copy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import {
   DEFAULT_VALUES,
@@ -8,12 +10,11 @@ import {
   type TaskEditFormValues
 } from "./task-edit.constants";
 import { createTaskEditDraftSignature } from "./task-edit.helpers";
-import {
-  getTaskEditDueDateLabel,
-  getTaskEditSelectedProject
-} from "./task-edit.selectors";
+import { getTaskEditSelectedProject } from "./task-edit.selectors";
 
 export function useTaskEditForm() {
+  const copy = useCopy();
+  const { language } = useLanguage();
   const { actions, derived, state } = useMindFlowApp();
   
   const task = derived.editingTask;
@@ -72,9 +73,7 @@ export function useTaskEditForm() {
       const normalizedTitle = values.title.trim();
 
       if (!normalizedTitle) {
-        setTitleError(
-          "Добавьте короткое название задачи, чтобы сохранить изменения."
-        );
+        setTitleError(copy.task.titleRequired);
         return null;
       }
 
@@ -93,7 +92,7 @@ export function useTaskEditForm() {
           values.projectId === INBOX_SELECT_VALUE ? null : values.projectId
       };
     },
-    [draft, taskId]
+    [copy, draft, taskId]
   );
 
   useEffect(() => {
@@ -173,7 +172,9 @@ export function useTaskEditForm() {
     activeProjects,
     draft.projectId
   );
-  const dueDateLabel = getTaskEditDueDateLabel(draft.dueDate);
+  const dueDateLabel = draft.dueDate
+    ? formatDisplayDate(draft.dueDate, language)
+    : copy.task.noDueDate;
 
   return {
     activeProjects,

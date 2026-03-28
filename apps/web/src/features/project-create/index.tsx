@@ -1,12 +1,14 @@
+import { useCopy } from "@/app/providers/language-provider";
 import { useMindFlowApp } from "@/shared/model/mindflow-provider";
 import { CaptureForm } from "@/shared/ui";
 
 export function ProjectCreateFeature() {
+  const copy = useCopy();
   const { actions, state } = useMindFlowApp();
 
   return (
     <CaptureForm
-      dateLabel="Дедлайн"
+      dateLabel={copy.quickCapture.deadlineLabel}
       disabled={state.isSaving}
       onSubmitValue={({ date, value }) =>
         actions.createProject({
@@ -14,9 +16,9 @@ export function ProjectCreateFeature() {
           deadline: date
         })
       }
-      placeholder="Создайте новый список проекта..."
-      description="Создайте список и планируйте задачи."
-      title="Создать список"
+      placeholder={copy.quickCapture.projectPlaceholder}
+      description={copy.quickCapture.createProjectDescription}
+      title={copy.quickCapture.createProjectTitle}
     />
   );
 }

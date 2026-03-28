@@ -1,21 +1,22 @@
 import type { TaskPriority, TaskStatus } from "@mindflow/domain";
+import type { CopyDictionary } from "@mindflow/copy";
 
 import type { IconName } from "@/shared/ui";
 import styles from "../index.module.css";
 
-export function getTaskPriorityLabel(priority: TaskPriority) {
+export function getTaskPriorityLabel(copy: CopyDictionary, priority: TaskPriority) {
   switch (priority) {
     case "high":
-      return "Высокий";
+      return copy.priority.high;
     case "low":
-      return "Низкий";
+      return copy.priority.low;
     default:
-      return "Средний";
+      return copy.priority.medium;
   }
 }
 
-export function getTaskStatusLabel(status: TaskStatus) {
-  return status === "done" ? "Готово" : "В работе";
+export function getTaskStatusLabel(copy: CopyDictionary, status: TaskStatus) {
+  return status === "done" ? copy.status.done : copy.status.todo;
 }
 
 export function getTaskPriorityIconName(_priority: TaskPriority): IconName {
@@ -26,17 +27,9 @@ export function getTaskStatusIconName(status: TaskStatus): IconName {
   return status === "done" ? "checkbox-checked" : "checkbox-empty";
 }
 
-export function getTaskDueDateChipToneClass(dueDateLabel: string) {
-  if (dueDateLabel === "Без срока") {
+export function getTaskDueDateChipToneClass(dueDate: string) {
+  if (!dueDate) {
     return styles.metaChipMuted;
   }
-
-  if (
-    dueDateLabel.toLowerCase().includes("сегодня") ||
-    dueDateLabel.toLowerCase().includes("мар")
-  ) {
-    return styles.metaChipLime;
-  }
-
-  return "";
+  return styles.metaChipLime;
 }
