@@ -17,18 +17,6 @@ export function getTaskPriorityTone(
   return "muted";
 }
 
-export function getTaskPriorityMark(priority: Task["priority"]) {
-  if (priority === "high") {
-    return "H";
-  }
-
-  if (priority === "medium") {
-    return "M";
-  }
-
-  return "L";
-}
-
 export function getTaskPriorityMarkStyle(priority: Task["priority"]) {
   if (priority === "high") {
     return styles.priorityMarkHight;

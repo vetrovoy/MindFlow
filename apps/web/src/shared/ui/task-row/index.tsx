@@ -8,7 +8,6 @@ import { StatusPill } from "@/shared/ui/primitives";
 import { Icon } from "@/shared/ui/icons";
 import {
   getTaskPriorityIconName,
-  getTaskPriorityMark,
   getTaskPriorityMarkStyle,
   getTaskPriorityTone,
   getTaskToggleAriaLabel
@@ -74,7 +73,9 @@ export function TaskRow({
           {badgeVariant == null ? null : (
             <StatusPill
               label={
-                badgeVariant === "overdue" ? copy.task.badgeOverdue : copy.task.badgeToday
+                badgeVariant === "overdue"
+                  ? copy.task.badgeOverdue
+                  : copy.task.badgeToday
               }
               variant={badgeVariant}
             />
@@ -87,7 +88,7 @@ export function TaskRow({
               tone={getTaskPriorityTone(task.priority)}
             />
             <MetaText className={getTaskPriorityMarkStyle(task.priority)}>
-              {getTaskPriorityMark(task.priority)}
+              {copy.priority[task.priority].toUpperCase()}
             </MetaText>
           </div>
           {trailingSlot}
