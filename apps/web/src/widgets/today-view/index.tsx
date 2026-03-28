@@ -62,18 +62,12 @@ export function TodayViewWidget() {
               </CollapsibleSection>
             )}
             {overdueTasks.length > 0 ? (
-              <CollapsibleSection
-                count={todayTasks.length}
-                defaultOpen
-                title={copy.today.sectionTitle}
-              >
-                {todayTasks.length === 0 ? (
-                  <StateCard
-                    description={copy.today.emptyDescription}
-                    title={copy.today.emptyTitle}
-                    variant="empty"
-                  />
-                ) : (
+              todayTasks.length > 0 ? (
+                <CollapsibleSection
+                  count={todayTasks.length}
+                  defaultOpen
+                  title={copy.today.sectionTitle}
+                >
                   <TaskListEntity
                     badgeByTaskId={badgeByTaskId}
                     onOpenTask={actions.openTaskEdit}
@@ -82,8 +76,8 @@ export function TodayViewWidget() {
                     }}
                     tasks={todayTasks}
                   />
-                )}
-              </CollapsibleSection>
+                </CollapsibleSection>
+              ) : null
             ) : (
               <>
                 {todayTasks.length === 0 ? (

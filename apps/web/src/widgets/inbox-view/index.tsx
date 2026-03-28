@@ -67,13 +67,7 @@ export function InboxViewWidget() {
             />
           ) : (
             <div className={styles.sections}>
-              {activeInboxTasks.length === 0 ? (
-                <StateCard
-                  description={copy.inbox.emptyDescription}
-                  title={copy.common.empty}
-                  variant="empty"
-                />
-              ) : (
+              {activeInboxTasks.length > 0 ? (
                 <TaskListEntity
                   badgeByTaskId={badgeByTaskId}
                   onOpenTask={actions.openTaskEdit}
@@ -82,19 +76,13 @@ export function InboxViewWidget() {
                   }}
                   tasks={activeInboxTasks}
                 />
-              )}
-              <CollapsibleSection
-                count={completedInboxTasks.length}
-                defaultOpen={false}
-                title={copy.inbox.completedTitle}
-              >
-                {completedInboxTasks.length === 0 ? (
-                  <StateCard
-                    description={copy.inbox.completedEmptyDescription}
-                    title={copy.common.empty}
-                    variant="empty"
-                  />
-                ) : (
+              ) : null}
+              {completedInboxTasks.length > 0 ? (
+                <CollapsibleSection
+                  count={completedInboxTasks.length}
+                  defaultOpen={false}
+                  title={copy.inbox.completedTitle}
+                >
                   <TaskListEntity
                     badgeByTaskId={badgeByTaskId}
                     onOpenTask={actions.openTaskEdit}
@@ -103,8 +91,8 @@ export function InboxViewWidget() {
                     }}
                     tasks={completedInboxTasks}
                   />
-                )}
-              </CollapsibleSection>
+                </CollapsibleSection>
+              ) : null}
             </div>
           )}
         </div>

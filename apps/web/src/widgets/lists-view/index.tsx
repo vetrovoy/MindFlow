@@ -8,6 +8,8 @@ import styles from "./index.module.css";
 export function ListsViewWidget() {
   const copy = useCopy();
   const { actions, derived } = useMindFlowApp();
+  const favoriteSections = derived.projectSections.filter((section) => section.project.isFavorite);
+  const regularSections = derived.projectSections.filter((section) => !section.project.isFavorite);
 
   function renderProjectTasks(projectId: string, tasks: typeof derived.projectSections[number]["tasks"]) {
     if (tasks.length === 0) {
@@ -25,16 +27,24 @@ export function ListsViewWidget() {
 
   return (
     <div className={styles.root}>
-      {derived.favoriteProjects.length > 0 ? (
+      {derived.projectSections.length === 0 ? (
+        <SurfaceCard>
+          <SectionTitle title={copy.lists.allTitle} />
+          <StateCard
+            description={copy.lists.emptyDescription}
+            title={copy.common.empty}
+            variant="empty"
+          />
+        </SurfaceCard>
+      ) : null}
+      {favoriteSections.length > 0 ? (
         <SurfaceCard>
           <SectionTitle
             subtitle={copy.lists.favoritesSubtitle}
             title={copy.lists.favoritesTitle}
           />
           <div className={styles.sections}>
-            {derived.projectSections
-              .filter((section) => section.project.isFavorite)
-              .map((section) => (
+            {favoriteSections.map((section) => (
                 <div key={section.project.id} className={styles.section}>
                   <ProjectCard
                     onOpenProject={actions.openProjectEdit}
@@ -48,19 +58,11 @@ export function ListsViewWidget() {
           </div>
         </SurfaceCard>
       ) : null}
-      <SurfaceCard>
-        <SectionTitle title={copy.lists.allTitle} />
-        {derived.regularProjects.length === 0 ? (
-          <StateCard
-            description={copy.lists.emptyDescription}
-            title={copy.common.empty}
-            variant="empty"
-          />
-        ) : (
+      {regularSections.length > 0 ? (
+        <SurfaceCard>
+          <SectionTitle title={copy.lists.allTitle} />
           <div className={styles.sections}>
-            {derived.projectSections
-              .filter((section) => !section.project.isFavorite)
-              .map((section) => (
+            {regularSections.map((section) => (
                 <div key={section.project.id} className={styles.section}>
                   <ProjectCard
                     onOpenProject={actions.openProjectEdit}
@@ -72,8 +74,8 @@ export function ListsViewWidget() {
                 </div>
               ))}
           </div>
-        )}
-      </SurfaceCard>
+        </SurfaceCard>
+      ) : null}
     </div>
   );
 }
