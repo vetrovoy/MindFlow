@@ -89,36 +89,43 @@
   flex-wrap: wrap;
   gap: var(--mf-space-sm);
   min-width: 0;
+  padding-top: var(--mf-space-xs);
 }
 
 .metaChip {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0 10px;
+  min-height: 32px;
+  padding: 0 12px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 92%, transparent);
-  background: color-mix(in srgb, var(--mf-color-surface) 84%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 82%, transparent);
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 82%, black);
   color: var(--mf-color-text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
 .metaChipProject {
+  border-color: color-mix(in srgb, var(--mf-color-text-primary) 18%, var(--mf-color-border-strong));
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 88%, black);
   color: var(--mf-color-text-primary);
 }
 
 .metaChipLime,
 .metaChipPriority {
-  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 28%, transparent);
-  background: color-mix(in srgb, var(--mf-color-accent-lime) 9%, var(--mf-color-surface));
+  border-color: color-mix(in srgb, var(--mf-color-accent-lime) 52%, transparent);
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 88%, var(--mf-color-surface));
+  color: color-mix(in srgb, var(--mf-color-text-primary) 96%, transparent);
 }
 
 .metaChipStatus {
-  border-color: color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
+  border-color: color-mix(in srgb, var(--mf-color-text-secondary) 22%, var(--mf-color-border-medium));
+  background: color-mix(in srgb, var(--mf-color-surface-elevated) 84%, black);
 }
 
 .metaChipMuted {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .toolbar {
