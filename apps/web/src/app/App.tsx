@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as Popover from "@radix-ui/react-popover";
 import {
   Navigate,
   NavLink,
@@ -39,10 +40,25 @@ function AppShell() {
   const isToday = location.pathname === "/today";
   const [isTaskCreateOpen, setIsTaskCreateOpen] = useState(false);
   const [isProjectCreateOpen, setIsProjectCreateOpen] = useState(false);
+  const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 
   const copy = useCopy();
   const { session, signOut } = useAuth();
   const { state } = useAppState();
+
+  const handleCreate = () => {
+    if (isLists) {
+      setIsProjectCreateOpen(true);
+      return;
+    }
+
+    setIsTaskCreateOpen(true);
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    navigate("/", { replace: true });
+  };
 
   return (
     <div className={styles.shell}>
@@ -64,10 +80,8 @@ function AppShell() {
                   ariaLabel={copy.auth.signOutAriaLabel}
                   className={styles.signOutButton}
                   icon="sign-out"
-                  onClick={() => {
-                    signOut();
-                    navigate("/", { replace: true });
-                  }}
+                  iconTone="lime"
+                  onClick={handleSignOut}
                   variant="secondary"
                 />
                 <IconButton
@@ -76,15 +90,56 @@ function AppShell() {
                   }
                   className={styles.addButton}
                   icon="add"
-                  onClick={() => {
-                    if (isLists) {
-                      setIsProjectCreateOpen(true);
-                      return;
-                    }
-
-                    setIsTaskCreateOpen(true);
-                  }}
+                  onClick={handleCreate}
                 />
+              </div>
+              <div className={styles.headerMenuMobile}>
+                <IconButton
+                  ariaLabel={
+                    isLists ? copy.app.addProjectAriaLabel : copy.app.addTaskAriaLabel
+                  }
+                  className={styles.addButton}
+                  icon="add"
+                  onClick={handleCreate}
+                />
+                <Popover.Root onOpenChange={setIsHeaderMenuOpen} open={isHeaderMenuOpen}>
+                  <Popover.Trigger asChild>
+                    <IconButton
+                      ariaLabel={copy.task.moreActionsTrigger}
+                      className={styles.headerMenuIcon}
+                      icon="more"
+                      variant="secondary"
+                    />
+                  </Popover.Trigger>
+                  <Popover.Portal>
+                    <Popover.Content
+                      align="end"
+                      className={styles.headerMenuPopover}
+                      side="bottom"
+                      sideOffset={12}
+                    >
+                      <div className={styles.headerMenuActions}>
+                        <LanguageToggle />
+                        <IconButton
+                          ariaLabel={copy.auth.signOutAriaLabel}
+                          className={styles.headerMenuAction}
+                          icon="sign-out"
+                          iconTone="lime"
+                          onClick={() => {
+                            setIsHeaderMenuOpen(false);
+                            handleSignOut();
+                          }}
+                          variant="secondary"
+                        />
+                      </div>
+                      <Popover.Arrow
+                        className={styles.headerMenuPopoverArrow}
+                        height={10}
+                        width={18}
+                      />
+                    </Popover.Content>
+                  </Popover.Portal>
+                </Popover.Root>
               </div>
             </div>
             <AppStats />

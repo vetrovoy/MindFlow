@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { forwardRef, type ReactNode } from "react";
 
 import type { ButtonVariant } from "@mindflow/ui";
 
@@ -14,26 +14,25 @@ export interface ActionButtonProps {
   onClick?: () => void;
 }
 
-export function ActionButton({
-  className,
-  children,
-  disabled,
-  onClick,
-  type = "button",
-  variant = "primary"
-}: ActionButtonProps) {
-  return (
-    <button
-      className={cn(
-        styles.button,
-        variant === "primary" ? styles.buttonPrimary : styles.buttonSecondary,
-        className
-      )}
-      disabled={disabled}
-      onClick={onClick}
-      type={type}
-    >
-      {children}
-    </button>
-  );
-}
+export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
+  function ActionButton(
+    { className, children, disabled, onClick, type = "button", variant = "primary" },
+    ref
+  ) {
+    return (
+      <button
+        className={cn(
+          styles.button,
+          variant === "primary" ? styles.buttonPrimary : styles.buttonSecondary,
+          className
+        )}
+        disabled={disabled}
+        onClick={onClick}
+        ref={ref}
+        type={type}
+      >
+        {children}
+      </button>
+    );
+  }
+);
