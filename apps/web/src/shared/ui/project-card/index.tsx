@@ -55,9 +55,6 @@ export function ProjectCard({
           <MetaText as="strong" className={styles.count}>
             {progressLabel}
           </MetaText>
-          <span className={styles.openIcon}>
-            <Icon name="chevron-right" size={14} tone="muted" />
-          </span>
         </div>
       </div>
       <div className={styles.progress}>

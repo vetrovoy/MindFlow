@@ -54,10 +54,11 @@
 }
 
 .title {
-  font-family: var(--mf-font-body);
-  font-size: var(--mf-font-size-supportive);
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: var(--mf-font-display);
+  font-size: clamp(20px, 2vw, 24px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   margin: 0;
 }
 
@@ -90,17 +91,6 @@
   flex-shrink: 0;
 }
 
-.openIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  border: 1px solid var(--mf-color-border-strong);
-  background: var(--mf-color-surface);
-}
-
 .progress {
   margin-top: var(--mf-space-xl);
 }
@@ -120,5 +110,9 @@
 
   .count {
     white-space: normal;
+  }
+
+  .title {
+    font-size: 22px;
   }
 }

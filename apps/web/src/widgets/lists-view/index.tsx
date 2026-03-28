@@ -9,6 +9,20 @@ export function ListsViewWidget() {
   const copy = useCopy();
   const { actions, derived } = useMindFlowApp();
 
+  function renderProjectTasks(projectId: string, tasks: typeof derived.projectSections[number]["tasks"]) {
+    if (tasks.length === 0) {
+      return (
+        <StateCard
+          description={copy.lists.favoriteEmptyDescription}
+          title={copy.common.empty}
+          variant="empty"
+        />
+      );
+    }
+
+    return <ProjectTaskReorderFeature projectId={projectId} tasks={tasks} />;
+  }
+
   return (
     <div className={styles.root}>
       {derived.favoriteProjects.length > 0 ? (
@@ -28,18 +42,7 @@ export function ListsViewWidget() {
                     project={section.project}
                     tasks={section.tasks}
                   />
-                  {section.tasks.length === 0 ? (
-                    <StateCard
-                      description={copy.lists.favoriteEmptyDescription}
-                      title={copy.common.empty}
-                      variant="empty"
-                    />
-                  ) : (
-                    <ProjectTaskReorderFeature
-                      projectId={section.project.id}
-                      tasks={section.tasks}
-                    />
-                  )}
+                  {renderProjectTasks(section.project.id, section.tasks)}
                 </div>
               ))}
           </div>
@@ -65,6 +68,7 @@ export function ListsViewWidget() {
                     project={section.project}
                     tasks={section.tasks}
                   />
+                  {renderProjectTasks(section.project.id, section.tasks)}
                 </div>
               ))}
           </div>

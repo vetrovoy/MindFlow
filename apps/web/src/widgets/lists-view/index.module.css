@@ -10,5 +10,10 @@
 
 .section {
   display: grid;
-  gap: var(--mf-space-xl);
+  gap: var(--mf-space-3xl);
+}
+
+.section + .section {
+  padding-top: var(--mf-space-4xl);
+  border-top: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 72%, transparent);
 }
