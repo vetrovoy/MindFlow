@@ -57,17 +57,19 @@ export function TaskRow({
           }}
           type="button"
         />
-        <button
-          className={styles.contentButton}
-          onClick={() => {
-            onOpenTask(task.id);
-          }}
-          type="button"
-        >
+        <div className={styles.mainArea}>
+          <button
+            aria-label={copy.task.editTitle}
+            className={styles.contentButton}
+            onClick={() => {
+              onOpenTask(task.id);
+            }}
+            type="button"
+          />
           <strong className={cn(styles.title, isDone && styles.titleDone)}>
             {task.title}
           </strong>
-        </button>
+        </div>
         <div className={styles.trailing}>
           {badgeVariant == null ? null : (
             <StatusPill

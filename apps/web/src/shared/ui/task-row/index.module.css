@@ -27,6 +27,7 @@
 }
 
 .row {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,8 +38,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 32px;
+  height: 32px;
   border-radius: 7px;
   border: 1px solid var(--mf-color-border-muted);
   background: var(--mf-color-surface);
@@ -62,29 +63,44 @@
   background: var(--mf-color-accent-success-deep);
 }
 
-.contentButton {
+.mainArea {
+  position: relative;
   flex: 1;
   min-width: 0;
+  min-height: 40px;
+  display: grid;
+  align-content: center;
+}
+
+.contentButton {
+  position: absolute;
+  inset: -8px 0;
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
   padding: 0;
   border: none;
   background: transparent;
   color: inherit;
   text-align: left;
   cursor: pointer;
-  display: grid;
-  gap: 2px;
+  border-radius: var(--mf-radius-md);
 }
 
 .contentButton:focus-visible {
   outline: none;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mf-color-accent-lime) 48%, transparent);
 }
 
 .title {
+  position: relative;
+  z-index: 1;
   color: var(--mf-color-text-primary);
   font-family: var(--mf-font-body);
   font-size: var(--mf-font-size-task);
   font-weight: 600;
   line-height: 1.25;
+  pointer-events: none;
 }
 
 .titleDone {
