@@ -10,6 +10,7 @@ import {
 import { getRuntimeCopy } from "@/shared/lib/language";
 import {
   AUTH_MIN_PASSWORD_LENGTH,
+  AUTH_STORAGE_VERSION,
   createAuthSession,
   createLocalAuthUser,
   createPasswordSalt,
@@ -63,6 +64,7 @@ function createProviderState(snapshot: AuthStorageSnapshot): AuthProviderState {
 
 function toSnapshot(state: Pick<AuthProviderState, "users" | "session" | "legacyMigrated">) {
   return {
+    version: AUTH_STORAGE_VERSION,
     users: state.users,
     session: state.session,
     legacyMigrated: state.legacyMigrated
@@ -98,6 +100,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
 
       let nextSnapshot: AuthStorageSnapshot = {
+        version: AUTH_STORAGE_VERSION,
         users: state.users,
         session: createAuthSession(user),
         legacyMigrated: state.legacyMigrated
@@ -147,6 +150,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       });
       const nextUsers = [...state.users, user];
       let nextSnapshot: AuthStorageSnapshot = {
+        version: AUTH_STORAGE_VERSION,
         users: nextUsers,
         session: createAuthSession(user),
         legacyMigrated: state.legacyMigrated

@@ -4,6 +4,7 @@ import {
   resolvePreferredLanguage,
   type AppLanguage
 } from "@mindflow/copy";
+import { safeReadStorage, safeWriteStorage } from "@/shared/lib/browser-storage";
 
 export const LEGACY_LANGUAGE_STORAGE_KEY = "mindflow-language";
 export const APP_LANGUAGE_STORAGE_KEY = "planner-language";
@@ -14,8 +15,8 @@ export function readStoredLanguage() {
   }
 
   return (
-    window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) ??
-    window.localStorage.getItem(LEGACY_LANGUAGE_STORAGE_KEY)
+    safeReadStorage(APP_LANGUAGE_STORAGE_KEY) ??
+    safeReadStorage(LEGACY_LANGUAGE_STORAGE_KEY)
   );
 }
 
@@ -48,7 +49,7 @@ export function persistLanguage(language: AppLanguage) {
     return;
   }
 
-  window.localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, language);
+  safeWriteStorage(APP_LANGUAGE_STORAGE_KEY, language);
 }
 
 export function applyDocumentLanguage(language: AppLanguage) {

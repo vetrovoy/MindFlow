@@ -1,4 +1,7 @@
-import { createDexieRepositoryBundle } from "@mindflow/data";
+import {
+  createDexieRepositoryBundle,
+  type RepositoryBundle
+} from "@mindflow/data";
 import { startTransition } from "react";
 import { createStore, type StoreApi } from "zustand/vanilla";
 
@@ -19,8 +22,17 @@ import type {
 
 export type AppStoreApi = StoreApi<AppStore>;
 
-export function createAppStore(databaseName: string): AppStoreApi {
-  const repository = createDexieRepositoryBundle({ name: databaseName });
+interface CreateAppStoreOptions {
+  repositoryFactory?: (input: { name: string }) => RepositoryBundle;
+}
+
+export function createAppStore(
+  databaseName: string,
+  options: CreateAppStoreOptions = {}
+): AppStoreApi {
+  const repository = (options.repositoryFactory ?? createDexieRepositoryBundle)({
+    name: databaseName
+  });
 
   return createStore<AppStore>((set, get) => {
     let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;

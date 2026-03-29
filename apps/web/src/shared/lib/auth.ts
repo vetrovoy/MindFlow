@@ -1,9 +1,13 @@
 import { getNowIso } from "@/shared/lib/date";
 import { createId } from "@/shared/lib/ids";
+import { safeReadStorage, safeWriteStorage } from "@/shared/lib/browser-storage";
 
 export const LEGACY_AUTH_STORAGE_KEY = "mindflow-auth";
 export const APP_AUTH_STORAGE_KEY = "planner-auth";
 export const AUTH_MIN_PASSWORD_LENGTH = 8;
+export const AUTH_STORAGE_VERSION = 1;
+export const AUTH_CRYPTO_UNAVAILABLE_ERROR =
+  "Secure password hashing is not available in this environment.";
 
 export interface LocalAuthUser {
   id: string;
@@ -21,6 +25,7 @@ export interface AuthSession {
 }
 
 export interface AuthStorageSnapshot {
+  version: number;
   users: LocalAuthUser[];
   session: AuthSession | null;
   legacyMigrated: boolean;
@@ -28,6 +33,7 @@ export interface AuthStorageSnapshot {
 
 function createEmptyAuthSnapshot(): AuthStorageSnapshot {
   return {
+    version: AUTH_STORAGE_VERSION,
     users: [],
     session: null,
     legacyMigrated: false
@@ -92,6 +98,10 @@ function sanitizeStoredSnapshot(value: unknown): AuthStorageSnapshot {
   const sessionUser = rawSession == null ? null : usersById.get(rawSession.userId) ?? null;
 
   return {
+    version:
+      typeof candidate.version === "number" && candidate.version >= AUTH_STORAGE_VERSION
+        ? candidate.version
+        : AUTH_STORAGE_VERSION,
     users,
     session:
       sessionUser == null
@@ -111,8 +121,8 @@ export function readStoredAuthSnapshot() {
   }
 
   const raw =
-    window.localStorage.getItem(APP_AUTH_STORAGE_KEY) ??
-    window.localStorage.getItem(LEGACY_AUTH_STORAGE_KEY);
+    safeReadStorage(APP_AUTH_STORAGE_KEY) ??
+    safeReadStorage(LEGACY_AUTH_STORAGE_KEY);
   if (raw == null) {
     return createEmptyAuthSnapshot();
   }
@@ -125,11 +135,7 @@ export function readStoredAuthSnapshot() {
 }
 
 export function persistAuthSnapshot(snapshot: AuthStorageSnapshot) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem(APP_AUTH_STORAGE_KEY, JSON.stringify(snapshot));
+  safeWriteStorage(APP_AUTH_STORAGE_KEY, JSON.stringify(snapshot));
 }
 
 export function createAuthSession(user: LocalAuthUser): AuthSession {
@@ -164,8 +170,13 @@ export function createLocalAuthUser(input: {
 }
 
 function getRuntimeCrypto() {
-  if (typeof crypto === "undefined") {
-    throw new Error("Web Crypto is not available in this environment.");
+  if (
+    typeof crypto === "undefined" ||
+    typeof crypto.getRandomValues !== "function" ||
+    crypto.subtle == null ||
+    typeof crypto.subtle.digest !== "function"
+  ) {
+    throw new Error(AUTH_CRYPTO_UNAVAILABLE_ERROR);
   }
 
   return crypto;

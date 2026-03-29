@@ -1,4 +1,5 @@
 import { getTheme, resolveThemeName, type ThemeName } from "@mindflow/ui";
+import { safeReadStorage, safeWriteStorage } from "@/shared/lib/browser-storage";
 
 export const APP_THEME_STORAGE_KEY = "planner-theme";
 
@@ -7,7 +8,7 @@ export function readStoredTheme() {
     return null;
   }
 
-  return window.localStorage.getItem(APP_THEME_STORAGE_KEY);
+  return safeReadStorage(APP_THEME_STORAGE_KEY);
 }
 
 export function persistTheme(theme: ThemeName) {
@@ -15,7 +16,7 @@ export function persistTheme(theme: ThemeName) {
     return;
   }
 
-  window.localStorage.setItem(APP_THEME_STORAGE_KEY, theme);
+  safeWriteStorage(APP_THEME_STORAGE_KEY, theme);
 }
 
 export function applyDocumentTheme(theme: ThemeName) {
