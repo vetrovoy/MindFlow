@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
+import { getAuthRedirectTarget } from "@/app/app-routing";
 import { useAuth } from "@/app/providers/auth-provider";
 import { useCopy } from "@/app/providers/language-provider";
 import { LanguageToggle } from "@/app/ui/language-toggle";
@@ -11,18 +12,6 @@ import { ActionButton, SurfaceCard, TextField } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
 type AuthMode = "sign-in" | "sign-up";
-
-interface RedirectState {
-  from?: string;
-}
-
-function getRedirectTarget(state: unknown) {
-  const candidate = state as RedirectState | null;
-
-  return typeof candidate?.from === "string" && candidate.from.startsWith("/")
-    ? candidate.from
-    : "/inbox";
-}
 
 export function AuthPage() {
   const [mode, setMode] = useState<AuthMode>("sign-in");
@@ -38,7 +27,7 @@ export function AuthPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, isHydrated, signIn, signUp } = useAuth();
-  const redirectTo = useMemo(() => getRedirectTarget(location.state), [location.state]);
+  const redirectTo = useMemo(() => getAuthRedirectTarget(location.state), [location.state]);
 
   if (!isHydrated) {
     return null;

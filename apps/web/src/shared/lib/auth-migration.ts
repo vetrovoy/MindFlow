@@ -1,4 +1,7 @@
-import { createDexieRepositoryBundle } from "@mindflow/data";
+import {
+  createDexieRepositoryBundle,
+  type RepositoryBundle
+} from "@mindflow/data";
 
 import {
   LEGACY_DATABASE_NAME,
@@ -6,14 +9,22 @@ import {
   getUserDatabaseName
 } from "@/shared/model/app-storage.config";
 
-export async function migrateLegacyAnonymousData(userId: string) {
-  const legacyRepository = createDexieRepositoryBundle({
+interface AuthMigrationOptions {
+  repositoryFactory?: (input: { name: string }) => RepositoryBundle;
+}
+
+export async function migrateLegacyAnonymousData(
+  userId: string,
+  options: AuthMigrationOptions = {}
+) {
+  const repositoryFactory = options.repositoryFactory ?? createDexieRepositoryBundle;
+  const legacyRepository = repositoryFactory({
     name: LEGACY_DATABASE_NAME
   });
-  const userRepository = createDexieRepositoryBundle({
+  const userRepository = repositoryFactory({
     name: getUserDatabaseName(userId)
   });
-  const legacyUserRepository = createDexieRepositoryBundle({
+  const legacyUserRepository = repositoryFactory({
     name: getLegacyUserDatabaseName(userId)
   });
   const [legacyTasks, legacyProjects, legacyUserTasks, legacyUserProjects, userTasks, userProjects] = await Promise.all([

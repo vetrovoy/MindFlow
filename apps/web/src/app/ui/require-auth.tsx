@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
+import { buildProtectedRouteRedirect } from "@/app/app-routing";
 import { useAuth } from "@/app/providers/auth-provider";
 
 export function RequireAuth() {
@@ -15,7 +16,11 @@ export function RequireAuth() {
       <Navigate
         replace
         state={{
-          from: `${location.pathname}${location.search}${location.hash}`
+          from: buildProtectedRouteRedirect(
+            location.pathname,
+            location.search,
+            location.hash
+          )
         }}
         to="/"
       />
