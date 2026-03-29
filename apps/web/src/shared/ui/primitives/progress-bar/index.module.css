@@ -1,0 +1,14 @@
+.progressBar {
+  width: 100%;
+  height: var(--mf-space-xl);
+  background: var(--mf-color-accent-primary-glow);
+  border-radius: var(--mf-radius-pill);
+  overflow: hidden;
+  border: 1px solid var(--mf-color-border-strong);
+}
+
+.progressBarFill {
+  width: calc(var(--progress, 0) * 100%);
+  height: 100%;
+  background: var(--mf-color-accent-primary);
+}

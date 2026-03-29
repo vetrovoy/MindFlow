@@ -3,7 +3,7 @@ import * as Select from "@radix-ui/react-select";
 import { useCopy } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
-import styles from "./select-field.module.css";
+import styles from "./index.module.css";
 
 export interface SelectFieldOption {
   value: string;

@@ -1,0 +1,81 @@
+.radioCardGroup {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mf-space-xs);
+}
+
+.radioCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-sm);
+  min-height: var(--mf-size-field);
+  padding: var(--mf-space-md) var(--mf-space-lg);
+  border-radius: var(--mf-radius-md);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-deep);
+  color: var(--mf-color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.radioCard:hover,
+.radioCard:focus-visible {
+  border-color: var(--mf-color-border-medium);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.radioCardActive,
+.radioCard[data-state="checked"] {
+  border-color: var(--mf-color-accent-primary);
+  background: var(--mf-color-surface-interactive-active);
+}
+
+.radioCardCopy {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.radioCardTitle {
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-badge);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.radioCardDescription {
+  color: var(--mf-color-text-secondary);
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.radioCardIndicatorWrap {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--mf-color-border-medium);
+  background: var(--mf-color-surface);
+  flex-shrink: 0;
+}
+
+.radioCardIndicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--mf-color-accent-primary);
+}
+
+@media (max-width: 639px) {
+  .radioCardGroup {
+    grid-template-columns: 1fr;
+  }
+}

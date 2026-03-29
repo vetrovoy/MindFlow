@@ -6,7 +6,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
 import { MetaText } from "@/shared/ui/typography";
-import styles from "./color-picker-field.module.css";
+import styles from "./index.module.css";
 
 export interface ColorPickerPreset {
   value: string;

@@ -1,0 +1,11 @@
+.surfaceCard {
+  border-radius: var(--mf-radius-card);
+  border: 1px solid var(--mf-color-border-strong);
+  background: linear-gradient(
+    180deg,
+    var(--mf-gradient-premium-section-start),
+    var(--mf-gradient-premium-section-end)
+  );
+  padding: var(--mf-space-5xl);
+  box-shadow: 0 18px 60px var(--mf-color-shadow-soft);
+}

@@ -1,0 +1,38 @@
+.button {
+  appearance: none;
+  border-radius: var(--mf-radius-xl);
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-body);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    opacity 120ms ease,
+    transform 120ms ease;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.buttonPrimary {
+  border: 1px solid var(--mf-color-accent-primary);
+  background: var(--mf-color-accent-primary);
+  color: var(--mf-color-background);
+  padding: var(--mf-space-lg) var(--mf-space-4xl);
+}
+
+.buttonSecondary {
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-elevated);
+  color: var(--mf-color-text-primary);
+  padding: var(--mf-space-lg) var(--mf-space-4xl);
+}
+
+.button:hover:not(:disabled),
+.button:focus-visible:not(:disabled) {
+  transform: translateY(-1px);
+}

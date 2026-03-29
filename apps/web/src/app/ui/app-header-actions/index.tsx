@@ -2,8 +2,8 @@ import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 
 import { useCopy } from "@/app/providers/language-provider";
-import { LanguageToggle } from "@/app/ui/language-toggle/language-toggle";
-import { ThemeOptions, ThemeToggle } from "@/app/ui/theme-toggle/theme-toggle";
+import { LanguageToggle } from "@/app/ui/language-toggle";
+import { ThemeOptions, ThemeToggle } from "@/app/ui/theme-toggle";
 import { cn } from "@/shared/lib/cn";
 import { IconButton } from "@/shared/ui/primitives";
 import styles from "./index.module.css";

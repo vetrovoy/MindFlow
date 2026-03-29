@@ -4,8 +4,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import { useAppState } from "@/shared/model/app-store-provider";
 import { Body, MetaText } from "@/shared/ui/typography";
 import { SectionTitle, StateCard, SurfaceCard } from "@/shared/ui/primitives";
-import { ArchivedProjectRow } from "./ui/archived-row/archived-project-row";
-import { ArchivedTaskRow } from "./ui/archived-row/archived-task-row";
+import { ArchivedProjectRow, ArchivedTaskRow } from "./ui/archived-row";
 import styles from "./index.module.css";
 
 export function ArchiveViewWidget() {

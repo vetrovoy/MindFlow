@@ -1,0 +1,27 @@
+.field {
+  width: 100%;
+  min-height: var(--mf-size-field);
+  border-radius: var(--mf-radius-xl);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-elevated);
+  color: var(--mf-color-text-primary);
+  padding: var(--mf-space-xl) var(--mf-space-4xl);
+  font-family: var(--mf-font-body);
+  font-size: var(--mf-font-size-body);
+  outline: none;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease;
+}
+
+.field:focus {
+  border-color: var(--mf-color-accent-primary);
+  box-shadow: 0 0 0 3px var(--mf-color-accent-primary-glow);
+}
+
+@media (max-width: 639px) {
+  .field {
+    font-size: 16px;
+  }
+}

@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes } from "react";
 
 import { cn } from "@/shared/lib/cn";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export function TextField(props: InputHTMLAttributes<HTMLInputElement>) {
   const { className, ...rest } = props;

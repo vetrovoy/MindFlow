@@ -11,8 +11,8 @@ import {
 
 import { useAuth } from "@/app/providers/auth-provider";
 import { useCopy } from "@/app/providers/language-provider";
-import { AppStats } from "./ui/app-stats/app-stats";
-import { AppHeaderActions } from "./ui/app-header-actions/app-header-actions";
+import { AppStats } from "./ui/app-stats";
+import { AppHeaderActions } from "./ui/app-header-actions";
 import { RequireAuth } from "@/app/ui/require-auth";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";

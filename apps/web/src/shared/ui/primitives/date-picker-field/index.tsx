@@ -6,7 +6,7 @@ import { DayPicker } from "react-day-picker";
 import { useLanguage } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
-import styles from "./date-picker-field.module.css";
+import styles from "./index.module.css";
 
 export interface DatePickerFieldProps {
   id?: string;

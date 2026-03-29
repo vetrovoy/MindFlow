@@ -4,8 +4,8 @@ import type { ButtonVariant } from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
 import { Icon, type IconName } from "@/shared/ui/icons";
-import styles from "./primitives.module.css";
-import { ActionButton } from "./action-button";
+import styles from "./index.module.css";
+import { ActionButton } from "../action-button";
 
 type IconTone = "default" | "muted" | "lime" | "alert" | "success" | "contrast";
 

@@ -1,0 +1,14 @@
+.sectionTitle {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--mf-space-4xl);
+  margin-bottom: var(--mf-space-4xl);
+}
+
+.sectionSubtitle {
+  margin: var(--mf-space-sm) 0 0;
+  color: var(--mf-color-text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+}

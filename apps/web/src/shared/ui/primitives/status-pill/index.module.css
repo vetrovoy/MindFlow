@@ -1,0 +1,23 @@
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mf-space-sm);
+  padding: var(--mf-space-xs) var(--mf-space-xl);
+  border-radius: var(--mf-radius-pill);
+  font-family: var(--mf-font-meta);
+  font-size: var(--mf-font-size-badge);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.statusPillToday {
+  background: var(--mf-color-surface-elevated);
+  color: var(--mf-color-accent-primary);
+  border: 1px solid var(--mf-color-border-strong);
+}
+
+.statusPillOverdue {
+  background: var(--mf-color-surface-elevated);
+  color: var(--mf-color-accent-alert);
+  border: 1px solid var(--mf-color-border-strong);
+}

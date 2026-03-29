@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export interface SurfaceCardProps {
   children: ReactNode;

@@ -1,7 +1,7 @@
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import { cn } from "@/shared/lib/cn";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 interface RadioCardOption<TValue extends string> {
   value: TValue;

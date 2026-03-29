@@ -4,7 +4,7 @@ import type { FeedbackCardVariant } from "@mindflow/ui";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icons";
 import { Body, Title } from "@/shared/ui/typography";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export interface StateCardProps {
   variant: FeedbackCardVariant;

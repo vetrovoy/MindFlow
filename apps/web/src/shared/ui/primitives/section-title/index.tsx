@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Body, Heading } from "@/shared/ui/typography";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export interface SectionTitleProps {
   title: string;

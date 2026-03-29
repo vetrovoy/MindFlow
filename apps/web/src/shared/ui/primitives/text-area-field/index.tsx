@@ -1,7 +1,7 @@
 import type { TextareaHTMLAttributes } from "react";
 
 import { cn } from "@/shared/lib/cn";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export function TextAreaField(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const { className, ...rest } = props;

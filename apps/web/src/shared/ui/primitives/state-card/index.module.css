@@ -1,0 +1,72 @@
+.stateCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--mf-space-xl);
+}
+
+.stateCardError {
+  border: 1px solid color-mix(in srgb, var(--mf-color-accent-alert) 48%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-alert) 7%, var(--mf-color-surface));
+  border-radius: var(--mf-radius-card);
+  padding: var(--mf-space-3xl);
+}
+
+.stateCardLoading {
+  border: 1px solid var(--mf-color-border-medium);
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 4%, var(--mf-color-surface));
+  border-radius: var(--mf-radius-card);
+  padding: var(--mf-space-3xl);
+}
+
+.stateCardEmpty {
+}
+
+.stateAccent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-elevated);
+}
+
+.stateAccentError {
+  border-color: color-mix(in srgb, var(--mf-color-accent-alert) 42%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-alert) 12%, var(--mf-color-surface-elevated));
+}
+
+.stateAccentLoading {
+  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 34%, transparent);
+  background: color-mix(in srgb, var(--mf-color-accent-primary) 10%, var(--mf-color-surface-elevated));
+}
+
+.stateAccentEmpty {
+  border-color: var(--mf-color-border-strong);
+}
+
+.stateContent {
+  display: grid;
+  gap: var(--mf-space-xs);
+  min-width: 0;
+}
+
+.stateTitle {
+  display: block;
+  margin: 0;
+}
+
+.stateTitleError {
+  color: var(--mf-color-accent-alert);
+}
+
+.stateTitleDefault {
+  color: var(--mf-color-text-primary);
+}
+
+.stateDescription {
+  margin: 0;
+  color: var(--mf-color-text-secondary);
+}

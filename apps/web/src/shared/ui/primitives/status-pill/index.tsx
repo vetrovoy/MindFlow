@@ -1,7 +1,7 @@
 import type { StatusBadgeVariant } from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export interface StatusPillProps {
   label: string;

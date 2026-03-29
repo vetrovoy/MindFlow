@@ -3,7 +3,7 @@ import { forwardRef, type ReactNode } from "react";
 import type { ButtonVariant } from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
-import styles from "./primitives.module.css";
+import styles from "./index.module.css";
 
 export interface ActionButtonProps {
   children: ReactNode;
