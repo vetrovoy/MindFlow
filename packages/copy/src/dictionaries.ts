@@ -33,6 +33,7 @@ const ru: CopyDictionary = {
   },
   common: {
     save: "Сохранить",
+    restore: "Вернуть",
     close: "Закрыть",
     clear: "Очистить",
     empty: "Пусто",
@@ -50,7 +51,9 @@ const ru: CopyDictionary = {
     sectionAriaLabel: "Переключение разделов",
     inbox: "Входящие",
     lists: "Списки",
-    today: "Сегодня"
+    today: "Сегодня",
+    search: "Поиск",
+    archive: "Архив"
   },
   app: {
     greeting: "Привет,",
@@ -124,6 +127,25 @@ const ru: CopyDictionary = {
     emptyDescription: "Создайте новый список.",
     favoriteEmptyDescription: "Привяжите задачи к этому списку."
   },
+  search: {
+    title: "Поиск",
+    fieldPlaceholder: "Ищите задачи и списки",
+    idleTitle: "Начните поиск",
+    idleDescription:
+      "Введите название задачи или списка, чтобы быстро открыть нужное место.",
+    emptyTitle: "Ничего не найдено",
+    emptyDescription:
+      "Попробуйте изменить запрос. В результатах показываются только активные задачи и списки.",
+    tasksTitle: "Задачи",
+    projectsTitle: "Списки"
+  },
+  archive: {
+    title: "Архив",
+    tasksTitle: "Задачи",
+    projectsTitle: "Списки",
+    emptyTitle: "Архив пуст",
+    emptyDescription: "Архивированные задачи и списки появятся здесь.",
+  },
   task: {
     inbox: "Входящие",
     noDueDate: "Без срока",
@@ -133,6 +155,8 @@ const ru: CopyDictionary = {
     updatedToastDescription: "Изменения сохранены локально.",
     archivedToastTitle: "Задача архивирована",
     archivedToastDescription: "Она скрыта из активных экранов.",
+    restoredToastTitle: "Задача восстановлена",
+    restoredToastDescription: "Она больше не помечена как архивная.",
     deletedToastTitle: "Задача удалена",
     deletedToastDescription: "Мы убрали её из локального плана.",
     titleRequired: "Добавьте короткое название задачи, чтобы сохранить изменения.",
@@ -170,6 +194,8 @@ const ru: CopyDictionary = {
     archivedToastTitle: "Список архивирован",
     archivedToastDescription:
       "Он скрыт из активных экранов вместе со своими задачами.",
+    restoredToastTitle: "Список восстановлен",
+    restoredToastDescription: "Он снова доступен в активных экранах.",
     createTitle: "Создать список",
     editTitle: "Редактировать список",
     createCloseAriaLabel: "Закрыть создание списка",
@@ -247,6 +273,7 @@ const en: CopyDictionary = {
   },
   common: {
     save: "Save",
+    restore: "Restore",
     close: "Close",
     clear: "Clear",
     empty: "Empty",
@@ -264,7 +291,9 @@ const en: CopyDictionary = {
     sectionAriaLabel: "Section switcher",
     inbox: "Inbox",
     lists: "Lists",
-    today: "Today"
+    today: "Today",
+    search: "Search",
+    archive: "Archive"
   },
   app: {
     greeting: "Hello,",
@@ -338,6 +367,25 @@ const en: CopyDictionary = {
     emptyDescription: "Create a new list.",
     favoriteEmptyDescription: "Move tasks into this list."
   },
+  search: {
+    title: "Search",
+    fieldPlaceholder: "Search tasks and lists",
+    idleTitle: "Start searching",
+    idleDescription:
+      "Type a task or list name to quickly open the right place.",
+    emptyTitle: "Nothing found",
+    emptyDescription:
+      "Try a different query. Results include only active tasks and lists.",
+    tasksTitle: "Tasks",
+    projectsTitle: "Lists"
+  },
+  archive: {
+    title: "Archive",
+    tasksTitle: "Archived tasks",
+    projectsTitle: "Archived lists",
+    emptyTitle: "Archive is empty",
+    emptyDescription: "Archived tasks and lists will appear here.",
+  },
   task: {
     inbox: "Inbox",
     noDueDate: "No due date",
@@ -347,6 +395,8 @@ const en: CopyDictionary = {
     updatedToastDescription: "Changes were saved locally.",
     archivedToastTitle: "Task archived",
     archivedToastDescription: "It is now hidden from active views.",
+    restoredToastTitle: "Task restored",
+    restoredToastDescription: "It is no longer marked as archived.",
     deletedToastTitle: "Task deleted",
     deletedToastDescription: "We removed it from the local plan.",
     titleRequired: "Add a short task name to save changes.",
@@ -384,6 +434,8 @@ const en: CopyDictionary = {
     archivedToastTitle: "List archived",
     archivedToastDescription:
       "It is now hidden from active views together with its tasks.",
+    restoredToastTitle: "List restored",
+    restoredToastDescription: "It is available in active screens again.",
     createTitle: "Create list",
     editTitle: "Edit list",
     createCloseAriaLabel: "Close list creation",

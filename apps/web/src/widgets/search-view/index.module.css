@@ -1,0 +1,56 @@
+.root {
+  display: grid;
+}
+
+.fieldShell {
+  position: relative;
+  display: block;
+}
+
+.fieldIcon {
+  position: absolute;
+  top: 50%;
+  left: var(--mf-space-3xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.field {
+  padding-left: calc(var(--mf-space-4xl) * 2 + 18px);
+}
+
+.content {
+  margin-top: var(--mf-space-4xl);
+}
+
+.groups {
+  display: grid;
+  gap: var(--mf-space-5xl);
+}
+
+.group {
+  display: grid;
+  gap: var(--mf-space-2xl);
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-lg);
+  padding-bottom: var(--mf-space-lg);
+  border-bottom: 1px solid var(--mf-color-border-strong);
+}
+
+.groupMeta {
+  margin: 0;
+  color: var(--mf-color-text-secondary);
+}
+
+.projectGrid {
+  display: grid;
+  gap: var(--mf-space-xl);
+}

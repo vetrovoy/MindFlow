@@ -22,7 +22,7 @@ export function LanguageToggle() {
             className={styles.trigger}
             type="button"
           >
-            <Icon className={styles.triggerIcon} name="language" size={16} />
+            <Icon className={styles.triggerIcon} name="language" size={20} />
           </button>
         </Popover.Trigger>
         <Popover.Portal>

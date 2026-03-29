@@ -5,6 +5,8 @@ import {
   createProject as createProjectEntity,
   createTask,
   reorderTasks,
+  restoreProject as restoreProjectEntity,
+  restoreTask as restoreTaskEntity,
   setTaskStatus,
   toggleTaskDone,
   updateProject,
@@ -246,6 +248,44 @@ export function createAppActions({
         setToast({
           title: copy.project.archivedToastTitle,
           description: copy.project.archivedToastDescription
+        });
+      }
+    },
+    async restoreTask(taskId) {
+      const { tasks } = getStore().state;
+      const task = tasks.find((item) => item.id === taskId);
+      if (task == null) {
+        return;
+      }
+
+      const saved = await runMutation(async () => {
+        await repository.tasks.save(restoreTaskEntity(task, getNowIso()));
+      });
+
+      if (saved) {
+        const copy = getRuntimeCopy();
+        setToast({
+          title: copy.task.restoredToastTitle,
+          description: copy.task.restoredToastDescription
+        });
+      }
+    },
+    async restoreProject(projectId) {
+      const { projects } = getStore().state;
+      const project = projects.find((item) => item.id === projectId);
+      if (project == null) {
+        return;
+      }
+
+      const saved = await runMutation(async () => {
+        await repository.projects.save(restoreProjectEntity(project, getNowIso()));
+      });
+
+      if (saved) {
+        const copy = getRuntimeCopy();
+        setToast({
+          title: copy.project.restoredToastTitle,
+          description: copy.project.restoredToastDescription
         });
       }
     },

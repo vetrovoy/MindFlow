@@ -74,7 +74,7 @@ export function ThemeToggle() {
       <Popover.Root onOpenChange={setOpen} open={open}>
         <Popover.Trigger asChild>
           <button aria-label={copy.theme.label} className={styles.trigger} type="button">
-            <Icon className={styles.triggerIcon} name="palette" size={16} />
+            <Icon className={styles.triggerIcon} name="palette" size={20} />
           </button>
         </Popover.Trigger>
         <Popover.Portal>

@@ -79,6 +79,8 @@ export interface AppActions {
   saveProjectEdit: (input: SaveProjectEditInput, options?: SaveOptions) => Promise<boolean>;
   archiveTask: (taskId: string) => Promise<void>;
   archiveProject: (projectId: string) => Promise<void>;
+  restoreTask: (taskId: string) => Promise<void>;
+  restoreProject: (projectId: string) => Promise<void>;
   deleteTask: (taskId: string) => Promise<void>;
   toggleInboxSelection: (taskId: string) => void;
   clearInboxSelection: () => void;

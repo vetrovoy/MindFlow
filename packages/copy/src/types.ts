@@ -20,6 +20,7 @@ export interface CopyDictionary {
   };
   common: {
     save: string;
+    restore: string;
     close: string;
     clear: string;
     empty: string;
@@ -38,6 +39,8 @@ export interface CopyDictionary {
     inbox: string;
     lists: string;
     today: string;
+    search: string;
+    archive: string;
   };
   app: {
     greeting: string;
@@ -108,6 +111,23 @@ export interface CopyDictionary {
     emptyDescription: string;
     favoriteEmptyDescription: string;
   };
+  search: {
+    title: string;
+    fieldPlaceholder: string;
+    idleTitle: string;
+    idleDescription: string;
+    emptyTitle: string;
+    emptyDescription: string;
+    tasksTitle: string;
+    projectsTitle: string;
+  };
+  archive: {
+    title: string;
+    tasksTitle: string;
+    projectsTitle: string;
+    emptyTitle: string;
+    emptyDescription: string;
+  };
   task: {
     inbox: string;
     noDueDate: string;
@@ -117,6 +137,8 @@ export interface CopyDictionary {
     updatedToastDescription: string;
     archivedToastTitle: string;
     archivedToastDescription: string;
+    restoredToastTitle: string;
+    restoredToastDescription: string;
     deletedToastTitle: string;
     deletedToastDescription: string;
     titleRequired: string;
@@ -151,6 +173,8 @@ export interface CopyDictionary {
     updatedToastDescription: string;
     archivedToastTitle: string;
     archivedToastDescription: string;
+    restoredToastTitle: string;
+    restoredToastDescription: string;
     createTitle: string;
     editTitle: string;
     createCloseAriaLabel: string;

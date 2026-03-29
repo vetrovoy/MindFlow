@@ -1,0 +1,32 @@
+.root {
+  display: grid;
+}
+
+.groups {
+  display: grid;
+  gap: var(--mf-space-5xl);
+}
+
+.group {
+  display: grid;
+  gap: var(--mf-space-2xl);
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mf-space-lg);
+  padding-bottom: var(--mf-space-lg);
+  border-bottom: 1px solid var(--mf-color-border-strong);
+}
+
+.groupMeta {
+  margin: 0;
+  color: var(--mf-color-text-secondary);
+}
+
+.rows {
+  display: grid;
+  gap: var(--mf-space-lg);
+}

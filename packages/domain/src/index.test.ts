@@ -188,6 +188,28 @@ describe("searchEntities", () => {
     expect(result.tasks.map((task) => task.id)).toEqual(["task-a"]);
     expect(result.projects.map((project) => project.id)).toEqual(["project-a"]);
   });
+
+  it("excludes tasks whose parent project is archived", () => {
+    const archivedProject = archiveProject(
+      makeProject({ id: "project-a", name: "Landing Archive" }),
+      NOW
+    );
+    const nestedTask = makeTask({
+      id: "task-a",
+      title: "Landing nested task",
+      projectId: archivedProject.id
+    });
+    const inboxTask = makeTask({ id: "task-b", title: "Landing inbox" });
+
+    const result = searchEntities(
+      [nestedTask, inboxTask],
+      [archivedProject],
+      "landing"
+    );
+
+    expect(result.tasks.map((task) => task.id)).toEqual(["task-b"]);
+    expect(result.projects).toEqual([]);
+  });
 });
 
 describe("task editing helpers", () => {

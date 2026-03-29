@@ -21,6 +21,7 @@ import {
   MoreHorizontal,
   Palette,
   Plus,
+  RotateCcw,
   Search,
   Star,
   Trash2,
@@ -42,6 +43,7 @@ export type IconName =
   | "priority-low"
   | "priority-medium"
   | "priority-high"
+  | "restore"
   | "search"
   | "today"
   | "overdue"
@@ -83,6 +85,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   "priority-low": Flag,
   "priority-medium": Flag,
   "priority-high": Flag,
+  restore: RotateCcw,
   search: Search,
   today: Calendar,
   overdue: CalendarClock,
