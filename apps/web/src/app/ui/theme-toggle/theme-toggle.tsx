@@ -7,7 +7,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import { useTheme } from "@/app/providers/theme-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui";
-import styles from "./theme-toggle.module.css";
+import styles from "./index.module.css";
 
 interface ThemeOptionsProps {
   className?: string;

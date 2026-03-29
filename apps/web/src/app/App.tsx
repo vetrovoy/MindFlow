@@ -11,8 +11,8 @@ import {
 
 import { useAuth } from "@/app/providers/auth-provider";
 import { useCopy } from "@/app/providers/language-provider";
-import { AppStats } from "@/app/ui/app-stats";
-import { AppHeaderActions } from "@/app/ui/app-header-actions";
+import { AppStats } from "./ui/app-stats/app-stats";
+import { AppHeaderActions } from "./ui/app-header-actions/app-header-actions";
 import { RequireAuth } from "@/app/ui/require-auth";
 import { cn } from "@/shared/lib/cn";
 import { ProjectEditFeature } from "@/features/project-edit";
@@ -32,7 +32,7 @@ import { Display, SupportText } from "@/shared/ui";
 import { StateCard, SurfaceCard } from "@/shared/ui/primitives";
 import { ProjectCreateFeature } from "@/features/project-create";
 import { ProjectCreateModalFeature } from "@/features/project-create/modal";
-import styles from "@/app/App.module.css";
+import styles from "./index.module.css";
 
 function AppShell() {
   const location = useLocation();
@@ -83,7 +83,9 @@ function AppShell() {
               </div>
               <AppHeaderActions
                 createAriaLabel={
-                  isLists ? copy.app.addProjectAriaLabel : copy.app.addTaskAriaLabel
+                  isLists
+                    ? copy.app.addProjectAriaLabel
+                    : copy.app.addTaskAriaLabel
                 }
                 isArchive={isArchive}
                 isSearch={isSearch}
@@ -93,7 +95,10 @@ function AppShell() {
               />
             </div>
             <AppStats />
-            <nav aria-label={copy.navigation.sectionAriaLabel} className={styles.topTabs}>
+            <nav
+              aria-label={copy.navigation.sectionAriaLabel}
+              className={styles.topTabs}
+            >
               <NavLink
                 className={({ isActive }) =>
                   cn(styles.topTab, isActive && styles.topTabActive)

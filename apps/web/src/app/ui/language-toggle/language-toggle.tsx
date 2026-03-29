@@ -6,7 +6,7 @@ import { SUPPORTED_LANGUAGES } from "@mindflow/copy";
 import { useCopy, useLanguage } from "@/app/providers/language-provider";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui";
-import styles from "./language-toggle.module.css";
+import styles from "./index.module.css";
 
 export function LanguageToggle() {
   const [open, setOpen] = useState(false);

@@ -4,7 +4,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import { ProjectBadge } from "@/shared/ui";
 import { Body, Title } from "@/shared/ui/typography";
 import { IconButton } from "@/shared/ui/primitives";
-import styles from "./archive-row.module.css";
+import styles from "./index.module.css";
 
 interface ArchivedTaskRowProps {
   project: Project | null;

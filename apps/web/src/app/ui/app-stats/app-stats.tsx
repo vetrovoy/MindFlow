@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useCopy } from "@/app/providers/language-provider";
 import { useAppState } from "@/shared/model/app-store-provider";
 import { Display, MetaText } from "@/shared/ui";
-import styles from "./app-stats.module.css";
+import styles from "./index.module.css";
 
 export function AppStats() {
   const copy = useCopy();
