@@ -21,8 +21,16 @@
 }
 
 .itemDragging {
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 48%, var(--mf-color-border-medium));
-  background: color-mix(in srgb, var(--mf-color-accent-primary) 9%, var(--mf-color-surface-deep));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 48%,
+    var(--mf-color-border-medium)
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 9%,
+    var(--mf-color-surface-deep)
+  );
   box-shadow: 0 18px 36px var(--mf-color-shadow-soft);
 }
 
@@ -59,8 +67,8 @@
 }
 
 .checkboxDone {
-  border-color: var(--mf-color-accent-success-bright);
-  background: var(--mf-color-accent-success-deep);
+  border-color: var(--mf-color-accent-primary-glow);
+  background: var(--mf-color-accent-primary);
 }
 
 .mainArea {
@@ -90,7 +98,8 @@
 
 .contentButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mf-color-accent-primary) 48%, transparent);
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--mf-color-accent-primary) 48%, transparent);
 }
 
 .title {
@@ -147,11 +156,11 @@
 }
 
 .priorityMarkHight {
-  color: var(--mf-color-accent-alert)
+  color: var(--mf-color-accent-alert);
 }
 
 .priorityMarkMedium {
-  color: var(--mf-color-accent-primary)
+  color: var(--mf-color-accent-primary);
 }
 
 @media (max-width: 639px) {
