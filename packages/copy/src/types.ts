@@ -120,6 +120,9 @@ export interface CopyDictionary {
     emptyDescription: string;
     tasksTitle: string;
     projectsTitle: string;
+    sortLabel: string;
+    sortByRelevance: string;
+    sortByDate: string;
   };
   archive: {
     title: string;

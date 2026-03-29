@@ -5,6 +5,7 @@ import { useCopy } from "@/app/providers/language-provider";
 import { LanguageToggle } from "@/app/ui/language-toggle";
 import { ThemeOptions, ThemeToggle } from "@/app/ui/theme-toggle";
 import { cn } from "@/shared/lib/cn";
+import { useKeyboardShortcut } from "@/shared/lib/hooks/use-keyboard-shortcut";
 import { IconButton } from "@/shared/ui/primitives";
 import styles from "./index.module.css";
 
@@ -28,17 +29,25 @@ export function AppHeaderActions({
   const copy = useCopy();
   const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 
+  useKeyboardShortcut({
+    key: "k",
+    callback: () => {
+      onNavigate("/search");
+    }
+  });
+
   return (
     <>
       <div className={styles.headerActions}>
         <IconButton
-          ariaLabel={copy.navigation.search}
+          ariaLabel={`${copy.navigation.search} (⌘K)`}
           className={cn(
             styles.headerUtilityButton,
             isSearch && styles.headerUtilityButtonActive
           )}
           icon="search"
           iconTone="lime"
+          keyboardShortcut="⌘K"
           onClick={() => {
             onNavigate("/search");
           }}

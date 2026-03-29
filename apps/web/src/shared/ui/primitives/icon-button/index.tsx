@@ -18,10 +18,12 @@ export interface IconButtonProps {
   className?: string;
   iconTone?: IconTone;
   onClick?: () => void;
+  keyboardShortcut?: string;
+  title?: string;
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { ariaLabel, className, disabled, icon, iconTone, onClick, type = "button", variant = "primary" },
+  { ariaLabel, className, disabled, icon, iconTone, keyboardShortcut, onClick, title, type = "button", variant = "primary" },
   ref
 ) {
   return (
@@ -30,6 +32,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       disabled={disabled}
       onClick={onClick}
       ref={ref}
+      title={title}
       type={type}
       variant={variant}
     >
@@ -40,6 +43,11 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
         size={20}
         tone={iconTone ?? (variant === "primary" ? "contrast" : "default")}
       />
+      {keyboardShortcut ? (
+        <span className={styles.keyboardShortcut} aria-hidden="true">
+          {keyboardShortcut}
+        </span>
+      ) : null}
     </ActionButton>
   );
 });

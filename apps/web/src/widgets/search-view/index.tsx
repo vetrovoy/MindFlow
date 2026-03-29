@@ -9,23 +9,35 @@ import { sortProjects, sortTasks } from "@/shared/model/task-store.helpers";
 import { Icon, ProjectCard } from "@/shared/ui";
 import { Body, MetaText } from "@/shared/ui/typography";
 import { SectionTitle, StateCard, SurfaceCard, TextField } from "@/shared/ui/primitives";
+import { SearchSortControl, type SearchSortOption } from "./ui/search-sort-control";
 import styles from "./index.module.css";
 
 export function SearchViewWidget() {
   const copy = useCopy();
   const { actions, derived, state } = useAppState();
   const [query, setQuery] = useState("");
+  const [sortBy, setSortBy] = useState<SearchSortOption>("relevance");
 
   const results = useMemo(
     () => {
       const nextResults = searchEntities(state.tasks, state.projects, query);
+      const sortedTasks = sortTasks(nextResults.tasks);
+      const sortedProjects = sortProjects(nextResults.projects);
+
+      if (sortBy === "date") {
+        sortedTasks.sort((a, b) => {
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return dateB - dateA;
+        });
+      }
 
       return {
-        tasks: sortTasks(nextResults.tasks),
-        projects: sortProjects(nextResults.projects)
+        tasks: sortedTasks,
+        projects: sortedProjects
       };
     },
-    [query, state.projects, state.tasks]
+    [query, state.projects, state.tasks, sortBy]
   );
   const normalizedQuery = query.trim();
   const projectSectionsById = useMemo(
@@ -37,7 +49,12 @@ export function SearchViewWidget() {
   return (
     <div className={styles.root}>
       <SurfaceCard>
-        <SectionTitle title={copy.search.title} />
+        <SectionTitle
+          action={
+            <SearchSortControl sortBy={sortBy} onSortChange={setSortBy} />
+          }
+          title={copy.search.title}
+        />
         <label className={styles.fieldShell}>
           <span className={styles.fieldIcon}>
             <Icon decorative name="search" size={18} tone="muted" />

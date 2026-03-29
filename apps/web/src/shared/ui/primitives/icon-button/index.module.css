@@ -1,4 +1,5 @@
 .iconButton {
+  position: relative;
   width: var(--mf-size-icon-button);
   height: var(--mf-size-icon-button);
   padding: 0;
@@ -15,6 +16,11 @@
   filter: saturate(1.08);
 }
 
+.iconButton:hover .keyboardShortcut {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .srOnly {
   position: absolute;
   width: 1px;
@@ -25,4 +31,29 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.keyboardShortcut {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: var(--mf-radius-sm);
+  border: 1px solid var(--mf-color-border-strong);
+  background: var(--mf-color-surface-elevated);
+  color: var(--mf-color-text-secondary);
+  font-family: var(--mf-font-meta);
+  font-size: 9px;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  pointer-events: none;
 }

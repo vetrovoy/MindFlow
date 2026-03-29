@@ -12,11 +12,12 @@ export interface ActionButtonProps {
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
+  title?: string;
 }
 
 export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
   function ActionButton(
-    { className, children, disabled, onClick, type = "button", variant = "primary" },
+    { className, children, disabled, onClick, title, type = "button", variant = "primary" },
     ref
   ) {
     return (
@@ -29,6 +30,7 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
         disabled={disabled}
         onClick={onClick}
         ref={ref}
+        title={title}
         type={type}
       >
         {children}

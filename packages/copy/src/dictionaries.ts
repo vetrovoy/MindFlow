@@ -137,7 +137,10 @@ const ru: CopyDictionary = {
     emptyDescription:
       "Попробуйте изменить запрос. В результатах показываются только активные задачи и списки.",
     tasksTitle: "Задачи",
-    projectsTitle: "Списки"
+    projectsTitle: "Списки",
+    sortLabel: "Сортировка:",
+    sortByRelevance: "По релевантности",
+    sortByDate: "По дате"
   },
   archive: {
     title: "Архив",
@@ -377,7 +380,10 @@ const en: CopyDictionary = {
     emptyDescription:
       "Try a different query. Results include only active tasks and lists.",
     tasksTitle: "Tasks",
-    projectsTitle: "Lists"
+    projectsTitle: "Lists",
+    sortLabel: "Sort:",
+    sortByRelevance: "By relevance",
+    sortByDate: "By date"
   },
   archive: {
     title: "Archive",
