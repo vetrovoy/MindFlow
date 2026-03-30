@@ -237,7 +237,7 @@ apps/mobile/
 
 Key configurations:
 - `CFBundleDisplayName`: "MindFlow"
-- `CFBundleIdentifier`: "com.mindflowapp.mobile"
+- `CFBundleIdentifier`: "com.mindflow.mobile"
 - `NSAppTransportSecurity`: Allows local Metro connection
 
 ### ios/Podfile

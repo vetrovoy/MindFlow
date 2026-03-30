@@ -31,4 +31,5 @@ const config = {
   },
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+const merge_config = mergeConfig(getDefaultConfig(__dirname), config);
+export default merge_config

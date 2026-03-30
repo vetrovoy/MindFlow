@@ -98,9 +98,9 @@ Path aliases are configured in:
 
 ## App Identifiers
 
-- **Android:** `com.mindflowapp.mobile`
-- **iOS:** `com.mindflowapp.mobile`
-- **Bundle ID:** `com.mindflowapp.mobile`
+- **Android:** `com.mindflow.mobile`
+- **iOS:** `com.mindflow.mobile`
+- **Bundle ID:** `com.mindflow.mobile`
 
 ## Development
 

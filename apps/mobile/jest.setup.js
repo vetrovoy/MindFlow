@@ -7,4 +7,5 @@
 // 
 // Workaround: Run tests with --no-cache flag or downgrade to RN 0.76.x for full Jest compatibility.
 
-module.exports = {};
+const config = {};
+export default config

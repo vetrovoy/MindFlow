@@ -183,8 +183,8 @@ apps/mobile/
 ### android/app/build.gradle
 
 Key configurations:
-- `namespace "com.mindflowapp.mobile"` - Java package
-- `applicationId "com.mindflowapp.mobile"` - App ID for Play Store
+- `namespace "com.mindflow.mobile"` - Java package
+- `applicationId "com.mindflow.mobile"` - App ID for Play Store
 - `versionCode 1` - Internal version number
 - `versionName "1.0"` - User-visible version
 

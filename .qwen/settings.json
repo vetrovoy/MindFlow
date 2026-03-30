@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ren *)",
+      "Bash(mkdir *)",
+      "mcp__vibe_kanban__update_issue",
+      "Bash(pnpm install)",
+      "Bash(pnpm *)",
+      "Bash(del *)",
+      "Bash(git add *)",
+      "Bash(dir)",
+      "Bash(rmdir *)",
+      "Bash(gradlew *)",
+      "Bash(move *)"
+    ]
+  },
+  "$version": 3
+}

@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   presets: ['module:@react-native/babel-preset'],
   plugins: [
     [
@@ -16,3 +16,5 @@ module.exports = {
     ],
   ],
 };
+
+export default config

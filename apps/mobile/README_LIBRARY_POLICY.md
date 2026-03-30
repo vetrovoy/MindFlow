@@ -111,7 +111,7 @@ module.exports = mergeConfig(getDefaultConfig(__dirname), config);
 ### Android
 
 - Managed via Gradle (`android/app/build.gradle`)
-- Namespace: `com.mindflowapp.mobile`
+- Namespace: `com.mindflow.mobile`
 
 ## Scripts
 

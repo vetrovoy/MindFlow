@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   preset: 'react-native',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
@@ -17,5 +17,9 @@ module.exports = {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { rootMode: 'upward' }],
   },
   testEnvironment: 'node',
-  resolver: '<rootDir>/jest-resolver.cjs',
+  transformIgnorePatterns: [
+  'node_modules/(?!(?:.pnpm/)?((jest-)?react-native|@react-native(-community)?|react-navigation|@react-navigation/.*|native-base|react-native-svg))',
+],
 };
+
+export default config

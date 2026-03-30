@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.mindflowapp.mobile"
+    namespace "com.mindflow.mobile"
     defaultConfig {
-        applicationId "com.mindflowapp.mobile"
+        applicationId "com.mindflow.mobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
