@@ -1,4 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src"]
+  "compilerOptions": {
+    "types": ["jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@mindflow/domain": ["../../packages/domain/src/index.ts"],
+      "@mindflow/data": ["../../packages/data/src/index.ts"],
+      "@mindflow/ui": ["../../packages/ui/src/index.ts"],
+      "@mindflow/copy": ["../../packages/copy/src/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["**/node_modules", "**/Pods", "**/android", "**/ios"]
 }

@@ -8,7 +8,13 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "mobile:start": "pnpm --filter @mindflow/mobile start",
+    "mobile:android": "pnpm --filter @mindflow/mobile android",
+    "mobile:ios": "pnpm --filter @mindflow/mobile ios",
+    "mobile:lint": "pnpm --filter @mindflow/mobile lint",
+    "mobile:test": "pnpm --filter @mindflow/mobile test",
+    "mobile:typecheck": "pnpm --filter @mindflow/mobile typecheck"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
