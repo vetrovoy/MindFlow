@@ -1,6 +1,5 @@
-import React from 'react';
-import { Text as RNText, type TextProps, StyleSheet } from 'react-native';
-import { useTheme } from '../theme/useTheme';
+import { Text as RNText, type TextProps } from 'react-native';
+import { useTheme } from '@shared/theme/use-theme';
 
 type Variant = 'display' | 'title' | 'body' | 'caption' | 'meta';
 
@@ -16,7 +15,7 @@ const FONT_MAP: Record<Variant, { fontFamily: string; fontSize: number; lineHeig
   meta:     { fontFamily: 'SpaceMono-Regular',     fontSize: 11, lineHeight: 16 },
 };
 
-export function Text({ variant = 'body', style, ...props }: ThemedTextProps) {
+export function Body({ variant = 'body', style, ...props }: ThemedTextProps) {
   const { theme } = useTheme();
   const fontStyle = FONT_MAP[variant];
   return (

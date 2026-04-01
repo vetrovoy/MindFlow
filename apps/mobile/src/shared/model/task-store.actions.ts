@@ -11,8 +11,8 @@ import {
 import type { RepositoryBundle } from '@mindflow/data';
 import { getCopy } from '@mindflow/copy';
 
-import { getNowIso } from '../lib/date';
-import { createId } from '../lib/ids';
+import { getNowIso } from '@shared/lib/date';
+import { createId } from '@shared/lib/ids';
 import { getNextOrderIndex, formatError } from './task-store.helpers';
 import type { AppActions, AppState, AppStore, ToastState } from './task-store.types';
 

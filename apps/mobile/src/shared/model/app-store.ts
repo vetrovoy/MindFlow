@@ -1,6 +1,6 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
-import { createSqliteRepositoryBundle } from '../data/sqlite';
+import { createSqliteRepositoryBundle } from '@shared/data/sqlite';
 import {
   computeDerived,
   formatError,

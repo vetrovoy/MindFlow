@@ -7,7 +7,13 @@
       "@mindflow/domain": ["../../packages/domain/src/index.ts"],
       "@mindflow/data": ["../../packages/data/src/index.ts"],
       "@mindflow/ui": ["../../packages/ui/src/index.ts"],
-      "@mindflow/copy": ["../../packages/copy/src/index.ts"]
+      "@mindflow/copy": ["../../packages/copy/src/index.ts"],
+      "@mobile/*": ["src/*"],
+      "@shared/*": ["src/shared/*"],
+      "@pages/*": ["src/pages/*"],
+      "@features/*": ["src/features/*"],
+      "@widgets/*": ["src/widgets/*"],
+      "@app/*": ["src/app/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

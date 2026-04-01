@@ -5,9 +5,9 @@ import {
   type ThemeDefinition,
   type ThemeName,
 } from '@mindflow/ui';
-import { storage } from './mmkv';
+import { storage } from './mmkv-storage';
 
-const THEME_KEY = 'mindflow:theme';
+const THEME_KEY = 'theme';
 
 export interface ThemeContextValue {
   theme: ThemeDefinition;

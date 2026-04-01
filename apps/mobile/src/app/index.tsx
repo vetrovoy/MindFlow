@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 
-import { ThemeProvider } from '../shared/theme/ThemeContext';
-import { AppStoreProvider, useMobileAppStore } from '../shared/model/app-store-provider';
+import { ThemeProvider } from '@shared/theme/theme-context';
+import { AppStoreProvider, useMobileAppStore } from '@shared/model/app-store-provider';
 import { RootNavigator } from './navigation';
 
 function AppInit() {

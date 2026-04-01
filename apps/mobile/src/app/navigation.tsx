@@ -1,12 +1,11 @@
-import React from 'react';
 import { NavigationContainer, type Theme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useTheme } from '../shared/theme/useTheme';
-import { InboxPage } from '../pages/inbox/ui/InboxPage';
-import { TodayPage } from '../pages/today/ui/TodayPage';
-import { ListsPage } from '../pages/lists/ui/ListsPage';
+import { useTheme } from '@shared/theme/use-theme';
+import { InboxPage } from '@pages/inbox/ui/inbox-page';
+import { TodayPage } from '@pages/today/ui/today-page';
+import { ListsPage } from '@pages/lists/ui/lists-page';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
