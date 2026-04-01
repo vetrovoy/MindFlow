@@ -1,0 +1,32 @@
+import React, { createContext, useContext, useRef } from 'react';
+import { useStore } from 'zustand';
+
+import { getMobileAppStore, type AppStoreApi } from './app-store';
+import type { AppStore } from './task-store.types';
+
+const AppStoreContext = createContext<AppStoreApi | null>(null);
+
+export function AppStoreProvider({ children }: { children: React.ReactNode }) {
+  const storeRef = useRef<AppStoreApi | null>(null);
+  if (storeRef.current == null) {
+    storeRef.current = getMobileAppStore();
+  }
+  return (
+    <AppStoreContext.Provider value={storeRef.current}>
+      {children}
+    </AppStoreContext.Provider>
+  );
+}
+
+function useAppStoreApi(): AppStoreApi {
+  const store = useContext(AppStoreContext);
+  if (store == null) {
+    throw new Error('useMobileAppStore must be used inside AppStoreProvider');
+  }
+  return store;
+}
+
+export function useMobileAppStore<T>(selector: (store: AppStore) => T): T {
+  const store = useAppStoreApi();
+  return useStore(store, selector);
+}

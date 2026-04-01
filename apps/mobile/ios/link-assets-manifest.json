@@ -1,0 +1,49 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Manrope-Bold.ttf",
+      "sha1": "38d6c98baaded9ea60e69f9a6aefa2d6de0f91a4"
+    },
+    {
+      "path": "assets/fonts/Manrope-ExtraBold.ttf",
+      "sha1": "1058c2c81682cd53c2154a544fa4f3969c1c8584"
+    },
+    {
+      "path": "assets/fonts/Manrope-Medium.ttf",
+      "sha1": "67f2bbd06bf12486701b660066d774d18212c6b9"
+    },
+    {
+      "path": "assets/fonts/Manrope-Regular.ttf",
+      "sha1": "a79767a1f0765e9452b43ed41b5d2406cf1e2fd7"
+    },
+    {
+      "path": "assets/fonts/Manrope-SemiBold.ttf",
+      "sha1": "b5e59950465f67853440f82e2966b36cb0aeaa03"
+    },
+    {
+      "path": "assets/fonts/SpaceGrotesk-Bold.ttf",
+      "sha1": "a9c030e3ebcd8ce7284f8382da8590609f1803c4"
+    },
+    {
+      "path": "assets/fonts/SpaceGrotesk-Medium.ttf",
+      "sha1": "cf888825e5dc27fb90422350958924f6048381b5"
+    },
+    {
+      "path": "assets/fonts/SpaceGrotesk-Regular.ttf",
+      "sha1": "a9f73f295d771a183ab23260d4406b7f33b53b18"
+    },
+    {
+      "path": "assets/fonts/SpaceGrotesk-SemiBold.ttf",
+      "sha1": "7a845daa4f73dace30a8035876a361d350c2d740"
+    },
+    {
+      "path": "assets/fonts/SpaceMono-Bold.ttf",
+      "sha1": "1a66c2efc19ba1417c1ea2a52cf70462d6232950"
+    },
+    {
+      "path": "assets/fonts/SpaceMono-Regular.ttf",
+      "sha1": "a1b4a68ecdd83db4cc9e3adc67fe05890df33a23"
+    }
+  ]
+}
