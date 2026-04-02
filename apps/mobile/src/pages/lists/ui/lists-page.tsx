@@ -1,46 +1,77 @@
+import { StyleSheet, View } from 'react-native';
+import { getCopy } from '@mindflow/copy';
+
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import {
-  FeedbackCard,
   ProjectCard,
   ScreenShell,
   SectionHeader,
+  StateCard,
   SurfaceCard,
 } from '@shared/ui/primitives';
 
+const copy = getCopy('ru');
+
+const styles = StyleSheet.create({
+  sectionCard: {
+    gap: 14,
+  },
+});
+
 export function ListsPage() {
   const sections = useMobileAppStore(store => store.derived.projectSections);
+  const favoriteSections = sections.filter(section => section.project.isFavorite);
+  const regularSections = sections.filter(section => !section.project.isFavorite);
 
   return (
-    <ScreenShell
-      title="Lists"
-      subtitle="Карточки проектов и прогресс-паттерны для следующих мобильных экранов."
-    >
-      <SurfaceCard elevated>
-        <SectionHeader
-          title="Проекты"
-          subtitle={
-            sections.length > 0
-              ? `${sections.length} активных списков готовы к рендеру`
-              : 'Пока нет проектов'
-          }
-        />
-      </SurfaceCard>
-
+    <ScreenShell title={copy.navigation.lists}>
       {sections.length === 0 ? (
-        <FeedbackCard
-          variant="loading"
-          title="Ждём первые списки"
-          description="Когда проекты появятся, эта секция будет собрана из тех же UI primitives."
-        />
+        <SurfaceCard testID="lists-all-card">
+          <View style={styles.sectionCard}>
+            <SectionHeader title={copy.lists.allTitle} />
+            <StateCard
+              variant="empty"
+              title={copy.common.empty}
+              description={copy.lists.emptyDescription}
+            />
+          </View>
+        </SurfaceCard>
       ) : (
-        sections.map(section => (
-          <ProjectCard
-            key={section.project.id}
-            project={section.project}
-            taskCount={section.progress.total}
-            doneCount={section.progress.done}
-          />
-        ))
+        <>
+          {favoriteSections.length > 0 ? (
+            <SurfaceCard testID="lists-favorites-card">
+              <View style={styles.sectionCard}>
+                <SectionHeader
+                  title={copy.lists.favoritesTitle}
+                  subtitle={copy.lists.favoritesSubtitle}
+                />
+                {favoriteSections.map(section => (
+                  <ProjectCard
+                    key={section.project.id}
+                    project={section.project}
+                    taskCount={section.progress.total}
+                    doneCount={section.progress.done}
+                  />
+                ))}
+              </View>
+            </SurfaceCard>
+          ) : null}
+          {regularSections.length > 0 ? (
+            <SurfaceCard testID="lists-all-card">
+              <View style={styles.sectionCard}>
+                <SectionHeader title={copy.lists.allTitle} />
+                {regularSections.map(section => (
+                  <ProjectCard
+                    key={section.project.id}
+                    project={section.project}
+                    taskCount={section.progress.total}
+                    doneCount={section.progress.done}
+                  />
+                ))}
+              </View>
+            </SurfaceCard>
+          ) : null}
+        </>
       )}
     </ScreenShell>
   );
