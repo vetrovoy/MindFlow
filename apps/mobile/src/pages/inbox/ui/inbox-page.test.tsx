@@ -103,7 +103,7 @@ describe('InboxPage', () => {
     expect(screen.getByDisplayValue('Оставить в поле')).toBeTruthy();
   });
 
-  it('renders active and completed sections', () => {
+  it('renders completed tasks through a collapsible section', () => {
     renderWithStore({
       derived: {
         inboxTasks: [
@@ -142,7 +142,36 @@ describe('InboxPage', () => {
     expect(screen.getByText('Активные')).toBeTruthy();
     expect(screen.getByText('Выполненные')).toBeTruthy();
     expect(screen.getByText('Активная задача')).toBeTruthy();
+    expect(screen.queryByText('Завершённая задача')).toBeNull();
+
+    fireEvent.press(screen.getByText('Выполненные'));
+
     expect(screen.getByText('Завершённая задача')).toBeTruthy();
+  });
+
+  it('opens completed section by default when there are no active tasks', () => {
+    renderWithStore({
+      derived: {
+        inboxTasks: [
+          {
+            id: 'task-2',
+            title: 'Только завершённая задача',
+            description: null,
+            status: 'done',
+            priority: 'low',
+            dueDate: null,
+            projectId: null,
+            orderIndex: 1,
+            createdAt: '2026-04-01T10:00:00.000Z',
+            updatedAt: '2026-04-01T10:00:00.000Z',
+            completedAt: '2026-04-01T12:00:00.000Z',
+            archivedAt: null,
+          },
+        ],
+      },
+    });
+
+    expect(screen.getByText('Только завершённая задача')).toBeTruthy();
   });
 
   it('does not render date badge for completed task', () => {

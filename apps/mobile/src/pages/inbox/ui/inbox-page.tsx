@@ -9,15 +9,16 @@ import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { getTodayKey } from '@shared/model/selectors';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { FeedbackCard, SectionHeader, SurfaceCard, TaskRow } from '@shared/ui/primitives';
+import {
+  CollapsibleSection,
+  SectionHeader,
+  StateCard,
+  SurfaceCard,
+  TaskRow,
+} from '@shared/ui/primitives';
 import { Body, Display, Meta, Title } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
-
-type InboxListItem =
-  | { type: 'section'; key: string; title: string; subtitle: string }
-  | { type: 'task'; key: string; task: Task }
-  | { type: 'footer'; key: string };
 
 const styles = StyleSheet.create({
   screen: {
@@ -67,6 +68,13 @@ const styles = StyleSheet.create({
   itemSpacer: {
     height: 10,
   },
+  footerBlock: {
+    paddingTop: 14,
+    gap: 12,
+  },
+  completedContent: {
+    gap: 10,
+  },
 });
 
 export function InboxPage() {
@@ -109,45 +117,6 @@ export function InboxPage() {
     };
   }, [tasks, todayKey]);
 
-  const listItems = useMemo<InboxListItem[]>(
-    () =>
-      [
-        activeInboxTasks.length > 0
-          ? [
-              {
-                type: 'section' as const,
-                key: 'section-active',
-                title: 'Активные',
-                subtitle: `${activeInboxTasks.length} в работе`,
-              },
-              ...activeInboxTasks.map(task => ({
-                type: 'task' as const,
-                key: `task-${task.id}`,
-                task,
-              })),
-              { type: 'footer' as const, key: 'footer-active' },
-            ]
-          : [],
-        completedInboxTasks.length > 0
-          ? [
-              {
-                type: 'section' as const,
-                key: 'section-completed',
-                title: copy.inbox.completedTitle,
-                subtitle: `${completedInboxTasks.length} завершено`,
-              },
-              ...completedInboxTasks.map(task => ({
-                type: 'task' as const,
-                key: `task-${task.id}`,
-                task,
-              })),
-              { type: 'footer' as const, key: 'footer-completed' },
-            ]
-          : [],
-      ].flat(),
-    [activeInboxTasks, completedInboxTasks],
-  );
-
   async function handleQuickAdd() {
     const trimmed = draftTitle.trim();
     if (!trimmed) {
@@ -164,29 +133,17 @@ export function InboxPage() {
     }
   }
 
-  const keyExtractor = useCallback((item: InboxListItem) => item.key, []);
+  const keyExtractor = useCallback((item: Task) => item.id, []);
 
-  const getItemType = useCallback((item: InboxListItem) => item.type, []);
+  const getItemType = useCallback(() => 'task', []);
 
   const renderItem = useCallback(
-    ({ item }: { item: InboxListItem }) => {
-      if (item.type === 'section') {
-        return (
-          <View style={styles.sectionHeader}>
-            <SectionHeader title={item.title} subtitle={item.subtitle} />
-          </View>
-        );
-      }
-
-      if (item.type === 'footer') {
-        return <View style={styles.itemSpacer} />;
-      }
-
+    ({ item }: { item: Task }) => {
       return (
         <TaskRow
-          task={item.task}
-          project={item.task.projectId == null ? null : (projectMap.get(item.task.projectId) ?? null)}
-          badgeVariant={badgeByTaskId[item.task.id]}
+          task={item}
+          project={item.projectId == null ? null : (projectMap.get(item.projectId) ?? null)}
+          badgeVariant={badgeByTaskId[item.id]}
           onOpenTask={openTaskEdit}
           onToggleDone={toggleTask}
         />
@@ -195,17 +152,57 @@ export function InboxPage() {
     [badgeByTaskId, openTaskEdit, projectMap, toggleTask],
   );
 
+  const completedFooter = useMemo(() => {
+    if (completedInboxTasks.length === 0) {
+      return null;
+    }
+
+    return (
+      <View style={styles.footerBlock}>
+        <CollapsibleSection
+          count={completedInboxTasks.length}
+          defaultOpen={activeInboxTasks.length === 0}
+          title={copy.inbox.completedTitle}
+        >
+          <View style={styles.completedContent}>
+            {completedInboxTasks.map(task => (
+              <TaskRow
+                key={task.id}
+                task={task}
+                project={task.projectId == null ? null : (projectMap.get(task.projectId) ?? null)}
+                badgeVariant={badgeByTaskId[task.id]}
+                onOpenTask={openTaskEdit}
+                onToggleDone={toggleTask}
+              />
+            ))}
+          </View>
+        </CollapsibleSection>
+        <Meta tone="soft">
+          Тап по задаче открывает task-edit modal, а чекбокс обновляет статус через store action.
+        </Meta>
+      </View>
+    );
+  }, [
+    activeInboxTasks.length,
+    badgeByTaskId,
+    completedInboxTasks,
+    openTaskEdit,
+    projectMap,
+    toggleTask,
+  ]);
+
   return (
     <>
       <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
-        <FlashList<InboxListItem>
-          data={tasks.length === 0 ? [] : listItems}
+        <FlashList<Task>
+          data={activeInboxTasks}
           keyExtractor={keyExtractor}
           getItemType={getItemType}
           overrideItemLayout={(layout, item) => {
             layout.span = 1;
           }}
           contentContainerStyle={styles.contentContainer}
+          ItemSeparatorComponent={() => <View style={styles.itemSpacer} />}
           ListHeaderComponent={
             <View style={styles.headerBlock}>
               <View style={styles.titleBlock}>
@@ -274,23 +271,23 @@ export function InboxPage() {
                   </Pressable>
                 </View>
               </SurfaceCard>
-
-              {tasks.length === 0 ? (
-                <FeedbackCard
-                  variant="empty"
-                  title={copy.inbox.emptyTitle}
-                  description={copy.inbox.emptyDescription}
-                />
+              {activeInboxTasks.length > 0 ? (
+                <View style={styles.sectionHeader}>
+                  <SectionHeader title="Активные" subtitle={`${activeInboxTasks.length} в работе`} />
+                </View>
               ) : null}
             </View>
           }
-          ListFooterComponent={
-            completedInboxTasks.length > 0 ? (
-              <Meta tone="soft">
-                Тап по задаче открывает task-edit modal, а чекбокс обновляет статус через store action.
-              </Meta>
+          ListEmptyComponent={
+            tasks.length === 0 ? (
+              <StateCard
+                variant="empty"
+                title={copy.inbox.emptyTitle}
+                description={copy.inbox.emptyDescription}
+              />
             ) : null
           }
+          ListFooterComponent={completedFooter}
           renderItem={renderItem}
         />
       </View>
