@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 export function TodayPage() {
   const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
+  const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);
   const { overdueTasks, todayTasks } = useMemo(() => {
     const overdue: typeof todayFeed = [];
     const today: typeof todayFeed = [];
@@ -46,7 +47,12 @@ export function TodayPage() {
   }, [todayFeed]);
 
   const renderTodayTaskCard = (item: (typeof todayFeed)[number]) => (
-    <TodayTaskCard key={`${item.bucket}-${item.task.id}`} item={item} onToggleDone={toggleTask} />
+    <TodayTaskCard
+      key={`${item.bucket}-${item.task.id}`}
+      item={item}
+      onOpenTask={openTaskEdit}
+      onToggleDone={toggleTask}
+    />
   );
 
   return (

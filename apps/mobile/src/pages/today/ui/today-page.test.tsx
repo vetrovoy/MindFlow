@@ -94,9 +94,10 @@ describe('TodayPage', () => {
 
   it('renders today feed items inside the main card', () => {
     const toggleTask = jest.fn();
+    const openTaskEdit = jest.fn();
 
     renderWithStore({
-      actions: { toggleTask },
+      actions: { toggleTask, openTaskEdit },
       derived: {
         todayFeed: [
           {
@@ -160,10 +161,13 @@ describe('TodayPage', () => {
     expect(screen.getByText('High priority inbox task')).toBeTruthy();
     expect(screen.getByText('Просрочено')).toBeTruthy();
     expect(screen.getAllByText('Сегодня')).toHaveLength(2);
+    expect(screen.queryByText('Inbox / high')).toBeNull();
 
     fireEvent.press(screen.getAllByRole('checkbox')[0]);
+    fireEvent.press(screen.getByText('Задача на сегодня'));
 
     expect(toggleTask).toHaveBeenCalledWith('task-1');
+    expect(openTaskEdit).toHaveBeenCalledWith('task-2');
   });
 
   it('collapses overdue section independently from today section', () => {
@@ -260,5 +264,6 @@ describe('TodayPage', () => {
     expect(screen.getAllByText('Сегодня')).toHaveLength(1);
     expect(screen.getByText('Задача на сегодня')).toBeTruthy();
     expect(screen.getByText('Inbox without overdue')).toBeTruthy();
+    expect(screen.queryByText('Inbox / high')).toBeNull();
   });
 });
