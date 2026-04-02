@@ -1,13 +1,22 @@
+import { StyleSheet, View } from 'react-native';
+import { getCopy } from '@mindflow/copy';
+
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import {
-  FeedbackCard,
   ScreenShell,
-  SectionHeader,
+  StateCard,
   SurfaceCard,
   TodayTaskCard,
 } from '@shared/ui/primitives';
-import { Body } from '@shared/ui/typography';
+
+const copy = getCopy('ru');
+
+const styles = StyleSheet.create({
+  contentCard: {
+    gap: 14,
+  },
+});
 
 export function TodayPage() {
   const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
@@ -15,36 +24,22 @@ export function TodayPage() {
 
   return (
     <>
-      <ScreenShell
-        title="Today"
-        subtitle="Смешанная лента для overdue и due-today задач с shared feedback-механикой."
-      >
-        <SurfaceCard elevated>
-          <SectionHeader
-            title="Фокус дня"
-            subtitle={
-              todayFeed.length > 0
-                ? `${todayFeed.length} элементов в производной ленте`
-                : 'Сегодня ничего не горит'
-            }
-          />
+      <ScreenShell title={copy.today.title}>
+        <SurfaceCard elevated style={styles.contentCard} testID="today-main-card">
+          {todayFeed.length === 0 ? (
+            <StateCard
+              variant="empty"
+              title={copy.today.emptyTitle}
+              description={copy.today.emptyDescription}
+            />
+          ) : (
+            <View style={styles.contentCard}>
+              {todayFeed.map(item => (
+                <TodayTaskCard key={`${item.bucket}-${item.task.id}`} item={item} onToggleDone={toggleTask} />
+              ))}
+            </View>
+          )}
         </SurfaceCard>
-
-        {todayFeed.length === 0 ? (
-          <FeedbackCard
-            variant="empty"
-            title="Чистый Today"
-            description="Когда появятся due-today и overdue задачи, они будут рендериться единым карточным паттерном."
-          />
-        ) : (
-          todayFeed.map(item => (
-            <TodayTaskCard key={`${item.bucket}-${item.task.id}`} item={item} onToggleDone={toggleTask} />
-          ))
-        )}
-
-        <Body tone="soft">
-          Bottom sheet ниже уже готов как контейнер для task-edit flow из следующих задач.
-        </Body>
       </ScreenShell>
 
       <TaskEditSheet />
