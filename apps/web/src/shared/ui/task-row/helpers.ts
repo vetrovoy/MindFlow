@@ -11,7 +11,7 @@ export function getTaskPriorityTone(
   }
 
   if (priority === "medium") {
-    return "lime";
+    return "accent";
   }
 
   return "muted";

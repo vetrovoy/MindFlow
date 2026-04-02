@@ -44,7 +44,7 @@ export function ArchivedProjectRow({
         ariaLabel={copy.common.restore}
         className={styles.restoreButton}
         icon="restore"
-        iconTone="lime"
+        iconTone="accent"
         onClick={() => {
           onRestore(project.id);
         }}

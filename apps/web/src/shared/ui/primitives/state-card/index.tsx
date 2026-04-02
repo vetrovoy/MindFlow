@@ -43,7 +43,7 @@ export function StateCard({ description, title, variant }: StateCardProps) {
           decorative
           name={iconName}
           size={16}
-          tone={variant === "error" ? "alert" : variant === "loading" ? "lime" : "muted"}
+          tone={variant === "error" ? "alert" : variant === "loading" ? "accent" : "muted"}
         />
       </div>
       <div className={styles.stateContent}>

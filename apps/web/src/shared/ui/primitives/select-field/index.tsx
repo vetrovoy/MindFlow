@@ -61,7 +61,7 @@ export function SelectField({
               <Select.Item className={styles.item} key={option.value} value={option.value}>
                 <Select.ItemText>{option.label}</Select.ItemText>
                 <Select.ItemIndicator className={styles.itemIndicator}>
-                  <Icon name="check" size={14} tone="lime" />
+                  <Icon name="check" size={14} tone="accent" />
                 </Select.ItemIndicator>
               </Select.Item>
             ))}

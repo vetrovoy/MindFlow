@@ -40,7 +40,7 @@ export function ArchivedTaskRow({
         ariaLabel={copy.task.restoreAriaLabel}
         className={styles.restoreButton}
         icon="restore"
-        iconTone="lime"
+        iconTone="accent"
         onClick={() => {
           onRestore(task.id);
         }}

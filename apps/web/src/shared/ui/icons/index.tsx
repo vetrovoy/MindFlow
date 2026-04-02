@@ -27,48 +27,21 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import type {
+  IconName as SharedIconName,
+  IconProps as SharedIconProps,
+  IconTone
+} from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
 import styles from "./index.module.css";
 
-export type IconName =
-  | "add"
-  | "archive"
-  | "check"
-  | "checkbox-empty"
-  | "checkbox-checked"
-  | "chevron-down"
-  | "chevron-left"
-  | "chevron-right"
-  | "priority-low"
-  | "priority-medium"
-  | "priority-high"
-  | "restore"
-  | "search"
-  | "today"
-  | "overdue"
-  | "toast-success"
-  | "close"
-  | "favorite"
-  | "flag"
-  | "language"
-  | "palette"
-  | "nav-inbox"
-  | "nav-lists"
-  | "nav-today"
-  | "sign-out"
-  | "drag"
-  | "eye"
-  | "eye-off"
-  | "more"
-  | "trash";
+export type IconName = SharedIconName;
 
-export interface IconProps {
-  name: IconName;
-  size?: number;
-  tone?: "default" | "muted" | "lime" | "alert" | "success" | "contrast";
+export interface IconProps extends SharedIconProps {
   decorative?: boolean;
   className?: string;
+  tone: IconTone;
 }
 
 const ICONS: Record<IconName, LucideIcon> = {
@@ -119,7 +92,7 @@ export function Icon({
       className={cn(
         styles.icon,
         tone === "muted" && styles.toneMuted,
-        tone === "lime" && styles.toneLime,
+        tone === "accent" && styles.toneAccent,
         tone === "alert" && styles.toneAlert,
         tone === "success" && styles.toneSuccess,
         tone === "contrast" && styles.toneContrast,

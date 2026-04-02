@@ -1,13 +1,12 @@
 import { forwardRef } from "react";
 
 import type { ButtonVariant } from "@mindflow/ui";
+import type { IconTone } from "@mindflow/ui";
 
 import { cn } from "@/shared/lib/cn";
 import { Icon, type IconName } from "@/shared/ui/icons";
 import styles from "./index.module.css";
 import { ActionButton } from "../action-button";
-
-type IconTone = "default" | "muted" | "lime" | "alert" | "success" | "contrast";
 
 export interface IconButtonProps {
   icon: IconName;

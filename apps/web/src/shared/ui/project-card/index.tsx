@@ -45,7 +45,7 @@ export function ProjectCard({
               </Title>
               {project.isFavorite ? (
                 <span className={styles.favoriteMark}>
-                  <Icon name="favorite" size={12} tone="lime" />
+                  <Icon name="favorite" size={12} tone="accent" />
                 </span>
               ) : null}
             </div>

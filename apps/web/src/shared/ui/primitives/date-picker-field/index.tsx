@@ -59,11 +59,11 @@ export function DatePickerField({
           type="button"
         >
           {isIconTrigger ? (
-            <Icon name="today" size={16} tone={value ? "lime" : "muted"} />
+            <Icon name="today" size={16} tone={value ? "accent" : "muted"} />
           ) : (
             <>
               <span className={styles.triggerValue}>
-                <Icon name="today" size={16} tone={value ? "lime" : "muted"} />
+                <Icon name="today" size={16} tone={value ? "accent" : "muted"} />
                 {value ? formatDateLabel(value, language) : resolvedPlaceholder}
               </span>
               <Icon name="chevron-down" size={16} tone="muted" />

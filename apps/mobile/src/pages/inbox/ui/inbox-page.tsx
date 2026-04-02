@@ -8,6 +8,7 @@ import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { getTodayKey } from '@shared/model/selectors';
 import { useTheme } from '@shared/theme/use-theme';
+import { Icon } from '@shared/ui/icons';
 import { FeedbackCard, SectionHeader, SurfaceCard, TaskRow } from '@shared/ui/primitives';
 import { Body, Display, Meta, Title } from '@shared/ui/typography';
 
@@ -259,9 +260,17 @@ export function InboxPage() {
                       },
                     ]}
                   >
-                    <Title tone={isSaving ? 'muted' : 'accent'}>
-                      {isSaving ? copy.common.saving : copy.common.save}
-                    </Title>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                      <Icon
+                        decorative
+                        name="add"
+                        size={16}
+                        tone={isSaving ? 'muted' : 'accent'}
+                      />
+                      <Title tone={isSaving ? 'muted' : 'accent'}>
+                        {isSaving ? copy.common.saving : copy.common.save}
+                      </Title>
+                    </View>
                   </Pressable>
                 </View>
               </SurfaceCard>

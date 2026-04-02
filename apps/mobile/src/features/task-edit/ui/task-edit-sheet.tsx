@@ -5,6 +5,7 @@ import type { Project, TaskPriority, TaskStatus } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { Icon } from '@shared/ui/icons';
 import { AccentButton, BottomSheet, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
@@ -190,7 +191,10 @@ export function TaskEditSheet() {
             },
           ]}
         >
-          <Meta tone="secondary">{copy.common.close}</Meta>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Icon decorative name="close" size={16} tone="muted" />
+            <Meta tone="secondary">{copy.common.close}</Meta>
+          </View>
         </Pressable>
       )}
     >

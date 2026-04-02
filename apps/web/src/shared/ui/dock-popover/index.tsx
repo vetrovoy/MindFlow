@@ -35,7 +35,7 @@ export function DockIconButton({
       type={type}
       {...props}
     >
-      <Icon decorative name={iconName} size={18} tone={active ? "lime" : "default"} />
+      <Icon decorative name={iconName} size={18} tone={active ? "accent" : "default"} />
     </button>
   );
 }

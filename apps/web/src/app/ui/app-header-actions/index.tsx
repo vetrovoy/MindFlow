@@ -46,7 +46,7 @@ export function AppHeaderActions({
             isSearch && styles.headerUtilityButtonActive
           )}
           icon="search"
-          iconTone="lime"
+          iconTone="accent"
           keyboardShortcut="⌘K"
           onClick={() => {
             onNavigate("/search");
@@ -60,7 +60,7 @@ export function AppHeaderActions({
             isArchive && styles.headerUtilityButtonActive
           )}
           icon="archive"
-          iconTone="lime"
+          iconTone="accent"
           onClick={() => {
             onNavigate("/archive");
           }}
@@ -72,7 +72,7 @@ export function AppHeaderActions({
           ariaLabel={copy.auth.signOutAriaLabel}
           className={styles.signOutButton}
           icon="sign-out"
-          iconTone="lime"
+          iconTone="accent"
           onClick={onSignOut}
           variant="secondary"
         />
@@ -86,7 +86,7 @@ export function AppHeaderActions({
               ariaLabel={copy.task.moreActionsTrigger}
               className={styles.headerMenuIcon}
               icon="more"
-              iconTone="lime"
+              iconTone="accent"
               variant="secondary"
             />
           </Popover.Trigger>
@@ -106,7 +106,7 @@ export function AppHeaderActions({
                       isSearch && styles.headerMenuActionActive
                     )}
                     icon="search"
-                    iconTone="lime"
+                    iconTone="accent"
                     onClick={() => {
                       setIsHeaderMenuOpen(false);
                       onNavigate("/search");
@@ -120,7 +120,7 @@ export function AppHeaderActions({
                       isArchive && styles.headerMenuActionActive
                     )}
                     icon="archive"
-                    iconTone="lime"
+                    iconTone="accent"
                     onClick={() => {
                       setIsHeaderMenuOpen(false);
                       onNavigate("/archive");
@@ -135,7 +135,7 @@ export function AppHeaderActions({
                         ariaLabel={copy.theme.label}
                         className={styles.headerMenuAction}
                         icon="palette"
-                        iconTone="lime"
+                        iconTone="accent"
                         variant="secondary"
                       />
                     </Popover.Trigger>
@@ -165,7 +165,7 @@ export function AppHeaderActions({
                     ariaLabel={copy.auth.signOutAriaLabel}
                     className={styles.headerMenuAction}
                     icon="sign-out"
-                    iconTone="lime"
+                    iconTone="accent"
                     onClick={() => {
                       setIsHeaderMenuOpen(false);
                       onSignOut();

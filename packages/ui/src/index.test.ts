@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 
 import {
   buttonPresets,
   DEFAULT_THEME,
   getTheme,
+  ICON_NAMES,
+  isIconName,
   getProgressValue,
   getTaskRowStateLabel,
   projectMarkers,
@@ -80,5 +83,22 @@ describe("presets and helpers", () => {
         selected: true
       })
     ).toBe("selected");
+  });
+});
+
+describe("icons", () => {
+  it("exports the canonical icon registry", () => {
+    expect(ICON_NAMES).toContain("nav-inbox");
+    expect(ICON_NAMES).toContain("checkbox-checked");
+    expect(isIconName("today")).toBe(true);
+    expect(isIconName("unknown-icon")).toBe(false);
+  });
+
+  it("keeps the shared icon contract platform-neutral", () => {
+    const source = readFileSync(new URL("./icons.ts", import.meta.url), "utf8");
+
+    expect(source).not.toContain("lucide-react");
+    expect(source).not.toContain("react-native");
+    expect(source).not.toContain("react-native-svg");
   });
 });

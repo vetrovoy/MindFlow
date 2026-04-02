@@ -80,6 +80,46 @@ jest.mock('@shopify/flash-list', () => {
   };
 });
 
+jest.mock('react-native-svg', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  const createComponent = () =>
+    React.forwardRef((props, ref) => <View ref={ref} {...props} />);
+
+  return {
+    __esModule: true,
+    default: createComponent(),
+    Svg: createComponent(),
+    Path: createComponent(),
+    Circle: createComponent(),
+    Line: createComponent(),
+    Polyline: createComponent(),
+    Rect: createComponent(),
+  };
+});
+
+jest.mock('lucide-react-native', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  const createIcon = () =>
+    React.forwardRef((props, ref) => <View ref={ref} {...props} />);
+
+  return new Proxy(
+    {},
+    {
+      get: (_, key) => {
+        if (key === '__esModule') {
+          return true;
+        }
+
+        return createIcon();
+      },
+    },
+  );
+});
+
 jest.mock('@mindflow/ui', () => ({
   typography: {
     fontSize: {

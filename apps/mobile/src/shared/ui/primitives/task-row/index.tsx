@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import type { Project, Task } from '@mindflow/domain';
 
 import { useTheme } from '@shared/theme/use-theme';
+import { Icon } from '../../icons';
 import { Body, Meta } from '../../typography';
 import { SurfaceCard } from '../surface-card';
 import { StatusPill, type StatusPillProps } from '../status-pill';
@@ -117,7 +118,12 @@ export const TaskRow = React.memo(function TaskRow({
             },
           ]}
         >
-          {isDone ? <Meta style={{ color: theme.colors.background }}>OK</Meta> : null}
+          <Icon
+            decorative
+            name={isDone ? 'checkbox-checked' : 'checkbox-empty'}
+            size={16}
+            tone={isDone ? 'contrast' : 'muted'}
+          />
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -136,6 +142,18 @@ export const TaskRow = React.memo(function TaskRow({
             {task.title}
           </Body>
           <View style={styles.taskMeta}>
+            <Icon
+              decorative
+              name={`priority-${task.priority}` as const}
+              size={14}
+              tone={
+                task.priority === 'high'
+                  ? 'alert'
+                  : task.priority === 'medium'
+                    ? 'accent'
+                    : 'muted'
+              }
+            />
             <View style={[styles.priorityDot, { backgroundColor: priorityColor }]} />
             <Meta tone="soft">{task.priority.toUpperCase()}</Meta>
             <Meta tone="muted">{getTaskStatusText(task)}</Meta>
