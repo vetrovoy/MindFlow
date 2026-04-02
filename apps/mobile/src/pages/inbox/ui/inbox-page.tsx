@@ -6,7 +6,6 @@ import type { Task } from '@mindflow/domain';
 
 import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
-import { getTodayKey } from '@shared/model/selectors';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
 import {
@@ -68,31 +67,25 @@ const styles = StyleSheet.create({
 
 export function InboxPage() {
   const tasks = useMobileAppStore(store => store.derived.inboxTasks);
-  const state = useMobileAppStore(store => store.state);
-  const projects = state.projects;
-  const isSaving = state.isSaving;
+  const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
+  const isSaving = useMobileAppStore(store => store.state.isSaving);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const addInboxTask = useMobileAppStore(store => store.actions.addInboxTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);
   const { theme } = useTheme();
   const [draftTitle, setDraftTitle] = useState('');
-  const todayKey = getTodayKey();
   const inboxCardData = useMemo(() => ['inbox-main-card'], []);
-  const projectMap = useMemo(
-    () => new Map(projects.map(project => [project.id, project])),
-    [projects],
-  );
 
   const { activeInboxTasks, completedInboxTasks, badgeByTaskId } = useMemo(() => {
     const active: Task[] = [];
     const completed: Task[] = [];
     const nextBadgeByTaskId: Partial<Record<string, 'today' | 'overdue'>> = {};
 
-    for (const task of tasks) {
-      if (task.status !== 'done' && task.dueDate != null && task.dueDate <= todayKey) {
-        nextBadgeByTaskId[task.id] = task.dueDate < todayKey ? 'overdue' : 'today';
-      }
+    for (const item of todayFeed) {
+      nextBadgeByTaskId[item.task.id] = item.bucket === 'overdue' ? 'overdue' : 'today';
+    }
 
+    for (const task of tasks) {
       if (task.status === 'done') {
         completed.push(task);
       } else {
@@ -105,7 +98,7 @@ export function InboxPage() {
       completedInboxTasks: completed,
       badgeByTaskId: nextBadgeByTaskId,
     };
-  }, [tasks, todayKey]);
+  }, [tasks, todayFeed]);
 
   async function handleQuickAdd() {
     const trimmed = draftTitle.trim();
@@ -131,14 +124,14 @@ export function InboxPage() {
     (task: Task) => (
       <TaskRow
         key={task.id}
+        presentation="inbox"
         task={task}
-        project={task.projectId == null ? null : (projectMap.get(task.projectId) ?? null)}
         badgeVariant={badgeByTaskId[task.id]}
         onOpenTask={openTaskEdit}
         onToggleDone={toggleTask}
       />
     ),
-    [badgeByTaskId, openTaskEdit, projectMap, toggleTask],
+    [badgeByTaskId, openTaskEdit, toggleTask],
   );
 
   const renderItem = useCallback(() => {

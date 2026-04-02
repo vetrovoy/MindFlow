@@ -15,6 +15,7 @@ interface TaskRowProps {
   onOpenTask?: (taskId: string) => void;
   badgeVariant?: StatusPillProps['variant'];
   project?: Project | null;
+  presentation?: 'default' | 'inbox';
 }
 
 const styles = StyleSheet.create({
@@ -26,6 +27,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 20,
     borderWidth: 1,
+  },
+  taskRowInbox: {
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 18,
   },
   checkbox: {
     width: 28,
@@ -46,10 +52,22 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
   },
+  taskMetaInbox: {
+    gap: 10,
+  },
   priorityDot: {
     width: 8,
     height: 8,
     borderRadius: 999,
+  },
+  priorityBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 999,
+    borderWidth: 1,
   },
 });
 
@@ -74,6 +92,30 @@ function getTaskStatusText(task: Task) {
   return task.status === 'done' ? 'Готово' : 'В работе';
 }
 
+function getPriorityTone(priority: Task['priority']) {
+  switch (priority) {
+    case 'high':
+      return 'alert' as const;
+    case 'medium':
+      return 'accent' as const;
+    case 'low':
+    default:
+      return 'muted' as const;
+  }
+}
+
+function getPriorityTextTone(priority: Task['priority']) {
+  switch (priority) {
+    case 'high':
+      return 'danger' as const;
+    case 'medium':
+      return 'accent' as const;
+    case 'low':
+    default:
+      return 'muted' as const;
+  }
+}
+
 const PRESSABLE_HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 } as const;
 
 export const TaskRow = React.memo(function TaskRow({
@@ -82,93 +124,131 @@ export const TaskRow = React.memo(function TaskRow({
   badgeVariant,
   onToggleDone,
   onOpenTask,
+  presentation = 'default',
 }: TaskRowProps) {
   const { theme } = useTheme();
   const isDone = task.status === 'done';
+  const isInboxPresentation = presentation === 'inbox';
   const priorityColor = getPriorityColor(
     task.priority,
     theme.colors.accentAlert,
     theme.colors.accentPrimary,
     theme.colors.textTertiary,
   );
+  const priorityTone = getPriorityTone(task.priority);
+  const priorityTextTone = getPriorityTextTone(task.priority);
 
-  return (
-    <SurfaceCard padded={false}>
-      <View
+  const content = (
+    <View
+      style={[
+        styles.taskRow,
+        isInboxPresentation && styles.taskRowInbox,
+        {
+          backgroundColor: isDone ? theme.colors.overlayGhost : theme.colors.surfaceCard,
+          borderColor:
+            isInboxPresentation
+              ? theme.colors.borderSoft
+              : isDone
+                ? theme.colors.borderSoft
+                : theme.colors.borderMuted,
+        },
+      ]}
+    >
+      <Pressable
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked: isDone }}
+        hitSlop={PRESSABLE_HIT_SLOP}
+        onPress={() => {
+          void onToggleDone(task.id);
+        }}
         style={[
-          styles.taskRow,
+          styles.checkbox,
           {
-            backgroundColor: isDone ? theme.colors.overlayGhost : theme.colors.surfaceCard,
-            borderColor: isDone ? theme.colors.borderSoft : theme.colors.borderMuted,
+            borderColor: isDone ? theme.colors.accentPrimary : theme.colors.borderStrong,
+            backgroundColor: isDone ? theme.colors.accentPrimary : 'transparent',
           },
         ]}
       >
-        <Pressable
-          accessibilityRole="checkbox"
-          accessibilityState={{ checked: isDone }}
-          hitSlop={PRESSABLE_HIT_SLOP}
-          onPress={() => {
-            void onToggleDone(task.id);
-          }}
-          style={[
-            styles.checkbox,
-            {
-              borderColor: isDone ? theme.colors.accentPrimary : theme.colors.borderStrong,
-              backgroundColor: isDone ? theme.colors.accentPrimary : 'transparent',
-            },
-          ]}
+        <Icon
+          decorative
+          name={isDone ? 'checkbox-checked' : 'checkbox-empty'}
+          size={16}
+          tone={isDone ? 'contrast' : 'muted'}
+        />
+      </Pressable>
+      <Pressable
+        accessibilityRole="button"
+        disabled={onOpenTask == null}
+        hitSlop={PRESSABLE_HIT_SLOP}
+        onPress={() => {
+          onOpenTask?.(task.id);
+        }}
+        style={styles.taskMain}
+      >
+        <Body
+          variant="task"
+          tone={isDone ? 'muted' : 'primary'}
+          style={isDone ? { textDecorationLine: 'line-through' } : undefined}
         >
-          <Icon
-            decorative
-            name={isDone ? 'checkbox-checked' : 'checkbox-empty'}
-            size={16}
-            tone={isDone ? 'contrast' : 'muted'}
-          />
-        </Pressable>
-        <Pressable
-          accessibilityRole="button"
-          disabled={onOpenTask == null}
-          hitSlop={PRESSABLE_HIT_SLOP}
-          onPress={() => {
-            onOpenTask?.(task.id);
-          }}
-          style={styles.taskMain}
-        >
-          <Body
-            variant="task"
-            tone={isDone ? 'muted' : 'primary'}
-            style={isDone ? { textDecorationLine: 'line-through' } : undefined}
-          >
-            {task.title}
-          </Body>
-          <View style={styles.taskMeta}>
-            <Icon
-              decorative
-              name={`priority-${task.priority}` as const}
-              size={14}
-              tone={
-                task.priority === 'high'
-                  ? 'alert'
-                  : task.priority === 'medium'
-                    ? 'accent'
-                    : 'muted'
-              }
-            />
-            <View style={[styles.priorityDot, { backgroundColor: priorityColor }]} />
-            <Meta tone="soft">{task.priority.toUpperCase()}</Meta>
-            <Meta tone="muted">{getTaskStatusText(task)}</Meta>
-            {project ? <Meta tone="soft">{project.emoji} {project.name}</Meta> : null}
-            {badgeVariant ? (
-              <StatusPill
-                label={badgeVariant === 'overdue' ? 'Overdue' : 'Today'}
-                variant={badgeVariant}
+          {task.title}
+        </Body>
+        <View style={[styles.taskMeta, isInboxPresentation && styles.taskMetaInbox]}>
+          {isInboxPresentation ? (
+            <>
+              {badgeVariant ? (
+                <StatusPill
+                  label={badgeVariant === 'overdue' ? 'Overdue' : 'Today'}
+                  variant={badgeVariant}
+                />
+              ) : null}
+              <View
+                style={[
+                  styles.priorityBadge,
+                  {
+                    borderColor: theme.colors.borderSoft,
+                    backgroundColor: theme.colors.surface,
+                  },
+                ]}
+              >
+                <Icon
+                  decorative
+                  name={`priority-${task.priority}` as const}
+                  size={12}
+                  tone={priorityTone}
+                />
+                <Meta tone={priorityTextTone}>{task.priority.toUpperCase()}</Meta>
+              </View>
+            </>
+          ) : (
+            <>
+              <Icon
+                decorative
+                name={`priority-${task.priority}` as const}
+                size={14}
+                tone={priorityTone}
               />
-            ) : null}
-          </View>
-        </Pressable>
-      </View>
-    </SurfaceCard>
+              <View style={[styles.priorityDot, { backgroundColor: priorityColor }]} />
+              <Meta tone="soft">{task.priority.toUpperCase()}</Meta>
+              <Meta tone="muted">{getTaskStatusText(task)}</Meta>
+              {project ? <Meta tone="soft">{project.emoji} {project.name}</Meta> : null}
+              {badgeVariant ? (
+                <StatusPill
+                  label={badgeVariant === 'overdue' ? 'Overdue' : 'Today'}
+                  variant={badgeVariant}
+                />
+              ) : null}
+            </>
+          )}
+        </View>
+      </Pressable>
+    </View>
   );
+
+  if (isInboxPresentation) {
+    return content;
+  }
+
+  return <SurfaceCard padded={false}>{content}</SurfaceCard>;
 });
 
 export type { TaskRowProps };

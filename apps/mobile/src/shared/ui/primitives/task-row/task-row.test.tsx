@@ -65,6 +65,22 @@ describe('TaskRow', () => {
     expect(screen.getByText('📁 Test Project')).toBeTruthy();
   });
 
+  it('hides status and project metadata in inbox presentation', () => {
+    render(
+      <TaskRow
+        task={mockTask}
+        onToggleDone={() => {}}
+        onOpenTask={() => {}}
+        presentation="inbox"
+        project={mockProject}
+      />
+    );
+
+    expect(screen.queryByText('В работе')).toBeNull();
+    expect(screen.queryByText('📁 Test Project')).toBeNull();
+    expect(screen.getByText('HIGH')).toBeTruthy();
+  });
+
   it('renders badge variant when provided', () => {
     render(
       <TaskRow
@@ -101,6 +117,19 @@ describe('TaskRow', () => {
     );
     expect(screen.queryByText('TODAY')).toBeNull();
     expect(screen.queryByText('OVERDUE')).toBeNull();
+  });
+
+  it('keeps badge in inbox presentation mode', () => {
+    render(
+      <TaskRow
+        task={mockTask}
+        onToggleDone={() => {}}
+        presentation="inbox"
+        badgeVariant="today"
+      />
+    );
+
+    expect(screen.getByText('TODAY')).toBeTruthy();
   });
 
   it('applies hitSlop to interactive targets', () => {

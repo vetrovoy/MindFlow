@@ -136,11 +136,31 @@ describe('InboxPage', () => {
             archivedAt: null,
           },
         ],
+        todayFeed: [
+          {
+            bucket: 'due-today',
+            task: {
+              id: 'task-1',
+              title: 'Активная задача',
+              description: null,
+              status: 'todo',
+              priority: 'high',
+              dueDate: new Date().toISOString().slice(0, 10),
+              projectId: null,
+              orderIndex: 0,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+              completedAt: null,
+              archivedAt: null,
+            },
+          },
+        ],
       },
     });
 
     expect(screen.getByText('Выполненные')).toBeTruthy();
     expect(screen.getByText('Активная задача')).toBeTruthy();
+    expect(screen.getByText('TODAY')).toBeTruthy();
     expect(screen.queryByText('Завершённая задача')).toBeNull();
 
     fireEvent.press(screen.getByText('Выполненные'));
@@ -228,5 +248,59 @@ describe('InboxPage', () => {
 
     expect(screen.queryByText('TODAY')).toBeNull();
     expect(screen.queryByText('OVERDUE')).toBeNull();
+  });
+
+  it('uses todayFeed as badge source instead of local due date checks', () => {
+    renderWithStore({
+      derived: {
+        inboxTasks: [
+          {
+            id: 'task-1',
+            title: 'Due today but not in today feed',
+            description: null,
+            status: 'todo',
+            priority: 'medium',
+            dueDate: new Date().toISOString().slice(0, 10),
+            projectId: null,
+            orderIndex: 0,
+            createdAt: '2026-04-01T09:00:00.000Z',
+            updatedAt: '2026-04-01T09:00:00.000Z',
+            completedAt: null,
+            archivedAt: null,
+          },
+        ],
+        todayFeed: [],
+      },
+    });
+
+    expect(screen.queryByText('TODAY')).toBeNull();
+    expect(screen.queryByText('OVERDUE')).toBeNull();
+  });
+
+  it('renders inbox rows without legacy status text noise', () => {
+    renderWithStore({
+      derived: {
+        inboxTasks: [
+          {
+            id: 'task-1',
+            title: 'Compact inbox row',
+            description: null,
+            status: 'todo',
+            priority: 'high',
+            dueDate: null,
+            projectId: null,
+            orderIndex: 0,
+            createdAt: '2026-04-01T09:00:00.000Z',
+            updatedAt: '2026-04-01T09:00:00.000Z',
+            completedAt: null,
+            archivedAt: null,
+          },
+        ],
+      },
+    });
+
+    expect(screen.queryByText('В работе')).toBeNull();
+    expect(screen.queryByText('Готово')).toBeNull();
+    expect(screen.getByText('HIGH')).toBeTruthy();
   });
 });
