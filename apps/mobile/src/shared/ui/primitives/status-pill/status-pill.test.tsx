@@ -1,5 +1,5 @@
 import { render, screen } from '@mobile/test-utils';
-import { StatusPill } from './index.tsx';
+import { StatusPill } from './index';
 
 describe('StatusPill', () => {
   it('renders with label', () => {

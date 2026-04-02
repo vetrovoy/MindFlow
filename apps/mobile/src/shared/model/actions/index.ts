@@ -48,7 +48,7 @@ export function createAppActions({
     async addInboxTask(input) {
       const trimmedTitle = input.title.trim();
       if (!trimmedTitle) {
-        return;
+        return false;
       }
 
       const { tasks } = getStore().state;
@@ -70,6 +70,8 @@ export function createAppActions({
       if (saved) {
         setToast({ message: copy.task.addedToastTitle, variant: 'success' });
       }
+
+      return saved;
     },
 
     async toggleTask(taskId) {

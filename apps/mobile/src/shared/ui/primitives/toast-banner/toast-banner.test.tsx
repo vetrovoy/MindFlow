@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@mobile/test-utils';
-import { ToastBanner } from './index.tsx';
+import { ToastBanner } from './index';
 
 describe('ToastBanner', () => {
   it('renders title', () => {

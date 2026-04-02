@@ -36,7 +36,7 @@ export interface AppActions {
   addInboxTask: (input: {
     title: string;
     dueDate?: string | null;
-  }) => Promise<void>;
+  }) => Promise<boolean>;
   toggleTask: (taskId: string) => Promise<void>;
   saveTaskEdit: (input: {
     taskId: string;

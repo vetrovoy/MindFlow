@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@mobile/test-utils';
-import { AccentButton } from './index.tsx';
+import { AccentButton } from './index';
 
 describe('AccentButton', () => {
   it('renders children', () => {

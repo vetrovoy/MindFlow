@@ -1,5 +1,5 @@
 import { render, screen } from '@mobile/test-utils';
-import { FeedbackCard } from './index.tsx';
+import { FeedbackCard } from './index';
 
 describe('FeedbackCard', () => {
   it('renders error variant', () => {

@@ -26,7 +26,7 @@ export function sortTasks(tasks: Task[]): Task[] {
     if (a.orderIndex !== b.orderIndex) {
       return a.orderIndex - b.orderIndex;
     }
-    return a.createdAt.localeCompare(a.createdAt);
+    return a.createdAt.localeCompare(b.createdAt);
   });
 }
 

@@ -1,5 +1,5 @@
 import { render, screen } from '@mobile/test-utils';
-import { BottomSheet } from './index.tsx';
+import { BottomSheet } from './index';
 
 describe('BottomSheet', () => {
   it('renders when visible', () => {

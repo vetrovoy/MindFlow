@@ -1,5 +1,5 @@
 import { render } from '@mobile/test-utils';
-import { SurfaceCard } from './index.tsx';
+import { SurfaceCard } from './index';
 
 describe('SurfaceCard', () => {
   it('renders children', () => {

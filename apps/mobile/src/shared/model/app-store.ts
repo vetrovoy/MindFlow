@@ -11,10 +11,9 @@ let storeInstance: AppStoreApi | null = null;
 
 export function createMobileAppStore(): AppStoreApi {
   const repository = createSqliteRepositoryBundle({ name: 'mindflow' });
+  let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-  return createStore<AppStore>((set, get) => {
-    let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
-
+  const store = createStore<AppStore>((set, get) => {
     const patchState = (patch: Partial<AppState>) => {
       set(store => {
         const nextState = { ...store.state, ...patch };
@@ -73,6 +72,20 @@ export function createMobileAppStore(): AppStoreApi {
       }),
     };
   });
+
+  const destroyableStore = store as AppStoreApi & { destroy?: () => void };
+  const originalDestroy = destroyableStore.destroy;
+  if (originalDestroy != null) {
+    destroyableStore.destroy = () => {
+      if (toastTimeoutId != null) {
+        clearTimeout(toastTimeoutId);
+        toastTimeoutId = null;
+      }
+      originalDestroy();
+    };
+  }
+
+  return store;
 }
 
 export function getMobileAppStore(): AppStoreApi {

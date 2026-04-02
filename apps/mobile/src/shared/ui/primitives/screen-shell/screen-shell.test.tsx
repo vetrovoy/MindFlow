@@ -1,5 +1,5 @@
 import { render, screen } from '@mobile/test-utils';
-import { ScreenShell } from './index.tsx';
+import { ScreenShell } from './index';
 
 describe('ScreenShell', () => {
   it('renders with title', () => {

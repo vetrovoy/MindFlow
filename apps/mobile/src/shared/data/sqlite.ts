@@ -215,11 +215,16 @@ class SqliteTransactionWrapper implements Transaction {
   ) {}
 
   async run<T>(work: () => Promise<T>): Promise<T> {
-    let result: T;
+    let hasResult = false;
+    let result: T | undefined;
     await this.db.transaction(async (_tx: OPTransaction) => {
       result = await work();
+      hasResult = true;
     });
-    return result!;
+    if (!hasResult) {
+      throw new Error('SQLite transaction completed without returning a result');
+    }
+    return result as T;
   }
 }
 

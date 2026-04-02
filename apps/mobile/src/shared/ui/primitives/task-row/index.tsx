@@ -1,3 +1,4 @@
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import type { Project, Task } from '@mindflow/domain';
@@ -10,6 +11,7 @@ import { StatusPill, type StatusPillProps } from '../status-pill';
 interface TaskRowProps {
   task: Task;
   onToggleDone: (taskId: string) => void;
+  onOpenTask?: (taskId: string) => void;
   badgeVariant?: StatusPillProps['variant'];
   project?: Project | null;
 }
@@ -71,7 +73,15 @@ function getTaskStatusText(task: Task) {
   return task.status === 'done' ? 'Готово' : 'В работе';
 }
 
-export function TaskRow({ task, project, badgeVariant, onToggleDone }: TaskRowProps) {
+const PRESSABLE_HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 } as const;
+
+export const TaskRow = React.memo(function TaskRow({
+  task,
+  project,
+  badgeVariant,
+  onToggleDone,
+  onOpenTask,
+}: TaskRowProps) {
   const { theme } = useTheme();
   const isDone = task.status === 'done';
   const priorityColor = getPriorityColor(
@@ -95,6 +105,7 @@ export function TaskRow({ task, project, badgeVariant, onToggleDone }: TaskRowPr
         <Pressable
           accessibilityRole="checkbox"
           accessibilityState={{ checked: isDone }}
+          hitSlop={PRESSABLE_HIT_SLOP}
           onPress={() => {
             void onToggleDone(task.id);
           }}
@@ -108,7 +119,15 @@ export function TaskRow({ task, project, badgeVariant, onToggleDone }: TaskRowPr
         >
           {isDone ? <Meta style={{ color: theme.colors.background }}>OK</Meta> : null}
         </Pressable>
-        <View style={styles.taskMain}>
+        <Pressable
+          accessibilityRole="button"
+          disabled={onOpenTask == null}
+          hitSlop={PRESSABLE_HIT_SLOP}
+          onPress={() => {
+            onOpenTask?.(task.id);
+          }}
+          style={styles.taskMain}
+        >
           <Body
             variant="task"
             tone={isDone ? 'muted' : 'primary'}
@@ -128,10 +147,10 @@ export function TaskRow({ task, project, badgeVariant, onToggleDone }: TaskRowPr
               />
             ) : null}
           </View>
-        </View>
+        </Pressable>
       </View>
     </SurfaceCard>
   );
-}
+});
 
 export type { TaskRowProps };

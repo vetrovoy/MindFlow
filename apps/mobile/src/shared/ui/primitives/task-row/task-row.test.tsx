@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@mobile/test-utils';
-import { TaskRow } from './index.tsx';
+import { TaskRow } from './index';
 import type { Task, Project } from '@mindflow/domain';
 
 const mockTask: Task = {
@@ -8,12 +8,13 @@ const mockTask: Task = {
   priority: 'high',
   status: 'todo',
   projectId: 'project-1',
-  bucket: 'inbox',
   description: null,
   dueDate: null,
-  tags: [],
+  orderIndex: 0,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+  completedAt: null,
+  archivedAt: null,
 };
 
 const mockProject: Project = {
@@ -22,6 +23,7 @@ const mockProject: Project = {
   emoji: '📁',
   color: '#007AFF',
   isFavorite: false,
+  deadline: null,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -91,5 +93,23 @@ describe('TaskRow', () => {
     );
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox.props.accessibilityState?.checked).toBe(true);
+  });
+
+  it('does not render badge when variant is not provided', () => {
+    render(
+      <TaskRow task={mockTask} onToggleDone={() => {}} />
+    );
+    expect(screen.queryByText('TODAY')).toBeNull();
+    expect(screen.queryByText('OVERDUE')).toBeNull();
+  });
+
+  it('applies hitSlop to interactive targets', () => {
+    render(
+      <TaskRow task={mockTask} onToggleDone={() => {}} onOpenTask={() => {}} />
+    );
+    const checkbox = screen.getByRole('checkbox');
+    const button = screen.getByRole('button');
+    expect(checkbox.props.hitSlop).toEqual({ top: 10, bottom: 10, left: 10, right: 10 });
+    expect(button.props.hitSlop).toEqual({ top: 10, bottom: 10, left: 10, right: 10 });
   });
 });

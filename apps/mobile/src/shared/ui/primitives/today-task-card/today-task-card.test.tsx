@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@mobile/test-utils';
-import { TodayTaskCard } from './index.tsx';
+import { TodayTaskCard } from './index';
 import type { TodayTaskGroup } from '@mindflow/domain';
 
 const mockTodayTaskGroup: TodayTaskGroup = {
@@ -10,12 +10,13 @@ const mockTodayTaskGroup: TodayTaskGroup = {
     priority: 'high',
     status: 'todo',
     projectId: 'project-1',
-    bucket: 'inbox',
     description: null,
     dueDate: null,
-    tags: [],
+    orderIndex: 0,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    completedAt: null,
+    archivedAt: null,
   },
 };
 

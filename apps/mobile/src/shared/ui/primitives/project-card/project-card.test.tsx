@@ -1,5 +1,5 @@
 import { render, screen } from '@mobile/test-utils';
-import { ProjectCard } from './index.tsx';
+import { ProjectCard } from './index';
 import type { Project } from '@mindflow/domain';
 
 const mockProject: Project = {
@@ -8,6 +8,7 @@ const mockProject: Project = {
   emoji: '📁',
   color: '#007AFF',
   isFavorite: false,
+  deadline: null,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };

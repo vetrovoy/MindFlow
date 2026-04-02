@@ -1,5 +1,5 @@
 import { render } from '@mobile/test-utils';
-import { ProgressBar } from './index.tsx';
+import { ProgressBar } from './index';
 
 describe('ProgressBar', () => {
   it('renders with value and max', () => {

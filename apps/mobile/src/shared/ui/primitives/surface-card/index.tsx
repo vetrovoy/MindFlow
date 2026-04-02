@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { StyleSheet, View, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type ViewProps, type ViewStyle } from 'react-native';
 
 import { useTheme } from '@shared/theme/use-theme';
 
@@ -21,11 +21,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export function SurfaceCard({ children, elevated = false, padded = true, style }: SurfaceCardProps) {
+export function SurfaceCard({
+  children,
+  elevated = false,
+  padded = true,
+  style,
+  ...props
+}: SurfaceCardProps & ViewProps) {
   const { theme } = useTheme();
 
   return (
     <View
+      {...props}
       style={[
         styles.card,
         padded && styles.cardPadded,

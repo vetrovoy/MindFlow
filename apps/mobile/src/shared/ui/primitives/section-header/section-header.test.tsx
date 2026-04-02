@@ -1,5 +1,5 @@
 import { render, screen } from '@mobile/test-utils';
-import { SectionHeader } from './index.tsx';
+import { SectionHeader } from './index';
 
 describe('SectionHeader', () => {
   it('renders title', () => {
