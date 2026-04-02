@@ -1,23 +1,47 @@
-import { View, StyleSheet } from 'react-native';
-import { useTheme } from '@shared/theme/use-theme';
-import { Body } from '@mobile/shared/ui/typography';
+import { useMobileAppStore } from '@shared/model/app-store-provider';
+import {
+  FeedbackCard,
+  ProjectCard,
+  ScreenShell,
+  SectionHeader,
+  SurfaceCard,
+} from '@shared/ui/primitives';
 
 export function ListsPage() {
-  const { theme } = useTheme();
+  const sections = useMobileAppStore(store => store.derived.projectSections);
+
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Body style={[styles.title, { color: theme.colors.textPrimary }]}>Lists</Body>
-    </View>
+    <ScreenShell
+      title="Lists"
+      subtitle="Карточки проектов и прогресс-паттерны для следующих мобильных экранов."
+    >
+      <SurfaceCard elevated>
+        <SectionHeader
+          title="Проекты"
+          subtitle={
+            sections.length > 0
+              ? `${sections.length} активных списков готовы к рендеру`
+              : 'Пока нет проектов'
+          }
+        />
+      </SurfaceCard>
+
+      {sections.length === 0 ? (
+        <FeedbackCard
+          variant="loading"
+          title="Ждём первые списки"
+          description="Когда проекты появятся, эта секция будет собрана из тех же UI primitives."
+        />
+      ) : (
+        sections.map(section => (
+          <ProjectCard
+            key={section.project.id}
+            project={section.project}
+            taskCount={section.progress.total}
+            doneCount={section.progress.done}
+          />
+        ))
+      )}
+    </ScreenShell>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});

@@ -15,4 +15,11 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(?:.pnpm/)?((jest-)?react-native|@react-native(-community)?|react-navigation|@react-navigation/.*|native-base|react-native-svg))',
   ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    'test-utils.tsx',
+  ],
+  testMatch: [
+    '**/src/**/*.test.[jt]s?(x)',
+  ],
 };

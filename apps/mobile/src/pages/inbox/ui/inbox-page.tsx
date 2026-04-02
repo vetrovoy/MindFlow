@@ -1,23 +1,52 @@
-import { View, StyleSheet } from 'react-native';
-import { useTheme } from '@shared/theme/use-theme';
-import { Body } from '@mobile/shared/ui/typography';
+import { useMobileAppStore } from '@shared/model/app-store-provider';
+import {
+  AccentButton,
+  FeedbackCard,
+  ScreenShell,
+  SectionHeader,
+  SurfaceCard,
+  TaskRow,
+} from '@shared/ui/primitives';
+import { Body } from '@shared/ui/typography';
 
 export function InboxPage() {
-  const { theme } = useTheme();
+  const tasks = useMobileAppStore(store => store.derived.inboxTasks);
+  const projects = useMobileAppStore(store => store.state.projects);
+  const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
+
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Body style={[styles.title, { color: theme.colors.textPrimary }]}>Inbox</Body>
-    </View>
+    <ScreenShell
+      title="Inbox"
+      subtitle="Локальные задачи без проекта. Основа для списка, row-компонента и feedback-состояний."
+      accessory={<AccentButton>Quick add</AccentButton>}
+    >
+      <SurfaceCard elevated>
+        <SectionHeader
+          title="Активные"
+          subtitle={tasks.length > 0 ? `${tasks.length} задач в очереди` : 'Нет активных inbox-задач'}
+        />
+      </SurfaceCard>
+
+      {tasks.length === 0 ? (
+        <FeedbackCard
+          variant="empty"
+          title="Inbox пока пуст"
+          description="Следующие задачи смогут переиспользовать этот empty-state без хардкодов цветов."
+        />
+      ) : (
+        tasks.map(task => (
+          <TaskRow
+            key={task.id}
+            task={task}
+            project={projects.find(project => project.id === task.projectId) ?? null}
+            onToggleDone={toggleTask}
+          />
+        ))
+      )}
+
+      <Body tone="soft">
+        Примитив `TaskRow` уже использует theme colors и shared typography tokens.
+      </Body>
+    </ScreenShell>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});
