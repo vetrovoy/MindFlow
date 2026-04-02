@@ -7,6 +7,7 @@ interface BottomSheetProps {
   visible: boolean;
   title: string;
   subtitle?: string;
+  headerAccessory?: React.ReactNode;
   children: React.ReactNode;
   onClose: () => void;
 }
@@ -36,11 +37,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   sheetHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  sheetHeaderText: {
+    flex: 1,
     gap: 4,
   },
 });
 
-export function BottomSheet({ visible, title, subtitle, children, onClose }: BottomSheetProps) {
+export function BottomSheet({
+  visible,
+  title,
+  subtitle,
+  headerAccessory,
+  children,
+  onClose,
+}: BottomSheetProps) {
   const { theme } = useTheme();
 
   return (
@@ -58,8 +73,11 @@ export function BottomSheet({ visible, title, subtitle, children, onClose }: Bot
         >
           <View style={[styles.sheetHandle, { backgroundColor: theme.colors.overlayHandle }]} />
           <View style={styles.sheetHeader}>
-            <SectionTitleText>{title}</SectionTitleText>
-            {subtitle ? <Body tone="secondary">{subtitle}</Body> : null}
+            <View style={styles.sheetHeaderText}>
+              <SectionTitleText>{title}</SectionTitleText>
+              {subtitle ? <Body tone="secondary">{subtitle}</Body> : null}
+            </View>
+            {headerAccessory}
           </View>
           {children}
         </View>

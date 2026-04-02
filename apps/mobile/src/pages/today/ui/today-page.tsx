@@ -1,6 +1,6 @@
 import { useMobileAppStore } from '@shared/model/app-store-provider';
+import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import {
-  BottomSheet,
   FeedbackCard,
   ScreenShell,
   SectionHeader,
@@ -12,8 +12,6 @@ import { Body } from '@shared/ui/typography';
 export function TodayPage() {
   const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
-  const editingTask = useMobileAppStore(store => store.derived.editingTask);
-  const closeTaskEdit = useMobileAppStore(store => store.actions.closeTaskEdit);
 
   return (
     <>
@@ -49,16 +47,7 @@ export function TodayPage() {
         </Body>
       </ScreenShell>
 
-      <BottomSheet
-        visible={editingTask != null}
-        title={editingTask?.title ?? 'Редактирование задачи'}
-        subtitle="Здесь позже появится полноценный editor flow."
-        onClose={closeTaskEdit}
-      >
-        <Body tone="secondary">
-          Примитив листа подключён и умеет жить в текущей теме без прямых импортов из `packages/ui` React-слоя.
-        </Body>
-      </BottomSheet>
+      <TaskEditSheet />
     </>
   );
 }
