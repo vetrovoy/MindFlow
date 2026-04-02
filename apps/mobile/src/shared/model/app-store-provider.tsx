@@ -2,7 +2,7 @@ import React, { createContext, useContext, useRef } from 'react';
 import { useStore } from 'zustand';
 
 import { getMobileAppStore, type AppStoreApi } from './app-store';
-import type { AppStore } from './task-store.types';
+import type { AppStore } from './types';
 
 const AppStoreContext = createContext<AppStoreApi | null>(null);
 
