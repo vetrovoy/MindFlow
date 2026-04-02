@@ -16,7 +16,7 @@ import {
   SurfaceCard,
   TaskRow,
 } from '@shared/ui/primitives';
-import { Body, Display, Meta, Title } from '@shared/ui/typography';
+import { Display, Title } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
 
@@ -34,9 +34,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   titleBlock: {
-    gap: 8,
-  },
-  quickCaptureCard: {
     gap: 12,
   },
   quickCaptureRow: {
@@ -61,18 +58,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
-  sectionHeader: {
-    paddingTop: 4,
-    paddingBottom: 10,
+  mainCard: {
+    gap: 14,
   },
-  itemSpacer: {
-    height: 10,
-  },
-  footerBlock: {
-    paddingTop: 14,
-    gap: 12,
-  },
-  completedContent: {
+  taskList: {
     gap: 10,
   },
 });
@@ -88,6 +77,7 @@ export function InboxPage() {
   const { theme } = useTheme();
   const [draftTitle, setDraftTitle] = useState('');
   const todayKey = getTodayKey();
+  const inboxCardData = useMemo(() => ['inbox-main-card'], []);
   const projectMap = useMemo(
     () => new Map(projects.map(project => [project.id, project])),
     [projects],
@@ -133,86 +123,84 @@ export function InboxPage() {
     }
   }
 
-  const keyExtractor = useCallback((item: Task) => item.id, []);
+  const keyExtractor = useCallback((item: string) => item, []);
 
-  const getItemType = useCallback(() => 'task', []);
+  const getItemType = useCallback(() => 'content-card', []);
 
-  const renderItem = useCallback(
-    ({ item }: { item: Task }) => {
-      return (
-        <TaskRow
-          task={item}
-          project={item.projectId == null ? null : (projectMap.get(item.projectId) ?? null)}
-          badgeVariant={badgeByTaskId[item.id]}
-          onOpenTask={openTaskEdit}
-          onToggleDone={toggleTask}
-        />
-      );
-    },
+  const renderTaskRow = useCallback(
+    (task: Task) => (
+      <TaskRow
+        key={task.id}
+        task={task}
+        project={task.projectId == null ? null : (projectMap.get(task.projectId) ?? null)}
+        badgeVariant={badgeByTaskId[task.id]}
+        onOpenTask={openTaskEdit}
+        onToggleDone={toggleTask}
+      />
+    ),
     [badgeByTaskId, openTaskEdit, projectMap, toggleTask],
   );
 
-  const completedFooter = useMemo(() => {
-    if (completedInboxTasks.length === 0) {
-      return null;
-    }
+  const renderItem = useCallback(() => {
+    const hasInboxContent = tasks.length > 0;
 
     return (
-      <View style={styles.footerBlock}>
-        <CollapsibleSection
-          count={completedInboxTasks.length}
-          defaultOpen={activeInboxTasks.length === 0}
-          title={copy.inbox.completedTitle}
-        >
-          <View style={styles.completedContent}>
-            {completedInboxTasks.map(task => (
-              <TaskRow
-                key={task.id}
-                task={task}
-                project={task.projectId == null ? null : (projectMap.get(task.projectId) ?? null)}
-                badgeVariant={badgeByTaskId[task.id]}
-                onOpenTask={openTaskEdit}
-                onToggleDone={toggleTask}
-              />
-            ))}
-          </View>
-        </CollapsibleSection>
-        <Meta tone="soft">
-          Тап по задаче открывает task-edit modal, а чекбокс обновляет статус через store action.
-        </Meta>
-      </View>
+      <SurfaceCard elevated>
+        <View style={styles.mainCard}>
+          {hasInboxContent ? (
+            <>
+              {activeInboxTasks.length > 0 ? (
+                <View style={styles.taskList}>
+                  {activeInboxTasks.map(renderTaskRow)}
+                </View>
+              ) : null}
+              {completedInboxTasks.length > 0 ? (
+                <CollapsibleSection
+                  count={completedInboxTasks.length}
+                  defaultOpen={activeInboxTasks.length === 0}
+                  title={copy.inbox.completedTitle}
+                >
+                  <View style={styles.taskList}>
+                    {completedInboxTasks.map(renderTaskRow)}
+                  </View>
+                </CollapsibleSection>
+              ) : null}
+            </>
+          ) : (
+            <StateCard
+              variant="empty"
+              title={copy.inbox.emptyTitle}
+              description={copy.inbox.emptyDescription}
+            />
+          )}
+        </View>
+      </SurfaceCard>
     );
   }, [
-    activeInboxTasks.length,
-    badgeByTaskId,
+    activeInboxTasks,
     completedInboxTasks,
-    openTaskEdit,
-    projectMap,
-    toggleTask,
+    renderTaskRow,
+    tasks.length,
   ]);
 
   return (
     <>
       <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
-        <FlashList<Task>
-          data={activeInboxTasks}
+        <FlashList<string>
+          data={inboxCardData}
           keyExtractor={keyExtractor}
           getItemType={getItemType}
           overrideItemLayout={(layout, item) => {
             layout.span = 1;
           }}
           contentContainerStyle={styles.contentContainer}
-          ItemSeparatorComponent={() => <View style={styles.itemSpacer} />}
           ListHeaderComponent={
             <View style={styles.headerBlock}>
               <View style={styles.titleBlock}>
                 <Display>{copy.inbox.title}</Display>
-                <Body tone="secondary">
-                  Активные задачи сверху, выполненные ниже. Быстрый захват остаётся в контексте Inbox.
-                </Body>
               </View>
 
-              <SurfaceCard elevated style={styles.quickCaptureCard}>
+              <SurfaceCard style={styles.titleBlock}>
                 <SectionHeader
                   title={copy.quickCapture.title}
                   subtitle={copy.quickCapture.inboxDescription}
@@ -271,23 +259,8 @@ export function InboxPage() {
                   </Pressable>
                 </View>
               </SurfaceCard>
-              {activeInboxTasks.length > 0 ? (
-                <View style={styles.sectionHeader}>
-                  <SectionHeader title="Активные" subtitle={`${activeInboxTasks.length} в работе`} />
-                </View>
-              ) : null}
             </View>
           }
-          ListEmptyComponent={
-            tasks.length === 0 ? (
-              <StateCard
-                variant="empty"
-                title={copy.inbox.emptyTitle}
-                description={copy.inbox.emptyDescription}
-              />
-            ) : null
-          }
-          ListFooterComponent={completedFooter}
           renderItem={renderItem}
         />
       </View>

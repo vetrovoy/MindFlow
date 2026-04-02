@@ -139,7 +139,6 @@ describe('InboxPage', () => {
       },
     });
 
-    expect(screen.getByText('Активные')).toBeTruthy();
     expect(screen.getByText('Выполненные')).toBeTruthy();
     expect(screen.getByText('Активная задача')).toBeTruthy();
     expect(screen.queryByText('Завершённая задача')).toBeNull();
@@ -172,6 +171,37 @@ describe('InboxPage', () => {
     });
 
     expect(screen.getByText('Только завершённая задача')).toBeTruthy();
+  });
+
+  it('removes legacy helper copy and active section header from inbox layout', () => {
+    renderWithStore({
+      derived: {
+        inboxTasks: [
+          {
+            id: 'task-1',
+            title: 'Активная задача',
+            description: null,
+            status: 'todo',
+            priority: 'high',
+            dueDate: null,
+            projectId: null,
+            orderIndex: 0,
+            createdAt: '2026-04-01T09:00:00.000Z',
+            updatedAt: '2026-04-01T09:00:00.000Z',
+            completedAt: null,
+            archivedAt: null,
+          },
+        ],
+      },
+    });
+
+    expect(
+      screen.queryByText('Активные задачи сверху, выполненные ниже. Быстрый захват остаётся в контексте Inbox.'),
+    ).toBeNull();
+    expect(
+      screen.queryByText('Тап по задаче открывает task-edit modal, а чекбокс обновляет статус через store action.'),
+    ).toBeNull();
+    expect(screen.queryByText('Активные')).toBeNull();
   });
 
   it('does not render date badge for completed task', () => {
