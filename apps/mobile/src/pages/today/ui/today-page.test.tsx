@@ -133,6 +133,23 @@ describe('TodayPage', () => {
               archivedAt: null,
             },
           },
+          {
+            bucket: 'high-priority-inbox',
+            task: {
+              id: 'task-3',
+              title: 'High priority inbox task',
+              description: null,
+              status: 'todo',
+              priority: 'high',
+              dueDate: null,
+              projectId: null,
+              orderIndex: 2,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+              completedAt: null,
+              archivedAt: null,
+            },
+          },
         ],
       },
     });
@@ -140,9 +157,108 @@ describe('TodayPage', () => {
     expect(screen.getByTestId('today-main-card')).toBeTruthy();
     expect(screen.getByText('Просроченная задача')).toBeTruthy();
     expect(screen.getByText('Задача на сегодня')).toBeTruthy();
+    expect(screen.getByText('High priority inbox task')).toBeTruthy();
+    expect(screen.getByText('Просрочено')).toBeTruthy();
+    expect(screen.getAllByText('Сегодня')).toHaveLength(2);
 
     fireEvent.press(screen.getAllByRole('checkbox')[0]);
 
     expect(toggleTask).toHaveBeenCalledWith('task-1');
+  });
+
+  it('collapses overdue section independently from today section', () => {
+    renderWithStore({
+      derived: {
+        todayFeed: [
+          {
+            bucket: 'overdue',
+            task: {
+              id: 'task-1',
+              title: 'Просроченная задача',
+              description: null,
+              status: 'todo',
+              priority: 'high',
+              dueDate: '2026-04-02',
+              projectId: null,
+              orderIndex: 0,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+              completedAt: null,
+              archivedAt: null,
+            },
+          },
+          {
+            bucket: 'due-today',
+            task: {
+              id: 'task-2',
+              title: 'Задача на сегодня',
+              description: null,
+              status: 'todo',
+              priority: 'medium',
+              dueDate: '2026-04-03',
+              projectId: null,
+              orderIndex: 1,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+              completedAt: null,
+              archivedAt: null,
+            },
+          },
+        ],
+      },
+    });
+
+    fireEvent.press(screen.getByText('Просрочено'));
+
+    expect(screen.queryByText('Просроченная задача')).toBeNull();
+    expect(screen.getByText('Задача на сегодня')).toBeTruthy();
+  });
+
+  it('renders today tasks without extra section wrapper when overdue is absent', () => {
+    renderWithStore({
+      derived: {
+        todayFeed: [
+          {
+            bucket: 'due-today',
+            task: {
+              id: 'task-2',
+              title: 'Задача на сегодня',
+              description: null,
+              status: 'todo',
+              priority: 'medium',
+              dueDate: '2026-04-03',
+              projectId: null,
+              orderIndex: 1,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+              completedAt: null,
+              archivedAt: null,
+            },
+          },
+          {
+            bucket: 'high-priority-inbox',
+            task: {
+              id: 'task-3',
+              title: 'Inbox without overdue',
+              description: null,
+              status: 'todo',
+              priority: 'high',
+              dueDate: null,
+              projectId: null,
+              orderIndex: 2,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+              completedAt: null,
+              archivedAt: null,
+            },
+          },
+        ],
+      },
+    });
+
+    expect(screen.queryByText('Просрочено')).toBeNull();
+    expect(screen.getAllByText('Сегодня')).toHaveLength(1);
+    expect(screen.getByText('Задача на сегодня')).toBeTruthy();
+    expect(screen.getByText('Inbox without overdue')).toBeTruthy();
   });
 });
