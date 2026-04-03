@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from '@shared/theme/theme-context';
 import { AppStoreProvider, useMobileAppStore } from '@shared/model/app-store-provider';
 import { ToastBanner } from '@shared/ui/primitives';
-import { RootNavigator } from '@app/navigation';
+import { RootNavigator } from '@mobile/navigation';
 
 function AppInit() {
   const reload = useMobileAppStore(s => s.actions.reload);
