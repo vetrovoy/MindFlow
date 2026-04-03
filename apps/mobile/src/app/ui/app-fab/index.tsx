@@ -4,11 +4,12 @@ import { useNavigationState } from '@react-navigation/native';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
+import { TAB_BAR_HEIGHT } from '@mobile/shared/config/contants';
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 20,
+    bottom: TAB_BAR_HEIGHT + 16,
     right: 16,
     alignItems: 'flex-end',
     gap: 10,

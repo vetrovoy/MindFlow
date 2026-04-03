@@ -4,6 +4,7 @@ import { ListsPage } from '@pages/lists/ui/lists-page';
 import { Icon } from '@mobile/shared/ui/icons';
 import { useTheme } from '@mobile/shared/theme/use-theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { TAB_BAR_HEIGHT } from '@mobile/shared/config/contants';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,6 +15,7 @@ export function TabNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          height: TAB_BAR_HEIGHT,
           backgroundColor: theme.colors.surface,
           borderTopColor: theme.colors.borderSoft,
           borderTopWidth: 1,
