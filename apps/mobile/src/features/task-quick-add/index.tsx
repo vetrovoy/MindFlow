@@ -38,7 +38,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export function TaskQuickAddFeature({ preferredDate }: TaskQuickAddFeatureProps) {
+export function TaskQuickAddFeature({
+  preferredDate,
+}: TaskQuickAddFeatureProps) {
   const { theme } = useTheme();
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const addInboxTask = useMobileAppStore(s => s.actions.addInboxTask);
@@ -50,7 +52,10 @@ export function TaskQuickAddFeature({ preferredDate }: TaskQuickAddFeatureProps)
   async function handleSubmit() {
     const trimmed = draftTitle.trim();
     if (!trimmed) return;
-    const saved = await addInboxTask({ title: trimmed, dueDate: preferredDate ?? null });
+    const saved = await addInboxTask({
+      title: trimmed,
+      dueDate: preferredDate ?? null,
+    });
     if (saved) setDraftTitle('');
   }
 
@@ -76,22 +81,6 @@ export function TaskQuickAddFeature({ preferredDate }: TaskQuickAddFeatureProps)
           ]}
           value={draftTitle}
         />
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => {
-            openTaskCreate(preferredDate);
-          }}
-          testID="quick-add-expand"
-          style={[
-            styles.button,
-            {
-              backgroundColor: theme.colors.overlayGhost,
-              borderColor: theme.colors.borderSoft,
-            },
-          ]}
-        >
-          <Icon decorative name="more" size={18} tone="muted" />
-        </Pressable>
         <Pressable
           accessibilityRole="button"
           disabled={isDisabled}
