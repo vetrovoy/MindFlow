@@ -6,6 +6,7 @@ import { useTheme } from '@shared/theme/use-theme';
 import { InboxPage } from '@pages/inbox/ui/inbox-page';
 import { TodayPage } from '@pages/today/ui/today-page';
 import { ListsPage } from '@pages/lists/ui/lists-page';
+import { MobileAppShell } from './app-shell';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,6 +34,14 @@ function TabNavigator() {
   );
 }
 
+function ShellWithTabs() {
+  return (
+    <MobileAppShell>
+      <TabNavigator />
+    </MobileAppShell>
+  );
+}
+
 export function RootNavigator() {
   const { theme } = useTheme();
 
@@ -57,7 +66,7 @@ export function RootNavigator() {
   return (
     <NavigationContainer theme={navTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Main" component={TabNavigator} />
+        <Stack.Screen name="Main" component={ShellWithTabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );

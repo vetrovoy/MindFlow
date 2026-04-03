@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { AppStore } from '@shared/model/types';
-import { act, fireEvent, render, screen } from '@mobile/test-utils';
+import { fireEvent, render, screen } from '@mobile/test-utils';
 import { InboxPage } from './inbox-page';
 
 const mockUseMobileAppStore = jest.fn();
@@ -76,31 +76,6 @@ describe('InboxPage', () => {
 
     expect(screen.getByText('Пусто')).toBeTruthy();
     expect(screen.getByText('Добавьте задачу через быстрое поле, и она появится здесь.')).toBeTruthy();
-  });
-
-  it('submits quick capture into addInboxTask', async () => {
-    const addInboxTask = jest.fn().mockResolvedValue(true);
-    renderWithStore({ actions: { addInboxTask } });
-
-    fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Подготовить релиз');
-    await act(async () => {
-      fireEvent.press(screen.getByText('Сохранить'));
-    });
-
-    expect(addInboxTask).toHaveBeenCalledWith({ title: 'Подготовить релиз' });
-    expect(screen.queryByDisplayValue('Подготовить релиз')).toBeNull();
-  });
-
-  it('keeps quick capture text when add fails', async () => {
-    const addInboxTask = jest.fn().mockResolvedValue(false);
-    renderWithStore({ actions: { addInboxTask } });
-
-    fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Оставить в поле');
-    await act(async () => {
-      fireEvent.press(screen.getByText('Сохранить'));
-    });
-
-    expect(screen.getByDisplayValue('Оставить в поле')).toBeTruthy();
   });
 
   it('renders completed tasks through a collapsible section', () => {

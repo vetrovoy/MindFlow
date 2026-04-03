@@ -5,7 +5,7 @@ import { useTheme } from '@shared/theme/use-theme';
 import { Body, Display } from '../../typography';
 
 interface ScreenShellProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   children: ReactNode;
   accessory?: ReactNode;
@@ -17,8 +17,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 16,
-    paddingTop: 18,
-    paddingBottom: 36,
     gap: 16,
   },
   screenHeader: {
@@ -43,7 +41,7 @@ export function ScreenShell({ title, subtitle, accessory, children }: ScreenShel
     >
       <View style={styles.screenHeader}>
         <View style={styles.headerRow}>
-          <Display>{title}</Display>
+          {title && <Display>{title}</Display>}
           {accessory}
         </View>
         {subtitle ? <Body tone="secondary">{subtitle}</Body> : null}

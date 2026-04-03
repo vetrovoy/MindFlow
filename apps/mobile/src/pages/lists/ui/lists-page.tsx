@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
 
-import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import type { ProjectSection } from '@shared/model/types';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import {
@@ -31,8 +30,15 @@ export function ListsPage() {
   const sections = useMobileAppStore(store => store.derived.projectSections);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);
-  const favoriteSections = sections.filter(section => section.project.isFavorite);
-  const regularSections = sections.filter(section => !section.project.isFavorite);
+  const openProjectEdit = useMobileAppStore(
+    store => store.actions.openProjectEdit,
+  );
+  const favoriteSections = sections.filter(
+    section => section.project.isFavorite,
+  );
+  const regularSections = sections.filter(
+    section => !section.project.isFavorite,
+  );
 
   function renderProjectSection(section: ProjectSection) {
     return (
@@ -41,6 +47,7 @@ export function ListsPage() {
           project={section.project}
           taskCount={section.progress.total}
           doneCount={section.progress.done}
+          onPress={() => openProjectEdit(section.project.id)}
         />
         {section.tasks.length > 0 ? (
           <View style={styles.taskList}>
@@ -66,7 +73,7 @@ export function ListsPage() {
   }
 
   return (
-    <ScreenShell title={copy.navigation.lists}>
+    <ScreenShell>
       {sections.length === 0 ? (
         <SurfaceCard testID="lists-all-card">
           <View style={styles.sectionCard}>
@@ -101,7 +108,6 @@ export function ListsPage() {
           ) : null}
         </>
       )}
-      <TaskEditSheet />
     </ScreenShell>
   );
 }

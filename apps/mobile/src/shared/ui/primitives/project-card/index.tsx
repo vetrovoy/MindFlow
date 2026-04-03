@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import type { Project } from '@mindflow/domain';
 
@@ -12,6 +12,7 @@ interface ProjectCardProps {
   project: Project;
   taskCount: number;
   doneCount: number;
+  onPress?: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -23,10 +24,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ProjectCard({ project, taskCount, doneCount }: ProjectCardProps) {
+export function ProjectCard({ project, taskCount, doneCount, onPress }: ProjectCardProps) {
   const { theme } = useTheme();
 
   return (
+    <Pressable accessibilityRole="button" onPress={onPress}>
     <SurfaceCard elevated>
       <View style={{ gap: 14 }}>
         <View style={styles.headerRow}>
@@ -55,6 +57,7 @@ export function ProjectCard({ project, taskCount, doneCount }: ProjectCardProps)
         />
       </View>
     </SurfaceCard>
+    </Pressable>
   );
 }
 
