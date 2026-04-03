@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, getTheme } from "./themes";
+import { DEFAULT_THEME, getTheme } from "../themes";
 
 export const typography = {
   fontFamily: {

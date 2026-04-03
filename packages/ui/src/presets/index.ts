@@ -3,9 +3,9 @@ import type {
   FeedbackCardVariant,
   InlineStatusVariant,
   StatusBadgeVariant
-} from "./contracts";
-import { DEFAULT_THEME, getTheme } from "./themes";
-import { radii, spacing, typography } from "./tokens";
+} from "../contracts";
+import { DEFAULT_THEME, getTheme } from "../themes";
+import { radii, spacing, typography } from "../tokens";
 
 const defaultTheme = getTheme(DEFAULT_THEME);
 

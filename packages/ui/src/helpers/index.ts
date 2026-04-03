@@ -3,7 +3,7 @@ import type {
   ProgressBarProps,
   TaskRowProps,
   TaskCheckboxState
-} from "./contracts";
+} from "../contracts";
 
 export function getProgressValue({ value, max }: ProgressBarProps) {
   if (max <= 0) {
