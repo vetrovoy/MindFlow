@@ -13,6 +13,9 @@ export const INITIAL_STATE: AppState = {
   error: null,
   editingTaskId: null,
   editingProjectId: null,
+  isTaskCreateOpen: false,
+  taskCreatePreferredDate: null,
+  isProjectCreateOpen: false,
   toast: null,
 };
 

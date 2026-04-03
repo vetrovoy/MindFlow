@@ -209,6 +209,66 @@ export function createAppActions({
     closeProjectEdit() {
       patchState({ editingProjectId: null });
     },
+    openTaskCreate(preferredDate) {
+      patchState({ isTaskCreateOpen: true, taskCreatePreferredDate: preferredDate ?? null });
+    },
+    closeTaskCreate() {
+      patchState({ isTaskCreateOpen: false, taskCreatePreferredDate: null });
+    },
+    openProjectCreate() {
+      patchState({ isProjectCreateOpen: true });
+    },
+    closeProjectCreate() {
+      patchState({ isProjectCreateOpen: false });
+    },
+    async createProjectFromSheet(input) {
+      const trimmedName = input.name.trim();
+      if (!trimmedName) return;
+
+      const now = getNowIso();
+      const project = createProjectEntity({
+        id: createId(),
+        name: trimmedName,
+        color: input.color,
+        emoji: input.emoji,
+        isFavorite: false,
+        now,
+      });
+
+      const saved = await runMutation(async () => {
+        await repository.projects.save(project);
+      });
+
+      if (saved) {
+        patchState({ isProjectCreateOpen: false });
+        setToast({ message: copy.project.createdToastTitle, variant: 'success' });
+      }
+    },
+    async createTask(input) {
+      const trimmedTitle = input.title.trim();
+      if (!trimmedTitle) return;
+
+      const { tasks } = getStore().state;
+      const now = getNowIso();
+      const task = createTask({
+        id: createId(),
+        title: trimmedTitle,
+        dueDate: input.dueDate ?? null,
+        projectId: input.projectId ?? null,
+        priority: input.priority ?? 'medium',
+        now,
+        orderIndex: getNextOrderIndex(tasks, input.projectId ?? null),
+      });
+
+      const saved = await runMutation(async () => {
+        await repository.tasks.save(task);
+      });
+
+      if (saved) {
+        patchState({ isTaskCreateOpen: false, taskCreatePreferredDate: null });
+        setToast({ message: copy.task.addedToastTitle, variant: 'success' });
+      }
+    },
     dismissToast() {
       setToast(null);
     },

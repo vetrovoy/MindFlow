@@ -2,11 +2,14 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
 
+import { ProjectCreateSheet } from '@features/project-create/ProjectCreateSheet';
+import { TaskCreateSheet } from '@features/task-create/TaskCreateSheet';
 import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { StateCard } from '@shared/ui/primitives';
 import { AppStats } from '../app-stats';
+import { AppFab } from '../app-fab';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppQuickAdd } from '../app-quick-add';
 
@@ -38,14 +41,15 @@ export function MobileAppShell({ children }: MobileAppShellProps) {
               <AppQuickAdd />
             </View>
             <View style={styles.content}>{children}</View>
+            <AppFab />
           </>
         )}
 
         {/* Global flows mounted once at shell level */}
         <TaskEditSheet />
+        <TaskCreateSheet />
+        <ProjectCreateSheet />
         {/* <ProjectEditSheet /> */}
-        {/* <TaskCreateSheet /> */}
-        {/* <ProjectCreateSheet /> */}
       </View>
     </SafeAreaView>
   );

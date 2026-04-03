@@ -42,6 +42,7 @@ export function TaskQuickAddFeature({ preferredDate }: TaskQuickAddFeatureProps)
   const { theme } = useTheme();
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const addInboxTask = useMobileAppStore(s => s.actions.addInboxTask);
+  const openTaskCreate = useMobileAppStore(s => s.actions.openTaskCreate);
   const [draftTitle, setDraftTitle] = useState('');
 
   const isDisabled = isSaving || draftTitle.trim().length === 0;
@@ -75,6 +76,22 @@ export function TaskQuickAddFeature({ preferredDate }: TaskQuickAddFeatureProps)
           ]}
           value={draftTitle}
         />
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            openTaskCreate(preferredDate);
+          }}
+          testID="quick-add-expand"
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.colors.overlayGhost,
+              borderColor: theme.colors.borderSoft,
+            },
+          ]}
+        >
+          <Icon decorative name="more" size={18} tone="muted" />
+        </Pressable>
         <Pressable
           accessibilityRole="button"
           disabled={isDisabled}

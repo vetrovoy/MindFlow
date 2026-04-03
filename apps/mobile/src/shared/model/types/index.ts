@@ -19,6 +19,9 @@ export interface AppState {
   error: string | null;
   editingTaskId: string | null;
   editingProjectId: string | null;
+  isTaskCreateOpen: boolean;
+  taskCreatePreferredDate: string | null;
+  isProjectCreateOpen: boolean;
   toast: ToastState | null;
 }
 
@@ -70,6 +73,21 @@ export interface AppActions {
   closeTaskEdit: () => void;
   openProjectEdit: (projectId: string) => void;
   closeProjectEdit: () => void;
+  openTaskCreate: (preferredDate?: string | null) => void;
+  closeTaskCreate: () => void;
+  createTask: (input: {
+    title: string;
+    dueDate?: string | null;
+    priority?: Task['priority'];
+    projectId?: string | null;
+  }) => Promise<void>;
+  openProjectCreate: () => void;
+  closeProjectCreate: () => void;
+  createProjectFromSheet: (input: {
+    name: string;
+    emoji: string;
+    color: string;
+  }) => Promise<void>;
   dismissToast: () => void;
   clearError: () => void;
   reload: () => Promise<void>;
