@@ -19,7 +19,7 @@ interface MobileAppShellProps {
   children: ReactNode;
 }
 
-export function MobileAppShell({ children }: MobileAppShellProps) {
+export function AppShell({ children }: MobileAppShellProps) {
   const { theme } = useTheme();
   const isHydrated = useMobileAppStore(s => s.state.isHydrated);
 

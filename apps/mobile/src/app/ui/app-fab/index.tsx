@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { Meta } from '@shared/ui/typography';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +47,6 @@ const styles = StyleSheet.create({
 
 export function AppFab() {
   const { theme } = useTheme();
-  const [open, setOpen] = useState(false);
   const openTaskCreate = useMobileAppStore(s => s.actions.openTaskCreate);
   const openProjectCreate = useMobileAppStore(s => s.actions.openProjectCreate);
 
@@ -59,98 +56,44 @@ export function AppFab() {
     return (tabState.routes[tabState.index]?.name as string) ?? 'Inbox';
   });
 
+  const isInbox = activeTab === 'Inbox';
+  const isLists = activeTab === 'Lists';
   const isToday = activeTab === 'Today';
 
   function handleTaskPress() {
-    setOpen(false);
-    const preferredDate = isToday ? new Date().toISOString().slice(0, 10) : null;
+    const preferredDate = isToday
+      ? new Date().toISOString().slice(0, 10)
+      : null;
     openTaskCreate(preferredDate);
   }
 
   function handleProjectPress() {
-    setOpen(false);
     openProjectCreate();
   }
 
+  const handlePress = () => {
+    if (isInbox || isToday) {
+      handleTaskPress();
+    } else if (isLists) {
+      handleProjectPress();
+    }
+  };
+
   return (
     <View style={styles.container} pointerEvents="box-none">
-      {open && (
-        <>
-          <View style={styles.miniRow}>
-            <Pressable
-              accessibilityRole="button"
-              onPress={handleProjectPress}
-              style={[
-                styles.miniLabel,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.borderSoft,
-                },
-              ]}
-            >
-              <Meta tone="secondary">Список</Meta>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              onPress={handleProjectPress}
-              testID="fab-create-project"
-              style={[
-                styles.miniFab,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.borderSoft,
-                },
-              ]}
-            >
-              <Icon decorative name="nav-lists" size={18} tone="muted" />
-            </Pressable>
-          </View>
-
-          <View style={styles.miniRow}>
-            <Pressable
-              accessibilityRole="button"
-              onPress={handleTaskPress}
-              style={[
-                styles.miniLabel,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.borderSoft,
-                },
-              ]}
-            >
-              <Meta tone="secondary">Задача</Meta>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              onPress={handleTaskPress}
-              testID="fab-create-task"
-              style={[
-                styles.miniFab,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.borderSoft,
-                },
-              ]}
-            >
-              <Icon decorative name="nav-inbox" size={18} tone="muted" />
-            </Pressable>
-          </View>
-        </>
-      )}
-
       <Pressable
         accessibilityRole="button"
-        onPress={() => { setOpen(prev => !prev); }}
+        onPress={handlePress}
         testID="fab-main"
         style={[
           styles.fab,
           {
-            backgroundColor: open ? theme.colors.surfaceInteractive : theme.colors.accentPrimary,
+            backgroundColor: theme.colors.accentPrimary,
             shadowColor: theme.colors.accentPrimary,
           },
         ]}
       >
-        <Icon decorative name={open ? 'close' : 'add'} size={22} tone="contrast" />
+        <Icon decorative name={'add'} size={22} tone="contrast" />
       </Pressable>
     </View>
   );
