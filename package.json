@@ -5,16 +5,24 @@
   "packageManager": "pnpm@10.6.5",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "rimraf .turbo packages/*/.turbo apps/*/.turbo",
     "mobile:start": "pnpm --filter @mindflow/mobile start",
     "mobile:android": "pnpm --filter @mindflow/mobile android",
     "mobile:ios": "pnpm --filter @mindflow/mobile ios",
     "mobile:lint": "pnpm --filter @mindflow/mobile lint",
     "mobile:test": "pnpm --filter @mindflow/mobile test",
-    "mobile:typecheck": "pnpm --filter @mindflow/mobile typecheck"
+    "mobile:typecheck": "pnpm --filter @mindflow/mobile typecheck",
+    "web:dev": "pnpm --filter @mindflow/web dev",
+    "web:build": "pnpm --filter @mindflow/web build",
+    "web:lint": "pnpm --filter @mindflow/web lint",
+    "web:test": "pnpm --filter @mindflow/web test",
+    "web:typecheck": "pnpm --filter @mindflow/web typecheck"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

@@ -1,16 +1,16 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../packages/config/tsconfig/web.json",
+  "include": ["src", "vite.config.ts"],
   "compilerOptions": {
-    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
       "@mindflow/copy": ["../../packages/copy/src/index.ts"],
       "@mindflow/domain": ["../../packages/domain/src/index.ts"],
       "@mindflow/data": ["../../packages/data/src/index.ts"],
+      "@mindflow/data/sqlite": ["../../packages/data/src/sqlite/repository.ts"],
       "@mindflow/ui": ["../../packages/ui/src/index.ts"],
       "@mindflow/config/*": ["../../packages/config/*"],
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
-  },
-  "include": ["src", "vite.config.ts"]
+  }
 }

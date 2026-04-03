@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { Project, Task } from "./entities";
+import type { Project, Task } from "./types";
 import {
   archiveProject,
   archiveTask,

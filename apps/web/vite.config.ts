@@ -29,6 +29,9 @@ export default defineConfig({
     },
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
   },
+  optimizeDeps: {
+    exclude: ["react-native", "@op-engineering/op-sqlite"]
+  },
   plugins: [
     react(),
     VitePWA({

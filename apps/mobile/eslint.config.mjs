@@ -1,20 +1,21 @@
-const js = require('@eslint/js');
-const globals = require('globals');
-const prettier = require('eslint-plugin-prettier');
+import js from '@eslint/js';
+import prettier from 'eslint-plugin-prettier';
 
-const config = [
+/** @type {import("eslint").Linter.FlatConfig[]} */
+export default [
   js.configs.recommended,
   {
     plugins: {
       prettier: prettier,
     },
     languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
       globals: {
-        ...globals.node,
-        ...globals.react,
-        module: 'readonly',
-        require: 'readonly',
+        __DEV__: 'readonly',
         __dirname: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
         exports: 'readonly',
       },
       parserOptions: {
@@ -43,5 +44,3 @@ const config = [
     },
   },
 ];
-
-export default config

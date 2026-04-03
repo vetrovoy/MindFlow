@@ -95,7 +95,7 @@ describe("icons", () => {
   });
 
   it("keeps the shared icon contract platform-neutral", () => {
-    const source = readFileSync(new URL("./icons.ts", import.meta.url), "utf8");
+    const source = readFileSync(new URL("./icons/index.ts", import.meta.url), "utf8");
 
     expect(source).not.toContain("lucide-react");
     expect(source).not.toContain("react-native");

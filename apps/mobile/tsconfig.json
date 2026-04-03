@@ -1,11 +1,13 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../packages/config/tsconfig/react-native.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["**/node_modules", "**/Pods", "**/android", "**/ios"],
   "compilerOptions": {
-    "types": ["jest"],
     "baseUrl": ".",
     "paths": {
       "@mindflow/domain": ["../../packages/domain/src/index.ts"],
       "@mindflow/data": ["../../packages/data/src/index.ts"],
+      "@mindflow/data/sqlite": ["../../packages/data/src/sqlite/repository.ts"],
       "@mindflow/ui": ["../../packages/ui/src/index.ts"],
       "@mindflow/copy": ["../../packages/copy/src/index.ts"],
       "@mobile/*": ["src/*"],
@@ -15,7 +17,5 @@
       "@widgets/*": ["src/widgets/*"],
       "@app/*": ["src/app/*"]
     }
-  },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods", "**/android", "**/ios"]
+  }
 }
