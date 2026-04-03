@@ -71,7 +71,7 @@ describe('QuickAddFeature', () => {
 
     fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Подготовить релиз');
     await act(async () => {
-      fireEvent.press(screen.getByText('Сохранить'));
+      fireEvent.press(screen.getByTestId('quick-add-submit'));
     });
 
     expect(addInboxTask).toHaveBeenCalledWith({ title: 'Подготовить релиз', dueDate: null });
@@ -84,7 +84,7 @@ describe('QuickAddFeature', () => {
 
     fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Оставить в поле');
     await act(async () => {
-      fireEvent.press(screen.getByText('Сохранить'));
+      fireEvent.press(screen.getByTestId('quick-add-submit'));
     });
 
     expect(screen.getByDisplayValue('Оставить в поле')).toBeTruthy();
@@ -96,19 +96,10 @@ describe('QuickAddFeature', () => {
 
     fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Задача на сегодня');
     await act(async () => {
-      fireEvent.press(screen.getByText('Сохранить'));
+      fireEvent.press(screen.getByTestId('quick-add-submit'));
     });
 
     expect(addInboxTask).toHaveBeenCalledWith({ title: 'Задача на сегодня', dueDate: '2026-04-03' });
   });
 
-  it('shows inbox description when no preferredDate', () => {
-    renderWithStore({});
-    expect(screen.getByText('Добавляйте задачи без приоритета в течение дня.')).toBeTruthy();
-  });
-
-  it('shows today description when preferredDate is set', () => {
-    renderWithStore({ preferredDate: '2026-04-03' });
-    expect(screen.getByText('Добавляйте задачи на сегодня.')).toBeTruthy();
-  });
 });

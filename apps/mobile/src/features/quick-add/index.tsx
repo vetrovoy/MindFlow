@@ -59,7 +59,9 @@ export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
         <TextInput
           editable={!isSaving}
           onChangeText={setDraftTitle}
-          onSubmitEditing={() => { void handleSubmit(); }}
+          onSubmitEditing={() => {
+            void handleSubmit();
+          }}
           placeholder={copy.quickCapture.taskPlaceholder}
           placeholderTextColor={theme.colors.textTertiary}
           returnKeyType="done"
@@ -76,17 +78,28 @@ export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
         <Pressable
           accessibilityRole="button"
           disabled={isDisabled}
-          onPress={() => { void handleSubmit(); }}
+          onPress={() => {
+            void handleSubmit();
+          }}
           testID="quick-add-submit"
           style={[
             styles.button,
             {
-              backgroundColor: isDisabled ? theme.colors.overlayGhost : theme.colors.surfaceInteractive,
-              borderColor: isDisabled ? theme.colors.borderSoft : theme.colors.accentPrimaryPanelBorder,
+              backgroundColor: isDisabled
+                ? theme.colors.overlayGhost
+                : theme.colors.accentPrimary,
+              borderColor: isDisabled
+                ? theme.colors.borderSoft
+                : theme.colors.surfaceInteractive,
             },
           ]}
         >
-          <Icon decorative name="add" size={18} tone={isDisabled ? 'muted' : 'accent'} />
+          <Icon
+            decorative
+            name="add"
+            size={18}
+            tone={isDisabled ? 'accent' : 'contrast'}
+          />
         </Pressable>
       </View>
     </SurfaceCard>

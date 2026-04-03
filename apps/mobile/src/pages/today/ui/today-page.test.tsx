@@ -160,7 +160,7 @@ describe('TodayPage', () => {
     expect(screen.getByText('Задача на сегодня')).toBeTruthy();
     expect(screen.getByText('High priority inbox task')).toBeTruthy();
     expect(screen.getByText('Просрочено')).toBeTruthy();
-    expect(screen.getAllByText('Сегодня')).toHaveLength(2);
+    expect(screen.getAllByText('Сегодня')).toHaveLength(1);
     expect(screen.queryByText('Inbox / high')).toBeNull();
 
     fireEvent.press(screen.getAllByRole('checkbox')[0]);
@@ -261,7 +261,7 @@ describe('TodayPage', () => {
     });
 
     expect(screen.queryByText('Просрочено')).toBeNull();
-    expect(screen.getAllByText('Сегодня')).toHaveLength(1);
+    expect(screen.queryByText('Сегодня')).toBeNull();
     expect(screen.getByText('Задача на сегодня')).toBeTruthy();
     expect(screen.getByText('Inbox without overdue')).toBeTruthy();
     expect(screen.queryByText('Inbox / high')).toBeNull();

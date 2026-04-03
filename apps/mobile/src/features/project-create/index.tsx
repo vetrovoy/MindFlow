@@ -5,8 +5,7 @@ import { getCopy } from '@mindflow/copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { SectionHeader, SurfaceCard } from '@shared/ui/primitives';
-import { Title } from '@shared/ui/typography';
+import { SurfaceCard } from '@shared/ui/primitives';
 
 const copy = getCopy('ru');
 
@@ -14,32 +13,27 @@ const DEFAULT_PROJECT_COLOR = '#4285F4';
 const DEFAULT_PROJECT_EMOJI = '📋';
 
 const styles = StyleSheet.create({
+  card: { padding: 10 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
   input: {
     flex: 1,
-    minHeight: 52,
+    height: 40,
     borderWidth: 1,
-    borderRadius: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    fontSize: 14,
   },
-  submitButton: {
-    minHeight: 52,
-    minWidth: 96,
-    borderRadius: 16,
-    paddingHorizontal: 14,
+  button: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-  },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
   },
 });
 
@@ -48,6 +42,8 @@ export function ProjectCreateFeature() {
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const createProject = useMobileAppStore(s => s.actions.createProject);
   const [draftName, setDraftName] = useState('');
+
+  const isDisabled = isSaving || draftName.trim().length === 0;
 
   async function handleSubmit() {
     const trimmed = draftName.trim();
@@ -61,11 +57,7 @@ export function ProjectCreateFeature() {
   }
 
   return (
-    <SurfaceCard>
-      <SectionHeader
-        title={copy.quickCapture.createProjectTitle}
-        subtitle={copy.quickCapture.createProjectDescription}
-      />
+    <SurfaceCard style={styles.card}>
       <View style={styles.row}>
         <TextInput
           editable={!isSaving}
@@ -88,30 +80,29 @@ export function ProjectCreateFeature() {
         />
         <Pressable
           accessibilityRole="button"
-          disabled={isSaving || draftName.trim().length === 0}
+          disabled={isDisabled}
           onPress={() => {
             void handleSubmit();
           }}
+          testID="project-create-submit"
           style={[
-            styles.submitButton,
+            styles.button,
             {
-              backgroundColor:
-                isSaving || draftName.trim().length === 0
-                  ? theme.colors.overlayGhost
-                  : theme.colors.surfaceInteractive,
-              borderColor:
-                isSaving || draftName.trim().length === 0
-                  ? theme.colors.borderSoft
-                  : theme.colors.accentPrimaryPanelBorder,
+              backgroundColor: isDisabled
+                ? theme.colors.overlayGhost
+                : theme.colors.accentPrimary,
+              borderColor: isDisabled
+                ? theme.colors.borderSoft
+                : theme.colors.surfaceInteractive,
             },
           ]}
         >
-          <View style={styles.buttonContent}>
-            <Icon decorative name="add" size={16} tone={isSaving ? 'muted' : 'accent'} />
-            <Title tone={isSaving ? 'muted' : 'accent'}>
-              {isSaving ? copy.common.saving : copy.common.save}
-            </Title>
-          </View>
+          <Icon
+            decorative
+            name="add"
+            size={18}
+            tone={isDisabled ? 'accent' : 'contrast'}
+          />
         </Pressable>
       </View>
     </SurfaceCard>
