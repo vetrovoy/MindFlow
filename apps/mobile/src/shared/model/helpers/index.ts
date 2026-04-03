@@ -1,6 +1,6 @@
 import type { Project, Task } from '@mindflow/domain';
 import type { RepositoryBundle } from '@mindflow/data';
-import type { AppState, ToastState } from '../types';
+import type { AppState } from '../types';
 
 /**
  * Начальное состояние приложения
@@ -16,7 +16,6 @@ export const INITIAL_STATE: AppState = {
   isTaskCreateOpen: false,
   taskCreatePreferredDate: null,
   isProjectCreateOpen: false,
-  toast: null,
 };
 
 /**
@@ -40,16 +39,4 @@ export async function readSnapshot(
     repository.projects.listAll(),
   ]);
   return { tasks, projects };
-}
-
-/**
- * Отложенная установка toast с авто-снятием
- */
-export function scheduleToast(
-  setToast: (t: ToastState | null) => void,
-  toast: ToastState,
-  durationMs = 2600,
-): ReturnType<typeof setTimeout> {
-  setToast(toast);
-  return setTimeout(() => setToast(null), durationMs);
 }

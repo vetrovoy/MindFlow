@@ -1,10 +1,5 @@
 import type { Project, Task, TodayTaskGroup } from '@mindflow/domain';
 
-export interface ToastState {
-  message: string;
-  variant: 'success' | 'error' | 'info';
-}
-
 export interface ProjectSection {
   project: Project;
   tasks: Task[];
@@ -22,7 +17,6 @@ export interface AppState {
   isTaskCreateOpen: boolean;
   taskCreatePreferredDate: string | null;
   isProjectCreateOpen: boolean;
-  toast: ToastState | null;
 }
 
 export interface AppDerived {

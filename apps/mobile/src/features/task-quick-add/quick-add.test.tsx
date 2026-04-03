@@ -22,7 +22,6 @@ const baseStore: AppStore = {
     isTaskCreateOpen: false,
     taskCreatePreferredDate: null,
     isProjectCreateOpen: false,
-    toast: null,
   },
   derived: {
     inboxTasks: [],

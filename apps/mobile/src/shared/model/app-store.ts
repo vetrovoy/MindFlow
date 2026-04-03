@@ -3,7 +3,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla';
 import { createSqliteRepositoryBundle } from '@mindflow/data/sqlite';
 import { computeDerived, formatError, INITIAL_STATE, readSnapshot } from './selectors';
 import { createAppActions } from './actions';
-import type { AppState, AppStore, ToastState } from './types';
+import type { AppState, AppStore } from './types';
 
 export type AppStoreApi = StoreApi<AppStore>;
 
@@ -11,7 +11,6 @@ let storeInstance: AppStoreApi | null = null;
 
 export function createMobileAppStore(): AppStoreApi {
   const repository = createSqliteRepositoryBundle({ name: 'mindflow' });
-  let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const store = createStore<AppStore>((set, get) => {
     const patchState = (patch: Partial<AppState>) => {
@@ -19,21 +18,6 @@ export function createMobileAppStore(): AppStoreApi {
         const nextState = { ...store.state, ...patch };
         return { state: nextState, derived: computeDerived(nextState) };
       });
-    };
-
-    const setToast = (toast: ToastState | null) => {
-      if (toastTimeoutId != null) {
-        clearTimeout(toastTimeoutId);
-        toastTimeoutId = null;
-      }
-      patchState({ toast });
-      if (toast == null) {
-        return;
-      }
-      toastTimeoutId = setTimeout(() => {
-        patchState({ toast: null });
-        toastTimeoutId = null;
-      }, 2600);
     };
 
     const applySnapshot = async () => {
@@ -68,22 +52,9 @@ export function createMobileAppStore(): AppStoreApi {
         patchState,
         runMutation,
         applySnapshot,
-        setToast,
       }),
     };
   });
-
-  const destroyableStore = store as AppStoreApi & { destroy?: () => void };
-  const originalDestroy = destroyableStore.destroy;
-  if (originalDestroy != null) {
-    destroyableStore.destroy = () => {
-      if (toastTimeoutId != null) {
-        clearTimeout(toastTimeoutId);
-        toastTimeoutId = null;
-      }
-      originalDestroy();
-    };
-  }
 
   return store;
 }

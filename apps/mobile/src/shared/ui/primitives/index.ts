@@ -10,7 +10,7 @@ export { StatusPill } from './status-pill';
 export { TaskRow } from './task-row';
 export { ProjectCard } from './project-card';
 export { TodayTaskCard } from './today-task-card';
-export { ToastBanner } from './toast-banner';
+export { AppToast } from './app-toast';
 export { BottomSheet } from './bottom-sheet';
 export { AccentButton } from './accent-button';
 
@@ -25,6 +25,5 @@ export type { StatusPillProps } from './status-pill';
 export type { TaskRowProps } from './task-row';
 export type { ProjectCardProps } from './project-card';
 export type { TodayTaskCardProps } from './today-task-card';
-export type { ToastBannerProps } from './toast-banner';
 export type { BottomSheetProps } from './bottom-sheet';
 export type { AccentButtonProps } from './accent-button';

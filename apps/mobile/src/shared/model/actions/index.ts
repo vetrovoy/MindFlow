@@ -10,14 +10,26 @@ import {
 } from '@mindflow/domain';
 import type { RepositoryBundle } from '@mindflow/data';
 import { getCopy } from '@mindflow/copy';
+import Toast from 'react-native-toast-message';
 
 import { getNowIso } from '@shared/lib/date';
 import { createId } from '@shared/lib/ids';
 import { getNextOrderIndex } from '../selectors';
 import { formatError } from '../helpers';
-import type { AppActions, AppState, AppStore, ToastState } from '../types';
+import type { AppActions, AppState, AppStore } from '../types';
 
 const copy = getCopy('ru');
+
+function setToast(toast: { message: string; variant: 'success' | 'error' | 'info' } | null) {
+  if (toast == null) {
+    Toast.hide();
+    return;
+  }
+  Toast.show({
+    type: toast.variant,
+    text1: toast.message,
+  });
+}
 
 interface CreateAppActionsParams {
   repository: RepositoryBundle;
@@ -25,7 +37,6 @@ interface CreateAppActionsParams {
   patchState: (patch: Partial<AppState>) => void;
   runMutation: (work: () => Promise<void>) => Promise<boolean>;
   applySnapshot: () => Promise<void>;
-  setToast: (toast: ToastState | null) => void;
 }
 
 export function createAppActions({
@@ -34,7 +45,6 @@ export function createAppActions({
   patchState,
   runMutation,
   applySnapshot,
-  setToast,
 }: CreateAppActionsParams): AppActions {
   return {
     async reload() {
