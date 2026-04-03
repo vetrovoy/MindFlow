@@ -12,6 +12,7 @@ export { ProjectCard } from './project-card';
 export { TodayTaskCard } from './today-task-card';
 export { AppToast } from './app-toast';
 export { BottomSheet } from './bottom-sheet';
+export { DatePicker } from './date-picker';
 export { AccentButton } from './accent-button';
 
 export type { ScreenShellProps } from './screen-shell';
@@ -26,4 +27,5 @@ export type { TaskRowProps } from './task-row';
 export type { ProjectCardProps } from './project-card';
 export type { TodayTaskCardProps } from './today-task-card';
 export type { BottomSheetProps } from './bottom-sheet';
+export type { DatePickerProps } from './date-picker';
 export type { AccentButtonProps } from './accent-button';

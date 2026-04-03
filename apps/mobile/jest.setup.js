@@ -1,5 +1,13 @@
 require('react-native-gesture-handler/jestSetup');
 
+jest.mock('react-native-date-picker', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const DatePickerMock = () => React.createElement(View, { testID: 'date-picker-modal' });
+  DatePickerMock.displayName = 'DatePicker';
+  return { default: DatePickerMock, __esModule: true };
+});
+
 jest.mock('@gorhom/bottom-sheet', () => {
   const React = require('react');
   const { View } = require('react-native');

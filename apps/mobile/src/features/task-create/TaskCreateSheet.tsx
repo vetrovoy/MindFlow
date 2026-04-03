@@ -6,7 +6,7 @@ import type { Project, TaskPriority } from '@mindflow/domain';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, SurfaceCard } from '@shared/ui/primitives';
+import { AccentButton, BottomSheet, DatePicker, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
@@ -201,29 +201,13 @@ export function TaskCreateSheet() {
         </SurfaceCard>
 
         <SurfaceCard elevated style={styles.card}>
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.changeDueDateTrigger}</Meta>
-            <TextInput
-              value={effectiveDueDate}
-              onChangeText={nextDate => {
-                setDraft(d => ({ ...d, dueDate: nextDate }));
-              }}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor={theme.colors.textTertiary}
-              autoCapitalize="none"
-              style={[
-                styles.input,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.borderSoft,
-                  color: theme.colors.textPrimary,
-                },
-              ]}
-            />
-            <Body tone="soft">
-              {effectiveDueDate ? `Due: ${effectiveDueDate}` : copy.task.noDueDate}
-            </Body>
-          </View>
+          <DatePicker
+            value={effectiveDueDate}
+            onChange={nextDate => {
+              setDraft(d => ({ ...d, dueDate: nextDate }));
+            }}
+            label={copy.task.changeDueDateTrigger}
+          />
 
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.priorityAriaLabel}</Meta>
