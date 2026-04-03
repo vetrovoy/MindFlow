@@ -168,14 +168,7 @@ export const TaskRow = React.memo(function TaskRow({
             backgroundColor: isDone ? theme.colors.accentPrimary : 'transparent',
           },
         ]}
-      >
-        <Icon
-          decorative
-          name={isDone ? 'checkbox-checked' : 'checkbox-empty'}
-          size={16}
-          tone={isDone ? 'contrast' : 'muted'}
-        />
-      </Pressable>
+       />
       <Pressable
         accessibilityRole="button"
         disabled={onOpenTask == null}
