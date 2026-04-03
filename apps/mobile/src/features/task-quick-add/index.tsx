@@ -9,8 +9,9 @@ import { SurfaceCard } from '@shared/ui/primitives';
 
 const copy = getCopy('ru');
 
-const DEFAULT_PROJECT_COLOR = '#4285F4';
-const DEFAULT_PROJECT_EMOJI = '📋';
+interface TaskQuickAddFeatureProps {
+  preferredDate?: string | null;
+}
 
 const styles = StyleSheet.create({
   card: { padding: 10 },
@@ -37,23 +38,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ProjectCreateFeature() {
+export function TaskQuickAddFeature({ preferredDate }: TaskQuickAddFeatureProps) {
   const { theme } = useTheme();
   const isSaving = useMobileAppStore(s => s.state.isSaving);
-  const createProject = useMobileAppStore(s => s.actions.createProject);
-  const [draftName, setDraftName] = useState('');
+  const addInboxTask = useMobileAppStore(s => s.actions.addInboxTask);
+  const [draftTitle, setDraftTitle] = useState('');
 
-  const isDisabled = isSaving || draftName.trim().length === 0;
+  const isDisabled = isSaving || draftTitle.trim().length === 0;
 
   async function handleSubmit() {
-    const trimmed = draftName.trim();
+    const trimmed = draftTitle.trim();
     if (!trimmed) return;
-    await createProject({
-      name: trimmed,
-      color: DEFAULT_PROJECT_COLOR,
-      emoji: DEFAULT_PROJECT_EMOJI,
-    });
-    setDraftName('');
+    const saved = await addInboxTask({ title: trimmed, dueDate: preferredDate ?? null });
+    if (saved) setDraftTitle('');
   }
 
   return (
@@ -61,11 +58,11 @@ export function ProjectCreateFeature() {
       <View style={styles.row}>
         <TextInput
           editable={!isSaving}
-          onChangeText={setDraftName}
+          onChangeText={setDraftTitle}
           onSubmitEditing={() => {
             void handleSubmit();
           }}
-          placeholder={copy.quickCapture.projectPlaceholder}
+          placeholder={copy.quickCapture.taskPlaceholder}
           placeholderTextColor={theme.colors.textTertiary}
           returnKeyType="done"
           style={[
@@ -76,7 +73,7 @@ export function ProjectCreateFeature() {
               color: theme.colors.textPrimary,
             },
           ]}
-          value={draftName}
+          value={draftTitle}
         />
         <Pressable
           accessibilityRole="button"
@@ -84,7 +81,7 @@ export function ProjectCreateFeature() {
           onPress={() => {
             void handleSubmit();
           }}
-          testID="project-create-submit"
+          testID="quick-add-submit"
           style={[
             styles.button,
             {
@@ -92,7 +89,7 @@ export function ProjectCreateFeature() {
                 ? theme.colors.overlayGhost
                 : theme.colors.accentPrimary,
               borderColor: isDisabled
-                ? theme.colors.borderSoft
+                ? theme.colors.accentPrimaryGlow
                 : theme.colors.surfaceInteractive,
             },
           ]}

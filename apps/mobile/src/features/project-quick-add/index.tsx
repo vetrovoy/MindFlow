@@ -9,9 +9,8 @@ import { SurfaceCard } from '@shared/ui/primitives';
 
 const copy = getCopy('ru');
 
-interface QuickAddFeatureProps {
-  preferredDate?: string | null;
-}
+const DEFAULT_PROJECT_COLOR = '#4285F4';
+const DEFAULT_PROJECT_EMOJI = '📋';
 
 const styles = StyleSheet.create({
   card: { padding: 10 },
@@ -38,19 +37,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
+export function ProjectQuickAddFeature() {
   const { theme } = useTheme();
   const isSaving = useMobileAppStore(s => s.state.isSaving);
-  const addInboxTask = useMobileAppStore(s => s.actions.addInboxTask);
-  const [draftTitle, setDraftTitle] = useState('');
+  const createProject = useMobileAppStore(s => s.actions.createProject);
+  const [draftName, setDraftName] = useState('');
 
-  const isDisabled = isSaving || draftTitle.trim().length === 0;
+  const isDisabled = isSaving || draftName.trim().length === 0;
 
   async function handleSubmit() {
-    const trimmed = draftTitle.trim();
+    const trimmed = draftName.trim();
     if (!trimmed) return;
-    const saved = await addInboxTask({ title: trimmed, dueDate: preferredDate ?? null });
-    if (saved) setDraftTitle('');
+    await createProject({
+      name: trimmed,
+      color: DEFAULT_PROJECT_COLOR,
+      emoji: DEFAULT_PROJECT_EMOJI,
+    });
+    setDraftName('');
   }
 
   return (
@@ -58,11 +61,11 @@ export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
       <View style={styles.row}>
         <TextInput
           editable={!isSaving}
-          onChangeText={setDraftTitle}
+          onChangeText={setDraftName}
           onSubmitEditing={() => {
             void handleSubmit();
           }}
-          placeholder={copy.quickCapture.taskPlaceholder}
+          placeholder={copy.quickCapture.projectPlaceholder}
           placeholderTextColor={theme.colors.textTertiary}
           returnKeyType="done"
           style={[
@@ -73,7 +76,7 @@ export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
               color: theme.colors.textPrimary,
             },
           ]}
-          value={draftTitle}
+          value={draftName}
         />
         <Pressable
           accessibilityRole="button"
@@ -81,7 +84,7 @@ export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
           onPress={() => {
             void handleSubmit();
           }}
-          testID="quick-add-submit"
+          testID="project-create-submit"
           style={[
             styles.button,
             {
@@ -89,7 +92,7 @@ export function QuickAddFeature({ preferredDate }: QuickAddFeatureProps) {
                 ? theme.colors.overlayGhost
                 : theme.colors.accentPrimary,
               borderColor: isDisabled
-                ? theme.colors.borderSoft
+                ? theme.colors.accentPrimaryGlow
                 : theme.colors.surfaceInteractive,
             },
           ]}

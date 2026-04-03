@@ -6,7 +6,7 @@ import { useTheme } from '@shared/theme/use-theme';
 import { InboxPage } from '@pages/inbox/ui/inbox-page';
 import { TodayPage } from '@pages/today/ui/today-page';
 import { ListsPage } from '@pages/lists/ui/lists-page';
-import { MobileAppShell } from './app-shell';
+import { MobileAppShell } from './ui/app-shell';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

@@ -1,16 +1,14 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useNavigationState } from '@react-navigation/native';
 import { getCopy } from '@mindflow/copy';
 
 import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
-import { ProjectCreateFeature } from '@features/project-create';
-import { QuickAddFeature } from '@features/quick-add';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { StateCard } from '@shared/ui/primitives';
-import { AppStats } from '../ui/app-stats';
+import { AppStats } from '../app-stats';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppQuickAdd } from '../app-quick-add';
 
 const copy = getCopy('ru');
 
@@ -21,18 +19,6 @@ interface MobileAppShellProps {
 export function MobileAppShell({ children }: MobileAppShellProps) {
   const { theme } = useTheme();
   const isHydrated = useMobileAppStore(s => s.state.isHydrated);
-
-  const activeTab = useNavigationState(state => {
-    const tabState = state?.routes?.[0]?.state;
-    if (tabState == null || tabState.index == null) return 'Inbox';
-    return (tabState.routes[tabState.index]?.name as string) ?? 'Inbox';
-  });
-
-  const isInbox = activeTab === 'Inbox';
-  const isToday = activeTab === 'Today';
-  const isLists = activeTab === 'Lists';
-
-  const todayDateKey = new Date().toISOString().slice(0, 10);
 
   return (
     <SafeAreaView style={styles.root}>
@@ -49,12 +35,7 @@ export function MobileAppShell({ children }: MobileAppShellProps) {
           <>
             <View style={styles.shellHeader}>
               <AppStats />
-              {isInbox || isToday ? (
-                <QuickAddFeature
-                  preferredDate={isToday ? todayDateKey : null}
-                />
-              ) : null}
-              {isLists ? <ProjectCreateFeature /> : null}
+              <AppQuickAdd />
             </View>
             <View style={styles.content}>{children}</View>
           </>
