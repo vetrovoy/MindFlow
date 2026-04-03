@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { AppStore } from '@shared/model/types';
-import { render, screen } from '@mobile/test-utils';
+import { fireEvent, render, screen } from '@mobile/test-utils';
 import { ListsPage } from './lists-page';
 
 const mockUseMobileAppStore = jest.fn();
@@ -131,6 +131,7 @@ describe('ListsPage', () => {
     expect(screen.getByText('Избранные списки остаются сверху для быстрого доступа.')).toBeTruthy();
     expect(screen.getByText('⭐ Избранный список')).toBeTruthy();
     expect(screen.getByText('🧩 Обычный список')).toBeTruthy();
+    expect(screen.getAllByText('Привяжите задачи к этому списку.')).toHaveLength(2);
   });
 
   it('does not render create CTA inside the page', () => {
@@ -138,5 +139,108 @@ describe('ListsPage', () => {
 
     expect(screen.queryByText('Создать список')).toBeNull();
     expect(screen.queryByText('Создайте новый список проекта...')).toBeNull();
+  });
+
+  it('renders only the favorites card when all sections are favorite', () => {
+    renderWithStore({
+      derived: {
+        projectSections: [
+          {
+            project: {
+              id: 'project-fav',
+              name: 'Избранный список',
+              emoji: '⭐',
+              color: '#F4B400',
+              isFavorite: true,
+              deadline: null,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+            },
+            tasks: [],
+            progress: { done: 0, total: 0, ratio: 0 },
+          },
+        ],
+      },
+    });
+
+    expect(screen.getByTestId('lists-favorites-card')).toBeTruthy();
+    expect(screen.queryByTestId('lists-all-card')).toBeNull();
+  });
+
+  it('renders only the all-lists card when there are no favorite sections', () => {
+    renderWithStore({
+      derived: {
+        projectSections: [
+          {
+            project: {
+              id: 'project-regular',
+              name: 'Обычный список',
+              emoji: '🧩',
+              color: '#4285F4',
+              isFavorite: false,
+              deadline: null,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+            },
+            tasks: [],
+            progress: { done: 0, total: 0, ratio: 0 },
+          },
+        ],
+      },
+    });
+
+    expect(screen.queryByTestId('lists-favorites-card')).toBeNull();
+    expect(screen.getByTestId('lists-all-card')).toBeTruthy();
+  });
+
+  it('renders inline task rows for project sections with tasks and keeps interactions', () => {
+    const toggleTask = jest.fn();
+    const openTaskEdit = jest.fn();
+
+    renderWithStore({
+      actions: { toggleTask, openTaskEdit },
+      derived: {
+        projectSections: [
+          {
+            project: {
+              id: 'project-regular',
+              name: 'Обычный список',
+              emoji: '🧩',
+              color: '#4285F4',
+              isFavorite: false,
+              deadline: null,
+              createdAt: '2026-04-01T09:00:00.000Z',
+              updatedAt: '2026-04-01T09:00:00.000Z',
+            },
+            tasks: [
+              {
+                id: 'task-1',
+                title: 'Первая задача',
+                description: null,
+                status: 'todo',
+                priority: 'high',
+                dueDate: null,
+                projectId: 'project-regular',
+                orderIndex: 0,
+                createdAt: '2026-04-01T09:00:00.000Z',
+                updatedAt: '2026-04-01T09:00:00.000Z',
+                completedAt: null,
+                archivedAt: null,
+              },
+            ],
+            progress: { done: 0, total: 1, ratio: 0 },
+          },
+        ],
+      },
+    });
+
+    expect(screen.getByText('Первая задача')).toBeTruthy();
+    expect(screen.queryByText('Привяжите задачи к этому списку.')).toBeNull();
+
+    fireEvent.press(screen.getByRole('checkbox'));
+    fireEvent.press(screen.getByText('Первая задача'));
+
+    expect(toggleTask).toHaveBeenCalledWith('task-1');
+    expect(openTaskEdit).toHaveBeenCalledWith('task-1');
   });
 });
