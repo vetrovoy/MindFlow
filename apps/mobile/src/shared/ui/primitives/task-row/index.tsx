@@ -179,6 +179,7 @@ export const TaskRow = React.memo(function TaskRow({
         style={styles.taskMain}
       >
         <Body
+          numberOfLines={1}
           variant="task"
           tone={isDone ? 'muted' : 'primary'}
           style={isDone ? { textDecorationLine: 'line-through' } : undefined}
