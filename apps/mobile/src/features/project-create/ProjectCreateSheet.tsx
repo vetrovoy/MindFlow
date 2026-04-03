@@ -5,19 +5,10 @@ import { getCopy } from '@mindflow/copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, SurfaceCard } from '@shared/ui/primitives';
+import { AccentButton, BottomSheet, ColorPicker, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
-
-const COLOR_OPTIONS = [
-  { label: 'Синий', value: '#4285F4' },
-  { label: 'Зелёный', value: '#34A853' },
-  { label: 'Красный', value: '#EA4335' },
-  { label: 'Жёлтый', value: '#FBBC04' },
-  { label: 'Фиолетовый', value: '#9C27B0' },
-  { label: 'Серый', value: '#757575' },
-];
 
 interface CreateDraft {
   name: string;
@@ -54,27 +45,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 14,
     paddingVertical: 12,
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    borderRadius: 999,
-    borderWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  colorDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 4,
-  },
-  chipContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   footer: {
     flexDirection: 'row',
@@ -192,30 +162,10 @@ export function ProjectCreateSheet() {
         <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.project.changeMarkerTrigger}</Meta>
-            <View style={styles.chipRow}>
-              {COLOR_OPTIONS.map(option => {
-                const active = draft.color === option.value;
-                return (
-                  <Pressable
-                    key={option.value}
-                    accessibilityRole="button"
-                    onPress={() => { setDraft(d => ({ ...d, color: option.value })); }}
-                    style={[
-                      styles.chip,
-                      {
-                        backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
-                        borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
-                      },
-                    ]}
-                  >
-                    <View style={styles.chipContent}>
-                      <View style={[styles.colorDot, { backgroundColor: option.value }]} />
-                      <Meta tone={active ? 'accent' : 'secondary'}>{option.label}</Meta>
-                    </View>
-                  </Pressable>
-                );
-              })}
-            </View>
+            <ColorPicker
+              value={draft.color}
+              onChange={color => { setDraft(d => ({ ...d, color })); }}
+            />
           </View>
         </SurfaceCard>
 

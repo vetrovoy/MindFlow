@@ -1,5 +1,14 @@
 require('react-native-gesture-handler/jestSetup');
 
+jest.mock('reanimated-color-picker', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const ColorPickerContainer = ({ children }) => React.createElement(View, { testID: 'rn-color-picker' }, children);
+  const Swatches = () => React.createElement(View, { testID: 'color-picker-swatches' });
+  const Panel5 = () => React.createElement(View, { testID: 'color-picker-panel5' });
+  return { default: ColorPickerContainer, Swatches, Panel5, __esModule: true };
+});
+
 jest.mock('react-native-date-picker', () => {
   const React = require('react');
   const { View } = require('react-native');
