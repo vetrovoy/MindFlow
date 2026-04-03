@@ -8,7 +8,7 @@ import type {
   SyncPort,
   TaskRepository,
   Transaction,
-} from '@mindflow/data';
+} from '../contracts';
 
 // ─── Schema ──────────────────────────────────────────────────────────────────
 

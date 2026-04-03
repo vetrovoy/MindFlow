@@ -7,7 +7,7 @@ import type {
   SyncPort,
   TaskRepository,
   Transaction
-} from "./contracts";
+} from "../contracts";
 
 class InMemoryTaskRepository implements TaskRepository {
   constructor(private readonly items: Map<string, Task>) {}

@@ -7,7 +7,7 @@ import {
   createTask
 } from "@mindflow/domain";
 
-import { createInMemoryRepositoryBundle } from "./index";
+import { createInMemoryRepositoryBundle } from "./in-memory/repository";
 
 const NOW = "2026-03-25T09:00:00.000Z";
 

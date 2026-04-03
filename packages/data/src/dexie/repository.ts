@@ -9,7 +9,7 @@ import type {
   SyncPort,
   TaskRepository,
   Transaction
-} from "./contracts";
+} from "../contracts";
 
 class TaskDatabase extends Dexie {
   tasks!: Table<Task, string>;

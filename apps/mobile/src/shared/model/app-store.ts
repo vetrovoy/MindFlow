@@ -1,6 +1,6 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
-import { createSqliteRepositoryBundle } from '@shared/data/sqlite';
+import { createSqliteRepositoryBundle } from '@mindflow/data';
 import { computeDerived, formatError, INITIAL_STATE, readSnapshot } from './selectors';
 import { createAppActions } from './actions';
 import type { AppState, AppStore, ToastState } from './types';

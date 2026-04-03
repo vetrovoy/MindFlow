@@ -1,3 +1,4 @@
 export * from "./contracts";
-export * from "./dexie";
-export * from "./in-memory";
+export * from "./dexie/repository";
+export * from "./in-memory/repository";
+export * from "./sqlite/repository";

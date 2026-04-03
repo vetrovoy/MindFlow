@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mindflow/domain": "workspace:*",
+    "@op-engineering/op-sqlite": "^15.2.8",
     "dexie": "^4.2.1"
   }
 }

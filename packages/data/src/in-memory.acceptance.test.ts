@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from "vitest";
 
-import { createInMemoryRepositoryBundle } from "./in-memory";
+import { createInMemoryRepositoryBundle } from "./in-memory/repository";
 import { createTask, createProject } from "@mindflow/domain";
 
 describe("Acceptance: Task Management Flows", () => {
