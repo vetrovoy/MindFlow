@@ -41,7 +41,7 @@ export type IconName = SharedIconName;
 export interface IconProps extends SharedIconProps {
   decorative?: boolean;
   className?: string;
-  tone: IconTone;
+  tone?: IconTone;
 }
 
 const ICONS: Record<IconName, LucideIcon> = {
