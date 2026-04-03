@@ -45,7 +45,6 @@ describe('BottomSheet', () => {
         <>Content</>
       </BottomSheet>
     );
-    // BottomSheet uses Modal which is not fully testable without additional setup
     expect(screen.getByText('Title')).toBeTruthy();
   });
 

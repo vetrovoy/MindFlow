@@ -1,4 +1,7 @@
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Body, SectionTitleText } from '../../typography';
@@ -12,29 +15,91 @@ interface BottomSheetProps {
   onClose: () => void;
 }
 
+const SNAP_POINTS = ['75%'];
+
+export function BottomSheet({
+  visible,
+  title,
+  subtitle,
+  headerAccessory,
+  children,
+  onClose,
+}: BottomSheetProps) {
+  const { theme } = useTheme();
+  const ref = useRef<{ present: () => void; dismiss: () => void }>(null);
+
+  useEffect(() => {
+    if (visible) {
+      ref.current?.present();
+    } else {
+      ref.current?.dismiss();
+    }
+  }, [visible]);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        presenceAnimated
+      />
+    ),
+    [],
+  );
+
+  return (
+    <BottomSheetModal
+      ref={ref}
+      snapPoints={SNAP_POINTS}
+      onDismiss={onClose}
+      backdropComponent={renderBackdrop}
+      backgroundStyle={[
+        styles.background,
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.borderSoft,
+        },
+      ]}
+      handleIndicatorStyle={[
+        styles.handle,
+        { backgroundColor: theme.colors.overlayHandle },
+      ]}
+      enablePanDownToClose
+    >
+      <BottomSheetView style={styles.content}>
+        <View style={styles.sheetHeader}>
+          <View style={styles.sheetHeaderText}>
+            <SectionTitleText>{title}</SectionTitleText>
+            {subtitle ? <Body tone="secondary">{subtitle}</Body> : null}
+          </View>
+          {headerAccessory}
+        </View>
+        {children}
+      </BottomSheetView>
+    </BottomSheetModal>
+  );
+}
+
+export type { BottomSheetProps };
+
 const styles = StyleSheet.create({
-  modalBackdrop: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  modalScrim: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  sheet: {
+  background: {
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     borderWidth: 1,
     borderBottomWidth: 0,
+  },
+  handle: {
+    width: 52,
+    height: 6,
+    borderRadius: 999,
+  },
+  content: {
     paddingHorizontal: 18,
     paddingTop: 12,
     paddingBottom: 28,
     gap: 16,
-  },
-  sheetHandle: {
-    width: 52,
-    height: 6,
-    borderRadius: 999,
-    alignSelf: 'center',
   },
   sheetHeader: {
     flexDirection: 'row',
@@ -47,43 +112,3 @@ const styles = StyleSheet.create({
     gap: 4,
   },
 });
-
-export function BottomSheet({
-  visible,
-  title,
-  subtitle,
-  headerAccessory,
-  children,
-  onClose,
-}: BottomSheetProps) {
-  const { theme } = useTheme();
-
-  return (
-    <Modal animationType="slide" onRequestClose={onClose} transparent visible={visible}>
-      <View style={styles.modalBackdrop}>
-        <Pressable
-          onPress={onClose}
-          style={[styles.modalScrim, { backgroundColor: theme.colors.overlayScrim }]}
-        />
-        <View
-          style={[
-            styles.sheet,
-            { backgroundColor: theme.colors.surface, borderColor: theme.colors.borderSoft },
-          ]}
-        >
-          <View style={[styles.sheetHandle, { backgroundColor: theme.colors.overlayHandle }]} />
-          <View style={styles.sheetHeader}>
-            <View style={styles.sheetHeaderText}>
-              <SectionTitleText>{title}</SectionTitleText>
-              {subtitle ? <Body tone="secondary">{subtitle}</Body> : null}
-            </View>
-            {headerAccessory}
-          </View>
-          {children}
-        </View>
-      </View>
-    </Modal>
-  );
-}
-
-export type { BottomSheetProps };

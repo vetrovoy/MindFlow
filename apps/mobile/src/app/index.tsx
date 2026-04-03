@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { ThemeProvider } from '@shared/theme/theme-context';
 import { AppStoreProvider, useMobileAppStore } from '@shared/model/app-store-provider';
@@ -22,8 +23,10 @@ export function MindFlowApp() {
     <GestureHandlerRootView style={styles.root}>
       <ThemeProvider>
         <AppStoreProvider>
-          <AppInit />
-          <AppToast />
+          <BottomSheetModalProvider>
+            <AppInit />
+            <AppToast />
+          </BottomSheetModalProvider>
         </AppStoreProvider>
       </ThemeProvider>
     </GestureHandlerRootView>

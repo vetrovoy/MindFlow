@@ -1,5 +1,39 @@
 require('react-native-gesture-handler/jestSetup');
 
+jest.mock('@gorhom/bottom-sheet', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  const BottomSheetModal = React.forwardRef(({ children, onDismiss }, ref) => {
+    const [isVisible, setIsVisible] = React.useState(false);
+
+    React.useImperativeHandle(ref, () => ({
+      present: () => { setIsVisible(true); },
+      dismiss: () => { setIsVisible(false); },
+      expand: () => {},
+      collapse: () => {},
+      close: () => {},
+      forceClose: () => {},
+      snapToIndex: () => {},
+      snapToPosition: () => {},
+    }));
+
+    if (!isVisible) return null;
+    return React.createElement(View, null, typeof children === 'function' ? children() : children);
+  });
+
+  const BottomSheetModalProvider = ({ children }) => children;
+  const BottomSheetView = ({ children, style }) => React.createElement(View, { style }, children);
+  const BottomSheetBackdrop = () => null;
+
+  return {
+    BottomSheetModal,
+    BottomSheetModalProvider,
+    BottomSheetView,
+    BottomSheetBackdrop,
+  };
+});
+
 jest.mock('react-native-reanimated', () => {
   const Reanimated = require('react-native-reanimated/mock');
   Reanimated.default.call = () => {};
