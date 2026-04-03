@@ -3,8 +3,8 @@ import type {
   ProjectCreateInput,
   Task,
   TaskCreateInput
-} from "./entities";
-import { validateProject, validateTask } from "./validation";
+} from "../types";
+import { validateProject, validateTask } from "../validation";
 
 function trimTitle(title: string) {
   return title.trim();

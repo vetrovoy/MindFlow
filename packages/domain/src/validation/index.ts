@@ -1,4 +1,4 @@
-import type { Project, Task, TaskPriority, TaskStatus } from "./entities";
+import type { Project, Task, TaskPriority, TaskStatus } from "../types";
 
 const CALENDAR_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const UTC_ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;

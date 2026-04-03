@@ -1,4 +1,4 @@
-import type { Task, TaskPriority } from "./entities";
+import type { Task, TaskPriority } from "../types";
 
 const PRIORITY_WEIGHT: Record<TaskPriority, number> = {
   high: 0,

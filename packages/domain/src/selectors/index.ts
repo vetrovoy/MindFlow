@@ -1,5 +1,5 @@
-import type { Project, Task, TodayTaskGroup } from "./entities";
-import { compareTasksWithinMixedFeed } from "./sort";
+import type { Project, Task, TodayTaskGroup } from "../types";
+import { compareTasksWithinMixedFeed } from "../sort";
 
 const TODAY_BUCKET_ORDER = {
   overdue: 0,
