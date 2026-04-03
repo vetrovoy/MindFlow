@@ -1,4 +1,4 @@
-import type { CopyDictionary, AppLanguage } from "./types";
+import type { CopyDictionary, AppLanguage } from "../types";
 
 function getRussianTaskCount(count: number) {
   const mod10 = count % 10;
@@ -300,7 +300,7 @@ const en: CopyDictionary = {
   },
   app: {
     greeting: "Hello,",
-    subtitle: "Let’s focus on what matters today",
+    subtitle: "Let's focus on what matters today",
     addTaskAriaLabel: "Open task creation",
     addProjectAriaLabel: "Open list creation",
     activeStat: "Active",

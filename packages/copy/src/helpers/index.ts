@@ -5,8 +5,8 @@ import {
   SUPPORTED_LANGUAGES,
   type AppLanguage,
   type DateFnsLocale
-} from "./types";
-import { dictionaries } from "./dictionaries";
+} from "../types";
+import { dictionaries } from "../dictionaries";
 
 export function isSupportedLanguage(value: string): value is AppLanguage {
   return SUPPORTED_LANGUAGES.includes(value as AppLanguage);
