@@ -353,8 +353,8 @@ const en: CopyDictionary = {
     createProjectTitle: "Create list",
     createProjectDescription: "Create a list and plan tasks.",
     projectPlaceholder: "Create a new project list...",
-    dueDateLabel: "Due date",
-    deadlineLabel: "Deadline"
+    dueDateLabel: "",
+    deadlineLabel: ""
   },
   inbox: {
     title: "Inbox",
