@@ -34,10 +34,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
   },
-  scrollContent: {
-    gap: 14,
-    paddingBottom: 16,
-  },
   card: {
     gap: 12,
   },
@@ -129,8 +125,7 @@ export function ProjectCreateSheet() {
         </Pressable>
       )}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <SurfaceCard elevated style={styles.card}>
+      <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.project.createTitle}</Meta>
             <TextInput
@@ -203,7 +198,6 @@ export function ProjectCreateSheet() {
             {isSaving ? copy.common.saving : copy.common.save}
           </AccentButton>
         </View>
-      </ScrollView>
     </BottomSheet>
   );
 }

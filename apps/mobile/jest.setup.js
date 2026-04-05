@@ -41,12 +41,16 @@ jest.mock('@gorhom/bottom-sheet', () => {
 
   const BottomSheetModalProvider = ({ children }) => children;
   const BottomSheetView = ({ children, style }) => React.createElement(View, { style }, children);
+  const BottomSheetScrollView = React.forwardRef(({ children, style, contentContainerStyle }, ref) =>
+    React.createElement(View, { ref, style }, typeof children === 'function' ? children() : children)
+  );
   const BottomSheetBackdrop = () => null;
 
   return {
     BottomSheetModal,
     BottomSheetModalProvider,
     BottomSheetView,
+    BottomSheetScrollView,
     BottomSheetBackdrop,
   };
 });

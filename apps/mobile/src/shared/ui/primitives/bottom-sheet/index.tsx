@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@shared/theme/use-theme';
@@ -67,7 +67,11 @@ export function BottomSheet({
       ]}
       enablePanDownToClose
     >
-      <BottomSheetView style={styles.content}>
+      <BottomSheetScrollView
+        style={styles.content}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.sheetHeader}>
           <View style={styles.sheetHeaderText}>
             <SectionTitleText>{title}</SectionTitleText>
@@ -76,7 +80,7 @@ export function BottomSheet({
           {headerAccessory}
         </View>
         {children}
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </BottomSheetModal>
   );
 }
@@ -96,6 +100,9 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   content: {
+    flex: 1,
+  },
+  scrollContent: {
     paddingHorizontal: 18,
     paddingTop: 12,
     paddingBottom: 28,

@@ -32,10 +32,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
   },
-  scrollContent: {
-    gap: 14,
-    paddingBottom: 16,
-  },
   card: {
     gap: 12,
   },
@@ -138,8 +134,7 @@ export function TaskCreateSheet() {
         </Pressable>
       )}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <SurfaceCard elevated style={styles.card}>
+      <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.createTitle}</Meta>
             <TextInput
@@ -201,7 +196,6 @@ export function TaskCreateSheet() {
             {isSaving ? copy.common.saving : copy.common.save}
           </AccentButton>
         </View>
-      </ScrollView>
     </BottomSheet>
   );
 }
