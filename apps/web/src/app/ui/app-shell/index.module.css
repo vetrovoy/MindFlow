@@ -79,12 +79,6 @@
   color: var(--mf-color-background);
 }
 
-.quickAddPanel {
-  padding: var(--mf-space-4xl);
-  border-radius: var(--mf-radius-xl);
-  border: 1px solid var(--mf-color-border-strong);
-  background: var(--mf-color-surface);
-}
 
 .main {
   padding-bottom: var(--mf-space-5xl);
