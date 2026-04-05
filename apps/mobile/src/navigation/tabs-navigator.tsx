@@ -1,11 +1,13 @@
 import { InboxPage } from '@pages/inbox/ui/inbox-page';
 import { TodayPage } from '@pages/today/ui/today-page';
 import { ListsPage } from '@pages/lists/ui/lists-page';
+import { getCopy } from '@mindflow/copy';
 import { Icon } from '@mobile/shared/ui/icons';
 import { useTheme } from '@mobile/shared/theme/use-theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TAB_BAR_HEIGHT } from '@mobile/shared/config/contants';
 
+const copy = getCopy('ru');
 const Tab = createBottomTabNavigator();
 
 export function TabNavigator() {
@@ -29,7 +31,7 @@ export function TabNavigator() {
         name="Inbox"
         component={InboxPage}
         options={{
-          title: 'Входящие',
+          title: copy.navigation.inbox,
           tabBarIcon: ({ focused }) => (
             <Icon
               tone={focused ? 'accent' : 'muted'}
@@ -43,7 +45,7 @@ export function TabNavigator() {
         name="Today"
         component={TodayPage}
         options={{
-          title: 'Сегодня',
+          title: copy.navigation.today,
           tabBarIcon: ({ focused }) => (
             <Icon
               tone={focused ? 'accent' : 'muted'}
@@ -57,7 +59,7 @@ export function TabNavigator() {
         name="Lists"
         component={ListsPage}
         options={{
-          title: 'Списки',
+          title: copy.navigation.lists,
           tabBarIcon: ({ focused }) => (
             <Icon
               tone={focused ? 'accent' : 'muted'}

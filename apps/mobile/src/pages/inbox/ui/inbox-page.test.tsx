@@ -143,7 +143,7 @@ describe('InboxPage', () => {
 
     expect(screen.getByText('Выполненные')).toBeTruthy();
     expect(screen.getByText('Активная задача')).toBeTruthy();
-    expect(screen.getByText('TODAY')).toBeTruthy();
+    expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
     expect(screen.queryByText('Завершённая задача')).toBeNull();
 
     fireEvent.press(screen.getByText('Выполненные'));
@@ -229,8 +229,8 @@ describe('InboxPage', () => {
       },
     });
 
-    expect(screen.queryByText('TODAY')).toBeNull();
-    expect(screen.queryByText('OVERDUE')).toBeNull();
+    expect(screen.queryByText('СЕГОДНЯ')).toBeNull();
+    expect(screen.queryByText('ПРОСРОЧЕНО')).toBeNull();
   });
 
   it('uses todayFeed as badge source instead of local due date checks', () => {
@@ -256,8 +256,8 @@ describe('InboxPage', () => {
       },
     });
 
-    expect(screen.queryByText('TODAY')).toBeNull();
-    expect(screen.queryByText('OVERDUE')).toBeNull();
+    expect(screen.queryByText('СЕГОДНЯ')).toBeNull();
+    expect(screen.queryByText('ПРОСРОЧЕНО')).toBeNull();
   });
 
   it('renders inbox rows without legacy status text noise', () => {
@@ -284,6 +284,6 @@ describe('InboxPage', () => {
 
     expect(screen.queryByText('В работе')).toBeNull();
     expect(screen.queryByText('Готово')).toBeNull();
-    expect(screen.getByText('HIGH')).toBeTruthy();
+    expect(screen.getByText('Высокий')).toBeTruthy();
   });
 });

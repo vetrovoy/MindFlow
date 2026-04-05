@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import { getCopy } from '@mindflow/copy';
 import { projectMarkers } from '@mindflow/ui';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, ColorPicker, DatePicker, SurfaceCard } from '@shared/ui/primitives';
+import {
+  AccentButton,
+  BottomSheet,
+  ColorPicker,
+  DatePicker,
+  SurfaceCard,
+} from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
@@ -106,7 +118,9 @@ export function ProjectEditSheet() {
       projectId: project.id,
       name: normalizedName,
       color: currentDraft.color,
-      deadline: currentDraft.deadline.trim() ? currentDraft.deadline.trim() : null,
+      deadline: currentDraft.deadline.trim()
+        ? currentDraft.deadline.trim()
+        : null,
       isFavorite: currentDraft.isFavorite,
     });
   }
@@ -116,7 +130,7 @@ export function ProjectEditSheet() {
       visible
       title={copy.project.editTitle}
       onClose={closeProjectEdit}
-      headerAccessory={(
+      headerAccessory={
         <Pressable
           accessibilityRole="button"
           onPress={closeProjectEdit}
@@ -132,9 +146,12 @@ export function ProjectEditSheet() {
             <Icon decorative name="close" size={16} tone="muted" />
           </View>
         </Pressable>
-      )}
+      }
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.project.editTitle}</Meta>
@@ -150,7 +167,9 @@ export function ProjectEditSheet() {
                 styles.input,
                 {
                   backgroundColor: theme.colors.surface,
-                  borderColor: nameError ? theme.colors.accentAlert : theme.colors.borderSoft,
+                  borderColor: nameError
+                    ? theme.colors.accentAlert
+                    : theme.colors.borderSoft,
                   color: theme.colors.textPrimary,
                 },
               ]}
@@ -162,7 +181,9 @@ export function ProjectEditSheet() {
         <SurfaceCard elevated style={styles.card}>
           <ColorPicker
             value={currentDraft.color}
-            onChange={color => { setDraft(d => (d == null ? d : { ...d, color })); }}
+            onChange={color => {
+              setDraft(d => (d == null ? d : { ...d, color }));
+            }}
             colors={MARKER_COLORS}
             label={copy.project.changeMarkerTrigger}
           />
@@ -171,35 +192,36 @@ export function ProjectEditSheet() {
         <SurfaceCard elevated style={styles.card}>
           <DatePicker
             value={currentDraft.deadline}
-            onChange={deadline => { setDraft(d => (d == null ? d : { ...d, deadline })); }}
+            onChange={deadline => {
+              setDraft(d => (d == null ? d : { ...d, deadline }));
+            }}
             label={copy.project.changeDeadlineTrigger}
           />
 
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => {
-              setDraft(d => (d == null ? d : { ...d, isFavorite: !d.isFavorite }));
-            }}
-            style={[
-              styles.favoriteRow,
-              {
-                backgroundColor: theme.colors.surface,
-                borderColor: theme.colors.borderSoft,
-              },
-            ]}
-          >
-            <Meta tone="soft">
-              {currentDraft.isFavorite
-                ? copy.project.removeFavoriteAriaLabel
-                : copy.project.addFavoriteAriaLabel}
-            </Meta>
-            <Icon
-              decorative
-              name="favorite"
-              size={20}
-              tone={currentDraft.isFavorite ? 'accent' : 'muted'}
-            />
-          </Pressable>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => {
+                setDraft(d =>
+                  d == null ? d : { ...d, isFavorite: !d.isFavorite },
+                );
+              }}
+              style={[
+                styles.favoriteRow,
+                {
+                  backgroundColor: theme.colors.surface,
+                  borderColor: theme.colors.borderSoft,
+                },
+              ]}
+            >
+              <Icon
+                decorative
+                name="favorite"
+                size={20}
+                tone={currentDraft.isFavorite ? 'accent' : 'muted'}
+              />
+            </Pressable>
+          </View>
         </SurfaceCard>
 
         <View style={styles.footer}>
@@ -208,7 +230,9 @@ export function ProjectEditSheet() {
           </AccentButton>
           <AccentButton
             disabled={isSaving}
-            onPress={() => { void handleSave(); }}
+            onPress={() => {
+              void handleSave();
+            }}
             style={styles.footerButton}
           >
             {isSaving ? copy.common.saving : copy.common.save}

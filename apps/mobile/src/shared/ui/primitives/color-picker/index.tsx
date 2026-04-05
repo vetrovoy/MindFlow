@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import RNColorPicker, { Panel5 } from 'reanimated-color-picker';
 import type { ColorFormatsObject } from 'reanimated-color-picker';
+import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { BottomSheet } from '../bottom-sheet';
 import { Body, Meta } from '../../typography';
 
-const DEFAULT_TITLE = 'Выберите цвет';
+const copy = getCopy('ru');
 
 interface ColorPickerProps {
   value: string;
@@ -67,7 +68,7 @@ export function ColorPicker({ value, onChange, colors, label }: ColorPickerProps
 
       <BottomSheet
         visible={isOpen}
-        title={DEFAULT_TITLE}
+        title={copy.colorPicker.title}
         onClose={() => { setIsOpen(false); }}
       >
         <RNColorPicker

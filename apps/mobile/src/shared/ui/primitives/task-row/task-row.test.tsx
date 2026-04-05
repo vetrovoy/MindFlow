@@ -40,7 +40,7 @@ describe('TaskRow', () => {
     render(
       <TaskRow task={mockTask} onToggleDone={() => {}} />
     );
-    expect(screen.getByText('HIGH')).toBeTruthy();
+    expect(screen.getByText('Высокий')).toBeTruthy();
   });
 
   it('renders status text', () => {
@@ -78,7 +78,7 @@ describe('TaskRow', () => {
 
     expect(screen.queryByText('В работе')).toBeNull();
     expect(screen.queryByText('📁 Test Project')).toBeNull();
-    expect(screen.getByText('HIGH')).toBeTruthy();
+    expect(screen.getByText('Высокий')).toBeTruthy();
   });
 
   it('renders badge variant when provided', () => {
@@ -89,7 +89,7 @@ describe('TaskRow', () => {
         badgeVariant="today"
       />
     );
-    expect(screen.getByText('TODAY')).toBeTruthy();
+    expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
   });
 
   it('calls onToggleDone when checkbox is pressed', () => {
@@ -115,8 +115,8 @@ describe('TaskRow', () => {
     render(
       <TaskRow task={mockTask} onToggleDone={() => {}} />
     );
-    expect(screen.queryByText('TODAY')).toBeNull();
-    expect(screen.queryByText('OVERDUE')).toBeNull();
+    expect(screen.queryByText('СЕГОДНЯ')).toBeNull();
+    expect(screen.queryByText('ПРОСРОЧЕНО')).toBeNull();
   });
 
   it('keeps badge in inbox presentation mode', () => {
@@ -129,7 +129,7 @@ describe('TaskRow', () => {
       />
     );
 
-    expect(screen.getByText('TODAY')).toBeTruthy();
+    expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
   });
 
   it('applies hitSlop to interactive targets', () => {

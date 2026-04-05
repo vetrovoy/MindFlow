@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import type { Project } from '@mindflow/domain';
+import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { BottomSheet } from '../bottom-sheet';
 import { Icon } from '../../icons';
 import { Body, Meta } from '../../typography';
+
+const copy = getCopy('ru');
 
 interface ProjectSelectorProps {
   value: string | null;
@@ -24,7 +27,7 @@ interface ProjectRowProps {
 function ProjectRow({ project, active, onPress }: ProjectRowProps) {
   const { theme } = useTheme();
 
-  const label = project == null ? 'Входящие' : `${project.name}`;
+  const label = project == null ? copy.projectSelector.inbox : `${project.name}`;
   const colorDot = project?.color;
 
   return (
@@ -87,7 +90,7 @@ export function ProjectSelector({
 
   const previewLabel = selectedProject != null
     ? `${selectedProject.name}`
-    : 'Входящие';
+    : copy.projectSelector.inbox;
 
   const previewColor = selectedProject?.color;
 
@@ -119,7 +122,7 @@ export function ProjectSelector({
 
       <BottomSheet
         visible={isOpen}
-        title="Список"
+        title={copy.projectSelector.title}
         onClose={handleClose}
       >
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.sheetContent}>
@@ -133,7 +136,7 @@ export function ProjectSelector({
           {/* Favorites */}
           {favoriteProjects.length > 0 && (
             <View style={styles.section}>
-              <Meta tone="soft">Избранное</Meta>
+              <Meta tone="soft">{copy.projectSelector.favoritesSection}</Meta>
               {favoriteProjects.map(project => (
                 <ProjectRow
                   key={project.id}
@@ -148,7 +151,7 @@ export function ProjectSelector({
           {/* All lists */}
           {regularProjects.length > 0 && (
             <View style={styles.section}>
-              <Meta tone="soft">Все списки</Meta>
+              <Meta tone="soft">{copy.projectSelector.allListsSection}</Meta>
               {regularProjects.map(project => (
                 <ProjectRow
                   key={project.id}

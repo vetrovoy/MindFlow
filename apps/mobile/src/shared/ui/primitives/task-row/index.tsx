@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { getCopy } from '@mindflow/copy';
 
 import type { Project, Task } from '@mindflow/domain';
 
@@ -8,6 +9,8 @@ import { Icon } from '../../icons';
 import { Body, Meta } from '../../typography';
 import { SurfaceCard } from '../surface-card';
 import { StatusPill, type StatusPillProps } from '../status-pill';
+
+const copy = getCopy('ru');
 
 interface TaskRowProps {
   task: Task;
@@ -89,7 +92,7 @@ function getPriorityColor(
 }
 
 function getTaskStatusText(task: Task) {
-  return task.status === 'done' ? 'Готово' : 'В работе';
+  return task.status === 'done' ? copy.status.done : copy.status.todo;
 }
 
 function getPriorityTone(priority: Task['priority']) {
@@ -191,7 +194,7 @@ export const TaskRow = React.memo(function TaskRow({
             <>
               {badgeVariant ? (
                 <StatusPill
-                  label={badgeVariant === 'overdue' ? 'Overdue' : 'Today'}
+                  label={badgeVariant === 'overdue' ? copy.task.badgeOverdue : copy.task.badgeToday}
                   variant={badgeVariant}
                 />
               ) : null}
@@ -210,7 +213,7 @@ export const TaskRow = React.memo(function TaskRow({
                   size={12}
                   tone={priorityTone}
                 />
-                <Meta tone={priorityTextTone}>{task.priority.toUpperCase()}</Meta>
+                <Meta tone={priorityTextTone}>{copy.priority[task.priority]}</Meta>
               </View>
             </>
           ) : (
@@ -222,12 +225,12 @@ export const TaskRow = React.memo(function TaskRow({
                 tone={priorityTone}
               />
               <View style={[styles.priorityDot, { backgroundColor: priorityColor }]} />
-              <Meta tone="soft">{task.priority.toUpperCase()}</Meta>
+              <Meta tone="soft">{copy.priority[task.priority]}</Meta>
               <Meta tone="muted">{getTaskStatusText(task)}</Meta>
               {project ? <Meta tone="soft">{project.emoji} {project.name}</Meta> : null}
               {badgeVariant ? (
                 <StatusPill
-                  label={badgeVariant === 'overdue' ? 'Overdue' : 'Today'}
+                  label={badgeVariant === 'overdue' ? copy.task.badgeOverdue : copy.task.badgeToday}
                   variant={badgeVariant}
                 />
               ) : null}

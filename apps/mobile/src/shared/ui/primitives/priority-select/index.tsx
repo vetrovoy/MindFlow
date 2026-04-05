@@ -1,13 +1,15 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { TaskPriority } from '@mindflow/domain';
+import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Body, Meta } from '../../typography';
 
+const copy = getCopy('ru');
 const PRIORITY_OPTIONS: { value: TaskPriority; label: string }[] = [
-  { value: 'low', label: 'Низкий' },
-  { value: 'medium', label: 'Средний' },
-  { value: 'high', label: 'Высокий' },
+  { value: 'low', label: copy.priority.low },
+  { value: 'medium', label: copy.priority.medium },
+  { value: 'high', label: copy.priority.high },
 ];
 
 interface PrioritySelectProps {

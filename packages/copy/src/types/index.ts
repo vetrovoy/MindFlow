@@ -211,6 +211,15 @@ export interface CopyDictionary {
     selectDatePlaceholder: string;
     selectDeadlinePlaceholder: string;
   };
+  projectSelector: {
+    title: string;
+    inbox: string;
+    favoritesSection: string;
+    allListsSection: string;
+  };
+  colorPicker: {
+    title: string;
+  };
   messages: {
     movedTasksTitle: string;
     movedTasksDescriptionExistingProject: string;

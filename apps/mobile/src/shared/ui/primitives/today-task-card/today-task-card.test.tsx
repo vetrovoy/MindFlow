@@ -37,14 +37,14 @@ describe('TodayTaskCard', () => {
     render(
       <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />
     );
-    expect(screen.getByText('TODAY')).toBeTruthy();
+    expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
   });
 
   it('renders overdue status pill', () => {
     render(
       <TodayTaskCard item={mockOverdueTaskGroup} onToggleDone={() => {}} />
     );
-    expect(screen.getByText('OVERDUE')).toBeTruthy();
+    expect(screen.getByText('ПРОСРОЧЕНО')).toBeTruthy();
   });
 
   it('does not render standalone bucket label above the row', () => {
@@ -52,8 +52,9 @@ describe('TodayTaskCard', () => {
       <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />
     );
 
-    expect(screen.queryByText('СЕГОДНЯ')).toBeNull();
+    // No standalone 'ПРОСРОЧЕНО' since bucket is due-today
     expect(screen.queryByText('ПРОСРОЧЕНО')).toBeNull();
+    // No 'Inbox / high' metadata
     expect(screen.queryByText('Inbox / high')).toBeNull();
   });
 

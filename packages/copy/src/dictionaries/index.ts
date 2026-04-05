@@ -225,7 +225,7 @@ const ru: CopyDictionary = {
       total === 0 ? "Пустой список" : `${done} из ${total} выполнено`,
     inProgressLabel: (count) => `${count} в работе`,
     deadlineLabel: (value) => `до ${value}`,
-    taskCount: getRussianTaskCount
+    taskCount: getRussianTaskCount,
   },
   editor: {
     confirmCancelAriaLabel: "Отменить подтверждение",
@@ -233,6 +233,15 @@ const ru: CopyDictionary = {
     selectListPlaceholder: "Выберите список",
     selectDatePlaceholder: "Выберите дату",
     selectDeadlinePlaceholder: "Выберите дедлайн"
+  },
+  projectSelector: {
+    title: "Список",
+    inbox: "Входящие",
+    favoritesSection: "Избранное",
+    allListsSection: "Все списки"
+  },
+  colorPicker: {
+    title: "Выберите цвет"
   },
   messages: {
     movedTasksTitle: "Задачи перенесены",
@@ -468,7 +477,7 @@ const en: CopyDictionary = {
       total === 0 ? "Empty list" : `${done} of ${total} completed`,
     inProgressLabel: (count) => `${count} in progress`,
     deadlineLabel: (value) => `due ${value}`,
-    taskCount: getEnglishTaskCount
+    taskCount: getEnglishTaskCount,
   },
   editor: {
     confirmCancelAriaLabel: "Cancel confirmation",
@@ -476,6 +485,15 @@ const en: CopyDictionary = {
     selectListPlaceholder: "Choose a list",
     selectDatePlaceholder: "Choose a date",
     selectDeadlinePlaceholder: "Choose a deadline"
+  },
+  projectSelector: {
+    title: "List",
+    inbox: "Inbox",
+    favoritesSection: "Favorites",
+    allListsSection: "All lists"
+  },
+  colorPicker: {
+    title: "Choose a color"
   },
   messages: {
     movedTasksTitle: "Tasks moved",

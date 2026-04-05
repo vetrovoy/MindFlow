@@ -1,12 +1,14 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { TaskStatus } from '@mindflow/domain';
+import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Body, Meta } from '../../typography';
 
+const copy = getCopy('ru');
 const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
-  { value: 'todo', label: 'В работе' },
-  { value: 'done', label: 'Готово' },
+  { value: 'todo', label: copy.status.todo },
+  { value: 'done', label: copy.status.done },
 ];
 
 interface StatusSelectProps {

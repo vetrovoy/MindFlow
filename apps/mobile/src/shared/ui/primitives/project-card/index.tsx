@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
+import { getCopy } from '@mindflow/copy';
 
 import type { Project } from '@mindflow/domain';
 
@@ -7,6 +8,9 @@ import { Body, Title } from '../../typography';
 import { SurfaceCard } from '../surface-card';
 import { ProgressBar } from '../progress-bar';
 import { StatusPill } from '../status-pill';
+import { Icon } from '../../icons';
+
+const copy = getCopy('ru');
 
 interface ProjectCardProps {
   project: Project;
@@ -35,27 +39,12 @@ export function ProjectCard({ project, taskCount, doneCount, onPress }: ProjectC
             <View style={{ flex: 1, flexDirection:'row', alignItems:'center', gap: 4 }}>
               <View style={{ backgroundColor: project.color, width: 12, height:12, borderRadius: 999 }} />
               <Title>{project.name}</Title>
-              <Body tone="secondary">
-                {doneCount} из {taskCount} завершено
-              </Body>
             </View>
             {project.isFavorite ? (
-              <StatusPill label="Fav" variant="today" />
+              <Icon decorative name="favorite" size={16} tone="accent" />
             ) : null}
           </View>
           <ProgressBar value={doneCount} max={Math.max(taskCount, 1)} />
-          <Body tone="soft">Цвет проекта: {project.color}</Body>
-          <View
-            style={{
-              position: 'absolute',
-              top: -18,
-              right: -10,
-              width: 96,
-              height: 96,
-              borderRadius: 48,
-              backgroundColor: `${project.color}20`,
-            }}
-          />
         </View>
       </SurfaceCard>
     </Pressable>
