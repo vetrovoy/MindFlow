@@ -6,12 +6,10 @@ import type { TaskPriority, TaskStatus } from '@mindflow/domain';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, DatePicker, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
+import { AccentButton, BottomSheet, DatePicker, PrioritySelect, ProjectSelector, StatusSelect, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
-const PRIORITY_OPTIONS: TaskPriority[] = ['low', 'medium', 'high'];
-const STATUS_OPTIONS: TaskStatus[] = ['todo', 'done'];
 
 interface EditorDraft {
   title: string;
@@ -50,17 +48,6 @@ const styles = StyleSheet.create({
     minHeight: 120,
     textAlignVertical: 'top',
   },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    borderRadius: 999,
-    borderWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
   footer: {
     flexDirection: 'row',
     gap: 10,
@@ -69,14 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-function getPriorityLabel(priority: TaskPriority) {
-  return copy.priority[priority];
-}
-
-function getStatusLabel(status: TaskStatus) {
-  return copy.status[status];
-}
 
 export function TaskEditSheet() {
   const editingTask = useMobileAppStore(store => store.derived.editingTask);
@@ -136,54 +115,6 @@ export function TaskEditSheet() {
       status: currentDraft.status,
       projectId: currentDraft.projectId,
     });
-  }
-
-  function renderPriorityChip(priority: TaskPriority) {
-    const active = currentDraft.priority === priority;
-    return (
-      <Pressable
-        key={`priority-${priority}`}
-        accessibilityRole="button"
-        onPress={() => {
-          setDraft(current =>
-            current == null ? current : { ...current, priority },
-          );
-        }}
-        style={[
-          styles.chip,
-          {
-            backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
-            borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
-          },
-        ]}
-      >
-        <Meta tone={active ? 'accent' : 'secondary'}>{getPriorityLabel(priority)}</Meta>
-      </Pressable>
-    );
-  }
-
-  function renderStatusChip(status: TaskStatus) {
-    const active = currentDraft.status === status;
-    return (
-      <Pressable
-        key={`status-${status}`}
-        accessibilityRole="button"
-        onPress={() => {
-          setDraft(current =>
-            current == null ? current : { ...current, status },
-          );
-        }}
-        style={[
-          styles.chip,
-          {
-            backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
-            borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
-          },
-        ]}
-      >
-        <Meta tone={active ? 'accent' : 'secondary'}>{getStatusLabel(status)}</Meta>
-      </Pressable>
-    );
   }
 
   return (
@@ -270,19 +201,25 @@ export function TaskEditSheet() {
             label={copy.task.changeDueDateTrigger}
           />
 
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.priorityAriaLabel}</Meta>
-            <View style={styles.chipRow}>
-              {PRIORITY_OPTIONS.map(priority => renderPriorityChip(priority))}
-            </View>
-          </View>
+          <PrioritySelect
+            value={currentDraft.priority}
+            onChange={next => {
+              setDraft(current =>
+                current == null ? current : { ...current, priority: next },
+              );
+            }}
+            label={copy.task.priorityAriaLabel}
+          />
 
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.statusAriaLabel}</Meta>
-            <View style={styles.chipRow}>
-              {STATUS_OPTIONS.map(status => renderStatusChip(status))}
-            </View>
-          </View>
+          <StatusSelect
+            value={currentDraft.status}
+            onChange={next => {
+              setDraft(current =>
+                current == null ? current : { ...current, status: next },
+              );
+            }}
+            label={copy.task.statusAriaLabel}
+          />
         </SurfaceCard>
 
         <SurfaceCard elevated style={styles.card}>

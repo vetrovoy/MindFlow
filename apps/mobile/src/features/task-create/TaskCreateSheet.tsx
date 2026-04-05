@@ -6,11 +6,10 @@ import type { TaskPriority } from '@mindflow/domain';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, DatePicker, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
+import { AccentButton, BottomSheet, DatePicker, PrioritySelect, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
-const PRIORITY_OPTIONS: TaskPriority[] = ['low', 'medium', 'high'];
 
 interface CreateDraft {
   title: string;
@@ -116,26 +115,6 @@ export function TaskCreateSheet() {
     closeTaskCreate();
   }
 
-  function renderPriorityChip(priority: TaskPriority) {
-    const active = draft.priority === priority;
-    return (
-      <Pressable
-        key={`priority-${priority}`}
-        accessibilityRole="button"
-        onPress={() => { setDraft(d => ({ ...d, priority })); }}
-        style={[
-          styles.chip,
-          {
-            backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
-            borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
-          },
-        ]}
-      >
-        <Meta tone={active ? 'accent' : 'secondary'}>{copy.priority[priority]}</Meta>
-      </Pressable>
-    );
-  }
-
   return (
     <BottomSheet
       visible
@@ -195,12 +174,11 @@ export function TaskCreateSheet() {
             label={copy.task.changeDueDateTrigger}
           />
 
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.priorityAriaLabel}</Meta>
-            <View style={styles.chipRow}>
-              {PRIORITY_OPTIONS.map(priority => renderPriorityChip(priority))}
-            </View>
-          </View>
+          <PrioritySelect
+            value={draft.priority}
+            onChange={next => { setDraft(d => ({ ...d, priority: next })); }}
+            label={copy.task.priorityAriaLabel}
+          />
         </SurfaceCard>
 
         <SurfaceCard elevated style={styles.card}>
