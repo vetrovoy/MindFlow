@@ -143,7 +143,6 @@ export function TaskCreateSheet() {
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.createTitle}</Meta>
             <TextInput
-              autoFocus
               value={draft.title}
               onChangeText={nextTitle => {
                 setDraft(d => ({ ...d, title: nextTitle }));

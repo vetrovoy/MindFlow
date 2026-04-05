@@ -134,7 +134,6 @@ export function ProjectCreateSheet() {
           <View style={styles.label}>
             <Meta tone="soft">{copy.project.createTitle}</Meta>
             <TextInput
-              autoFocus
               value={draft.name}
               onChangeText={next => {
                 setDraft(d => ({ ...d, name: next }));
