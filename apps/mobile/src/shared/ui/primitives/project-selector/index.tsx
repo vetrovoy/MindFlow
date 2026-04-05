@@ -86,7 +86,7 @@ export function ProjectSelector({
   }
 
   const previewLabel = selectedProject != null
-    ? `${selectedProject.emoji} ${selectedProject.name}`
+    ? `${selectedProject.name}`
     : 'Входящие';
 
   const previewColor = selectedProject?.color;
