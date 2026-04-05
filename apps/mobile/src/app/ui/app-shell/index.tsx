@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
 
 import { ProjectCreateSheet } from '@mobile/features/project-create/ui/project-create-sheet';
+import { ProjectEditSheet } from '@mobile/features/project-edit/ui/project-edit-sheet';
 import { TaskCreateSheet } from '@mobile/features/task-create/ui/task-create-sheet';
 import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
@@ -49,7 +50,7 @@ export function AppShell({ children }: MobileAppShellProps) {
         <TaskEditSheet />
         <TaskCreateSheet />
         <ProjectCreateSheet />
-        {/* <ProjectEditSheet /> */}
+        <ProjectEditSheet />
       </View>
     </SafeAreaView>
   );

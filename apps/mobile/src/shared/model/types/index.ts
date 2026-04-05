@@ -79,8 +79,9 @@ export interface AppActions {
   closeProjectCreate: () => void;
   createProjectFromSheet: (input: {
     name: string;
-    emoji: string;
     color: string;
+    deadline?: string | null;
+    isFavorite?: boolean;
   }) => Promise<void>;
   dismissToast: () => void;
   clearError: () => void;

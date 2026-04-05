@@ -137,8 +137,8 @@ describe('ListsPage', () => {
     expect(screen.getByTestId('lists-all-card')).toBeTruthy();
     expect(screen.getByText('Избранное')).toBeTruthy();
     expect(screen.getByText('Избранные списки остаются сверху для быстрого доступа.')).toBeTruthy();
-    expect(screen.getByText('⭐ Избранный список')).toBeTruthy();
-    expect(screen.getByText('🧩 Обычный список')).toBeTruthy();
+    expect(screen.getByText('Избранный список')).toBeTruthy();
+    expect(screen.getByText('Обычный список')).toBeTruthy();
     expect(screen.getAllByText('Привяжите задачи к этому списку.')).toHaveLength(2);
   });
 

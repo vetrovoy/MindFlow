@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
 import { projectMarkers } from '@mindflow/ui';
@@ -13,19 +13,12 @@ const copy = getCopy('ru');
 
 const MARKER_COLORS = projectMarkers.map(m => m.color);
 
-interface CreateDraft {
+interface EditDraft {
   name: string;
   color: string;
   deadline: string;
   isFavorite: boolean;
 }
-
-const DEFAULT_DRAFT: CreateDraft = {
-  name: '',
-  color: projectMarkers[0].color,
-  deadline: '',
-  isFavorite: false,
-};
 
 const styles = StyleSheet.create({
   closeButton: {
@@ -70,51 +63,63 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ProjectCreateSheet() {
-  const isOpen = useMobileAppStore(s => s.state.isProjectCreateOpen);
+export function ProjectEditSheet() {
+  const editingProject = useMobileAppStore(s => s.derived.editingProject);
   const isSaving = useMobileAppStore(s => s.state.isSaving);
-  const closeProjectCreate = useMobileAppStore(s => s.actions.closeProjectCreate);
-  const createProjectFromSheet = useMobileAppStore(s => s.actions.createProjectFromSheet);
+  const closeProjectEdit = useMobileAppStore(s => s.actions.closeProjectEdit);
+  const saveProjectEdit = useMobileAppStore(s => s.actions.saveProjectEdit);
   const { theme } = useTheme();
 
-  const [draft, setDraft] = useState<CreateDraft>({ ...DEFAULT_DRAFT });
+  const [draft, setDraft] = useState<EditDraft | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
 
-  if (!isOpen) {
+  useEffect(() => {
+    if (editingProject == null) {
+      setDraft(null);
+      setNameError(null);
+      return;
+    }
+    setDraft({
+      name: editingProject.name,
+      color: editingProject.color,
+      deadline: editingProject.deadline ?? '',
+      isFavorite: editingProject.isFavorite,
+    });
+    setNameError(null);
+  }, [editingProject]);
+
+  if (editingProject == null || draft == null) {
     return null;
   }
 
+  const project = editingProject;
+  const currentDraft = draft;
+
   async function handleSave() {
-    const normalizedName = draft.name.trim();
+    const normalizedName = currentDraft.name.trim();
     if (!normalizedName) {
       setNameError(copy.project.titleRequired);
       return;
     }
     setNameError(null);
-    await createProjectFromSheet({
+    await saveProjectEdit({
+      projectId: project.id,
       name: normalizedName,
-      color: draft.color,
-      deadline: draft.deadline.trim() ? draft.deadline.trim() : null,
-      isFavorite: draft.isFavorite,
+      color: currentDraft.color,
+      deadline: currentDraft.deadline.trim() ? currentDraft.deadline.trim() : null,
+      isFavorite: currentDraft.isFavorite,
     });
-    setDraft({ ...DEFAULT_DRAFT });
-  }
-
-  function handleClose() {
-    setDraft({ ...DEFAULT_DRAFT });
-    setNameError(null);
-    closeProjectCreate();
   }
 
   return (
     <BottomSheet
       visible
-      title={copy.project.createTitle}
-      onClose={handleClose}
+      title={copy.project.editTitle}
+      onClose={closeProjectEdit}
       headerAccessory={(
         <Pressable
           accessibilityRole="button"
-          onPress={handleClose}
+          onPress={closeProjectEdit}
           style={[
             styles.closeButton,
             {
@@ -132,12 +137,11 @@ export function ProjectCreateSheet() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
-            <Meta tone="soft">{copy.project.createTitle}</Meta>
+            <Meta tone="soft">{copy.project.editTitle}</Meta>
             <TextInput
-              autoFocus
-              value={draft.name}
+              value={currentDraft.name}
               onChangeText={next => {
-                setDraft(d => ({ ...d, name: next }));
+                setDraft(d => (d == null ? d : { ...d, name: next }));
                 if (nameError != null) setNameError(null);
               }}
               placeholder={copy.project.titlePlaceholder}
@@ -157,8 +161,8 @@ export function ProjectCreateSheet() {
 
         <SurfaceCard elevated style={styles.card}>
           <ColorPicker
-            value={draft.color}
-            onChange={color => { setDraft(d => ({ ...d, color })); }}
+            value={currentDraft.color}
+            onChange={color => { setDraft(d => (d == null ? d : { ...d, color })); }}
             colors={MARKER_COLORS}
             label={copy.project.changeMarkerTrigger}
           />
@@ -166,14 +170,16 @@ export function ProjectCreateSheet() {
 
         <SurfaceCard elevated style={styles.card}>
           <DatePicker
-            value={draft.deadline}
-            onChange={deadline => { setDraft(d => ({ ...d, deadline })); }}
+            value={currentDraft.deadline}
+            onChange={deadline => { setDraft(d => (d == null ? d : { ...d, deadline })); }}
             label={copy.project.changeDeadlineTrigger}
           />
 
           <Pressable
             accessibilityRole="button"
-            onPress={() => { setDraft(d => ({ ...d, isFavorite: !d.isFavorite })); }}
+            onPress={() => {
+              setDraft(d => (d == null ? d : { ...d, isFavorite: !d.isFavorite }));
+            }}
             style={[
               styles.favoriteRow,
               {
@@ -182,18 +188,22 @@ export function ProjectCreateSheet() {
               },
             ]}
           >
-            <Meta tone="soft">{copy.project.addFavoriteAriaLabel}</Meta>
+            <Meta tone="soft">
+              {currentDraft.isFavorite
+                ? copy.project.removeFavoriteAriaLabel
+                : copy.project.addFavoriteAriaLabel}
+            </Meta>
             <Icon
               decorative
               name="favorite"
               size={20}
-              tone={draft.isFavorite ? 'accent' : 'muted'}
+              tone={currentDraft.isFavorite ? 'accent' : 'muted'}
             />
           </Pressable>
         </SurfaceCard>
 
         <View style={styles.footer}>
-          <AccentButton onPress={handleClose} style={styles.footerButton}>
+          <AccentButton onPress={closeProjectEdit} style={styles.footerButton}>
             {copy.common.close}
           </AccentButton>
           <AccentButton
