@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
-import type { Project, TaskPriority, TaskStatus } from '@mindflow/domain';
+import type { TaskPriority, TaskStatus } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, DatePicker, SurfaceCard } from '@shared/ui/primitives';
+import { AccentButton, BottomSheet, DatePicker, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
@@ -118,8 +118,6 @@ export function TaskEditSheet() {
 
   const task = editingTask;
   const currentDraft = draft;
-  const selectedProject =
-    activeProjects.find(project => project.id === currentDraft.projectId) ?? null;
 
   async function handleSave() {
     const normalizedTitle = currentDraft.title.trim();
@@ -140,25 +138,16 @@ export function TaskEditSheet() {
     });
   }
 
-  function renderChipOption<T extends string | null>({
-    keyPrefix,
-    value,
-    label,
-    active,
-    onPress,
-  }: {
-    keyPrefix: string;
-    value: T;
-    label: string;
-    active: boolean;
-    onPress: (nextValue: T) => void;
-  }) {
+  function renderPriorityChip(priority: TaskPriority) {
+    const active = currentDraft.priority === priority;
     return (
       <Pressable
-        key={`${keyPrefix}-${value ?? 'inbox'}`}
+        key={`priority-${priority}`}
         accessibilityRole="button"
         onPress={() => {
-          onPress(value);
+          setDraft(current =>
+            current == null ? current : { ...current, priority },
+          );
         }}
         style={[
           styles.chip,
@@ -168,7 +157,31 @@ export function TaskEditSheet() {
           },
         ]}
       >
-        <Meta tone={active ? 'accent' : 'secondary'}>{label}</Meta>
+        <Meta tone={active ? 'accent' : 'secondary'}>{getPriorityLabel(priority)}</Meta>
+      </Pressable>
+    );
+  }
+
+  function renderStatusChip(status: TaskStatus) {
+    const active = currentDraft.status === status;
+    return (
+      <Pressable
+        key={`status-${status}`}
+        accessibilityRole="button"
+        onPress={() => {
+          setDraft(current =>
+            current == null ? current : { ...current, status },
+          );
+        }}
+        style={[
+          styles.chip,
+          {
+            backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
+            borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
+          },
+        ]}
+      >
+        <Meta tone={active ? 'accent' : 'secondary'}>{getStatusLabel(status)}</Meta>
       </Pressable>
     );
   }
@@ -177,7 +190,6 @@ export function TaskEditSheet() {
     <BottomSheet
       visible
       title={copy.task.editTitle}
-      subtitle={selectedProject ? `${selectedProject.emoji} ${selectedProject.name}` : copy.task.inbox}
       onClose={closeTaskEdit}
       headerAccessory={(
         <Pressable
@@ -261,72 +273,30 @@ export function TaskEditSheet() {
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.priorityAriaLabel}</Meta>
             <View style={styles.chipRow}>
-              {PRIORITY_OPTIONS.map(priority =>
-                renderChipOption({
-                  keyPrefix: 'priority',
-                  value: priority,
-                  label: getPriorityLabel(priority),
-                  active: currentDraft.priority === priority,
-                  onPress: nextPriority => {
-                    setDraft(current =>
-                      current == null ? current : { ...current, priority: nextPriority },
-                    );
-                  },
-                }),
-              )}
+              {PRIORITY_OPTIONS.map(priority => renderPriorityChip(priority))}
             </View>
           </View>
 
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.statusAriaLabel}</Meta>
             <View style={styles.chipRow}>
-              {STATUS_OPTIONS.map(status =>
-                renderChipOption({
-                  keyPrefix: 'status',
-                  value: status,
-                  label: getStatusLabel(status),
-                  active: currentDraft.status === status,
-                  onPress: nextStatus => {
-                    setDraft(current =>
-                      current == null ? current : { ...current, status: nextStatus },
-                    );
-                  },
-                }),
-              )}
+              {STATUS_OPTIONS.map(status => renderStatusChip(status))}
             </View>
           </View>
         </SurfaceCard>
 
         <SurfaceCard elevated style={styles.card}>
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.changeProjectTrigger}</Meta>
-            <View style={styles.chipRow}>
-              {renderChipOption<string | null>({
-                keyPrefix: 'project',
-                value: null,
-                label: copy.task.inbox,
-                active: currentDraft.projectId == null,
-                onPress: nextProjectId => {
-                  setDraft(current =>
-                    current == null ? current : { ...current, projectId: nextProjectId },
-                  );
-                },
-              })}
-              {activeProjects.map((project: Project) =>
-                renderChipOption({
-                  keyPrefix: 'project',
-                  value: project.id,
-                  label: `${project.emoji} ${project.name}`,
-                  active: currentDraft.projectId === project.id,
-                  onPress: nextProjectId => {
-                    setDraft(current =>
-                      current == null ? current : { ...current, projectId: nextProjectId },
-                    );
-                  },
-                }),
-              )}
-            </View>
-          </View>
+          <ProjectSelector
+            value={currentDraft.projectId}
+            onChange={nextProjectId => {
+              setDraft(current =>
+                current == null ? current : { ...current, projectId: nextProjectId },
+              );
+            }}
+            projects={activeProjects}
+            favoriteProjects={favoriteProjects}
+            label={copy.task.changeProjectTrigger}
+          />
         </SurfaceCard>
 
         <View style={styles.footer}>

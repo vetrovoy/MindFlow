@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
-import type { Project, TaskPriority } from '@mindflow/domain';
+import type { TaskPriority } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, DatePicker, SurfaceCard } from '@shared/ui/primitives';
+import { AccentButton, BottomSheet, DatePicker, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 const copy = getCopy('ru');
@@ -93,8 +93,6 @@ export function TaskCreateSheet() {
   }
 
   const effectiveDueDate = draft.dueDate || preferredDate || '';
-  const selectedProject =
-    activeProjects.find(p => p.id === draft.projectId) ?? null;
 
   async function handleSave() {
     const normalizedTitle = draft.title.trim();
@@ -118,24 +116,13 @@ export function TaskCreateSheet() {
     closeTaskCreate();
   }
 
-  function renderChipOption<T extends string | null>({
-    keyPrefix,
-    value,
-    label,
-    active,
-    onPress,
-  }: {
-    keyPrefix: string;
-    value: T;
-    label: string;
-    active: boolean;
-    onPress: (next: T) => void;
-  }) {
+  function renderPriorityChip(priority: TaskPriority) {
+    const active = draft.priority === priority;
     return (
       <Pressable
-        key={`${keyPrefix}-${value ?? 'inbox'}`}
+        key={`priority-${priority}`}
         accessibilityRole="button"
-        onPress={() => { onPress(value); }}
+        onPress={() => { setDraft(d => ({ ...d, priority })); }}
         style={[
           styles.chip,
           {
@@ -144,7 +131,7 @@ export function TaskCreateSheet() {
           },
         ]}
       >
-        <Meta tone={active ? 'accent' : 'secondary'}>{label}</Meta>
+        <Meta tone={active ? 'accent' : 'secondary'}>{copy.priority[priority]}</Meta>
       </Pressable>
     );
   }
@@ -153,7 +140,6 @@ export function TaskCreateSheet() {
     <BottomSheet
       visible
       title={copy.task.createTitle}
-      subtitle={selectedProject ? `${selectedProject.emoji} ${selectedProject.name}` : copy.task.inbox}
       onClose={handleClose}
       headerAccessory={(
         <Pressable
@@ -212,41 +198,19 @@ export function TaskCreateSheet() {
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.priorityAriaLabel}</Meta>
             <View style={styles.chipRow}>
-              {PRIORITY_OPTIONS.map(priority =>
-                renderChipOption({
-                  keyPrefix: 'priority',
-                  value: priority,
-                  label: copy.priority[priority],
-                  active: draft.priority === priority,
-                  onPress: next => { setDraft(d => ({ ...d, priority: next })); },
-                }),
-              )}
+              {PRIORITY_OPTIONS.map(priority => renderPriorityChip(priority))}
             </View>
           </View>
         </SurfaceCard>
 
         <SurfaceCard elevated style={styles.card}>
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.changeProjectTrigger}</Meta>
-            <View style={styles.chipRow}>
-              {renderChipOption<string | null>({
-                keyPrefix: 'project',
-                value: null,
-                label: copy.task.inbox,
-                active: draft.projectId == null,
-                onPress: next => { setDraft(d => ({ ...d, projectId: next })); },
-              })}
-              {activeProjects.map((project: Project) =>
-                renderChipOption({
-                  keyPrefix: 'project',
-                  value: project.id,
-                  label: `${project.emoji} ${project.name}`,
-                  active: draft.projectId === project.id,
-                  onPress: next => { setDraft(d => ({ ...d, projectId: next })); },
-                }),
-              )}
-            </View>
-          </View>
+          <ProjectSelector
+            value={draft.projectId}
+            onChange={nextProjectId => { setDraft(d => ({ ...d, projectId: nextProjectId })); }}
+            projects={activeProjects}
+            favoriteProjects={favoriteProjects}
+            label={copy.task.changeProjectTrigger}
+          />
         </SurfaceCard>
 
         <View style={styles.footer}>
