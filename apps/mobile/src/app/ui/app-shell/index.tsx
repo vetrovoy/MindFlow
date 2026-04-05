@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getCopy } from '@mindflow/copy';
 
-import { ProjectCreateSheet } from '@features/project-create/ProjectCreateSheet';
-import { TaskCreateSheet } from '@features/task-create/TaskCreateSheet';
+import { ProjectCreateSheet } from '@mobile/features/project-create/ui/project-create-sheet';
+import { TaskCreateSheet } from '@mobile/features/task-create/ui/task-create-sheet';
 import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
