@@ -13,6 +13,8 @@ import { AppStats } from '../app-stats';
 import { AppFab } from '../app-fab';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppQuickAdd } from '../app-quick-add';
+import { AppDrawerOpener } from '../app-drawer-opener';
+import { FAB_SPACING } from '@shared/config/fab';
 
 const copy = getCopy('ru');
 
@@ -42,7 +44,8 @@ export function AppShell({ children }: MobileAppShellProps) {
               <AppQuickAdd />
             </View>
             <View style={styles.content}>{children}</View>
-            <AppFab />
+            <AppDrawerOpener bottom={FAB_SPACING.menu} />
+            <AppFab bottom={FAB_SPACING.main} />
           </>
         )}
 

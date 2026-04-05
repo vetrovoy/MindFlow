@@ -44,7 +44,8 @@ const ru: CopyDictionary = {
     loadingMeta: "ЗАГРУЗКА",
     successMeta: "УСПЕХ",
     errorMeta: "ОШИБКА",
-    saving: "Сохраняем"
+    saving: "Сохраняем",
+    logout: "Выйти"
   },
   navigation: {
     mainAriaLabel: "Основная навигация",
@@ -296,7 +297,8 @@ const en: CopyDictionary = {
     loadingMeta: "LOADING",
     successMeta: "SUCCESS",
     errorMeta: "ERROR",
-    saving: "Saving"
+    saving: "Saving",
+    logout: "Log out"
   },
   navigation: {
     mainAriaLabel: "Main navigation",

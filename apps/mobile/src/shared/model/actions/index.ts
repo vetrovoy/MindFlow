@@ -17,6 +17,7 @@ import { createId } from '@shared/lib/ids';
 import { getNextOrderIndex } from '../selectors';
 import { formatError } from '../helpers';
 import type { AppActions, AppState, AppStore } from '../types';
+import type { AppLanguage } from '@mindflow/copy';
 
 const copy = getCopy('ru');
 
@@ -285,6 +286,9 @@ export function createAppActions({
     },
     clearError() {
       patchState({ error: null });
+    },
+    setLanguage(lang: AppLanguage) {
+      patchState({ language: lang });
     },
   };
 }

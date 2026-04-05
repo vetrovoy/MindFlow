@@ -32,6 +32,7 @@ export interface CopyDictionary {
     successMeta: string;
     errorMeta: string;
     saving: string;
+    logout: string;
   };
   navigation: {
     mainAriaLabel: string;

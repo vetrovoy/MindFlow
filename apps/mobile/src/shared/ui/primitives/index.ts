@@ -17,6 +17,8 @@ export { ColorPicker } from './color-picker';
 export { ProjectSelector } from './project-selector';
 export { PrioritySelect } from './priority-select';
 export { StatusSelect } from './status-select';
+export { DrawerNavItem } from './drawer-nav-item';
+export { DrawerSettingsSelector } from './drawer-settings-selector';
 export { AccentButton } from './accent-button';
 
 export type { ScreenShellProps } from './screen-shell';

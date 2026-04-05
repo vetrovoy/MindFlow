@@ -1,4 +1,5 @@
 import type { Project, Task, TodayTaskGroup } from '@mindflow/domain';
+import type { AppLanguage } from '@mindflow/copy';
 
 export interface ProjectSection {
   project: Project;
@@ -17,6 +18,7 @@ export interface AppState {
   isTaskCreateOpen: boolean;
   taskCreatePreferredDate: string | null;
   isProjectCreateOpen: boolean;
+  language: AppLanguage;
 }
 
 export interface AppDerived {
@@ -86,6 +88,7 @@ export interface AppActions {
   dismissToast: () => void;
   clearError: () => void;
   reload: () => Promise<void>;
+  setLanguage: (lang: AppLanguage) => void;
 }
 
 export interface AppStore {

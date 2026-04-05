@@ -18,6 +18,7 @@
     "@mindflow/ui": "workspace:*",
     "@op-engineering/op-sqlite": "^15.2.8",
     "@react-navigation/bottom-tabs": "^7.15.9",
+    "@react-navigation/drawer": "^7.1.1",
     "@react-navigation/native": "^7.2.2",
     "@react-navigation/native-stack": "^7.14.10",
     "@shopify/flash-list": "^2.3.1",

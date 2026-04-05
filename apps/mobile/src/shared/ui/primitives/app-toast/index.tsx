@@ -48,8 +48,8 @@ export function AppToast() {
           text1={text1}
           text2={text2}
           backgroundColor={theme.colors.overlayScrim}
-          tint={theme.colors.accentSuccessDeep}
-          icon={<Icon tone="success" name="toast-success" size={22} />}
+          tint={theme.colors.accentPrimary}
+          icon={<Icon tone="accent" name="toast-success" size={22} />}
         />
       ),
       error: ({ text1, text2 }) => (

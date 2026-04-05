@@ -4,12 +4,10 @@ import { useNavigationState } from '@react-navigation/native';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { TAB_BAR_HEIGHT } from '@mobile/shared/config/contants';
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: TAB_BAR_HEIGHT + 16,
     right: 16,
     alignItems: 'flex-end',
     gap: 10,
@@ -46,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function AppFab() {
+export function AppFab({ bottom }: { bottom: number }) {
   const { theme } = useTheme();
   const openTaskCreate = useMobileAppStore(s => s.actions.openTaskCreate);
   const openProjectCreate = useMobileAppStore(s => s.actions.openProjectCreate);
@@ -81,7 +79,7 @@ export function AppFab() {
   };
 
   return (
-    <View style={styles.container} pointerEvents="box-none">
+    <View style={[styles.container, { bottom }]} pointerEvents="box-none">
       <Pressable
         accessibilityRole="button"
         onPress={handlePress}

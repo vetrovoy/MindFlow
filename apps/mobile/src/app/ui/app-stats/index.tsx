@@ -55,7 +55,7 @@ export function AppStats() {
         ]}
       >
         <Body tone="secondary">{copy.app.inboxStat}</Body>
-        <Display>{String(inboxCount)}</Display>
+        <Display tone="accent">{String(inboxCount)}</Display>
       </View>
       <View
         style={[

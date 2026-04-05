@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import { ThemeProvider } from '@shared/theme/theme-context';
 import { AppStoreProvider, useMobileAppStore } from '@shared/model/app-store-provider';
@@ -21,14 +22,16 @@ function AppInit() {
 export function MindFlowApp() {
   return (
     <GestureHandlerRootView style={styles.root}>
-      <ThemeProvider>
-        <AppStoreProvider>
-          <BottomSheetModalProvider>
-            <AppInit />
-            <AppToast />
-          </BottomSheetModalProvider>
-        </AppStoreProvider>
-      </ThemeProvider>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <ThemeProvider>
+          <AppStoreProvider>
+            <BottomSheetModalProvider>
+              <AppInit />
+              <AppToast />
+            </BottomSheetModalProvider>
+          </AppStoreProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

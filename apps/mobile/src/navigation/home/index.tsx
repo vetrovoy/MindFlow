@@ -1,0 +1,1 @@
+export { HomeTabNavigator } from './tabs';

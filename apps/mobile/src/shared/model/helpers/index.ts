@@ -1,6 +1,9 @@
 import type { Project, Task } from '@mindflow/domain';
 import type { RepositoryBundle } from '@mindflow/data';
+import type { AppLanguage } from '@mindflow/copy';
 import type { AppState } from '../types';
+
+const DEFAULT_LANGUAGE: AppLanguage = 'ru';
 
 /**
  * Начальное состояние приложения
@@ -16,6 +19,7 @@ export const INITIAL_STATE: AppState = {
   isTaskCreateOpen: false,
   taskCreatePreferredDate: null,
   isProjectCreateOpen: false,
+  language: DEFAULT_LANGUAGE,
 };
 
 /**

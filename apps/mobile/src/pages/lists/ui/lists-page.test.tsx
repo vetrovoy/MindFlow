@@ -21,6 +21,7 @@ const baseStore: AppStore = {
     editingProjectId: null,
     isTaskCreateOpen: false,
     taskCreatePreferredDate: null,
+    language: 'ru',
     isProjectCreateOpen: false,
   },
   derived: {
@@ -52,6 +53,7 @@ const baseStore: AppStore = {
     dismissToast: jest.fn(),
     clearError: jest.fn(),
     reload: jest.fn(),
+    setLanguage: jest.fn(),
   },
 };
 
