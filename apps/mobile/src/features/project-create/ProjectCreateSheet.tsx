@@ -138,25 +138,6 @@ export function ProjectCreateSheet() {
             />
             {nameError ? <Body tone="danger">{nameError}</Body> : null}
           </View>
-
-          <View style={styles.label}>
-            <Meta tone="soft">Emoji</Meta>
-            <TextInput
-              value={draft.emoji}
-              onChangeText={next => { setDraft(d => ({ ...d, emoji: next })); }}
-              placeholder="📋"
-              placeholderTextColor={theme.colors.textTertiary}
-              style={[
-                styles.input,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.borderSoft,
-                  color: theme.colors.textPrimary,
-                  fontSize: 24,
-                },
-              ]}
-            />
-          </View>
         </SurfaceCard>
 
         <SurfaceCard elevated style={styles.card}>
