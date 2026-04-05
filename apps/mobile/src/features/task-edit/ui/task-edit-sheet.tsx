@@ -136,7 +136,6 @@ export function TaskEditSheet() {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             <Icon decorative name="close" size={16} tone="muted" />
-            <Meta tone="secondary">{copy.common.close}</Meta>
           </View>
         </Pressable>
       )}
