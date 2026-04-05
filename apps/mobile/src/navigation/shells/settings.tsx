@@ -12,7 +12,7 @@ export function SettingsTabsShell() {
     <SafeAreaView style={styles.root}>
       <View style={[styles.root, { backgroundColor: theme.colors.background }]}>
         <SettingsTabNavigator />
-        <AppDrawerOpener bottom={FAB_SPACING.menu} />
+        <AppDrawerOpener bottom={FAB_SPACING.main} />
       </View>
     </SafeAreaView>
   );
