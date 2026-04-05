@@ -23,7 +23,7 @@ describe('ProjectCard', () => {
     render(
       <ProjectCard project={mockProject} taskCount={10} doneCount={5} />
     );
-    expect(screen.getByText('📁 Test Project')).toBeTruthy();
+    expect(screen.getByText('Test Project')).toBeTruthy();
   });
 
   it('renders task count', () => {
