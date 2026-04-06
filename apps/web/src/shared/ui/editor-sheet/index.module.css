@@ -40,7 +40,11 @@
 
 .confirmRowAlert {
   border-color: var(--mf-color-accent-alert);
-  background: color-mix(in srgb, var(--mf-color-accent-alert) 10%, var(--mf-color-surface-deep));
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-alert) 10%,
+    var(--mf-color-surface-deep)
+  );
 }
 
 .confirmCopy {

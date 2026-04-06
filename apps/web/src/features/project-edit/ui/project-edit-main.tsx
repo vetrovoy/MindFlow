@@ -162,7 +162,10 @@ export function ProjectEditMain({
           }
         />
 
-        <ProjectDockPopover iconName="more" triggerLabel={copy.project.moreActionsTrigger}>
+        <ProjectDockPopover
+          iconName="more"
+          triggerLabel={copy.project.moreActionsTrigger}
+        >
           <div className={styles.menuBody}>
             <ConfirmDialog
               confirmAriaLabel={copy.editor.confirmAriaLabel}

@@ -26,10 +26,13 @@
   z-index: 40;
   width: min(var(--mf-layout-popover-width), calc(100vw - 32px));
   padding: var(--mf-space-lg);
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
   border-radius: var(--mf-shape-popover-radius);
   background: var(--mf-surface-popover);
-  box-shadow: 0 30px 80px var(--mf-color-shadow-strong), var(--mf-inset-highlight-soft);
+  box-shadow:
+    0 30px 80px var(--mf-color-shadow-strong),
+    var(--mf-inset-highlight-soft);
 }
 
 .arrow {

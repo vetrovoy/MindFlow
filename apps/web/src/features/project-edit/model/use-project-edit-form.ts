@@ -16,7 +16,9 @@ export function useProjectEditForm() {
   const { actions, derived, state } = useAppState();
   const project = derived.editingProject;
   const projectId = project?.id ?? "";
-  const [draft, setDraft] = useState<ProjectEditFormValues>(DEFAULT_PROJECT_EDIT_VALUES);
+  const [draft, setDraft] = useState<ProjectEditFormValues>(
+    DEFAULT_PROJECT_EDIT_VALUES
+  );
   const [isDraftReady, setIsDraftReady] = useState(false);
   const [nameError, setNameError] = useState<string | null>(null);
   const lastSyncedSignatureRef = useRef("");
@@ -29,7 +31,9 @@ export function useProjectEditForm() {
     }
 
     return (
-      derived.projectSections.find((section) => section.project.id === project.id) ?? {
+      derived.projectSections.find(
+        (section) => section.project.id === project.id
+      ) ?? {
         project,
         tasks: state.tasks.filter(
           (task) => task.projectId === project.id && task.archivedAt == null
@@ -83,27 +87,34 @@ export function useProjectEditForm() {
     setIsDraftReady(true);
   }, [project]);
 
-  const buildSavePayload = useCallback((values: ProjectEditFormValues = draft) => {
-    const normalizedName = values.name.trim();
+  const buildSavePayload = useCallback(
+    (values: ProjectEditFormValues = draft) => {
+      const normalizedName = values.name.trim();
 
-    if (!normalizedName) {
-      setNameError(copy.project.titleRequired);
-      return null;
-    }
+      if (!normalizedName) {
+        setNameError(copy.project.titleRequired);
+        return null;
+      }
 
-    setNameError(null);
+      setNameError(null);
 
-    return {
-      projectId,
-      name: normalizedName,
-      color: values.color,
-      isFavorite: values.isFavorite,
-      deadline: values.deadline || null
-    };
-  }, [copy, draft, projectId]);
+      return {
+        projectId,
+        name: normalizedName,
+        color: values.color,
+        isFavorite: values.isFavorite,
+        deadline: values.deadline || null
+      };
+    },
+    [copy, draft, projectId]
+  );
 
   useEffect(() => {
-    if (project == null || !isDraftReady || hydratedProjectIdRef.current !== project.id) {
+    if (
+      project == null ||
+      !isDraftReady ||
+      hydratedProjectIdRef.current !== project.id
+    ) {
       return;
     }
 

@@ -9,8 +9,7 @@ const devKeyUrl = new URL("./.cert/dev-key.pem", import.meta.url);
 const devCertUrl = new URL("./.cert/dev-cert.pem", import.meta.url);
 
 const hasLocalHttpsCerts =
-  fs.existsSync(devKeyUrl) &&
-  fs.existsSync(devCertUrl);
+  fs.existsSync(devKeyUrl) && fs.existsSync(devCertUrl);
 
 export default defineConfig({
   server: {
@@ -39,7 +38,8 @@ export default defineConfig({
       manifest: {
         name: "Task Planner",
         short_name: "Planner",
-        description: "Offline-first task planning across Inbox, Lists, and Today.",
+        description:
+          "Offline-first task planning across Inbox, Lists, and Today.",
         theme_color: "#0A0A0A",
         background_color: "#0A0A0A",
         display: "standalone",

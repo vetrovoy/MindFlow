@@ -9,7 +9,11 @@ import {
 
 import { getTheme, type ThemeDefinition, type ThemeName } from "@mindflow/ui";
 
-import { applyDocumentTheme, getInitialTheme, persistTheme } from "@/shared/lib/theme";
+import {
+  applyDocumentTheme,
+  getInitialTheme,
+  persistTheme
+} from "@/shared/lib/theme";
 
 interface ThemeContextValue {
   theme: ThemeName;
@@ -36,7 +40,9 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     [theme]
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {

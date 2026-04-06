@@ -2,13 +2,20 @@ import { createInMemoryRepositoryBundle } from "@mindflow/data";
 import { archiveTask, createProject, createTask } from "@mindflow/domain";
 import { describe, expect, it } from "vitest";
 
-import { LEGACY_DATABASE_NAME, getLegacyUserDatabaseName, getUserDatabaseName } from "@/shared/model/app-storage.config";
+import {
+  LEGACY_DATABASE_NAME,
+  getLegacyUserDatabaseName,
+  getUserDatabaseName
+} from "@/shared/model/app-storage.config";
 import { migrateLegacyAnonymousData } from "./auth-migration";
 
 const NOW = "2026-03-29T12:00:00.000Z";
 
 function createRepositoryRegistry() {
-  const bundles = new Map<string, ReturnType<typeof createInMemoryRepositoryBundle>>();
+  const bundles = new Map<
+    string,
+    ReturnType<typeof createInMemoryRepositoryBundle>
+  >();
 
   return {
     repositoryFactory({ name }: { name: string }) {
@@ -71,7 +78,9 @@ describe("migrateLegacyAnonymousData", () => {
 
     const userRepository = registry.get(getUserDatabaseName(userId));
     expect(userRepository).toBeDefined();
-    await expect(userRepository?.projects.listAll()).resolves.toEqual([legacyProject]);
+    await expect(userRepository?.projects.listAll()).resolves.toEqual([
+      legacyProject
+    ]);
     await expect(userRepository?.tasks.listAll()).resolves.toEqual([
       legacyTask,
       legacyUserTask
@@ -115,16 +124,14 @@ describe("migrateLegacyAnonymousData", () => {
           now: duplicateProject.createdAt
         })
       );
-    await registry
-      .repositoryFactory({ name: LEGACY_DATABASE_NAME })
-      .tasks.save(
-        createTask({
-          ...duplicateTask,
-          title: "Legacy duplicate task",
-          now: duplicateTask.createdAt,
-          orderIndex: duplicateTask.orderIndex
-        })
-      );
+    await registry.repositoryFactory({ name: LEGACY_DATABASE_NAME }).tasks.save(
+      createTask({
+        ...duplicateTask,
+        title: "Legacy duplicate task",
+        now: duplicateTask.createdAt,
+        orderIndex: duplicateTask.orderIndex
+      })
+    );
     await registry
       .repositoryFactory({ name: LEGACY_DATABASE_NAME })
       .tasks.save(incomingTask);
@@ -139,7 +146,9 @@ describe("migrateLegacyAnonymousData", () => {
       repositoryFactory: registry.repositoryFactory
     });
 
-    await expect(userRepository.projects.listAll()).resolves.toEqual([duplicateProject]);
+    await expect(userRepository.projects.listAll()).resolves.toEqual([
+      duplicateProject
+    ]);
     await expect(userRepository.tasks.listAll()).resolves.toEqual([
       duplicateTask,
       incomingTask

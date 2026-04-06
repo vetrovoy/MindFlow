@@ -28,7 +28,9 @@ export function ProjectTaskReorderFeature({
   tasks
 }: ProjectTaskReorderFeatureProps) {
   const { actions } = useAppState();
-  const sortableTasksCount = tasks.filter((task) => task.status !== "done").length;
+  const sortableTasksCount = tasks.filter(
+    (task) => task.status !== "done"
+  ).length;
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, {

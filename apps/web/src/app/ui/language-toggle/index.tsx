@@ -32,10 +32,17 @@ export function LanguageToggle() {
             side="bottom"
             sideOffset={12}
           >
-            <div aria-label={copy.language.label} className={styles.options} role="group">
+            <div
+              aria-label={copy.language.label}
+              className={styles.options}
+              role="group"
+            >
               {SUPPORTED_LANGUAGES.map((item) => (
                 <button
-                  className={cn(styles.option, language === item && styles.optionActive)}
+                  className={cn(
+                    styles.option,
+                    language === item && styles.optionActive
+                  )}
                   key={item}
                   onClick={() => {
                     setLanguage(item);
@@ -49,7 +56,11 @@ export function LanguageToggle() {
                 </button>
               ))}
             </div>
-            <Popover.Arrow className={styles.popoverArrow} height={10} width={18} />
+            <Popover.Arrow
+              className={styles.popoverArrow}
+              height={10}
+              width={18}
+            />
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>

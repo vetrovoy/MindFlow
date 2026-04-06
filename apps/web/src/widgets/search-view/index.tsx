@@ -8,8 +8,16 @@ import { useAppState } from "@/shared/model/app-store-provider";
 import { sortProjects, sortTasks } from "@/shared/model/task-store.helpers";
 import { Icon, ProjectCard } from "@/shared/ui";
 import { Body, MetaText } from "@/shared/ui/typography";
-import { SectionTitle, StateCard, SurfaceCard, TextField } from "@/shared/ui/primitives";
-import { SearchSortControl, type SearchSortOption } from "./ui/search-sort-control";
+import {
+  SectionTitle,
+  StateCard,
+  SurfaceCard,
+  TextField
+} from "@/shared/ui/primitives";
+import {
+  SearchSortControl,
+  type SearchSortOption
+} from "./ui/search-sort-control";
 import styles from "./index.module.css";
 
 export function SearchViewWidget() {
@@ -18,30 +26,30 @@ export function SearchViewWidget() {
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<SearchSortOption>("relevance");
 
-  const results = useMemo(
-    () => {
-      const nextResults = searchEntities(state.tasks, state.projects, query);
-      const sortedTasks = sortTasks(nextResults.tasks);
-      const sortedProjects = sortProjects(nextResults.projects);
+  const results = useMemo(() => {
+    const nextResults = searchEntities(state.tasks, state.projects, query);
+    const sortedTasks = sortTasks(nextResults.tasks);
+    const sortedProjects = sortProjects(nextResults.projects);
 
-      if (sortBy === "date") {
-        sortedTasks.sort((a, b) => {
-          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-          return dateB - dateA;
-        });
-      }
+    if (sortBy === "date") {
+      sortedTasks.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+    }
 
-      return {
-        tasks: sortedTasks,
-        projects: sortedProjects
-      };
-    },
-    [query, state.projects, state.tasks, sortBy]
-  );
+    return {
+      tasks: sortedTasks,
+      projects: sortedProjects
+    };
+  }, [query, state.projects, state.tasks, sortBy]);
   const normalizedQuery = query.trim();
   const projectSectionsById = useMemo(
-    () => new Map(derived.projectSections.map((section) => [section.project.id, section])),
+    () =>
+      new Map(
+        derived.projectSections.map((section) => [section.project.id, section])
+      ),
     [derived.projectSections]
   );
   const hasResults = results.tasks.length > 0 || results.projects.length > 0;
@@ -90,7 +98,9 @@ export function SearchViewWidget() {
                 <section className={styles.group}>
                   <div className={styles.groupHeader}>
                     <MetaText as="strong">{copy.search.tasksTitle}</MetaText>
-                    <Body className={styles.groupMeta}>{results.tasks.length}</Body>
+                    <Body className={styles.groupMeta}>
+                      {results.tasks.length}
+                    </Body>
                   </div>
                   <TaskListEntity
                     onOpenTask={actions.openTaskEdit}
@@ -105,7 +115,9 @@ export function SearchViewWidget() {
                 <section className={styles.group}>
                   <div className={styles.groupHeader}>
                     <MetaText as="strong">{copy.search.projectsTitle}</MetaText>
-                    <Body className={styles.groupMeta}>{results.projects.length}</Body>
+                    <Body className={styles.groupMeta}>
+                      {results.projects.length}
+                    </Body>
                   </div>
                   <div className={styles.projectGrid}>
                     {results.projects.map((project) => {

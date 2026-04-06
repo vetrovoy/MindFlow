@@ -80,7 +80,10 @@ export function AppHeaderActions({
       </div>
       <div className={styles.headerMenuMobile}>
         <IconButton ariaLabel={createAriaLabel} icon="add" onClick={onCreate} />
-        <Popover.Root onOpenChange={setIsHeaderMenuOpen} open={isHeaderMenuOpen}>
+        <Popover.Root
+          onOpenChange={setIsHeaderMenuOpen}
+          open={isHeaderMenuOpen}
+        >
           <Popover.Trigger asChild>
             <IconButton
               ariaLabel={copy.task.moreActionsTrigger}

@@ -62,7 +62,9 @@ function createProviderState(snapshot: AuthStorageSnapshot): AuthProviderState {
   };
 }
 
-function toSnapshot(state: Pick<AuthProviderState, "users" | "session" | "legacyMigrated">) {
+function toSnapshot(
+  state: Pick<AuthProviderState, "users" | "session" | "legacyMigrated">
+) {
   return {
     version: AUTH_STORAGE_VERSION,
     users: state.users,
@@ -120,7 +122,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
   );
 
   const signUp = useCallback(
-    async (name: string, email: string, password: string, confirmPassword: string) => {
+    async (
+      name: string,
+      email: string,
+      password: string,
+      confirmPassword: string
+    ) => {
       const copy = getRuntimeCopy();
       const normalizedEmail = normalizeAuthEmail(email);
 

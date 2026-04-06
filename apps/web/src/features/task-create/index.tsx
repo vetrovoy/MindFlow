@@ -16,9 +16,7 @@ import {
   SelectField,
   TextAreaField
 } from "@/shared/ui";
-import {
-  INBOX_SELECT_VALUE,
-} from "@/features/task-edit/model/task-edit.constants";
+import { INBOX_SELECT_VALUE } from "@/features/task-edit/model/task-edit.constants";
 import {
   getTaskPriorityIconName,
   getTaskPriorityLabel,

@@ -9,7 +9,7 @@ import {
   MetaText,
   RadioCardGroup,
   SelectField,
-  TextAreaField,
+  TextAreaField
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
 import { INBOX_SELECT_VALUE } from "../model/task-edit.constants";
@@ -193,7 +193,10 @@ export function TaskEditMain({
           title={`${copy.task.statusAriaLabel}: ${statusLabel}`}
         />
 
-        <TaskDockPopover iconName="more" triggerLabel={copy.task.moreActionsTrigger}>
+        <TaskDockPopover
+          iconName="more"
+          triggerLabel={copy.task.moreActionsTrigger}
+        >
           <div className={styles.menuBody}>
             <ConfirmDialog
               confirmAriaLabel={copy.editor.confirmAriaLabel}

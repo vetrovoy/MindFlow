@@ -22,7 +22,8 @@ export function TaskDockPopover({
       active={active}
       iconName={iconName}
       triggerClassName={className}
-      triggerLabel={triggerLabel}>
+      triggerLabel={triggerLabel}
+    >
       {children}
     </DockPopover>
   );

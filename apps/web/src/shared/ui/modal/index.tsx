@@ -84,9 +84,13 @@ export function ModalHeader({
   return (
     <header className={styles.header}>
       <div className={styles.headerCopy}>
-        {eyebrow == null ? null : <div className={styles.eyebrow}>{eyebrow}</div>}
+        {eyebrow == null ? null : (
+          <div className={styles.eyebrow}>{eyebrow}</div>
+        )}
         <div className={styles.title}>{title}</div>
-        {description == null ? null : <div className={styles.description}>{description}</div>}
+        {description == null ? null : (
+          <div className={styles.description}>{description}</div>
+        )}
       </div>
       <div className={styles.headerActions}>
         {actions}

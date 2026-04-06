@@ -4,7 +4,10 @@ import type { CopyDictionary } from "@mindflow/copy";
 import type { IconName } from "@/shared/ui";
 import styles from "../index.module.css";
 
-export function getTaskPriorityLabel(copy: CopyDictionary, priority: TaskPriority) {
+export function getTaskPriorityLabel(
+  copy: CopyDictionary,
+  priority: TaskPriority
+) {
   switch (priority) {
     case "high":
       return copy.priority.high;

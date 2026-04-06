@@ -19,7 +19,8 @@ export function ProjectCreateDockPopover({
     <DockPopover
       active={active}
       iconName={iconName}
-      triggerLabel={triggerLabel}>
+      triggerLabel={triggerLabel}
+    >
       {children}
     </DockPopover>
   );

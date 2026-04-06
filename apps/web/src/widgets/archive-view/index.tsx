@@ -31,14 +31,18 @@ export function ArchiveViewWidget() {
     () =>
       state.tasks
         .filter((task) => task.archivedAt != null)
-        .sort((left, right) => (right.archivedAt ?? "").localeCompare(left.archivedAt ?? "")),
+        .sort((left, right) =>
+          (right.archivedAt ?? "").localeCompare(left.archivedAt ?? "")
+        ),
     [state.tasks]
   );
   const archivedProjects = useMemo(
     () =>
       state.projects
         .filter((project) => project.archivedAt != null)
-        .sort((left, right) => (right.archivedAt ?? "").localeCompare(left.archivedAt ?? "")),
+        .sort((left, right) =>
+          (right.archivedAt ?? "").localeCompare(left.archivedAt ?? "")
+        ),
     [state.projects]
   );
 
@@ -58,7 +62,9 @@ export function ArchiveViewWidget() {
               <section className={styles.group}>
                 <div className={styles.groupHeader}>
                   <MetaText as="strong">{copy.archive.tasksTitle}</MetaText>
-                  <Body className={styles.groupMeta}>{archivedTasks.length}</Body>
+                  <Body className={styles.groupMeta}>
+                    {archivedTasks.length}
+                  </Body>
                 </div>
                 <div className={styles.rows}>
                   {archivedTasks.map((task) => (
@@ -67,7 +73,11 @@ export function ArchiveViewWidget() {
                       onRestore={(taskId) => {
                         void actions.restoreTask(taskId);
                       }}
-                      project={task.projectId == null ? null : projectById.get(task.projectId) ?? null}
+                      project={
+                        task.projectId == null
+                          ? null
+                          : (projectById.get(task.projectId) ?? null)
+                      }
                       task={task}
                     />
                   ))}
@@ -78,7 +88,9 @@ export function ArchiveViewWidget() {
               <section className={styles.group}>
                 <div className={styles.groupHeader}>
                   <MetaText as="strong">{copy.archive.projectsTitle}</MetaText>
-                  <Body className={styles.groupMeta}>{archivedProjects.length}</Body>
+                  <Body className={styles.groupMeta}>
+                    {archivedProjects.length}
+                  </Body>
                 </div>
                 <div className={styles.rows}>
                   {archivedProjects.map((project) => (

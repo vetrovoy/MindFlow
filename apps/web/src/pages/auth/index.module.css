@@ -42,7 +42,11 @@
   height: 220px;
   top: -56px;
   right: -28px;
-  background: color-mix(in srgb, var(--mf-color-accent-primary) 32%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 32%,
+    transparent
+  );
 }
 
 .cardWrap::after {
@@ -50,7 +54,11 @@
   height: 180px;
   left: -48px;
   bottom: -36px;
-  background: color-mix(in srgb, var(--mf-color-text-secondary) 10%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mf-color-text-secondary) 10%,
+    transparent
+  );
 }
 
 .card {
@@ -72,7 +80,11 @@
 
 .subtitle {
   max-width: 48ch;
-  color: color-mix(in srgb, var(--mf-color-text-primary) 76%, var(--mf-color-text-secondary));
+  color: color-mix(
+    in srgb,
+    var(--mf-color-text-primary) 76%,
+    var(--mf-color-text-secondary)
+  );
 }
 
 .formPanel {
@@ -82,7 +94,9 @@
   border-radius: var(--mf-shape-shell-radius);
   border: 1px solid var(--mf-border-shell);
   background: var(--mf-surface-shell-strong);
-  box-shadow: var(--mf-inset-highlight-soft), 0 24px 60px var(--mf-color-shadow-strong);
+  box-shadow:
+    var(--mf-inset-highlight-soft),
+    0 24px 60px var(--mf-color-shadow-strong);
   backdrop-filter: var(--mf-effect-background-blur);
 }
 
@@ -92,7 +106,8 @@
   gap: 8px;
   padding: 6px;
   border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 84%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 84%, transparent);
   background: var(--mf-surface-panel-muted);
   box-shadow: var(--mf-inset-highlight-soft);
 }
@@ -125,16 +140,16 @@
 }
 
 .modeButtonActive {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--mf-color-accent-primary) 92%, white 6%),
-      var(--mf-color-accent-primary)
-    );
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mf-color-accent-primary) 92%, white 6%),
+    var(--mf-color-accent-primary)
+  );
   color: var(--mf-color-background);
   box-shadow:
     var(--mf-inset-highlight-strong),
-    0 8px 20px color-mix(in srgb, var(--mf-color-accent-primary) 22%, transparent);
+    0 8px 20px
+      color-mix(in srgb, var(--mf-color-accent-primary) 22%, transparent);
 }
 
 .form {
@@ -172,14 +187,22 @@
   padding-inline: var(--mf-space-3xl);
   border-radius: 20px;
   background: color-mix(in srgb, var(--mf-color-surface-deep) 88%, transparent);
-  border-color: color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-border-medium) 88%,
+    transparent
+  );
   box-shadow:
     var(--mf-inset-highlight-soft),
     0 0 0 1px transparent;
 }
 
 .input:hover {
-  border-color: color-mix(in srgb, var(--mf-color-border-strong) 92%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-border-strong) 92%,
+    transparent
+  );
   background: color-mix(in srgb, var(--mf-color-surface-deep) 94%, transparent);
 }
 
@@ -207,7 +230,11 @@
 
 .passwordToggle:hover,
 .passwordToggle:focus-visible {
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 82%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mf-color-surface-elevated) 82%,
+    transparent
+  );
   outline: none;
 }
 
@@ -220,14 +247,20 @@
   letter-spacing: 0.01em;
   box-shadow:
     var(--mf-inset-highlight-strong),
-    0 14px 32px color-mix(in srgb, var(--mf-color-accent-primary) 20%, transparent);
+    0 14px 32px
+      color-mix(in srgb, var(--mf-color-accent-primary) 20%, transparent);
 }
 
 .error {
   padding: var(--mf-space-lg) var(--mf-space-xl);
   border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-accent-alert) 48%, transparent);
-  background: color-mix(in srgb, var(--mf-color-accent-alert) 10%, var(--mf-color-surface));
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-accent-alert) 48%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-alert) 10%,
+    var(--mf-color-surface)
+  );
   color: var(--mf-color-text-primary);
 }
 

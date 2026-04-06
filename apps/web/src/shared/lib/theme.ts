@@ -1,5 +1,8 @@
 import { getTheme, resolveThemeName, type ThemeName } from "@mindflow/ui";
-import { safeReadStorage, safeWriteStorage } from "@/shared/lib/browser-storage";
+import {
+  safeReadStorage,
+  safeWriteStorage
+} from "@/shared/lib/browser-storage";
 
 export const APP_THEME_STORAGE_KEY = "planner-theme";
 

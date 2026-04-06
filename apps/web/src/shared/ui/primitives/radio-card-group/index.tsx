@@ -45,7 +45,9 @@ export function RadioCardGroup<TValue extends string>({
           <div className={styles.radioCardCopy}>
             <span className={styles.radioCardTitle}>{option.label}</span>
             {option.helper ? (
-              <span className={styles.radioCardDescription}>{option.helper}</span>
+              <span className={styles.radioCardDescription}>
+                {option.helper}
+              </span>
             ) : null}
           </div>
           <span className={styles.radioCardIndicatorWrap}>

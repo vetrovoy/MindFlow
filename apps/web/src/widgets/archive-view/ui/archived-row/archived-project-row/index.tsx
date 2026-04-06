@@ -29,7 +29,9 @@ export function ArchivedProjectRow({
               {project.name}
             </Title>
             <div className={styles.metaRow}>
-              <Body className={styles.metaValue}>{copy.project.taskCount(taskCount)}</Body>
+              <Body className={styles.metaValue}>
+                {copy.project.taskCount(taskCount)}
+              </Body>
               <span className={styles.metaDivider} />
               <Body className={styles.metaValue}>
                 {project.deadline == null

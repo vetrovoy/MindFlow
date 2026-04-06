@@ -15,5 +15,6 @@
 
 .section + .section {
   padding-top: var(--mf-space-4xl);
-  border-top: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 72%, transparent);
+  border-top: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 72%, transparent);
 }

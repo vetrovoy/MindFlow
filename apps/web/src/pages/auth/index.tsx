@@ -20,14 +20,18 @@ export function AuthPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const copy = useCopy();
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, isHydrated, signIn, signUp } = useAuth();
-  const redirectTo = useMemo(() => getAuthRedirectTarget(location.state), [location.state]);
+  const redirectTo = useMemo(
+    () => getAuthRedirectTarget(location.state),
+    [location.state]
+  );
 
   if (!isHydrated) {
     return null;
@@ -52,7 +56,9 @@ export function AuthPage() {
       navigate(redirectTo, { replace: true });
     } catch (error) {
       setSubmitError(
-        error instanceof Error ? error.message : copy.common.unexpectedLocalDataError
+        error instanceof Error
+          ? error.message
+          : copy.common.unexpectedLocalDataError
       );
     } finally {
       setIsSubmitting(false);
@@ -121,7 +127,9 @@ export function AuthPage() {
                   >
                     {mode === "sign-up" ? (
                       <label className={styles.fieldGroup}>
-                        <MetaText className={styles.fieldLabel}>{copy.auth.nameLabel}</MetaText>
+                        <MetaText className={styles.fieldLabel}>
+                          {copy.auth.nameLabel}
+                        </MetaText>
                         <TextField
                           autoComplete="name"
                           className={styles.input}
@@ -134,7 +142,9 @@ export function AuthPage() {
                     ) : null}
 
                     <label className={styles.fieldGroup}>
-                      <MetaText className={styles.fieldLabel}>{copy.auth.emailLabel}</MetaText>
+                      <MetaText className={styles.fieldLabel}>
+                        {copy.auth.emailLabel}
+                      </MetaText>
                       <TextField
                         autoComplete="email"
                         className={styles.input}
@@ -155,7 +165,11 @@ export function AuthPage() {
                         {copy.auth.passwordLabel}
                       </MetaText>
                       <TextField
-                        autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
+                        autoComplete={
+                          mode === "sign-in"
+                            ? "current-password"
+                            : "new-password"
+                        }
                         className={cn(styles.input, styles.passwordInput)}
                         onChange={(event) => setPassword(event.target.value)}
                         placeholder={copy.auth.passwordPlaceholder}
@@ -163,9 +177,15 @@ export function AuthPage() {
                         value={password}
                       />
                       <button
-                        aria-label={isPasswordVisible ? "Скрыть пароль" : "Показать пароль"}
+                        aria-label={
+                          isPasswordVisible
+                            ? "Скрыть пароль"
+                            : "Показать пароль"
+                        }
                         className={styles.passwordToggle}
-                        onClick={() => setIsPasswordVisible((current) => !current)}
+                        onClick={() =>
+                          setIsPasswordVisible((current) => !current)
+                        }
                         type="button"
                       >
                         <Icon
@@ -185,14 +205,18 @@ export function AuthPage() {
                         <TextField
                           autoComplete="new-password"
                           className={cn(styles.input, styles.passwordInput)}
-                          onChange={(event) => setConfirmPassword(event.target.value)}
+                          onChange={(event) =>
+                            setConfirmPassword(event.target.value)
+                          }
                           placeholder={copy.auth.confirmPasswordPlaceholder}
                           type={isConfirmPasswordVisible ? "text" : "password"}
                           value={confirmPassword}
                         />
                         <button
                           aria-label={
-                            isConfirmPasswordVisible ? "Скрыть пароль" : "Показать пароль"
+                            isConfirmPasswordVisible
+                              ? "Скрыть пароль"
+                              : "Показать пароль"
                           }
                           className={styles.passwordToggle}
                           onClick={() =>
@@ -212,7 +236,9 @@ export function AuthPage() {
                   </div>
 
                   {submitError != null ? (
-                    <SupportText className={styles.error}>{submitError}</SupportText>
+                    <SupportText className={styles.error}>
+                      {submitError}
+                    </SupportText>
                   ) : null}
 
                   <ActionButton
@@ -220,7 +246,9 @@ export function AuthPage() {
                     disabled={isSubmitting}
                     type="submit"
                   >
-                    {mode === "sign-in" ? copy.auth.signInSubmit : copy.auth.signUpSubmit}
+                    {mode === "sign-in"
+                      ? copy.auth.signInSubmit
+                      : copy.auth.signUpSubmit}
                   </ActionButton>
                 </form>
               </div>

@@ -14,7 +14,11 @@ export interface StateCardProps {
 
 export function StateCard({ description, title, variant }: StateCardProps) {
   const iconName =
-    variant === "error" ? "close" : variant === "loading" ? "search" : "checkbox-empty";
+    variant === "error"
+      ? "close"
+      : variant === "loading"
+        ? "search"
+        : "checkbox-empty";
 
   return (
     <div
@@ -43,7 +47,13 @@ export function StateCard({ description, title, variant }: StateCardProps) {
           decorative
           name={iconName}
           size={16}
-          tone={variant === "error" ? "alert" : variant === "loading" ? "accent" : "muted"}
+          tone={
+            variant === "error"
+              ? "alert"
+              : variant === "loading"
+                ? "accent"
+                : "muted"
+          }
         />
       </div>
       <div className={styles.stateContent}>
@@ -51,7 +61,9 @@ export function StateCard({ description, title, variant }: StateCardProps) {
           as="strong"
           className={cn(
             styles.stateTitle,
-            variant === "error" ? styles.stateTitleError : styles.stateTitleDefault
+            variant === "error"
+              ? styles.stateTitleError
+              : styles.stateTitleDefault
           )}
         >
           {title}

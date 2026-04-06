@@ -1,7 +1,7 @@
 import type { CopyDictionary } from "@mindflow/copy";
 import type { IconProps } from "@/shared/ui/icons";
 import type { Task } from "@mindflow/domain";
-import styles from './index.module.css'
+import styles from "./index.module.css";
 
 export function getTaskPriorityTone(
   priority: Task["priority"]

@@ -13,15 +13,12 @@ interface BottomNavItemProps {
 export function BottomNavItem({ icon, label, to }: BottomNavItemProps) {
   return (
     <NavLink
-      className={({ isActive }) => cn(styles.link, isActive && styles.linkActive)}
+      className={({ isActive }) =>
+        cn(styles.link, isActive && styles.linkActive)
+      }
       to={to}
     >
-      <Icon
-        className={styles.icon}
-        name={icon}
-        size={16}
-        tone="muted"
-      />
+      <Icon className={styles.icon} name={icon} size={16} tone="muted" />
       <span>{label}</span>
     </NavLink>
   );

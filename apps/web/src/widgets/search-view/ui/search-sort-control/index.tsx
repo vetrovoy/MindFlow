@@ -9,7 +9,10 @@ interface SearchSortControlProps {
   onSortChange: (sort: SearchSortOption) => void;
 }
 
-export function SearchSortControl({ sortBy, onSortChange }: SearchSortControlProps) {
+export function SearchSortControl({
+  sortBy,
+  onSortChange
+}: SearchSortControlProps) {
   const copy = useCopy();
 
   return (

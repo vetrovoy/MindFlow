@@ -27,7 +27,11 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top, var(--mf-color-spotlight-featured), transparent 32%),
+    radial-gradient(
+      circle at top,
+      var(--mf-color-spotlight-featured),
+      transparent 32%
+    ),
     linear-gradient(
       180deg,
       var(--mf-gradient-app-background-start) 0%,

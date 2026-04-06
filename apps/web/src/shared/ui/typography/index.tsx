@@ -8,7 +8,12 @@ interface TextProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
 }
 
-export function Display({ as = "h1", children, className, ...rest }: TextProps) {
+export function Display({
+  as = "h1",
+  children,
+  className,
+  ...rest
+}: TextProps) {
   const Component = as;
 
   return (
@@ -18,7 +23,12 @@ export function Display({ as = "h1", children, className, ...rest }: TextProps) 
   );
 }
 
-export function Heading({ as = "h2", children, className, ...rest }: TextProps) {
+export function Heading({
+  as = "h2",
+  children,
+  className,
+  ...rest
+}: TextProps) {
   const Component = as;
 
   return (
@@ -48,7 +58,12 @@ export function Body({ as = "p", children, className, ...rest }: TextProps) {
   );
 }
 
-export function SupportText({ as = "p", children, className, ...rest }: TextProps) {
+export function SupportText({
+  as = "p",
+  children,
+  className,
+  ...rest
+}: TextProps) {
   const Component = as;
 
   return (
@@ -58,7 +73,12 @@ export function SupportText({ as = "p", children, className, ...rest }: TextProp
   );
 }
 
-export function MetaText({ as = "span", children, className, ...rest }: TextProps) {
+export function MetaText({
+  as = "span",
+  children,
+  className,
+  ...rest
+}: TextProps) {
   const Component = as;
 
   return (
@@ -68,7 +88,12 @@ export function MetaText({ as = "span", children, className, ...rest }: TextProp
   );
 }
 
-export function Eyebrow({ as = "span", children, className, ...rest }: TextProps) {
+export function Eyebrow({
+  as = "span",
+  children,
+  className,
+  ...rest
+}: TextProps) {
   const Component = as;
 
   return (

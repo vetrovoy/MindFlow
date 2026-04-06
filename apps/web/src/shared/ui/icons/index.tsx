@@ -25,7 +25,7 @@ import {
   Search,
   Star,
   Trash2,
-  X,
+  X
 } from "lucide-react";
 import type {
   IconName as SharedIconName,
@@ -85,7 +85,7 @@ export function Icon({
   tone = "default"
 }: IconProps) {
   const Component = ICONS[name];
-  
+
   return (
     <Component
       aria-hidden={decorative}

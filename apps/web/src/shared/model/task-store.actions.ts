@@ -20,11 +20,11 @@ import type { RepositoryBundle } from "@mindflow/data";
 import { getNowIso } from "@/shared/lib/date";
 import { createId } from "@/shared/lib/ids";
 import { getRuntimeCopy } from "@/shared/lib/language";
-import { getProjectDecoration, getProjectDecorationByColor } from "@/shared/lib/projects";
 import {
-  getNextOrderIndex,
-  formatError
-} from "./task-store.helpers";
+  getProjectDecoration,
+  getProjectDecorationByColor
+} from "@/shared/lib/projects";
+import { getNextOrderIndex, formatError } from "./task-store.helpers";
 import type {
   AppActions,
   AppState,
@@ -239,7 +239,9 @@ export function createAppActions({
       }
 
       const saved = await runMutation(async () => {
-        await repository.projects.save(archiveProjectEntity(project, getNowIso()));
+        await repository.projects.save(
+          archiveProjectEntity(project, getNowIso())
+        );
       });
 
       if (saved) {
@@ -278,7 +280,9 @@ export function createAppActions({
       }
 
       const saved = await runMutation(async () => {
-        await repository.projects.save(restoreProjectEntity(project, getNowIso()));
+        await repository.projects.save(
+          restoreProjectEntity(project, getNowIso())
+        );
       });
 
       if (saved) {
@@ -314,7 +318,9 @@ export function createAppActions({
 
       patchState({
         selectedInboxTaskIds: selectedInboxTaskIds.includes(taskId)
-          ? selectedInboxTaskIds.filter((currentTaskId) => currentTaskId !== taskId)
+          ? selectedInboxTaskIds.filter(
+              (currentTaskId) => currentTaskId !== taskId
+            )
           : [...selectedInboxTaskIds, taskId]
       });
     },
@@ -355,8 +361,15 @@ export function createAppActions({
         targetProjectId = nextProject.id;
       }
 
-      const selectedTasks = tasks.filter((task) => orderedSelection.includes(task.id));
-      const movedTasks = bulkMoveToProject(selectedTasks, orderedSelection, targetProjectId, now);
+      const selectedTasks = tasks.filter((task) =>
+        orderedSelection.includes(task.id)
+      );
+      const movedTasks = bulkMoveToProject(
+        selectedTasks,
+        orderedSelection,
+        targetProjectId,
+        now
+      );
 
       const saved = await runMutation(async () => {
         if (nextProject != null) {
@@ -390,7 +403,11 @@ export function createAppActions({
         return false;
       }
 
-      const reorderedTasks = reorderTasks(projectTasks, orderedTaskIds, getNowIso());
+      const reorderedTasks = reorderTasks(
+        projectTasks,
+        orderedTaskIds,
+        getNowIso()
+      );
       const saved = await runMutation(async () => {
         await repository.tasks.saveMany(reorderedTasks);
       });

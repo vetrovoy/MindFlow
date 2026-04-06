@@ -15,8 +15,10 @@ interface DockPopoverProps {
   arrowClassName?: string;
 }
 
-interface DockIconButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+interface DockIconButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "children"
+> {
   iconName: IconName;
   active?: boolean;
   className?: string;
@@ -35,7 +37,12 @@ export function DockIconButton({
       type={type}
       {...props}
     >
-      <Icon decorative name={iconName} size={18} tone={active ? "accent" : "default"} />
+      <Icon
+        decorative
+        name={iconName}
+        size={18}
+        tone={active ? "accent" : "default"}
+      />
     </button>
   );
 }
@@ -71,7 +78,11 @@ export function DockPopover({
           sideOffset={12}
         >
           {children}
-          <Popover.Arrow className={cn(styles.arrow, arrowClassName)} height={10} width={18} />
+          <Popover.Arrow
+            className={cn(styles.arrow, arrowClassName)}
+            height={10}
+            width={18}
+          />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

@@ -26,7 +26,11 @@
 .trigger:hover,
 .trigger:focus-visible {
   color: var(--mf-color-text-primary);
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 40%, var(--mf-color-border-strong));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 40%,
+    var(--mf-color-border-strong)
+  );
   transform: translateY(-1px);
 }
 
@@ -85,31 +89,51 @@
 .option:focus-visible {
   color: var(--mf-color-text-primary);
   background: var(--mf-color-surface-interactive-hover);
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 20%, var(--mf-color-border-strong));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 20%,
+    var(--mf-color-border-strong)
+  );
   transform: translateY(-1px);
   box-shadow: var(--mf-inset-highlight-soft);
 }
 
 .optionActive {
   color: var(--mf-color-background);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-accent-primary) 88%, white 6%), var(--mf-color-accent-primary));
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 88%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mf-color-accent-primary) 88%, white 6%),
+    var(--mf-color-accent-primary)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 88%,
+    transparent
+  );
   box-shadow:
     var(--mf-inset-highlight-strong),
-    0 10px 20px color-mix(in srgb, var(--mf-color-accent-primary) 18%, transparent);
+    0 10px 20px
+      color-mix(in srgb, var(--mf-color-accent-primary) 18%, transparent);
 }
 
 .optionActive:hover,
 .optionActive:focus-visible {
   color: var(--mf-color-background);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mf-color-accent-primary) 88%, white 6%), var(--mf-color-accent-primary));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mf-color-accent-primary) 88%, white 6%),
+    var(--mf-color-accent-primary)
+  );
   transform: none;
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 88%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 88%,
+    transparent
+  );
   box-shadow:
     var(--mf-inset-highlight-strong),
-    0 10px 20px color-mix(in srgb, var(--mf-color-accent-primary) 18%, transparent);
+    0 10px 20px
+      color-mix(in srgb, var(--mf-color-accent-primary) 18%, transparent);
 }
 
 .optionCode {

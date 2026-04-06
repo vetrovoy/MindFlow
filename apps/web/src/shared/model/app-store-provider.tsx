@@ -17,7 +17,10 @@ const AppStoreContext = createContext<AppStoreApi | null>(null);
 export function AppStoreProvider({ children }: PropsWithChildren) {
   const { session } = useAuth();
   const store = useMemo(
-    () => (session == null ? null : createAppStore(getUserDatabaseName(session.userId))),
+    () =>
+      session == null
+        ? null
+        : createAppStore(getUserDatabaseName(session.userId)),
     [session?.userId]
   );
 
@@ -30,7 +33,9 @@ export function AppStoreProvider({ children }: PropsWithChildren) {
   }, [store]);
 
   return (
-    <AppStoreContext.Provider value={store}>{children}</AppStoreContext.Provider>
+    <AppStoreContext.Provider value={store}>
+      {children}
+    </AppStoreContext.Provider>
   );
 }
 
@@ -38,7 +43,9 @@ export function useAppState() {
   const store = useContext(AppStoreContext);
 
   if (store == null) {
-    throw new Error("useAppState must be used within an authenticated AppStoreProvider");
+    throw new Error(
+      "useAppState must be used within an authenticated AppStoreProvider"
+    );
   }
 
   return useStore(

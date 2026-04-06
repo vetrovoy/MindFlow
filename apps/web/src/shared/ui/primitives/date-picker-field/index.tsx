@@ -19,12 +19,17 @@ export interface DatePickerFieldProps {
   onChange: (value: string) => void;
 }
 
-function formatDateLabel(value: string, language: ReturnType<typeof useLanguage>["language"]) {
+function formatDateLabel(
+  value: string,
+  language: ReturnType<typeof useLanguage>["language"]
+) {
   if (!value) {
     return getCopy(language).common.chooseDate;
   }
 
-  return format(parseISO(value), "d MMMM yyyy", { locale: getDateFnsLocale(language) });
+  return format(parseISO(value), "d MMMM yyyy", {
+    locale: getDateFnsLocale(language)
+  });
 }
 
 export function DatePickerField({
@@ -48,7 +53,11 @@ export function DatePickerField({
       <Popover.Trigger asChild>
         <button
           aria-labelledby={ariaLabelledBy}
-          aria-label={isIconTrigger && !ariaLabelledBy ? copy.common.chooseDate : undefined}
+          aria-label={
+            isIconTrigger && !ariaLabelledBy
+              ? copy.common.chooseDate
+              : undefined
+          }
           className={cn(
             styles.trigger,
             isIconTrigger && styles.triggerIcon,
@@ -63,7 +72,11 @@ export function DatePickerField({
           ) : (
             <>
               <span className={styles.triggerValue}>
-                <Icon name="today" size={16} tone={value ? "accent" : "muted"} />
+                <Icon
+                  name="today"
+                  size={16}
+                  tone={value ? "accent" : "muted"}
+                />
                 {value ? formatDateLabel(value, language) : resolvedPlaceholder}
               </span>
               <Icon name="chevron-down" size={16} tone="muted" />
@@ -72,7 +85,11 @@ export function DatePickerField({
         </button>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content align="start" className={styles.content} sideOffset={10}>
+        <Popover.Content
+          align="start"
+          className={styles.content}
+          sideOffset={10}
+        >
           <div className={styles.header}>
             {value ? (
               <button

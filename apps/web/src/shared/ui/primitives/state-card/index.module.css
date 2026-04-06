@@ -6,15 +6,24 @@
 }
 
 .stateCardError {
-  border: 1px solid color-mix(in srgb, var(--mf-color-accent-alert) 48%, transparent);
-  background: color-mix(in srgb, var(--mf-color-accent-alert) 7%, var(--mf-color-surface));
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-accent-alert) 48%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-alert) 7%,
+    var(--mf-color-surface)
+  );
   border-radius: var(--mf-radius-card);
   padding: var(--mf-space-3xl);
 }
 
 .stateCardLoading {
   border: 1px solid var(--mf-color-border-medium);
-  background: color-mix(in srgb, var(--mf-color-accent-primary) 4%, var(--mf-color-surface));
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 4%,
+    var(--mf-color-surface)
+  );
   border-radius: var(--mf-radius-card);
   padding: var(--mf-space-3xl);
 }
@@ -34,13 +43,29 @@
 }
 
 .stateAccentError {
-  border-color: color-mix(in srgb, var(--mf-color-accent-alert) 42%, transparent);
-  background: color-mix(in srgb, var(--mf-color-accent-alert) 12%, var(--mf-color-surface-elevated));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-alert) 42%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-alert) 12%,
+    var(--mf-color-surface-elevated)
+  );
 }
 
 .stateAccentLoading {
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 34%, transparent);
-  background: color-mix(in srgb, var(--mf-color-accent-primary) 10%, var(--mf-color-surface-elevated));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 34%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 10%,
+    var(--mf-color-surface-elevated)
+  );
 }
 
 .stateAccentEmpty {

@@ -4,7 +4,10 @@ import {
   resolvePreferredLanguage,
   type AppLanguage
 } from "@mindflow/copy";
-import { safeReadStorage, safeWriteStorage } from "@/shared/lib/browser-storage";
+import {
+  safeReadStorage,
+  safeWriteStorage
+} from "@/shared/lib/browser-storage";
 
 export const LEGACY_LANGUAGE_STORAGE_KEY = "mindflow-language";
 export const APP_LANGUAGE_STORAGE_KEY = "planner-language";

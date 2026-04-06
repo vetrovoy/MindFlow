@@ -1,7 +1,8 @@
 .modalContent {
   width: min(var(--mf-layout-modal-width-task), 100%);
   max-height: min(86vh, 840px);
-  padding: 18px var(--mf-space-4xl) calc(var(--mf-space-4xl) + env(safe-area-inset-bottom));
+  padding: 18px var(--mf-space-4xl)
+    calc(var(--mf-space-4xl) + env(safe-area-inset-bottom));
 }
 
 .root {
@@ -35,7 +36,9 @@
   border: 1px solid var(--mf-border-shell);
   border-radius: calc(var(--mf-radius-card) - var(--mf-space-sm));
   background: var(--mf-surface-hero);
-  box-shadow: var(--mf-inset-highlight-soft), 0 24px 54px var(--mf-color-shadow-soft);
+  box-shadow:
+    var(--mf-inset-highlight-soft),
+    0 24px 54px var(--mf-color-shadow-soft);
 }
 
 .titleField {
@@ -84,8 +87,13 @@
   min-height: 32px;
   padding: 0 12px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 82%, transparent);
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 82%, var(--mf-color-surface-deep));
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 82%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mf-color-surface-elevated) 82%,
+    var(--mf-color-surface-deep)
+  );
   color: var(--mf-color-text-secondary);
   font-size: 11px;
   letter-spacing: 0.02em;
@@ -110,20 +118,44 @@
 
 .metaChipProgress,
 .metaChipFavorite {
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 52%, transparent);
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 88%, var(--mf-color-surface));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 52%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-surface-elevated) 88%,
+    var(--mf-color-surface)
+  );
   color: color-mix(in srgb, var(--mf-color-text-primary) 96%, transparent);
 }
 
 .metaChipRemaining {
-  border-color: color-mix(in srgb, var(--mf-color-text-primary) 18%, var(--mf-color-border-strong));
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 88%, var(--mf-color-surface-deep));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-text-primary) 18%,
+    var(--mf-color-border-strong)
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-surface-elevated) 88%,
+    var(--mf-color-surface-deep)
+  );
   color: var(--mf-color-text-primary);
 }
 
 .metaChipLime {
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 52%, transparent);
-  background: color-mix(in srgb, var(--mf-color-surface-elevated) 88%, var(--mf-color-surface));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 52%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-surface-elevated) 88%,
+    var(--mf-color-surface)
+  );
   color: color-mix(in srgb, var(--mf-color-text-primary) 96%, transparent);
 }
 
@@ -141,11 +173,14 @@
   gap: var(--mf-space-sm);
   width: fit-content;
   padding: var(--mf-space-lg);
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 86%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 86%, transparent);
   border-radius: 999px;
   background: var(--mf-surface-shell-strong);
   backdrop-filter: var(--mf-effect-shell-blur);
-  box-shadow: 0 18px 44px var(--mf-color-shadow-strong), var(--mf-inset-highlight-soft);
+  box-shadow:
+    0 18px 44px var(--mf-color-shadow-strong),
+    var(--mf-inset-highlight-soft);
 }
 
 .popoverBody {

@@ -10,6 +10,10 @@ export function getAuthRedirectTarget(state: unknown) {
     : "/inbox";
 }
 
-export function buildProtectedRouteRedirect(pathname: string, search = "", hash = "") {
+export function buildProtectedRouteRedirect(
+  pathname: string,
+  search = "",
+  hash = ""
+) {
   return `${pathname}${search}${hash}`;
 }

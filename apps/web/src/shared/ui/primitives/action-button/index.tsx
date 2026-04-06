@@ -17,7 +17,15 @@ export interface ActionButtonProps {
 
 export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
   function ActionButton(
-    { className, children, disabled, onClick, title, type = "button", variant = "primary" },
+    {
+      className,
+      children,
+      disabled,
+      onClick,
+      title,
+      type = "button",
+      variant = "primary"
+    },
     ref
   ) {
     return (

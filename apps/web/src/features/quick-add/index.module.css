@@ -1,7 +1,8 @@
 .modalContent {
   width: min(var(--mf-layout-modal-width-task), 100%);
   max-height: min(86vh, 840px);
-  padding: 18px var(--mf-space-4xl) calc(var(--mf-space-4xl) + env(safe-area-inset-bottom));
+  padding: 18px var(--mf-space-4xl)
+    calc(var(--mf-space-4xl) + env(safe-area-inset-bottom));
 }
 
 .root {
@@ -30,7 +31,9 @@
   border: 1px solid var(--mf-border-shell);
   border-radius: calc(var(--mf-radius-card) - var(--mf-space-sm));
   background: var(--mf-surface-hero);
-  box-shadow: var(--mf-inset-highlight-soft), 0 24px 54px var(--mf-color-shadow-soft);
+  box-shadow:
+    var(--mf-inset-highlight-soft),
+    0 24px 54px var(--mf-color-shadow-soft);
 }
 
 .titleField {
@@ -71,7 +74,8 @@
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-strong) 92%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-strong) 92%, transparent);
   background: color-mix(in srgb, var(--mf-color-surface) 84%, transparent);
   color: var(--mf-color-text-secondary);
   white-space: nowrap;
@@ -87,11 +91,14 @@
   gap: var(--mf-space-sm);
   width: fit-content;
   padding: var(--mf-space-lg);
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 86%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 86%, transparent);
   border-radius: 999px;
   background: var(--mf-surface-shell-strong);
   backdrop-filter: var(--mf-effect-shell-blur);
-  box-shadow: 0 18px 44px var(--mf-color-shadow-strong), var(--mf-inset-highlight-soft);
+  box-shadow:
+    0 18px 44px var(--mf-color-shadow-strong),
+    var(--mf-inset-highlight-soft);
 }
 
 .actionIcon {
@@ -121,10 +128,13 @@
   z-index: 40;
   width: min(var(--mf-layout-popover-width), calc(100vw - 32px));
   padding: var(--mf-space-lg);
-  border: 1px solid color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--mf-color-border-medium) 88%, transparent);
   border-radius: var(--mf-shape-popover-radius);
   background: var(--mf-surface-popover);
-  box-shadow: 0 30px 80px var(--mf-color-shadow-strong), var(--mf-inset-highlight-soft);
+  box-shadow:
+    0 30px 80px var(--mf-color-shadow-strong),
+    var(--mf-inset-highlight-soft);
 }
 
 .actionPopoverArrow {

@@ -195,7 +195,11 @@
 
 .dayButton:hover {
   background: var(--mf-color-surface-interactive-hover);
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 32%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 32%,
+    transparent
+  );
 }
 
 .daySelected .dayButton {

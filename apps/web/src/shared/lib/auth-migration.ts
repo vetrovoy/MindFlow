@@ -17,7 +17,8 @@ export async function migrateLegacyAnonymousData(
   userId: string,
   options: AuthMigrationOptions = {}
 ) {
-  const repositoryFactory = options.repositoryFactory ?? createDexieRepositoryBundle;
+  const repositoryFactory =
+    options.repositoryFactory ?? createDexieRepositoryBundle;
   const legacyRepository = repositoryFactory({
     name: LEGACY_DATABASE_NAME
   });
@@ -27,7 +28,14 @@ export async function migrateLegacyAnonymousData(
   const legacyUserRepository = repositoryFactory({
     name: getLegacyUserDatabaseName(userId)
   });
-  const [legacyTasks, legacyProjects, legacyUserTasks, legacyUserProjects, userTasks, userProjects] = await Promise.all([
+  const [
+    legacyTasks,
+    legacyProjects,
+    legacyUserTasks,
+    legacyUserProjects,
+    userTasks,
+    userProjects
+  ] = await Promise.all([
     legacyRepository.tasks.listAll(),
     legacyRepository.projects.listAll(),
     legacyUserRepository.tasks.listAll(),
@@ -44,8 +52,12 @@ export async function migrateLegacyAnonymousData(
 
   const userTaskIds = new Set(userTasks.map((task) => task.id));
   const userProjectIds = new Set(userProjects.map((project) => project.id));
-  const tasksToImport = mergedLegacyTasks.filter((task) => !userTaskIds.has(task.id));
-  const projectsToImport = mergedLegacyProjects.filter((project) => !userProjectIds.has(project.id));
+  const tasksToImport = mergedLegacyTasks.filter(
+    (task) => !userTaskIds.has(task.id)
+  );
+  const projectsToImport = mergedLegacyProjects.filter(
+    (project) => !userProjectIds.has(project.id)
+  );
 
   if (tasksToImport.length === 0 && projectsToImport.length === 0) {
     return;

@@ -8,10 +8,7 @@ import {
 import type { RepositoryBundle } from "@mindflow/data";
 
 import { getTodayDateKey } from "@/shared/lib/date";
-import type {
-  AppDerivedState,
-  AppState
-} from "./task-store.types";
+import type { AppDerivedState, AppState } from "./task-store.types";
 
 export const INITIAL_STATE: AppState = {
   tasks: [],
@@ -52,7 +49,9 @@ export function sortTasks(tasks: Task[]) {
 
 export function getVisibleTasks(tasks: Task[], projects: Project[]) {
   const archivedProjectIds = new Set(
-    projects.filter((project) => project.archivedAt != null).map((project) => project.id)
+    projects
+      .filter((project) => project.archivedAt != null)
+      .map((project) => project.id)
   );
 
   return tasks.filter((task) => {
@@ -70,7 +69,10 @@ export function getNextOrderIndex(
   excludingTaskId?: string
 ) {
   const matching = tasks.filter(
-    (task) => task.projectId === projectId && task.id !== excludingTaskId && task.archivedAt == null
+    (task) =>
+      task.projectId === projectId &&
+      task.id !== excludingTaskId &&
+      task.archivedAt == null
   );
 
   if (matching.length === 0) {
@@ -108,7 +110,9 @@ export function computeDerived(state: AppState): AppDerivedState {
   const todayFeed = buildTodayFeed(visibleTasks, getTodayDateKey());
   const projectSections = activeProjects.map((project) => ({
     project,
-    tasks: sortTasks(visibleTasks.filter((task) => task.projectId === project.id)),
+    tasks: sortTasks(
+      visibleTasks.filter((task) => task.projectId === project.id)
+    ),
     progress: getProjectProgress(visibleTasks, project.id)
   }));
 
@@ -118,7 +122,10 @@ export function computeDerived(state: AppState): AppDerivedState {
     favoriteProjects: activeProjects.filter((project) => project.isFavorite),
     regularProjects: activeProjects.filter((project) => !project.isFavorite),
     projectSections,
-    editingTask: state.tasks.find((task) => task.id === state.editingTaskId) ?? null,
-    editingProject: state.projects.find((project) => project.id === state.editingProjectId) ?? null
+    editingTask:
+      state.tasks.find((task) => task.id === state.editingTaskId) ?? null,
+    editingProject:
+      state.projects.find((project) => project.id === state.editingProjectId) ??
+      null
   };
 }

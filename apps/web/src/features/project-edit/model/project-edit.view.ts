@@ -1,9 +1,15 @@
-import { formatDisplayDate, type AppLanguage, type CopyDictionary } from "@mindflow/copy";
+import {
+  formatDisplayDate,
+  type AppLanguage,
+  type CopyDictionary
+} from "@mindflow/copy";
 
 import { PROJECT_DECORATIONS } from "@/shared/lib/projects";
 
 export function getProjectColorLabel(copy: CopyDictionary, color: string) {
-  const decoration = PROJECT_DECORATIONS.find((option) => option.color === color);
+  const decoration = PROJECT_DECORATIONS.find(
+    (option) => option.color === color
+  );
 
   if (decoration == null) {
     return copy.project.defaultMarkerLabel;
@@ -17,5 +23,7 @@ export function formatProjectDeadlineLabel(
   language: AppLanguage,
   deadline: string
 ) {
-  return deadline ? formatDisplayDate(deadline, language) : copy.project.noDeadline;
+  return deadline
+    ? formatDisplayDate(deadline, language)
+    : copy.project.noDeadline;
 }

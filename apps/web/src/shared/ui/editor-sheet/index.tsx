@@ -55,11 +55,19 @@ export function ConfirmActionRow({
   tone = "default"
 }: ConfirmActionRowProps) {
   return (
-    <div className={cn(styles.confirmRow, tone === "alert" && styles.confirmRowAlert)}>
+    <div
+      className={cn(
+        styles.confirmRow,
+        tone === "alert" && styles.confirmRowAlert
+      )}
+    >
       <div className={styles.confirmCopy}>
         <MetaText
           as="strong"
-          className={cn(styles.confirmTitle, tone === "alert" && styles.confirmTitleAlert)}
+          className={cn(
+            styles.confirmTitle,
+            tone === "alert" && styles.confirmTitleAlert
+          )}
         >
           {title}
         </MetaText>

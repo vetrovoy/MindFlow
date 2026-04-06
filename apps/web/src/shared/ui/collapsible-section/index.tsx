@@ -23,11 +23,16 @@ export function CollapsibleSection({
   title
 }: CollapsibleSectionProps) {
   return (
-    <Collapsible.Root className={cn(styles.root, className)} defaultOpen={defaultOpen}>
+    <Collapsible.Root
+      className={cn(styles.root, className)}
+      defaultOpen={defaultOpen}
+    >
       <Collapsible.Trigger className={styles.trigger}>
         <div className={styles.heading}>
           <strong className={styles.title}>{title}</strong>
-          {count == null ? null : <MetaText className={styles.count}>{count}</MetaText>}
+          {count == null ? null : (
+            <MetaText className={styles.count}>{count}</MetaText>
+          )}
         </div>
         <span className={styles.chevron}>
           <Icon decorative name="chevron-right" size={16} tone="muted" />

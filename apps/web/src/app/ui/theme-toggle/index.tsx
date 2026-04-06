@@ -19,14 +19,22 @@ function getThemeLabel(copy: ReturnType<typeof useCopy>, theme: ThemeName) {
   return copy.theme[theme];
 }
 
-export function ThemeOptions({ className, compact = false, onSelect }: ThemeOptionsProps) {
+export function ThemeOptions({
+  className,
+  compact = false,
+  onSelect
+}: ThemeOptionsProps) {
   const copy = useCopy();
   const { theme, setTheme } = useTheme();
 
   return (
     <div
       aria-label={copy.theme.label}
-      className={cn(styles.options, compact && styles.optionsCompact, className)}
+      className={cn(
+        styles.options,
+        compact && styles.optionsCompact,
+        className
+      )}
       role="group"
     >
       {SUPPORTED_THEMES.map((item) => {
@@ -56,7 +64,9 @@ export function ThemeOptions({ className, compact = false, onSelect }: ThemeOpti
               <span className={styles.swatchAccent} />
             </span>
             {compact ? null : (
-              <span className={styles.optionLabel}>{getThemeLabel(copy, item)}</span>
+              <span className={styles.optionLabel}>
+                {getThemeLabel(copy, item)}
+              </span>
             )}
           </button>
         );
@@ -73,7 +83,11 @@ export function ThemeToggle() {
     <div className={styles.wrap}>
       <Popover.Root onOpenChange={setOpen} open={open}>
         <Popover.Trigger asChild>
-          <button aria-label={copy.theme.label} className={styles.trigger} type="button">
+          <button
+            aria-label={copy.theme.label}
+            className={styles.trigger}
+            type="button"
+          >
             <Icon className={styles.triggerIcon} name="palette" size={20} />
           </button>
         </Popover.Trigger>
@@ -89,7 +103,11 @@ export function ThemeToggle() {
                 setOpen(false);
               }}
             />
-            <Popover.Arrow className={styles.popoverArrow} height={10} width={18} />
+            <Popover.Arrow
+              className={styles.popoverArrow}
+              height={10}
+              width={18}
+            />
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>

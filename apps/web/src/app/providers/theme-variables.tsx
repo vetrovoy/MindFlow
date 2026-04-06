@@ -31,8 +31,10 @@ function createRootVariables(theme: ThemeDefinition) {
     "--mf-color-text-muted": theme.colors.textMuted,
     "--mf-color-surface-deep": theme.colors.surfaceDeep,
     "--mf-color-surface-interactive": theme.colors.surfaceInteractive,
-    "--mf-color-surface-interactive-hover": theme.colors.surfaceInteractiveHover,
-    "--mf-color-surface-interactive-active": theme.colors.surfaceInteractiveActive,
+    "--mf-color-surface-interactive-hover":
+      theme.colors.surfaceInteractiveHover,
+    "--mf-color-surface-interactive-active":
+      theme.colors.surfaceInteractiveActive,
     "--mf-color-overlay-scrim": theme.colors.overlayScrim,
     "--mf-color-overlay-handle": theme.colors.overlayHandle,
     "--mf-color-overlay-ghost": theme.colors.overlayGhost,
@@ -45,9 +47,12 @@ function createRootVariables(theme: ThemeDefinition) {
     "--mf-color-accent-primary": theme.colors.accentPrimary,
     "--mf-color-accent-primary-glow": theme.colors.accentPrimaryGlow,
     "--mf-color-accent-primary-ring-soft": theme.colors.accentPrimaryRingSoft,
-    "--mf-color-accent-primary-ring-medium": theme.colors.accentPrimaryRingMedium,
-    "--mf-color-accent-primary-ring-strong": theme.colors.accentPrimaryRingStrong,
-    "--mf-color-accent-primary-panel-border": theme.colors.accentPrimaryPanelBorder,
+    "--mf-color-accent-primary-ring-medium":
+      theme.colors.accentPrimaryRingMedium,
+    "--mf-color-accent-primary-ring-strong":
+      theme.colors.accentPrimaryRingStrong,
+    "--mf-color-accent-primary-panel-border":
+      theme.colors.accentPrimaryPanelBorder,
     "--mf-color-accent-primary-panel-glow": theme.colors.accentPrimaryPanelGlow,
     "--mf-color-accent-alert": theme.colors.accentAlert,
     "--mf-color-accent-success-deep": theme.colors.accentSuccessDeep,

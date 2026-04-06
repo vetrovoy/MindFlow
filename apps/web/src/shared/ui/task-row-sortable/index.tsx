@@ -47,7 +47,8 @@ export function TaskRowSortable({
         onToggleDone={onToggleDone}
         task={task}
         trailingSlot={
-          showDragIcon && !isDone && (
+          showDragIcon &&
+          !isDone && (
             <button
               {...attributes}
               {...listeners}

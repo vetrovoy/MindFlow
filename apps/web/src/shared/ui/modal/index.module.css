@@ -22,7 +22,8 @@
     var(--mf-gradient-overlay-depth-end)
   );
   box-shadow: 0 -24px 80px var(--mf-color-shadow-strong);
-  padding: 14px var(--mf-space-5xl) calc(var(--mf-space-5xl) + env(safe-area-inset-bottom));
+  padding: 14px var(--mf-space-5xl)
+    calc(var(--mf-space-5xl) + env(safe-area-inset-bottom));
 }
 
 .handle {
@@ -92,7 +93,8 @@
   .content {
     width: min(100%, calc(100vw - (var(--mf-space-lg) * 2)));
     max-height: 92vh;
-    padding: 14px var(--mf-space-4xl) calc(var(--mf-space-4xl) + env(safe-area-inset-bottom));
+    padding: 14px var(--mf-space-4xl)
+      calc(var(--mf-space-4xl) + env(safe-area-inset-bottom));
   }
 
   .headerActions {

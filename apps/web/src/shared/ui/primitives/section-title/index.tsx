@@ -16,7 +16,9 @@ export function SectionTitle({ action, subtitle, title }: SectionTitleProps) {
         <Heading as="h2" className={styles.sectionHeading}>
           {title}
         </Heading>
-        {subtitle == null ? null : <Body className={styles.sectionSubtitle}>{subtitle}</Body>}
+        {subtitle == null ? null : (
+          <Body className={styles.sectionSubtitle}>{subtitle}</Body>
+        )}
       </div>
       {action}
     </header>

@@ -8,10 +8,17 @@ import styles from "./index.module.css";
 export function ListsViewWidget() {
   const copy = useCopy();
   const { actions, derived } = useAppState();
-  const favoriteSections = derived.projectSections.filter((section) => section.project.isFavorite);
-  const regularSections = derived.projectSections.filter((section) => !section.project.isFavorite);
+  const favoriteSections = derived.projectSections.filter(
+    (section) => section.project.isFavorite
+  );
+  const regularSections = derived.projectSections.filter(
+    (section) => !section.project.isFavorite
+  );
 
-  function renderProjectTasks(projectId: string, tasks: typeof derived.projectSections[number]["tasks"]) {
+  function renderProjectTasks(
+    projectId: string,
+    tasks: (typeof derived.projectSections)[number]["tasks"]
+  ) {
     if (tasks.length === 0) {
       return (
         <StateCard
@@ -45,16 +52,16 @@ export function ListsViewWidget() {
           />
           <div className={styles.sections}>
             {favoriteSections.map((section) => (
-                <div key={section.project.id} className={styles.section}>
-                  <ProjectCard
-                    onOpenProject={actions.openProjectEdit}
-                    progress={section.progress}
-                    project={section.project}
-                    tasks={section.tasks}
-                  />
-                  {renderProjectTasks(section.project.id, section.tasks)}
-                </div>
-              ))}
+              <div key={section.project.id} className={styles.section}>
+                <ProjectCard
+                  onOpenProject={actions.openProjectEdit}
+                  progress={section.progress}
+                  project={section.project}
+                  tasks={section.tasks}
+                />
+                {renderProjectTasks(section.project.id, section.tasks)}
+              </div>
+            ))}
           </div>
         </SurfaceCard>
       ) : null}
@@ -63,16 +70,16 @@ export function ListsViewWidget() {
           <SectionTitle title={copy.lists.allTitle} />
           <div className={styles.sections}>
             {regularSections.map((section) => (
-                <div key={section.project.id} className={styles.section}>
-                  <ProjectCard
-                    onOpenProject={actions.openProjectEdit}
-                    progress={section.progress}
-                    project={section.project}
-                    tasks={section.tasks}
-                  />
-                  {renderProjectTasks(section.project.id, section.tasks)}
-                </div>
-              ))}
+              <div key={section.project.id} className={styles.section}>
+                <ProjectCard
+                  onOpenProject={actions.openProjectEdit}
+                  progress={section.progress}
+                  project={section.project}
+                  tasks={section.tasks}
+                />
+                {renderProjectTasks(section.project.id, section.tasks)}
+              </div>
+            ))}
           </div>
         </SurfaceCard>
       ) : null}

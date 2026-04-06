@@ -14,11 +14,7 @@ import {
   sortTasks
 } from "./task-store.helpers";
 import { createAppActions } from "./task-store.actions";
-import type {
-  AppState,
-  AppStore,
-  ToastState
-} from "./task-store.types";
+import type { AppState, AppStore, ToastState } from "./task-store.types";
 
 export type AppStoreApi = StoreApi<AppStore>;
 
@@ -30,9 +26,11 @@ export function createAppStore(
   databaseName: string,
   options: CreateAppStoreOptions = {}
 ): AppStoreApi {
-  const repository = (options.repositoryFactory ?? createDexieRepositoryBundle)({
-    name: databaseName
-  });
+  const repository = (options.repositoryFactory ?? createDexieRepositoryBundle)(
+    {
+      name: databaseName
+    }
+  );
 
   return createStore<AppStore>((set, get) => {
     let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -81,17 +79,21 @@ export function createAppStore(
         patchState({
           tasks: snapshot.tasks,
           projects: snapshot.projects,
-          selectedInboxTaskIds: currentState.selectedInboxTaskIds.filter((taskId) =>
-            visibleInboxIds.has(taskId)
+          selectedInboxTaskIds: currentState.selectedInboxTaskIds.filter(
+            (taskId) => visibleInboxIds.has(taskId)
           ),
           editingTaskId:
             currentState.editingTaskId != null &&
-            snapshot.tasks.some((task) => task.id === currentState.editingTaskId)
+            snapshot.tasks.some(
+              (task) => task.id === currentState.editingTaskId
+            )
               ? currentState.editingTaskId
               : null,
           editingProjectId:
             currentState.editingProjectId != null &&
-            snapshot.projects.some((project) => project.id === currentState.editingProjectId)
+            snapshot.projects.some(
+              (project) => project.id === currentState.editingProjectId
+            )
               ? currentState.editingProjectId
               : null,
           isHydrated: true

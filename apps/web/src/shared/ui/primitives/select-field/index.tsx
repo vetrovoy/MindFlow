@@ -37,7 +37,11 @@ export function SelectField({
   const resolvedPlaceholder = placeholder ?? copy.common.chooseValue;
 
   return (
-    <Select.Root disabled={disabled} onValueChange={onValueChange} value={value}>
+    <Select.Root
+      disabled={disabled}
+      onValueChange={onValueChange}
+      value={value}
+    >
       <Select.Trigger
         aria-labelledby={ariaLabelledBy}
         className={cn(styles.trigger, className)}
@@ -58,7 +62,11 @@ export function SelectField({
         >
           <Select.Viewport className={styles.viewport}>
             {options.map((option) => (
-              <Select.Item className={styles.item} key={option.value} value={option.value}>
+              <Select.Item
+                className={styles.item}
+                key={option.value}
+                value={option.value}
+              >
                 <Select.ItemText>{option.label}</Select.ItemText>
                 <Select.ItemIndicator className={styles.itemIndicator}>
                   <Icon name="check" size={14} tone="accent" />

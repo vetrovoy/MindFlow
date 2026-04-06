@@ -46,7 +46,12 @@ export function SystemStatusWidget() {
         open={state.toast != null}
       >
         <div className={styles.left}>
-          <Icon className={styles.successIcon} name="check" size={14} tone="success" />
+          <Icon
+            className={styles.successIcon}
+            name="check"
+            size={14}
+            tone="success"
+          />
           <div className={styles.content}>
             <Toast.Title asChild>
               <Title as="strong" className={styles.text}>
@@ -55,12 +60,16 @@ export function SystemStatusWidget() {
             </Toast.Title>
             {state.toast?.description ? (
               <Toast.Description asChild>
-                <span className={styles.description}>{state.toast.description}</span>
+                <span className={styles.description}>
+                  {state.toast.description}
+                </span>
               </Toast.Description>
             ) : null}
           </div>
         </div>
-        <MetaText className={styles.metaSuccess}>{copy.common.successMeta}</MetaText>
+        <MetaText className={styles.metaSuccess}>
+          {copy.common.successMeta}
+        </MetaText>
       </Toast.Root>
 
       <Toast.Root
@@ -74,7 +83,12 @@ export function SystemStatusWidget() {
         open={state.error != null}
       >
         <div className={styles.left}>
-          <Icon className={styles.errorIcon} name="close" size={14} tone="alert" />
+          <Icon
+            className={styles.errorIcon}
+            name="close"
+            size={14}
+            tone="alert"
+          />
           <div className={styles.content}>
             <Toast.Title asChild>
               <Title as="strong" className={styles.text}>
@@ -88,7 +102,9 @@ export function SystemStatusWidget() {
             )}
           </div>
         </div>
-        <MetaText className={styles.metaError}>{copy.common.errorMeta}</MetaText>
+        <MetaText className={styles.metaError}>
+          {copy.common.errorMeta}
+        </MetaText>
       </Toast.Root>
 
       <Toast.Viewport className={styles.viewport} />

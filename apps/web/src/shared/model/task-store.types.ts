@@ -75,8 +75,14 @@ export interface AppActions {
   closeTaskEdit: () => void;
   openProjectEdit: (projectId: string) => void;
   closeProjectEdit: () => void;
-  saveTaskEdit: (input: SaveTaskEditInput, options?: SaveOptions) => Promise<boolean>;
-  saveProjectEdit: (input: SaveProjectEditInput, options?: SaveOptions) => Promise<boolean>;
+  saveTaskEdit: (
+    input: SaveTaskEditInput,
+    options?: SaveOptions
+  ) => Promise<boolean>;
+  saveProjectEdit: (
+    input: SaveProjectEditInput,
+    options?: SaveOptions
+  ) => Promise<boolean>;
   archiveTask: (taskId: string) => Promise<void>;
   archiveProject: (projectId: string) => Promise<void>;
   restoreTask: (taskId: string) => Promise<void>;
@@ -88,8 +94,15 @@ export interface AppActions {
     projectId?: string;
     projectName?: string;
   }) => Promise<boolean>;
-  reorderProjectTasks: (projectId: string, orderedTaskIds: string[]) => Promise<boolean>;
-  createProject: (input: { name: string; deadline?: string | null; color?: string }) => Promise<boolean>;
+  reorderProjectTasks: (
+    projectId: string,
+    orderedTaskIds: string[]
+  ) => Promise<boolean>;
+  createProject: (input: {
+    name: string;
+    deadline?: string | null;
+    color?: string;
+  }) => Promise<boolean>;
   dismissToast: () => void;
   clearError: () => void;
   reload: () => Promise<void>;

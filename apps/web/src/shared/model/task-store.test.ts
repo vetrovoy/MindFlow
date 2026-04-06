@@ -1,4 +1,7 @@
-import { createInMemoryRepositoryBundle, type RepositoryBundle } from "@mindflow/data";
+import {
+  createInMemoryRepositoryBundle,
+  type RepositoryBundle
+} from "@mindflow/data";
 import { createProject, createTask } from "@mindflow/domain";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -41,9 +44,11 @@ describe("createAppStore", () => {
 
     await store.getState().actions.reload();
     expect(store.getState().derived.projectSections).toHaveLength(1);
-    expect(store.getState().derived.projectSections[0]?.tasks.map((entry) => entry.id)).toEqual([
-      "task-a"
-    ]);
+    expect(
+      store
+        .getState()
+        .derived.projectSections[0]?.tasks.map((entry) => entry.id)
+    ).toEqual(["task-a"]);
 
     await store.getState().actions.archiveProject(project.id);
     expect(store.getState().derived.projectSections).toHaveLength(0);
@@ -51,9 +56,11 @@ describe("createAppStore", () => {
 
     await store.getState().actions.restoreProject(project.id);
     expect(store.getState().derived.projectSections).toHaveLength(1);
-    expect(store.getState().derived.projectSections[0]?.tasks.map((entry) => entry.id)).toEqual([
-      "task-a"
-    ]);
+    expect(
+      store
+        .getState()
+        .derived.projectSections[0]?.tasks.map((entry) => entry.id)
+    ).toEqual(["task-a"]);
     expect(store.getState().state.toast?.title).toBeTruthy();
   });
 
@@ -100,11 +107,15 @@ describe("createAppStore", () => {
     vi.useFakeTimers();
 
     const store = createAppStore("test-store", {
-      repositoryFactory: createRepositoryFactory(createInMemoryRepositoryBundle())
+      repositoryFactory: createRepositoryFactory(
+        createInMemoryRepositoryBundle()
+      )
     });
 
     await store.getState().actions.reload();
-    await store.getState().actions.addInboxTask({ title: "Write hardening tests" });
+    await store
+      .getState()
+      .actions.addInboxTask({ title: "Write hardening tests" });
 
     expect(store.getState().state.toast?.title).toBeTruthy();
 

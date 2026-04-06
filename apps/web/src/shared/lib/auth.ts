@@ -1,6 +1,9 @@
 import { getNowIso } from "@/shared/lib/date";
 import { createId } from "@/shared/lib/ids";
-import { safeReadStorage, safeWriteStorage } from "@/shared/lib/browser-storage";
+import {
+  safeReadStorage,
+  safeWriteStorage
+} from "@/shared/lib/browser-storage";
 
 export const LEGACY_AUTH_STORAGE_KEY = "mindflow-auth";
 export const APP_AUTH_STORAGE_KEY = "planner-auth";
@@ -86,20 +89,22 @@ function sanitizeStoredSnapshot(value: unknown): AuthStorageSnapshot {
 
   const candidate = value as Record<string, unknown>;
   const users = Array.isArray(candidate.users)
-    ? candidate.users
-        .filter(isLocalAuthUser)
-        .map((user) => ({
-          ...user,
-          email: normalizeAuthEmail(user.email)
-        }))
+    ? candidate.users.filter(isLocalAuthUser).map((user) => ({
+        ...user,
+        email: normalizeAuthEmail(user.email)
+      }))
     : [];
   const usersById = new Map(users.map((user) => [user.id, user]));
-  const rawSession = isAuthSession(candidate.session) ? candidate.session : null;
-  const sessionUser = rawSession == null ? null : usersById.get(rawSession.userId) ?? null;
+  const rawSession = isAuthSession(candidate.session)
+    ? candidate.session
+    : null;
+  const sessionUser =
+    rawSession == null ? null : (usersById.get(rawSession.userId) ?? null);
 
   return {
     version:
-      typeof candidate.version === "number" && candidate.version >= AUTH_STORAGE_VERSION
+      typeof candidate.version === "number" &&
+      candidate.version >= AUTH_STORAGE_VERSION
         ? candidate.version
         : AUTH_STORAGE_VERSION,
     users,

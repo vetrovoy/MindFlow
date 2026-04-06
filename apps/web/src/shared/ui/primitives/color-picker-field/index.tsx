@@ -55,10 +55,15 @@ export function ColorPickerField({
         id={id}
         type="button"
       >
-          <span className={styles.triggerValue}>
-          <span className={styles.swatch} style={{ backgroundColor: normalizedValue }} />
+        <span className={styles.triggerValue}>
+          <span
+            className={styles.swatch}
+            style={{ backgroundColor: normalizedValue }}
+          />
           <span className={styles.triggerCopy}>
-            <span className={styles.triggerLabel}>{copy.project.defaultMarkerLabel}</span>
+            <span className={styles.triggerLabel}>
+              {copy.project.defaultMarkerLabel}
+            </span>
             <MetaText className={styles.triggerHex}>{normalizedValue}</MetaText>
           </span>
         </span>
@@ -75,10 +80,15 @@ export function ColorPickerField({
         >
           <div className={styles.header}>
             <div>
-              <MetaText className={styles.eyebrow}>{copy.project.changeMarkerTrigger}</MetaText>
+              <MetaText className={styles.eyebrow}>
+                {copy.project.changeMarkerTrigger}
+              </MetaText>
               <strong className={styles.valueLabel}>{normalizedValue}</strong>
             </div>
-            <span className={styles.headerSwatch} style={{ backgroundColor: normalizedValue }} />
+            <span
+              className={styles.headerSwatch}
+              style={{ backgroundColor: normalizedValue }}
+            />
           </div>
 
           <HexColorPicker
@@ -91,15 +101,21 @@ export function ColorPickerField({
 
           {presets.length === 0 ? null : (
             <div className={styles.presets}>
-              <MetaText className={styles.presetsLabel}>{copy.project.defaultMarkerLabel}</MetaText>
+              <MetaText className={styles.presetsLabel}>
+                {copy.project.defaultMarkerLabel}
+              </MetaText>
               <div className={styles.presetGrid}>
                 {presets.map((preset) => {
-                  const isActive = normalizeHex(preset.value) === normalizedValue;
+                  const isActive =
+                    normalizeHex(preset.value) === normalizedValue;
 
                   return (
                     <button
                       key={preset.value}
-                      className={cn(styles.preset, isActive && styles.presetActive)}
+                      className={cn(
+                        styles.preset,
+                        isActive && styles.presetActive
+                      )}
                       onClick={() => {
                         onChange(normalizeHex(preset.value));
                       }}

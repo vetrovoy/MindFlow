@@ -60,8 +60,16 @@
 }
 
 .stateChipSaving {
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 30%, var(--mf-color-border-medium));
-  background: color-mix(in srgb, var(--mf-color-accent-primary) 10%, var(--mf-color-surface-elevated));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 30%,
+    var(--mf-color-border-medium)
+  );
+  background: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 10%,
+    var(--mf-color-surface-elevated)
+  );
   color: var(--mf-color-text-primary);
 }
 

@@ -84,14 +84,22 @@
 
 .item:hover {
   background: var(--mf-color-surface-interactive-hover);
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 34%, var(--mf-color-border-medium));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 34%,
+    var(--mf-color-border-medium)
+  );
   box-shadow: inset 0 0 0 1px var(--mf-color-accent-primary-ring-soft);
   color: var(--mf-color-text-primary);
 }
 
 .item[data-highlighted] {
   background: var(--mf-color-surface-interactive-active);
-  border-color: color-mix(in srgb, var(--mf-color-accent-primary) 40%, var(--mf-color-border-medium));
+  border-color: color-mix(
+    in srgb,
+    var(--mf-color-accent-primary) 40%,
+    var(--mf-color-border-medium)
+  );
   box-shadow: inset 0 0 0 1px var(--mf-color-accent-primary-ring-medium);
   color: var(--mf-color-text-primary);
 }
