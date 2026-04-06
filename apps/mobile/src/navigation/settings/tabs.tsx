@@ -1,5 +1,5 @@
-import { SearchPage } from '@pages/search/ui/search-page';
-import { ArchivePage } from '@pages/archive/ui/archive-page';
+import { SearchPage } from '@mobile/pages/search';
+import { ArchivePage } from '@mobile/pages/archive';
 import { Icon } from '@mobile/shared/ui/icons';
 import { useTheme } from '@mobile/shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';

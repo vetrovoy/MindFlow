@@ -6,9 +6,9 @@ import { useCopy } from '@shared/lib/use-copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { sortProjects, sortTasks } from '@shared/model/selectors/task.selectors';
 import { ScreenShell } from '@shared/ui/primitives';
-import { SearchSortControl, type SearchSortOption } from './search-sort-control';
-import { SearchField } from './search-field';
-import { SearchResultsContent } from './search-results-content';
+import { SearchSortControl, type SearchSortOption } from './ui/search-sort-control';
+import { SearchField } from './ui/search-field';
+import { SearchResultsContent } from './ui/search-results-content';
 
 export function SearchPage() {
   const copy = useCopy();

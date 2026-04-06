@@ -14,6 +14,7 @@ module.exports = {
           '@mobile': './src',
           '@shared': './src/shared',
           '@pages': './src/pages',
+          '@entities': './src/entities',
           '@features': './src/features',
           '@widgets': './src/widgets',
           '@app': './src/app',

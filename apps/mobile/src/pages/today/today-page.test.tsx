@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { AppStore } from '@shared/model/types';
 import { fireEvent, render, screen } from '@mobile/test-utils';
-import { TodayPage } from './today-page';
+import { TodayPage } from '.';
 
 const mockUseMobileAppStore = jest.fn();
 

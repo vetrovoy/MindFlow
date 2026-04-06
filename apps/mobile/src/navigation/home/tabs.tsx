@@ -1,6 +1,6 @@
-import { InboxPage } from '@pages/inbox/ui/inbox-page';
-import { TodayPage } from '@pages/today/ui/today-page';
-import { ListsPage } from '@pages/lists/ui/lists-page';
+import { InboxPage } from '@mobile/pages/inbox';
+import { TodayPage } from '@mobile/pages/today';
+import { ListsPage } from '@mobile/pages/lists';
 import { Icon } from '@mobile/shared/ui/icons';
 import { useTheme } from '@mobile/shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';

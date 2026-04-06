@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useCopy } from '@shared/lib/use-copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { ScreenShell } from '@shared/ui/primitives';
-import { ArchiveResultsContent } from './archive-results-content';
+import { ArchiveResultsContent } from './ui/archive-results-content';
 
 export function ArchivePage() {
   const copy = useCopy();

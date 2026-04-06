@@ -11,7 +11,7 @@ import {
   SurfaceCard,
 } from '@shared/ui/primitives';
 
-import { DraggableTaskList } from '../../../entities/draggable-task-list';
+import { DraggableTaskList } from '@entities/draggable-task-list';
 
 
 const styles = StyleSheet.create({
