@@ -6,10 +6,15 @@ import type { AppStore } from './types';
 
 const AppStoreContext = createContext<AppStoreApi | null>(null);
 
-export function AppStoreProvider({ children }: { children: React.ReactNode }) {
+interface AppStoreProviderProps {
+  children: React.ReactNode;
+  userId: string;
+}
+
+export function AppStoreProvider({ children, userId }: AppStoreProviderProps) {
   const storeRef = useRef<AppStoreApi | null>(null);
   if (storeRef.current == null) {
-    storeRef.current = getMobileAppStore();
+    storeRef.current = getMobileAppStore(userId);
   }
   return (
     <AppStoreContext.Provider value={storeRef.current}>

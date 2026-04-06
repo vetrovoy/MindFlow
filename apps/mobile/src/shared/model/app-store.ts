@@ -8,10 +8,15 @@ import type { AppState, AppStore } from './types';
 
 export type AppStoreApi = StoreApi<AppStore>;
 
-let storeInstance: AppStoreApi | null = null;
+interface StoreEntry {
+  store: AppStoreApi;
+  userId: string;
+}
 
-export function createMobileAppStore(): AppStoreApi {
-  const repository = createSqliteRepositoryBundle({ name: 'mindflow' });
+let storeEntry: StoreEntry | null = null;
+
+export function createMobileAppStore(userId: string): AppStoreApi {
+  const repository = createSqliteRepositoryBundle({ name: `mindflow-${userId}` });
   const initialLanguage = resolveInitialLanguage();
   const initialState: AppState = { ...INITIAL_STATE, language: initialLanguage };
 
@@ -62,9 +67,15 @@ export function createMobileAppStore(): AppStoreApi {
   return store;
 }
 
-export function getMobileAppStore(): AppStoreApi {
-  if (storeInstance == null) {
-    storeInstance = createMobileAppStore();
+export function getMobileAppStore(userId: string): AppStoreApi {
+  if (storeEntry != null && storeEntry.userId === userId) {
+    return storeEntry.store;
   }
-  return storeInstance;
+  const store = createMobileAppStore(userId);
+  storeEntry = { store, userId };
+  return store;
+}
+
+export function resetMobileAppStore(): void {
+  storeEntry = null;
 }

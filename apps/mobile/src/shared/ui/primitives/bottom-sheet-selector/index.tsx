@@ -13,7 +13,7 @@ interface DrawerSettingsOption<T> {
   preview?: React.ReactNode;
 }
 
-interface DrawerSettingsSelectorProps<T> {
+interface BottomSheetSelectorProps<T> {
   icon: IconName;
   triggerLabel: string;
   currentLabel: string;
@@ -23,7 +23,7 @@ interface DrawerSettingsSelectorProps<T> {
   sheetTitle: string;
 }
 
-export function DrawerSettingsSelector<T extends string>({
+export function BottomSheetSelector<T extends string>({
   icon,
   triggerLabel,
   currentLabel,
@@ -31,7 +31,7 @@ export function DrawerSettingsSelector<T extends string>({
   value,
   onSelect,
   sheetTitle,
-}: DrawerSettingsSelectorProps<T>) {
+}: BottomSheetSelectorProps<T>) {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 

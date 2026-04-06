@@ -30,3 +30,7 @@ export function getSystemLanguage(): AppLanguage {
 export function resolveInitialLanguage(): AppLanguage {
   return getStoredLanguage() ?? getSystemLanguage();
 }
+
+export function getRuntimeLanguage(): AppLanguage {
+  return resolveInitialLanguage();
+}

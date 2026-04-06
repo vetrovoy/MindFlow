@@ -3,93 +3,33 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import type { CopyDictionary } from '@mindflow/copy';
 
 import { useThemeContext } from '@shared/theme/theme-context';
-import type { ThemeName } from '@mindflow/ui';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
+import { useAuthStore } from '@shared/model/auth-store';
+import { resetMobileAppStore } from '@shared/model/app-store';
 import { useCopy } from '@shared/lib/use-copy';
+import { getThemeOptions, getLanguageOptions } from '@shared/lib/settings-options';
 import { Icon } from '@shared/ui/icons';
 import {
-  BottomSheet,
-  DrawerNavItem,
-  DrawerSettingsSelector,
+  NavItem,
+  BottomSheetSelector,
 } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 import type { RootDrawerParamList } from '../types';
 
-function ThemePreview({ colors }: { colors: string[] }) {
-  return (
-    <View style={styles.themePreview}>
-      {colors.map((c, i) => (
-        <View
-          key={i}
-          style={[styles.themePreviewStrip, { backgroundColor: c }]}
-        />
-      ))}
-    </View>
-  );
-}
-
-function getThemeOptions(copy: CopyDictionary): {
-  value: ThemeName;
-  label: string;
-  preview: React.ReactNode;
-}[] {
-  return [
-    {
-      value: 'graphite',
-      label: copy.theme.graphite,
-      preview: <ThemePreview colors={['#0A0A0A', '#1D1D22', '#C4F82A']} />,
-    },
-    {
-      value: 'gilded',
-      label: copy.theme.gilded,
-      preview: <ThemePreview colors={['#FCF8F1', '#FFFDF9', '#C9A962']} />,
-    },
-    {
-      value: 'minimal',
-      label: copy.theme.minimal,
-      preview: <ThemePreview colors={['#FFFFFF', '#F9FAFB', '#2563EB']} />,
-    },
-  ];
-}
-
-function getLanguageOptions(copy: CopyDictionary) {
-  return [
-    { value: 'ru' as const, label: copy.language.ru },
-    { value: 'en' as const, label: copy.language.en },
-  ];
-}
-
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
+  safeArea: { flex: 1 },
   container: {
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 16,
     gap: 24,
   },
-  section: {
-    gap: 8,
-  },
+  section: { gap: 8 },
   divider: {
     height: 1,
     backgroundColor: 'rgba(128, 128, 128, 0.15)',
-  },
-  themePreview: {
-    width: 32,
-    height: 20,
-    borderRadius: 6,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: 'rgba(128,128,128,0.15)',
-  },
-  themePreviewStrip: {
-    flex: 1,
   },
   logoutRow: {
     flexDirection: 'row',
@@ -107,6 +47,7 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
   const { colors } = theme;
   const language = useMobileAppStore(s => s.state.language);
   const setLanguage = useMobileAppStore(s => s.actions.setLanguage);
+  const signOut = useAuthStore(s => s.actions.signOut);
   const copy = useCopy();
 
   const activeRoute = useNavigationState(state => {
@@ -140,68 +81,54 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
         <View style={styles.divider} />
 
         <View style={styles.section}>
-          <DrawerNavItem
+          <NavItem
             icon="nav-inbox"
             label={copy.navigation.inbox}
             active={activeRoute === 'Inbox'}
-            onPress={() => {
-              nav('Home', 'Inbox');
-            }}
+            onPress={() => { nav('Home', 'Inbox'); }}
           />
-          <DrawerNavItem
+          <NavItem
             icon="nav-today"
             label={copy.navigation.today}
             active={activeRoute === 'Today'}
-            onPress={() => {
-              nav('Home', 'Today');
-            }}
+            onPress={() => { nav('Home', 'Today'); }}
           />
-          <DrawerNavItem
+          <NavItem
             icon="nav-lists"
             label={copy.navigation.lists}
             active={activeRoute === 'Lists'}
-            onPress={() => {
-              nav('Home', 'Lists');
-            }}
+            onPress={() => { nav('Home', 'Lists'); }}
           />
-          <DrawerNavItem
+          <NavItem
             icon="search"
             label={copy.navigation.search}
             active={activeRoute === 'Search'}
-            onPress={() => {
-              nav('Settings', 'Search');
-            }}
+            onPress={() => { nav('Settings', 'Search'); }}
           />
-          <DrawerNavItem
+          <NavItem
             icon="archive"
             label={copy.navigation.archive}
             active={activeRoute === 'Archive'}
-            onPress={() => {
-              nav('Settings', 'Archive');
-            }}
+            onPress={() => { nav('Settings', 'Archive'); }}
           />
         </View>
 
         <View style={styles.divider} />
 
         <View style={styles.section}>
-          <DrawerSettingsSelector
+          <BottomSheetSelector
             icon="palette"
             triggerLabel={copy.theme.label}
-            currentLabel={
-              themeOptions.find(t => t.value === themeName)?.label ?? ''
-            }
+            currentLabel={themeOptions.find(t => t.value === themeName)?.label ?? ''}
             options={themeOptions}
             value={themeName}
             onSelect={setTheme}
             sheetTitle={copy.theme.label}
           />
-          <DrawerSettingsSelector
+          <BottomSheetSelector
             icon="language"
             triggerLabel={copy.language.label}
-            currentLabel={
-              languageOptions.find(l => l.value === language)?.label ?? ''
-            }
+            currentLabel={languageOptions.find(l => l.value === language)?.label ?? ''}
             options={languageOptions}
             value={language}
             onSelect={setLanguage}
@@ -215,6 +142,8 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
           accessibilityRole="button"
           onPress={() => {
             navigation.closeDrawer();
+            resetMobileAppStore();
+            signOut();
           }}
           style={[
             styles.logoutRow,

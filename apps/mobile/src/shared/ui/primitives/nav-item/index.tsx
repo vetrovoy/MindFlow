@@ -5,19 +5,19 @@ import { Icon } from '@shared/ui/icons';
 import { Body } from '@shared/ui/typography';
 import type { IconName } from '@mindflow/ui';
 
-interface DrawerNavItemProps {
+interface NavItemProps {
   icon: IconName;
   label: string;
   active: boolean;
   onPress: () => void;
 }
 
-export function DrawerNavItem({
+export function NavItem({
   icon,
   label,
   active,
   onPress,
-}: DrawerNavItemProps) {
+}: NavItemProps) {
   const { theme } = useTheme();
 
   return (

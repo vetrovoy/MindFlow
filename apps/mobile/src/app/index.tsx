@@ -6,8 +6,10 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 
 import { ThemeProvider } from '@shared/theme/theme-context';
 import { AppStoreProvider, useMobileAppStore } from '@shared/model/app-store-provider';
+import { useAuthStore } from '@shared/model/auth-store';
 import { AppToast } from '@shared/ui/primitives';
 import { RootNavigator } from '@mobile/navigation';
+import { AuthScreen } from '@mobile/features/auth/ui/auth-screen';
 
 function AppInit() {
   const reload = useMobileAppStore(s => s.actions.reload);
@@ -19,17 +21,29 @@ function AppInit() {
   return <RootNavigator />;
 }
 
+function AppContent() {
+  const session = useAuthStore(s => s.state.session);
+
+  if (session == null) {
+    return <AuthScreen />;
+  }
+
+  return (
+    <AppStoreProvider userId={session.userId}>
+      <AppInit />
+      <AppToast />
+    </AppStoreProvider>
+  );
+}
+
 export function MindFlowApp() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <ThemeProvider>
-          <AppStoreProvider>
-            <BottomSheetModalProvider>
-              <AppInit />
-              <AppToast />
-            </BottomSheetModalProvider>
-          </AppStoreProvider>
+          <BottomSheetModalProvider>
+            <AppContent />
+          </BottomSheetModalProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
