@@ -19,6 +19,7 @@ interface TaskRowProps {
   badgeVariant?: StatusPillProps['variant'];
   project?: Project | null;
   presentation?: 'default' | 'inbox';
+  accessory?: React.ReactNode;
 }
 
 const styles = StyleSheet.create({
@@ -119,7 +120,12 @@ function getPriorityTextTone(priority: Task['priority']) {
   }
 }
 
-const PRESSABLE_HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 } as const;
+const PRESSABLE_HIT_SLOP = {
+  top: 10,
+  bottom: 10,
+  left: 10,
+  right: 10,
+} as const;
 
 export const TaskRow = React.memo(function TaskRow({
   task,
@@ -128,6 +134,7 @@ export const TaskRow = React.memo(function TaskRow({
   onToggleDone,
   onOpenTask,
   presentation = 'default',
+  accessory,
 }: TaskRowProps) {
   const { theme } = useTheme();
   const isDone = task.status === 'done';
@@ -147,13 +154,14 @@ export const TaskRow = React.memo(function TaskRow({
         styles.taskRow,
         isInboxPresentation && styles.taskRowInbox,
         {
-          backgroundColor: isDone ? theme.colors.overlayGhost : theme.colors.surfaceCard,
-          borderColor:
-            isInboxPresentation
+          backgroundColor: isDone
+            ? theme.colors.overlayGhost
+            : theme.colors.surfaceCard,
+          borderColor: isInboxPresentation
+            ? theme.colors.borderSoft
+            : isDone
               ? theme.colors.borderSoft
-              : isDone
-                ? theme.colors.borderSoft
-                : theme.colors.borderMuted,
+              : theme.colors.borderMuted,
         },
       ]}
     >
@@ -167,11 +175,15 @@ export const TaskRow = React.memo(function TaskRow({
         style={[
           styles.checkbox,
           {
-            borderColor: isDone ? theme.colors.accentPrimary : theme.colors.borderStrong,
-            backgroundColor: isDone ? theme.colors.accentPrimary : 'transparent',
+            borderColor: isDone
+              ? theme.colors.accentPrimary
+              : theme.colors.borderStrong,
+            backgroundColor: isDone
+              ? theme.colors.accentPrimary
+              : 'transparent',
           },
         ]}
-       />
+      />
       <Pressable
         accessibilityRole="button"
         disabled={onOpenTask == null}
@@ -189,12 +201,18 @@ export const TaskRow = React.memo(function TaskRow({
         >
           {task.title}
         </Body>
-        <View style={[styles.taskMeta, isInboxPresentation && styles.taskMetaInbox]}>
+        <View
+          style={[styles.taskMeta, isInboxPresentation && styles.taskMetaInbox]}
+        >
           {isInboxPresentation ? (
             <>
               {badgeVariant ? (
                 <StatusPill
-                  label={badgeVariant === 'overdue' ? copy.task.badgeOverdue : copy.task.badgeToday}
+                  label={
+                    badgeVariant === 'overdue'
+                      ? copy.task.badgeOverdue
+                      : copy.task.badgeToday
+                  }
                   variant={badgeVariant}
                 />
               ) : null}
@@ -213,7 +231,9 @@ export const TaskRow = React.memo(function TaskRow({
                   size={12}
                   tone={priorityTone}
                 />
-                <Meta tone={priorityTextTone}>{copy.priority[task.priority]}</Meta>
+                <Meta tone={priorityTextTone}>
+                  {copy.priority[task.priority]}
+                </Meta>
               </View>
             </>
           ) : (
@@ -224,13 +244,23 @@ export const TaskRow = React.memo(function TaskRow({
                 size={14}
                 tone={priorityTone}
               />
-              <View style={[styles.priorityDot, { backgroundColor: priorityColor }]} />
+              <View
+                style={[styles.priorityDot, { backgroundColor: priorityColor }]}
+              />
               <Meta tone="soft">{copy.priority[task.priority]}</Meta>
               <Meta tone="muted">{getTaskStatusText(task)}</Meta>
-              {project ? <Meta tone="soft">{project.emoji} {project.name}</Meta> : null}
+              {project ? (
+                <Meta tone="soft">
+                  {project.emoji} {project.name}
+                </Meta>
+              ) : null}
               {badgeVariant ? (
                 <StatusPill
-                  label={badgeVariant === 'overdue' ? copy.task.badgeOverdue : copy.task.badgeToday}
+                  label={
+                    badgeVariant === 'overdue'
+                      ? copy.task.badgeOverdue
+                      : copy.task.badgeToday
+                  }
                   variant={badgeVariant}
                 />
               ) : null}
@@ -238,6 +268,7 @@ export const TaskRow = React.memo(function TaskRow({
           )}
         </View>
       </Pressable>
+      {accessory && accessory}
     </View>
   );
 

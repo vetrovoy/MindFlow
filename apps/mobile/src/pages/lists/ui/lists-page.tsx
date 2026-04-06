@@ -9,8 +9,9 @@ import {
   SectionHeader,
   StateCard,
   SurfaceCard,
-  TaskRow,
 } from '@shared/ui/primitives';
+
+import { DraggableTaskList } from './draggable-task-list';
 
 const copy = getCopy('ru');
 
@@ -21,15 +22,15 @@ const styles = StyleSheet.create({
   projectBlock: {
     gap: 10,
   },
-  taskList: {
-    gap: 8,
-  },
 });
 
 export function ListsPage() {
   const sections = useMobileAppStore(store => store.derived.projectSections);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);
+  const reorderProjectTasks = useMobileAppStore(
+    store => store.actions.reorderProjectTasks,
+  );
   const openProjectEdit = useMobileAppStore(
     store => store.actions.openProjectEdit,
   );
@@ -50,17 +51,13 @@ export function ListsPage() {
           onPress={() => openProjectEdit(section.project.id)}
         />
         {section.tasks.length > 0 ? (
-          <View style={styles.taskList}>
-            {section.tasks.map(task => (
-              <TaskRow
-                key={task.id}
-                task={task}
-                onToggleDone={toggleTask}
-                onOpenTask={openTaskEdit}
-                presentation="inbox"
-              />
-            ))}
-          </View>
+          <DraggableTaskList
+            tasks={section.tasks}
+            projectId={section.project.id}
+            onToggleDone={toggleTask}
+            onOpenTask={openTaskEdit}
+            onReorder={reorderProjectTasks}
+          />
         ) : (
           <StateCard
             variant="empty"
