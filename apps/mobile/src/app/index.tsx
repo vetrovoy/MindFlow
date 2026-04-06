@@ -42,7 +42,7 @@ function AppContent() {
   );
 }
 
-export function MindFlowApp() {
+export function App() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
