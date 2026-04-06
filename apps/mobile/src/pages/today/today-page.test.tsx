@@ -7,7 +7,8 @@ import { TodayPage } from '.';
 const mockUseMobileAppStore = jest.fn();
 
 jest.mock('@shared/model/app-store-provider', () => ({
-  useMobileAppStore: (selector: (store: AppStore) => unknown) => mockUseMobileAppStore(selector),
+  useMobileAppStore: (selector: (store: AppStore) => unknown) =>
+    mockUseMobileAppStore(selector),
 }));
 
 const baseStore: AppStore = {
@@ -54,6 +55,8 @@ const baseStore: AppStore = {
     clearError: jest.fn(),
     reload: jest.fn(),
     setLanguage: jest.fn(),
+    restoreTask: jest.fn(),
+    restoreProject: jest.fn(),
   },
 };
 
@@ -96,9 +99,17 @@ describe('TodayPage', () => {
   it('removes legacy subtitle and intro chrome', () => {
     renderWithStore();
 
-    expect(screen.queryByText('Смешанная лента для overdue и due-today задач с shared feedback-механикой.')).toBeNull();
+    expect(
+      screen.queryByText(
+        'Смешанная лента для overdue и due-today задач с shared feedback-механикой.',
+      ),
+    ).toBeNull();
     expect(screen.queryByText('Фокус дня')).toBeNull();
-    expect(screen.queryByText('Bottom sheet ниже уже готов как контейнер для task-edit flow из следующих задач.')).toBeNull();
+    expect(
+      screen.queryByText(
+        'Bottom sheet ниже уже готов как контейнер для task-edit flow из следующих задач.',
+      ),
+    ).toBeNull();
     expect(screen.queryByText('Быстрый захват')).toBeNull();
   });
 

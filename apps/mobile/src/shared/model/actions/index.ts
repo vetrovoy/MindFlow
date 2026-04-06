@@ -26,7 +26,11 @@ function getRuntimeCopy(getStore: () => AppStore) {
   return getCopy(getStore().state.language);
 }
 
-function setToast(getStore: () => AppStore, message: string, variant: 'success' | 'error' | 'info') {
+function setToast(
+  getStore: () => AppStore,
+  message: string,
+  variant: 'success' | 'error' | 'info',
+) {
   Toast.show({
     type: variant,
     text1: message,
@@ -240,7 +244,10 @@ export function createAppActions({
       patchState({ editingProjectId: null });
     },
     openTaskCreate(preferredDate) {
-      patchState({ isTaskCreateOpen: true, taskCreatePreferredDate: preferredDate ?? null });
+      patchState({
+        isTaskCreateOpen: true,
+        taskCreatePreferredDate: preferredDate ?? null,
+      });
     },
     closeTaskCreate() {
       patchState({ isTaskCreateOpen: false, taskCreatePreferredDate: null });
@@ -318,7 +325,9 @@ export function createAppActions({
       const project = projects.find(p => p.id === projectId);
       if (project == null) return;
       await runMutation(async () => {
-        await repository.projects.save(restoreProjectEntity(project, getNowIso()));
+        await repository.projects.save(
+          restoreProjectEntity(project, getNowIso()),
+        );
       });
       const copy = getRuntimeCopy(getStore);
       setToast(getStore, copy.project.restoredToastTitle, 'success');

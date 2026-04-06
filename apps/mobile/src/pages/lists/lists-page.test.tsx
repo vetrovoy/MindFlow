@@ -7,7 +7,8 @@ import { ListsPage } from '.';
 const mockUseMobileAppStore = jest.fn();
 
 jest.mock('@shared/model/app-store-provider', () => ({
-  useMobileAppStore: (selector: (store: AppStore) => unknown) => mockUseMobileAppStore(selector),
+  useMobileAppStore: (selector: (store: AppStore) => unknown) =>
+    mockUseMobileAppStore(selector),
 }));
 
 const baseStore: AppStore = {
@@ -54,6 +55,8 @@ const baseStore: AppStore = {
     clearError: jest.fn(),
     reload: jest.fn(),
     setLanguage: jest.fn(),
+    restoreTask: jest.fn(),
+    restoreProject: jest.fn(),
   },
 };
 
@@ -93,7 +96,11 @@ describe('ListsPage', () => {
   it('removes legacy intro subtitle and intro card chrome', () => {
     renderWithStore();
 
-    expect(screen.queryByText('Карточки проектов и прогресс-паттерны для следующих мобильных экранов.')).toBeNull();
+    expect(
+      screen.queryByText(
+        'Карточки проектов и прогресс-паттерны для следующих мобильных экранов.',
+      ),
+    ).toBeNull();
     expect(screen.queryByText('Проекты')).toBeNull();
     expect(screen.queryByText('Пока нет проектов')).toBeNull();
     expect(screen.queryByText('Ждём первые списки')).toBeNull();
@@ -138,10 +145,16 @@ describe('ListsPage', () => {
     expect(screen.getByTestId('lists-favorites-card')).toBeTruthy();
     expect(screen.getByTestId('lists-all-card')).toBeTruthy();
     expect(screen.getByText('Избранное')).toBeTruthy();
-    expect(screen.getByText('Избранные списки остаются сверху для быстрого доступа.')).toBeTruthy();
+    expect(
+      screen.getByText(
+        'Избранные списки остаются сверху для быстрого доступа.',
+      ),
+    ).toBeTruthy();
     expect(screen.getByText('Избранный список')).toBeTruthy();
     expect(screen.getByText('Обычный список')).toBeTruthy();
-    expect(screen.getAllByText('Привяжите задачи к этому списку.')).toHaveLength(2);
+    expect(
+      screen.getAllByText('Привяжите задачи к этому списку.'),
+    ).toHaveLength(2);
   });
 
   it('does not render create CTA inside the page', () => {

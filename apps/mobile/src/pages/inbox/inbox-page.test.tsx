@@ -7,7 +7,8 @@ import { InboxPage } from '.';
 const mockUseMobileAppStore = jest.fn();
 
 jest.mock('@shared/model/app-store-provider', () => ({
-  useMobileAppStore: (selector: (store: AppStore) => unknown) => mockUseMobileAppStore(selector),
+  useMobileAppStore: (selector: (store: AppStore) => unknown) =>
+    mockUseMobileAppStore(selector),
 }));
 
 const baseStore: AppStore = {
@@ -54,6 +55,8 @@ const baseStore: AppStore = {
     clearError: jest.fn(),
     reload: jest.fn(),
     setLanguage: jest.fn(),
+    restoreTask: jest.fn(),
+    restoreProject: jest.fn(),
   },
 };
 
@@ -85,7 +88,11 @@ describe('InboxPage', () => {
     renderWithStore();
 
     expect(screen.getByText('Пусто')).toBeTruthy();
-    expect(screen.getByText('Добавьте задачу через быстрое поле, и она появится здесь.')).toBeTruthy();
+    expect(
+      screen.getByText(
+        'Добавьте задачу через быстрое поле, и она появится здесь.',
+      ),
+    ).toBeTruthy();
   });
 
   it('renders completed tasks through a collapsible section', () => {
@@ -201,10 +208,14 @@ describe('InboxPage', () => {
     });
 
     expect(
-      screen.queryByText('Активные задачи сверху, выполненные ниже. Быстрый захват остаётся в контексте Inbox.'),
+      screen.queryByText(
+        'Активные задачи сверху, выполненные ниже. Быстрый захват остаётся в контексте Inbox.',
+      ),
     ).toBeNull();
     expect(
-      screen.queryByText('Тап по задаче открывает task-edit modal, а чекбокс обновляет статус через store action.'),
+      screen.queryByText(
+        'Тап по задаче открывает task-edit modal, а чекбокс обновляет статус через store action.',
+      ),
     ).toBeNull();
     expect(screen.queryByText('Активные')).toBeNull();
   });

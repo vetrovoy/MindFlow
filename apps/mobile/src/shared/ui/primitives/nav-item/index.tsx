@@ -12,13 +12,8 @@ interface NavItemProps {
   onPress: () => void;
 }
 
-export function NavItem({
-  icon,
-  label,
-  active,
-  onPress,
-}: NavItemProps) {
-  const { theme } = useTheme();
+export function NavItem({ icon, label, active, onPress }: NavItemProps) {
+  const { theme: _theme } = useTheme();
 
   return (
     <Pressable

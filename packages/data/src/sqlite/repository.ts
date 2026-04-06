@@ -1,14 +1,14 @@
-import { open, type Scalar } from '@op-engineering/op-sqlite';
-import type { Transaction as OPTransaction } from '@op-engineering/op-sqlite';
-import type { Project, Task } from '@mindflow/domain';
-import { validateProject, validateTask } from '@mindflow/domain';
+import { open, type Scalar } from "@op-engineering/op-sqlite";
+import type { Transaction as OPTransaction } from "@op-engineering/op-sqlite";
+import type { Project, Task } from "@mindflow/domain";
+import { validateProject, validateTask } from "@mindflow/domain";
 import type {
   ProjectRepository,
   RepositoryBundle,
   SyncPort,
   TaskRepository,
-  Transaction,
-} from '../contracts';
+  Transaction
+} from "../contracts";
 
 // ─── Schema ──────────────────────────────────────────────────────────────────
 
@@ -50,15 +50,15 @@ function rowToTask(row: Record<string, unknown>): Task {
     id: row.id as string,
     title: row.title as string,
     description: (row.description as string | null) ?? null,
-    status: row.status as Task['status'],
-    priority: row.priority as Task['priority'],
+    status: row.status as Task["status"],
+    priority: row.priority as Task["priority"],
     dueDate: (row.dueDate as string | null) ?? null,
     projectId: (row.projectId as string | null) ?? null,
     orderIndex: Number(row.orderIndex ?? 0),
     createdAt: row.createdAt as string,
     updatedAt: row.updatedAt as string,
     completedAt: (row.completedAt as string | null) ?? null,
-    archivedAt: (row.archivedAt as string | null) ?? null,
+    archivedAt: (row.archivedAt as string | null) ?? null
   });
 }
 
@@ -72,7 +72,7 @@ function rowToProject(row: Record<string, unknown>): Project {
     deadline: (row.deadline as string | null) ?? null,
     createdAt: row.createdAt as string,
     updatedAt: row.updatedAt as string,
-    archivedAt: (row.archivedAt as string | null) ?? null,
+    archivedAt: (row.archivedAt as string | null) ?? null
   });
 }
 
@@ -89,7 +89,7 @@ function taskToParams(task: Task): Scalar[] {
     task.createdAt,
     task.updatedAt,
     task.completedAt ?? null,
-    task.archivedAt ?? null,
+    task.archivedAt ?? null
   ];
 }
 
@@ -103,39 +103,42 @@ function projectToParams(project: Project): Scalar[] {
     project.deadline,
     project.createdAt,
     project.updatedAt,
-    project.archivedAt ?? null,
+    project.archivedAt ?? null
   ];
 }
 
 // ─── Repositories ─────────────────────────────────────────────────────────────
 
-type ExecFn = (query: string, params?: Scalar[]) => Promise<{ rows: Record<string, unknown>[] }>;
+type ExecFn = (
+  query: string,
+  params?: Scalar[]
+) => Promise<{ rows: Record<string, unknown>[] }>;
 
 class SqliteTaskRepository implements TaskRepository {
   constructor(private readonly exec: ExecFn) {}
 
   async getById(id: string): Promise<Task | null> {
-    const { rows } = await this.exec('SELECT * FROM tasks WHERE id = ?', [id]);
+    const { rows } = await this.exec("SELECT * FROM tasks WHERE id = ?", [id]);
     return rows.length > 0 ? rowToTask(rows[0]) : null;
   }
 
   async listAll(): Promise<Task[]> {
     const { rows } = await this.exec(
-      'SELECT * FROM tasks ORDER BY createdAt ASC',
+      "SELECT * FROM tasks ORDER BY createdAt ASC"
     );
     return rows.map(rowToTask);
   }
 
   async listActive(): Promise<Task[]> {
     const { rows } = await this.exec(
-      'SELECT * FROM tasks WHERE archivedAt IS NULL ORDER BY createdAt ASC',
+      "SELECT * FROM tasks WHERE archivedAt IS NULL ORDER BY createdAt ASC"
     );
     return rows.map(rowToTask);
   }
 
   async listArchived(): Promise<Task[]> {
     const { rows } = await this.exec(
-      'SELECT * FROM tasks WHERE archivedAt IS NOT NULL ORDER BY createdAt ASC',
+      "SELECT * FROM tasks WHERE archivedAt IS NOT NULL ORDER BY createdAt ASC"
     );
     return rows.map(rowToTask);
   }
@@ -147,17 +150,17 @@ class SqliteTaskRepository implements TaskRepository {
         (id, title, description, status, priority, dueDate, projectId,
          orderIndex, createdAt, updatedAt, completedAt, archivedAt)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      taskToParams(validated),
+      taskToParams(validated)
     );
     return validated;
   }
 
   async saveMany(tasks: Task[]): Promise<Task[]> {
-    return Promise.all(tasks.map(t => this.save(t)));
+    return Promise.all(tasks.map((t) => this.save(t)));
   }
 
   async delete(id: string): Promise<void> {
-    await this.exec('DELETE FROM tasks WHERE id = ?', [id]);
+    await this.exec("DELETE FROM tasks WHERE id = ?", [id]);
   }
 }
 
@@ -165,27 +168,29 @@ class SqliteProjectRepository implements ProjectRepository {
   constructor(private readonly exec: ExecFn) {}
 
   async getById(id: string): Promise<Project | null> {
-    const { rows } = await this.exec('SELECT * FROM projects WHERE id = ?', [id]);
+    const { rows } = await this.exec("SELECT * FROM projects WHERE id = ?", [
+      id
+    ]);
     return rows.length > 0 ? rowToProject(rows[0]) : null;
   }
 
   async listAll(): Promise<Project[]> {
     const { rows } = await this.exec(
-      'SELECT * FROM projects ORDER BY createdAt ASC',
+      "SELECT * FROM projects ORDER BY createdAt ASC"
     );
     return rows.map(rowToProject);
   }
 
   async listActive(): Promise<Project[]> {
     const { rows } = await this.exec(
-      'SELECT * FROM projects WHERE archivedAt IS NULL ORDER BY createdAt ASC',
+      "SELECT * FROM projects WHERE archivedAt IS NULL ORDER BY createdAt ASC"
     );
     return rows.map(rowToProject);
   }
 
   async listArchived(): Promise<Project[]> {
     const { rows } = await this.exec(
-      'SELECT * FROM projects WHERE archivedAt IS NOT NULL ORDER BY createdAt ASC',
+      "SELECT * FROM projects WHERE archivedAt IS NOT NULL ORDER BY createdAt ASC"
     );
     return rows.map(rowToProject);
   }
@@ -196,13 +201,13 @@ class SqliteProjectRepository implements ProjectRepository {
       `INSERT OR REPLACE INTO projects
         (id, name, color, emoji, isFavorite, deadline, createdAt, updatedAt, archivedAt)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      projectToParams(validated),
+      projectToParams(validated)
     );
     return validated;
   }
 
   async saveMany(projects: Project[]): Promise<Project[]> {
-    return Promise.all(projects.map(p => this.save(p)));
+    return Promise.all(projects.map((p) => this.save(p)));
   }
 }
 
@@ -211,7 +216,7 @@ class SqliteProjectRepository implements ProjectRepository {
 class SqliteTransactionWrapper implements Transaction {
   constructor(
     private readonly db: ReturnType<typeof open>,
-    private readonly exec: ExecFn,
+    private readonly exec: ExecFn
   ) {}
 
   async run<T>(work: () => Promise<T>): Promise<T> {
@@ -222,7 +227,9 @@ class SqliteTransactionWrapper implements Transaction {
       hasResult = true;
     });
     if (!hasResult) {
-      throw new Error('SQLite transaction completed without returning a result');
+      throw new Error(
+        "SQLite transaction completed without returning a result"
+      );
     }
     return result as T;
   }
@@ -256,6 +263,6 @@ export function createSqliteRepositoryBundle(options: {
     tasks: new SqliteTaskRepository(exec),
     projects: new SqliteProjectRepository(exec),
     transaction: new SqliteTransactionWrapper(db, exec),
-    sync: new NoopSyncPort(),
+    sync: new NoopSyncPort()
   };
 }

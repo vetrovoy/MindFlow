@@ -7,7 +7,8 @@ import { TaskQuickAddFeature as QuickAddFeature } from './index';
 const mockUseMobileAppStore = jest.fn();
 
 jest.mock('@shared/model/app-store-provider', () => ({
-  useMobileAppStore: (selector: (store: AppStore) => unknown) => mockUseMobileAppStore(selector),
+  useMobileAppStore: (selector: (store: AppStore) => unknown) =>
+    mockUseMobileAppStore(selector),
 }));
 
 const baseStore: AppStore = {
@@ -54,6 +55,8 @@ const baseStore: AppStore = {
     clearError: jest.fn(),
     reload: jest.fn(),
     setLanguage: jest.fn(),
+    restoreTask: jest.fn(),
+    restoreProject: jest.fn(),
   },
 };
 
@@ -79,12 +82,18 @@ describe('QuickAddFeature', () => {
     const addInboxTask = jest.fn().mockResolvedValue(true);
     renderWithStore({}, { addInboxTask });
 
-    fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Подготовить релиз');
+    fireEvent.changeText(
+      screen.getByPlaceholderText('Новая задача...'),
+      'Подготовить релиз',
+    );
     await act(async () => {
       fireEvent.press(screen.getByTestId('quick-add-submit'));
     });
 
-    expect(addInboxTask).toHaveBeenCalledWith({ title: 'Подготовить релиз', dueDate: null });
+    expect(addInboxTask).toHaveBeenCalledWith({
+      title: 'Подготовить релиз',
+      dueDate: null,
+    });
     expect(screen.queryByDisplayValue('Подготовить релиз')).toBeNull();
   });
 
@@ -92,7 +101,10 @@ describe('QuickAddFeature', () => {
     const addInboxTask = jest.fn().mockResolvedValue(false);
     renderWithStore({}, { addInboxTask });
 
-    fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Оставить в поле');
+    fireEvent.changeText(
+      screen.getByPlaceholderText('Новая задача...'),
+      'Оставить в поле',
+    );
     await act(async () => {
       fireEvent.press(screen.getByTestId('quick-add-submit'));
     });
@@ -104,12 +116,17 @@ describe('QuickAddFeature', () => {
     const addInboxTask = jest.fn().mockResolvedValue(true);
     renderWithStore({ preferredDate: '2026-04-03' }, { addInboxTask });
 
-    fireEvent.changeText(screen.getByPlaceholderText('Новая задача...'), 'Задача на сегодня');
+    fireEvent.changeText(
+      screen.getByPlaceholderText('Новая задача...'),
+      'Задача на сегодня',
+    );
     await act(async () => {
       fireEvent.press(screen.getByTestId('quick-add-submit'));
     });
 
-    expect(addInboxTask).toHaveBeenCalledWith({ title: 'Задача на сегодня', dueDate: '2026-04-03' });
+    expect(addInboxTask).toHaveBeenCalledWith({
+      title: 'Задача на сегодня',
+      dueDate: '2026-04-03',
+    });
   });
-
 });

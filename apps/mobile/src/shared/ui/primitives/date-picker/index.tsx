@@ -16,7 +16,9 @@ interface DatePickerProps {
 
 function toDate(iso: string): Date {
   const parsed = iso ? new Date(iso) : null;
-  return parsed != null && !Number.isNaN(parsed.getTime()) ? parsed : new Date();
+  return parsed != null && !Number.isNaN(parsed.getTime())
+    ? parsed
+    : new Date();
 }
 
 function toIsoDate(date: Date): string {
@@ -29,7 +31,7 @@ function toIsoDate(date: Date): string {
 export function DatePicker({
   value,
   onChange,
-  mode = 'date',
+  mode: _mode = 'date',
   visible = false,
   onDismiss,
   label,
@@ -65,9 +67,7 @@ export function DatePicker({
           },
         ]}
       >
-        <Body tone={value ? 'primary' : 'secondary'}>
-          {value || '—'}
-        </Body>
+        <Body tone={value ? 'primary' : 'secondary'}>{value || '—'}</Body>
       </Pressable>
       <RNDatePicker
         modal

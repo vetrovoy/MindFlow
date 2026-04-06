@@ -37,15 +37,18 @@ export interface AppActions {
     dueDate?: string | null;
   }) => Promise<boolean>;
   toggleTask: (taskId: string) => Promise<void>;
-  saveTaskEdit: (input: {
-    taskId: string;
-    title?: string;
-    description?: string | null;
-    dueDate?: string | null;
-    priority?: Task['priority'];
-    status?: Task['status'];
-    projectId?: string | null;
-  }, options?: { closeOnSuccess?: boolean; toastOnSuccess?: boolean }) => Promise<boolean>;
+  saveTaskEdit: (
+    input: {
+      taskId: string;
+      title?: string;
+      description?: string | null;
+      dueDate?: string | null;
+      priority?: Task['priority'];
+      status?: Task['status'];
+      projectId?: string | null;
+    },
+    options?: { closeOnSuccess?: boolean; toastOnSuccess?: boolean },
+  ) => Promise<boolean>;
   createProject: (input: {
     name: string;
     color: string;
@@ -53,14 +56,17 @@ export interface AppActions {
     deadline?: string | null;
     isFavorite?: boolean;
   }) => Promise<void>;
-  saveProjectEdit: (input: {
-    projectId: string;
-    name?: string;
-    color?: string;
-    emoji?: string;
-    deadline?: string | null;
-    isFavorite?: boolean;
-  }, options?: { closeOnSuccess?: boolean; toastOnSuccess?: boolean }) => Promise<boolean>;
+  saveProjectEdit: (
+    input: {
+      projectId: string;
+      name?: string;
+      color?: string;
+      emoji?: string;
+      deadline?: string | null;
+      isFavorite?: boolean;
+    },
+    options?: { closeOnSuccess?: boolean; toastOnSuccess?: boolean },
+  ) => Promise<boolean>;
   reorderProjectTasks: (
     projectId: string,
     orderedTaskIds: string[],

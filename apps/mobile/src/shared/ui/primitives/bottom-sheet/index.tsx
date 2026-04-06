@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@shared/theme/use-theme';
@@ -26,13 +30,13 @@ export function BottomSheet({
   onClose,
 }: BottomSheetProps) {
   const { theme } = useTheme();
-  const ref = useRef<{ present: () => void; dismiss: () => void }>(null);
+  const ref = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     if (visible) {
       ref.current?.present();
     } else {
-      ref.current?.dismiss();
+      ref.current?.close();
     }
   }, [visible]);
 
@@ -42,7 +46,6 @@ export function BottomSheet({
         {...props}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
-        presenceAnimated
       />
     ),
     [],
