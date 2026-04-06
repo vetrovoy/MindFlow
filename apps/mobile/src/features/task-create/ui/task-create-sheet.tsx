@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 import type { TaskPriority } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { AccentButton, BottomSheet, DatePicker, PrioritySelect, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 interface CreateDraft {
   title: string;
@@ -66,6 +65,7 @@ const styles = StyleSheet.create({
 });
 
 export function TaskCreateSheet() {
+  const copy = useCopy();
   const isOpen = useMobileAppStore(s => s.state.isTaskCreateOpen);
   const preferredDate = useMobileAppStore(s => s.state.taskCreatePreferredDate);
   const favoriteProjects = useMobileAppStore(s => s.derived.favoriteProjects);

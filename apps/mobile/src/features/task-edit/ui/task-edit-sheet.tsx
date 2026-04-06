@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 import type { TaskPriority, TaskStatus } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { AccentButton, BottomSheet, DatePicker, PrioritySelect, ProjectSelector, StatusSelect, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 interface EditorDraft {
   title: string;
@@ -54,6 +53,7 @@ const styles = StyleSheet.create({
 });
 
 export function TaskEditSheet() {
+  const copy = useCopy();
   const editingTask = useMobileAppStore(store => store.derived.editingTask);
   const favoriteProjects = useMobileAppStore(store => store.derived.favoriteProjects);
   const regularProjects = useMobileAppStore(store => store.derived.regularProjects);

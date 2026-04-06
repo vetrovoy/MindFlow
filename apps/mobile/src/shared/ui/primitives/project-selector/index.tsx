@@ -1,14 +1,13 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import type { Project } from '@mindflow/domain';
-import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { BottomSheet } from '../bottom-sheet';
 import { Icon } from '../../icons';
 import { Body, Meta } from '../../typography';
 
-const copy = getCopy('ru');
 
 interface ProjectSelectorProps {
   value: string | null;
@@ -26,6 +25,7 @@ interface ProjectRowProps {
 
 function ProjectRow({ project, active, onPress }: ProjectRowProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
 
   const label = project == null ? copy.projectSelector.inbox : `${project.name}`;
   const colorDot = project?.color;
@@ -63,6 +63,7 @@ export function ProjectSelector({
   label,
 }: ProjectSelectorProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
   const [isOpen, setIsOpen] = useState(false);
 
   const selectedProject = useMemo(

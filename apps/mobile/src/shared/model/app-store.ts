@@ -3,6 +3,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla';
 import { createSqliteRepositoryBundle } from '@mindflow/data/sqlite';
 import { computeDerived, formatError, INITIAL_STATE, readSnapshot } from './selectors';
 import { createAppActions } from './actions';
+import { resolveInitialLanguage } from '@shared/lib/language';
 import type { AppState, AppStore } from './types';
 
 export type AppStoreApi = StoreApi<AppStore>;
@@ -11,6 +12,8 @@ let storeInstance: AppStoreApi | null = null;
 
 export function createMobileAppStore(): AppStoreApi {
   const repository = createSqliteRepositoryBundle({ name: 'mindflow' });
+  const initialLanguage = resolveInitialLanguage();
+  const initialState: AppState = { ...INITIAL_STATE, language: initialLanguage };
 
   const store = createStore<AppStore>((set, get) => {
     const patchState = (patch: Partial<AppState>) => {
@@ -44,8 +47,8 @@ export function createMobileAppStore(): AppStoreApi {
     };
 
     return {
-      state: INITIAL_STATE,
-      derived: computeDerived(INITIAL_STATE),
+      state: initialState,
+      derived: computeDerived(initialState),
       actions: createAppActions({
         repository,
         getStore: get,

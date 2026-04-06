@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Body, Display } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 const styles = StyleSheet.create({
   root: {
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
 
 export function AppStats() {
   const { theme } = useTheme();
+  const copy = useCopy();
   const inboxTasks = useMobileAppStore(s => s.derived.inboxTasks);
   const projectSections = useMobileAppStore(s => s.derived.projectSections);
 

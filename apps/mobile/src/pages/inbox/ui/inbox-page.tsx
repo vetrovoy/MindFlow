@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { getCopy } from '@mindflow/copy';
 import type { Task } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
-import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import {
   CollapsibleSection,
   ScreenShell,
@@ -14,7 +13,6 @@ import {
   TaskRow,
 } from '@shared/ui/primitives';
 
-const copy = getCopy('ru');
 
 const styles = StyleSheet.create({
   mainCard: {
@@ -28,9 +26,9 @@ const styles = StyleSheet.create({
 export function InboxPage() {
   const tasks = useMobileAppStore(store => store.derived.inboxTasks);
   const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
+  const copy = useCopy();
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);
-  const { theme } = useTheme();
   const inboxCardData = useMemo(() => ['inbox-main-card'], []);
 
   const { activeInboxTasks, completedInboxTasks, badgeByTaskId } =

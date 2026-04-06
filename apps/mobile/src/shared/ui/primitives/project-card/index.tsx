@@ -1,16 +1,12 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import type { Project } from '@mindflow/domain';
 
-import { useTheme } from '@shared/theme/use-theme';
-import { Body, Title } from '../../typography';
+import { Title } from '../../typography';
 import { SurfaceCard } from '../surface-card';
 import { ProgressBar } from '../progress-bar';
-import { StatusPill } from '../status-pill';
 import { Icon } from '../../icons';
 
-const copy = getCopy('ru');
 
 interface ProjectCardProps {
   project: Project;
@@ -29,8 +25,6 @@ const styles = StyleSheet.create({
 });
 
 export function ProjectCard({ project, taskCount, doneCount, onPress }: ProjectCardProps) {
-  const { theme } = useTheme();
-
   return (
     <Pressable accessibilityRole="button" onPress={onPress}>
       <SurfaceCard elevated>

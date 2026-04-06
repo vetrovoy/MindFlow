@@ -1,13 +1,14 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
-import { getCopy } from '@mindflow/copy';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import type { CopyDictionary } from '@mindflow/copy';
 
 import { useThemeContext } from '@shared/theme/theme-context';
 import type { ThemeName } from '@mindflow/ui';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import {
   BottomSheet,
@@ -16,35 +17,6 @@ import {
 } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 import type { RootDrawerParamList } from '../types';
-
-const copy = getCopy('ru');
-
-const THEME_OPTIONS: {
-  value: ThemeName;
-  label: string;
-  preview: React.ReactNode;
-}[] = [
-  {
-    value: 'graphite',
-    label: copy.theme.graphite,
-    preview: <ThemePreview colors={['#0A0A0A', '#1D1D22', '#C4F82A']} />,
-  },
-  {
-    value: 'gilded',
-    label: copy.theme.gilded,
-    preview: <ThemePreview colors={['#FCF8F1', '#FFFDF9', '#C9A962']} />,
-  },
-  {
-    value: 'minimal',
-    label: copy.theme.minimal,
-    preview: <ThemePreview colors={['#FFFFFF', '#F9FAFB', '#2563EB']} />,
-  },
-];
-
-const LANGUAGE_OPTIONS = [
-  { value: 'ru' as const, label: copy.language.ru },
-  { value: 'en' as const, label: copy.language.en },
-];
 
 function ThemePreview({ colors }: { colors: string[] }) {
   return (
@@ -57,6 +29,37 @@ function ThemePreview({ colors }: { colors: string[] }) {
       ))}
     </View>
   );
+}
+
+function getThemeOptions(copy: CopyDictionary): {
+  value: ThemeName;
+  label: string;
+  preview: React.ReactNode;
+}[] {
+  return [
+    {
+      value: 'graphite',
+      label: copy.theme.graphite,
+      preview: <ThemePreview colors={['#0A0A0A', '#1D1D22', '#C4F82A']} />,
+    },
+    {
+      value: 'gilded',
+      label: copy.theme.gilded,
+      preview: <ThemePreview colors={['#FCF8F1', '#FFFDF9', '#C9A962']} />,
+    },
+    {
+      value: 'minimal',
+      label: copy.theme.minimal,
+      preview: <ThemePreview colors={['#FFFFFF', '#F9FAFB', '#2563EB']} />,
+    },
+  ];
+}
+
+function getLanguageOptions(copy: CopyDictionary) {
+  return [
+    { value: 'ru' as const, label: copy.language.ru },
+    { value: 'en' as const, label: copy.language.en },
+  ];
 }
 
 const styles = StyleSheet.create({
@@ -104,6 +107,7 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
   const { colors } = theme;
   const language = useMobileAppStore(s => s.state.language);
   const setLanguage = useMobileAppStore(s => s.actions.setLanguage);
+  const copy = useCopy();
 
   const activeRoute = useNavigationState(state => {
     const current = state?.routes?.[state?.index ?? 0];
@@ -122,13 +126,16 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
     [navigation],
   );
 
+  const themeOptions = useMemo(() => getThemeOptions(copy), [copy]);
+  const languageOptions = useMemo(() => getLanguageOptions(copy), [copy]);
+
   return (
     <SafeAreaView
       edges={['top', 'bottom']}
       style={[styles.safeArea, { backgroundColor: colors.surface }]}
     >
       <View style={styles.container}>
-        <Meta tone="secondary">Меню</Meta>
+        <Meta tone="secondary">{copy.drawer.title}</Meta>
 
         <View style={styles.divider} />
 
@@ -182,9 +189,9 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
             icon="palette"
             triggerLabel={copy.theme.label}
             currentLabel={
-              THEME_OPTIONS.find(t => t.value === themeName)?.label ?? ''
+              themeOptions.find(t => t.value === themeName)?.label ?? ''
             }
-            options={THEME_OPTIONS}
+            options={themeOptions}
             value={themeName}
             onSelect={setTheme}
             sheetTitle={copy.theme.label}
@@ -193,9 +200,9 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
             icon="language"
             triggerLabel={copy.language.label}
             currentLabel={
-              LANGUAGE_OPTIONS.find(l => l.value === language)?.label ?? ''
+              languageOptions.find(l => l.value === language)?.label ?? ''
             }
-            options={LANGUAGE_OPTIONS}
+            options={languageOptions}
             value={language}
             onSelect={setLanguage}
             sheetTitle={copy.language.label}

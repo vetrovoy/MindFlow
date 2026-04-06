@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 import { projectMarkers } from '@mindflow/ui';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { AccentButton, BottomSheet, ColorPicker, DatePicker, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 const MARKER_COLORS = projectMarkers.map(m => m.color);
 
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
 });
 
 export function ProjectCreateSheet() {
+  const copy = useCopy();
   const isOpen = useMobileAppStore(s => s.state.isProjectCreateOpen);
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const closeProjectCreate = useMobileAppStore(s => s.actions.closeProjectCreate);

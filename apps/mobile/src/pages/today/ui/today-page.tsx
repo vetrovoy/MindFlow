@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
+import { useCopy } from '@shared/lib/use-copy';
 import {
   CollapsibleSection,
   ScreenShell,
@@ -11,7 +11,6 @@ import {
   TodayTaskCard,
 } from '@shared/ui/primitives';
 
-const copy = getCopy('ru');
 
 const styles = StyleSheet.create({
   contentCard: {
@@ -23,6 +22,7 @@ const styles = StyleSheet.create({
 });
 
 export function TodayPage() {
+  const copy = useCopy();
   const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);

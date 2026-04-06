@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { SurfaceCard } from '@shared/ui/primitives';
 
-const copy = getCopy('ru');
 
 const DEFAULT_PROJECT_COLOR = '#4285F4';
 const DEFAULT_PROJECT_EMOJI = '📋';
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
 
 export function ProjectQuickAddFeature() {
   const { theme } = useTheme();
+  const copy = useCopy();
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const createProject = useMobileAppStore(s => s.actions.createProject);
   const [draftName, setDraftName] = useState('');

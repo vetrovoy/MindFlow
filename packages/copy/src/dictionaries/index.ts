@@ -56,6 +56,9 @@ const ru: CopyDictionary = {
     search: "Поиск",
     archive: "Архив"
   },
+  drawer: {
+    title: "Меню"
+  },
   app: {
     greeting: "Привет,",
     subtitle: "Сфокусируемся на главном сегодня",
@@ -308,6 +311,9 @@ const en: CopyDictionary = {
     today: "Today",
     search: "Search",
     archive: "Archive"
+  },
+  drawer: {
+    title: "Menu"
   },
   app: {
     greeting: "Hello,",

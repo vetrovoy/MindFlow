@@ -1,15 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { ScreenShell, StateCard, TaskRow } from '@shared/ui/primitives';
 import { Body, Meta, SectionTitleText } from '@shared/ui/typography';
 import type { Task } from '@mindflow/domain';
 
-const copy = getCopy('ru');
 
 const styles = StyleSheet.create({
   container: {
@@ -45,6 +44,7 @@ const styles = StyleSheet.create({
 
 export function SearchPage() {
   const { theme } = useTheme();
+  const copy = useCopy();
   const tasks = useMobileAppStore(s => s.state.tasks);
   const projects = useMobileAppStore(s => s.state.projects);
   const toggleTask = useMobileAppStore(s => s.actions.toggleTask);

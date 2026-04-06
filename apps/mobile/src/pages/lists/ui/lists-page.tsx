@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import type { ProjectSection } from '@shared/model/types';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
+import { useCopy } from '@shared/lib/use-copy';
 import {
   ProjectCard,
   ScreenShell,
@@ -13,7 +13,6 @@ import {
 
 import { DraggableTaskList } from './draggable-task-list';
 
-const copy = getCopy('ru');
 
 const styles = StyleSheet.create({
   sectionCard: {
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
 });
 
 export function ListsPage() {
+  const copy = useCopy();
   const sections = useMobileAppStore(store => store.derived.projectSections);
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);

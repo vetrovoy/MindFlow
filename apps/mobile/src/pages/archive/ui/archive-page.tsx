@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { ScreenShell, StateCard, SurfaceCard, TaskRow } from '@shared/ui/primitives';
 import { Body, Meta, SectionTitleText } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +32,7 @@ const styles = StyleSheet.create({
 
 export function ArchivePage() {
   const { theme } = useTheme();
+  const copy = useCopy();
   const tasks = useMobileAppStore(s => s.state.tasks);
   const projects = useMobileAppStore(s => s.state.projects);
   const toggleTask = useMobileAppStore(s => s.actions.toggleTask);

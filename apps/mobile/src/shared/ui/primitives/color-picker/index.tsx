@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import RNColorPicker, { Panel5 } from 'reanimated-color-picker';
 import type { ColorFormatsObject } from 'reanimated-color-picker';
-import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { BottomSheet } from '../bottom-sheet';
 import { Body, Meta } from '../../typography';
 
-const copy = getCopy('ru');
 
 interface ColorPickerProps {
   value: string;
@@ -19,6 +18,7 @@ interface ColorPickerProps {
 
 export function ColorPicker({ value, onChange, colors, label }: ColorPickerProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
   const [isOpen, setIsOpen] = useState(false);
 
   function handleCompleteJS(result: ColorFormatsObject) {

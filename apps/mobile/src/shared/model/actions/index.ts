@@ -14,21 +14,20 @@ import Toast from 'react-native-toast-message';
 
 import { getNowIso } from '@shared/lib/date';
 import { createId } from '@shared/lib/ids';
+import { setStoredLanguage, persistLanguage } from '@shared/lib/language';
 import { getNextOrderIndex } from '../selectors';
 import { formatError } from '../helpers';
 import type { AppActions, AppState, AppStore } from '../types';
 import type { AppLanguage } from '@mindflow/copy';
 
-const copy = getCopy('ru');
+function getRuntimeCopy(getStore: () => AppStore) {
+  return getCopy(getStore().state.language);
+}
 
-function setToast(toast: { message: string; variant: 'success' | 'error' | 'info' } | null) {
-  if (toast == null) {
-    Toast.hide();
-    return;
-  }
+function setToast(getStore: () => AppStore, message: string, variant: 'success' | 'error' | 'info') {
   Toast.show({
-    type: toast.variant,
-    text1: toast.message,
+    type: variant,
+    text1: message,
   });
 }
 
@@ -79,7 +78,8 @@ export function createAppActions({
       });
 
       if (saved) {
-        setToast({ message: copy.task.addedToastTitle, variant: 'success' });
+        const copy = getRuntimeCopy(getStore);
+        setToast(getStore, copy.task.addedToastTitle, 'success');
       }
 
       return saved;
@@ -129,7 +129,8 @@ export function createAppActions({
 
       if (saved) {
         patchState({ editingTaskId: null });
-        setToast({ message: copy.task.updatedToastTitle, variant: 'success' });
+        const copy = getRuntimeCopy(getStore);
+        setToast(getStore, copy.task.updatedToastTitle, 'success');
       }
     },
 
@@ -155,7 +156,8 @@ export function createAppActions({
       });
 
       if (saved) {
-        setToast({ message: copy.project.createdToastTitle, variant: 'success' });
+        const copy = getRuntimeCopy(getStore);
+        setToast(getStore, copy.project.createdToastTitle, 'success');
       }
     },
 
@@ -188,7 +190,8 @@ export function createAppActions({
 
       if (saved) {
         patchState({ editingProjectId: null });
-        setToast({ message: copy.project.updatedToastTitle, variant: 'success' });
+        const copy = getRuntimeCopy(getStore);
+        setToast(getStore, copy.project.updatedToastTitle, 'success');
       }
     },
 
@@ -253,7 +256,8 @@ export function createAppActions({
 
       if (saved) {
         patchState({ isProjectCreateOpen: false });
-        setToast({ message: copy.project.createdToastTitle, variant: 'success' });
+        const copy = getRuntimeCopy(getStore);
+        setToast(getStore, copy.project.createdToastTitle, 'success');
       }
     },
     async createTask(input) {
@@ -278,16 +282,19 @@ export function createAppActions({
 
       if (saved) {
         patchState({ isTaskCreateOpen: false, taskCreatePreferredDate: null });
-        setToast({ message: copy.task.addedToastTitle, variant: 'success' });
+        const copy = getRuntimeCopy(getStore);
+        setToast(getStore, copy.task.addedToastTitle, 'success');
       }
     },
     dismissToast() {
-      setToast(null);
+      Toast.hide();
     },
     clearError() {
       patchState({ error: null });
     },
     setLanguage(lang: AppLanguage) {
+      setStoredLanguage(lang);
+      persistLanguage(lang);
       patchState({ language: lang });
     },
   };

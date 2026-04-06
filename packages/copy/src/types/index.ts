@@ -43,6 +43,9 @@ export interface CopyDictionary {
     search: string;
     archive: string;
   };
+  drawer: {
+    title: string;
+  };
   app: {
     greeting: string;
     subtitle: string;

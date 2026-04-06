@@ -1,15 +1,9 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { TaskStatus } from '@mindflow/domain';
-import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Body, Meta } from '../../typography';
-
-const copy = getCopy('ru');
-const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
-  { value: 'todo', label: copy.status.todo },
-  { value: 'done', label: copy.status.done },
-];
 
 interface StatusSelectProps {
   value: TaskStatus;
@@ -19,6 +13,12 @@ interface StatusSelectProps {
 
 export function StatusSelect({ value, onChange, label }: StatusSelectProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
+
+  const options = [
+    { value: 'todo' as const, label: copy.status.todo },
+    { value: 'done' as const, label: copy.status.done },
+  ];
 
   function getStatusColor(status: TaskStatus): string {
     switch (status) {
@@ -31,7 +31,7 @@ export function StatusSelect({ value, onChange, label }: StatusSelectProps) {
     <View style={styles.container}>
       {label != null ? <Meta tone="soft">{label}</Meta> : null}
       <View style={styles.row}>
-        {STATUS_OPTIONS.map(option => {
+        {options.map(option => {
           const active = value === option.value;
           const color = getStatusColor(option.value);
           return (

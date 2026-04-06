@@ -258,3 +258,7 @@ jest.mock('@shared/theme/use-theme', () => ({
     setTheme: jest.fn(),
   }),
 }));
+
+jest.mock('react-native-localize', () => ({
+  getLocales: () => [{ languageCode: 'en', countryCode: 'US' }],
+}));

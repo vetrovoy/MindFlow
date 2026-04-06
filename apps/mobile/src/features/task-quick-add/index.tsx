@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import RNDatePicker from 'react-native-date-picker';
-import { getCopy } from '@mindflow/copy';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { SurfaceCard } from '@shared/ui/primitives';
 import { Meta } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 interface TaskQuickAddFeatureProps {
   preferredDate?: string | null;
@@ -67,6 +66,7 @@ export function TaskQuickAddFeature({
   preferredDate,
 }: TaskQuickAddFeatureProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const addInboxTask = useMobileAppStore(s => s.actions.addInboxTask);
   const [draftTitle, setDraftTitle] = useState('');

@@ -1,16 +1,9 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { TaskPriority } from '@mindflow/domain';
-import { getCopy } from '@mindflow/copy';
 
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Body, Meta } from '../../typography';
-
-const copy = getCopy('ru');
-const PRIORITY_OPTIONS: { value: TaskPriority; label: string }[] = [
-  { value: 'low', label: copy.priority.low },
-  { value: 'medium', label: copy.priority.medium },
-  { value: 'high', label: copy.priority.high },
-];
 
 interface PrioritySelectProps {
   value: TaskPriority;
@@ -20,6 +13,13 @@ interface PrioritySelectProps {
 
 export function PrioritySelect({ value, onChange, label }: PrioritySelectProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
+
+  const options = [
+    { value: 'low' as const, label: copy.priority.low },
+    { value: 'medium' as const, label: copy.priority.medium },
+    { value: 'high' as const, label: copy.priority.high },
+  ];
 
   function getPriorityColor(priority: TaskPriority): string {
     switch (priority) {
@@ -33,7 +33,7 @@ export function PrioritySelect({ value, onChange, label }: PrioritySelectProps) 
     <View style={styles.container}>
       {label != null ? <Meta tone="soft">{label}</Meta> : null}
       <View style={styles.row}>
-        {PRIORITY_OPTIONS.map(option => {
+        {options.map(option => {
           const active = value === option.value;
           const color = getPriorityColor(option.value);
           return (

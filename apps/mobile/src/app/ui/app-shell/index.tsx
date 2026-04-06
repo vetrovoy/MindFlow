@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 
 import { ProjectCreateSheet } from '@mobile/features/project-create/ui/project-create-sheet';
 import { ProjectEditSheet } from '@mobile/features/project-edit/ui/project-edit-sheet';
@@ -9,6 +8,7 @@ import { TaskEditSheet } from '@features/task-edit/ui/task-edit-sheet';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { StateCard } from '@shared/ui/primitives';
+import { useCopy } from '@shared/lib/use-copy';
 import { AppStats } from '../app-stats';
 import { AppFab } from '../app-fab';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,7 +16,6 @@ import { AppQuickAdd } from '../app-quick-add';
 import { AppDrawerOpener } from '../app-drawer-opener';
 import { FAB_SPACING } from '@shared/config/fab';
 
-const copy = getCopy('ru');
 
 interface MobileAppShellProps {
   children: ReactNode;
@@ -24,6 +23,7 @@ interface MobileAppShellProps {
 
 export function AppShell({ children }: MobileAppShellProps) {
   const { theme } = useTheme();
+  const copy = useCopy();
   const isHydrated = useMobileAppStore(s => s.state.isHydrated);
 
   return (

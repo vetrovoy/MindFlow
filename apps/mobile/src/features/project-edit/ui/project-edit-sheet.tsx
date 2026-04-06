@@ -6,11 +6,11 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { getCopy } from '@mindflow/copy';
 import { projectMarkers } from '@mindflow/ui';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
+import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import {
   AccentButton,
@@ -21,7 +21,6 @@ import {
 } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
-const copy = getCopy('ru');
 
 const MARKER_COLORS = projectMarkers.map(m => m.color);
 
@@ -72,6 +71,7 @@ const styles = StyleSheet.create({
 });
 
 export function ProjectEditSheet() {
+  const copy = useCopy();
   const editingProject = useMobileAppStore(s => s.derived.editingProject);
   const isSaving = useMobileAppStore(s => s.state.isSaving);
   const closeProjectEdit = useMobileAppStore(s => s.actions.closeProjectEdit);
