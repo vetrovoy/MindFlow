@@ -18,6 +18,7 @@ export function StatusSelect({ value, onChange, label }: StatusSelectProps) {
   const options = [
     { value: 'todo' as const, label: copy.status.todo },
     { value: 'done' as const, label: copy.status.done },
+    { value: 'empty' as const, label: 'empty' },
   ];
 
   function getStatusColor(status: TaskStatus): string {
@@ -34,6 +35,16 @@ export function StatusSelect({ value, onChange, label }: StatusSelectProps) {
       {label != null ? <Meta tone="soft">{label}</Meta> : null}
       <View style={styles.row}>
         {options.map(option => {
+          if (option.value === 'empty' && option.value === 'empty') {
+            return (
+              <Pressable
+                pointerEvents="none"
+                key={option.value}
+                accessibilityRole="button"
+                style={[styles.chip, { borderColor: 'transparent' }]}
+              ></Pressable>
+            );
+          }
           const active = value === option.value;
           const color = getStatusColor(option.value);
           return (
