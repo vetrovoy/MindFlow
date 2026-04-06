@@ -1,20 +1,106 @@
-# MindFlowApp
+# MindFlow
 
-Offline-first task manager for personal project planning.
+Офлайн-менеджер задач для личного планирования. Построен на React Native (мобильный) и React (веб) в Turborepo монорепозитории.
 
-## Workspace
+## Требования
 
-- `apps/web` - web client with React, Vite, and FSD app structure
-- `apps/mobile` - bare React Native app shell with FSD app structure
-- `packages/domain` - shared business entities and use case surface
-- `packages/data` - shared repository contracts and persistence boundary
-- `packages/ui` - shared tokens and platform-safe UI contracts
-- `packages/config` - shared config presets and app composition notes
+| Инструмент         | Версия       | Примечание                                         |
+| ------------------ | ------------ | -------------------------------------------------- |
+| **Node.js**        | `>= 22.11.0` | Управляется через `.nvmrc` / Volta                 |
+| **pnpm**           | `10.6.5`     | `corepack enable` затем `corepack use pnpm@10.6.5` |
+| **Xcode**          | последняя    | Нужен для iOS (только macOS)                       |
+| **Android Studio** | последняя    | Нужен для Android                                  |
 
-## Scripts
+## Быстрый старт
 
-- `pnpm dev`
-- `pnpm build`
-- `pnpm lint`
-- `pnpm test`
-- `pnpm typecheck`
+```bash
+# 1. Установка зависимостей
+pnpm install
+
+# 2. Запуск всех dev-серверов (веб + мобильный metro)
+pnpm dev
+
+# Или запуск отдельных приложений:
+pnpm web:dev          # Веб на localhost:5173
+pnpm mobile:start     # Metro bundler
+pnpm mobile:ios       # Сборка и запуск на iOS-симуляторе
+pnpm mobile:android   # Сборка и запуск на Android-эмуляторе
+```
+
+## Скрипты
+
+### Монорепозиторий (root)
+
+| Команда             | Описание                             |
+| ------------------- | ------------------------------------ |
+| `pnpm dev`          | Запуск всех dev-серверов параллельно |
+| `pnpm build`        | Сборка всех пакетов и приложений     |
+| `pnpm lint`         | ESLint по всему workspace            |
+| `pnpm test`         | Запуск всех тестов                   |
+| `pnpm typecheck`    | TypeScript проверка всех пакетов     |
+| `pnpm format`       | Prettier — автоисправление           |
+| `pnpm format:check` | Prettier — только проверка           |
+| `pnpm clean`        | Очистка кешей turbo                  |
+
+### Команды для отдельных приложений
+
+| Команда               | Описание                    |
+| --------------------- | --------------------------- |
+| `pnpm mobile:start`   | Запуск Metro bundler        |
+| `pnpm mobile:ios`     | Запуск на iOS-симуляторе    |
+| `pnpm mobile:android` | Запуск на Android-эмуляторе |
+| `pnpm web:dev`        | Запуск Vite dev-сервера     |
+| `pnpm web:build`      | Продакшн-сборка веба        |
+
+## Структура проекта
+
+```
+mindflow-app/
+├── apps/
+│   ├── mobile/          # React Native приложение (FSD)
+│   └── web/             # React SPA с Vite (FSD)
+├── packages/
+│   ├── domain/          # Бизнес-сущности, use case'ы, селекторы
+│   ├── data/            # Контракты репозиториев + персистенция (SQLite, Dexie)
+│   ├── ui/              # Токены тем, UI-примитивы
+│   ├── copy/            # i18n словарь (RU/EN)
+│   └── config/          # Общие TS-превенты
+└── [infra]
+    ├── .github/         # GitHub Actions CI
+    ├── .husky/          # Git-хуки (lint-staged, commitlint)
+    └── .vscode/         # Настройки редактора + рекомендуемые расширения
+```
+
+Подробнее — в [ARCHITECTURE.md](./ARCHITECTURE.md): диаграммы слоёв и потоков данных.
+
+## Архитектура
+
+- **Паттерн**: Feature-Sliced Design (FSD)
+- **Стейт-менеджмент**: Zustand
+- **Мобильное хранилище**: SQLite (`@op-engineering/op-sqlite`)
+- **Веб-хранилище**: IndexedDB (`dexie`)
+- **Навигация**: React Navigation 7 (мобильный), React Router 7 (веб)
+- **Синхронизация**: Паттерн Repository через `RepositoryBundle` — подставляй SQLite / Dexie / API / in-memory
+
+## Качество кода
+
+- **Линт**: ESLint 9 + TypeScript-ESLint
+- **Форматирование**: Prettier 3
+- **Хуки**: Husky pre-commit запускает lint-staged (eslint + prettier на staged файлах)
+- **Сообщения коммитов**: Conventional Commits через commitlint
+- **CI**: GitHub Actions — lint + test + typecheck на каждом PR
+
+## Тестирование
+
+```bash
+# Все пакеты
+pnpm test
+
+# По отдельности
+pnpm --filter @mindflow/domain test
+pnpm --filter @mindflow/data test
+pnpm --filter @mindflow/web test
+pnpm --filter @mindflow/mobile test
+```
+
+Пакеты domain и data используют Vitest. Мобильный — Jest.
