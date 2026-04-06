@@ -4,9 +4,15 @@ import { searchEntities } from '@mindflow/domain';
 
 import { useCopy } from '@shared/lib/use-copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
-import { sortProjects, sortTasks } from '@shared/model/selectors/task.selectors';
+import {
+  sortProjects,
+  sortTasks,
+} from '@shared/model/selectors/task.selectors';
 import { ScreenShell } from '@shared/ui/primitives';
-import { SearchSortControl, type SearchSortOption } from './ui/search-sort-control';
+import {
+  SearchSortControl,
+  type SearchSortOption,
+} from './ui/search-sort-control';
 import { SearchField } from './ui/search-field';
 import { SearchResultsContent } from './ui/search-results-content';
 
@@ -38,7 +44,10 @@ export function SearchPage() {
   }, [query, state.projects, state.tasks, sortBy]);
 
   const projectSectionsById = useMemo(
-    () => new Map(derived.projectSections.map(section => [section.project.id, section])),
+    () =>
+      new Map(
+        derived.projectSections.map(section => [section.project.id, section]),
+      ),
     [derived.projectSections],
   );
 
@@ -47,15 +56,12 @@ export function SearchPage() {
   const isIdle = normalizedQuery.length === 0;
   const isEmpty = !hasResults && !isIdle;
 
-  const titleAccessory = !isIdle
-    ? <SearchSortControl sortBy={sortBy} onSortChange={setSortBy} />
-    : undefined;
+  const titleAccessory = !isIdle ? (
+    <SearchSortControl sortBy={sortBy} onSortChange={setSortBy} />
+  ) : undefined;
 
   return (
-    <ScreenShell
-      accessory={titleAccessory}
-      title={copy.search.title}
-    >
+    <ScreenShell accessory={titleAccessory} title={copy.search.title}>
       <SearchField value={query} onChange={setQuery} />
       <SearchResultsContent
         isIdle={isIdle}

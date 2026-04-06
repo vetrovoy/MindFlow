@@ -40,7 +40,10 @@ export function SearchField({ value, onChange }: SearchFieldProps) {
     <View
       style={[
         styles.row,
-        { backgroundColor: theme.colors.surface, borderColor: theme.colors.borderSoft },
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.borderSoft,
+        },
       ]}
     >
       <Icon decorative name="search" size={18} tone="muted" />

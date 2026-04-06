@@ -24,7 +24,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export function SearchSortControl({ sortBy, onSortChange }: SearchSortControlProps) {
+export function SearchSortControl({
+  sortBy,
+  onSortChange,
+}: SearchSortControlProps) {
   const copy = useCopy();
   const { theme } = useTheme();
 

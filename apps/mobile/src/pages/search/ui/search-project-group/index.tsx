@@ -25,7 +25,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function SearchProjectGroup({ projects, sectionsById, onOpenProject }: SearchProjectGroupProps) {
+export function SearchProjectGroup({
+  projects,
+  sectionsById,
+  onOpenProject,
+}: SearchProjectGroupProps) {
   const copy = useCopy();
 
   return (

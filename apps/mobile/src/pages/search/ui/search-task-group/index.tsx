@@ -24,7 +24,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function SearchTaskGroup({ tasks, onToggleDone, onOpenTask }: SearchTaskGroupProps) {
+export function SearchTaskGroup({
+  tasks,
+  onToggleDone,
+  onOpenTask,
+}: SearchTaskGroupProps) {
   const copy = useCopy();
 
   return (
