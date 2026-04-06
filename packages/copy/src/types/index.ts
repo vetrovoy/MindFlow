@@ -234,6 +234,11 @@ export interface CopyDictionary {
     medium: string;
     high: string;
   };
+  confirmation: {
+    cancel: string;
+    confirm: string;
+    delete_: string;
+  };
   status: {
     todo: string;
     done: string;

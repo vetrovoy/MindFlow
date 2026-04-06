@@ -1,4 +1,6 @@
 import {
+  archiveProject as archiveProjectEntity,
+  archiveTask as archiveTaskEntity,
   createProject as createProjectEntity,
   createTask,
   reorderTasks,
@@ -331,6 +333,38 @@ export function createAppActions({
       });
       const copy = getRuntimeCopy(getStore);
       setToast(getStore, copy.project.restoredToastTitle, 'success');
+    },
+
+    async archiveTask(taskId) {
+      const { tasks } = getStore().state;
+      const task = tasks.find(t => t.id === taskId);
+      if (task == null) return;
+      await runMutation(async () => {
+        await repository.tasks.save(archiveTaskEntity(task, getNowIso()));
+      });
+      const copy = getRuntimeCopy(getStore);
+      setToast(getStore, copy.task.archivedToastTitle, 'success');
+    },
+
+    async deleteTask(taskId) {
+      await runMutation(async () => {
+        await repository.tasks.delete(taskId);
+      });
+      const copy = getRuntimeCopy(getStore);
+      setToast(getStore, copy.task.deletedToastTitle, 'success');
+    },
+
+    async archiveProject(projectId) {
+      const { projects } = getStore().state;
+      const project = projects.find(p => p.id === projectId);
+      if (project == null) return;
+      await runMutation(async () => {
+        await repository.projects.save(
+          archiveProjectEntity(project, getNowIso()),
+        );
+      });
+      const copy = getRuntimeCopy(getStore);
+      setToast(getStore, copy.project.archivedToastTitle, 'success');
     },
 
     dismissToast() {

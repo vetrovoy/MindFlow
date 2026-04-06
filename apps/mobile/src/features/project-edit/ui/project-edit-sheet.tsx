@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { useCallback, useEffect, useState } from 'react';
 import {
   Pressable,
@@ -67,6 +68,7 @@ export function ProjectEditSheet() {
   const editingProject = useMobileAppStore(s => s.derived.editingProject);
   const saveProjectEdit = useMobileAppStore(s => s.actions.saveProjectEdit);
   const closeProjectEdit = useMobileAppStore(s => s.actions.closeProjectEdit);
+  const archiveProject = useMobileAppStore(s => s.actions.archiveProject);
   const { theme } = useTheme();
 
   const [draft, setDraft] = useState<EditDraft | null>(null);
@@ -124,6 +126,24 @@ export function ProjectEditSheet() {
     onClose: closeProjectEdit,
   });
 
+  function handleArchive() {
+    if (editingProject == null) return;
+    Alert.alert(
+      copy.project.archiveConfirmTitle,
+      copy.project.archiveConfirmDescription,
+      [
+        { text: copy.confirmation.cancel, style: 'cancel' },
+        {
+          text: copy.confirmation.confirm,
+          onPress: () => {
+            void archiveProject(editingProject.id);
+            handleClose();
+          },
+        },
+      ],
+    );
+  }
+
   if (editingProject == null || draft == null) {
     return null;
   }
@@ -136,21 +156,35 @@ export function ProjectEditSheet() {
       title={copy.project.editTitle}
       onClose={handleClose}
       headerAccessory={
-        <Pressable
-          accessibilityRole="button"
-          onPress={handleClose}
-          style={[
-            styles.closeButton,
-            {
-              backgroundColor: theme.colors.overlayGhost,
-              borderColor: theme.colors.borderSoft,
-            },
-          ]}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={copy.project.archiveAriaLabel}
+            onPress={handleArchive}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: theme.colors.overlayGhost,
+                borderColor: theme.colors.borderSoft,
+              },
+            ]}
+          >
+            <Icon decorative name="archive" size={16} tone="muted" />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            onPress={handleClose}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: theme.colors.overlayGhost,
+                borderColor: theme.colors.borderSoft,
+              },
+            ]}
+          >
             <Icon decorative name="close" size={16} tone="muted" />
-          </View>
-        </Pressable>
+          </Pressable>
+        </View>
       }
     >
       <ScrollView

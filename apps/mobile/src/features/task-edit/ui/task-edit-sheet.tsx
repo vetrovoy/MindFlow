@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Pressable,
@@ -69,6 +70,8 @@ export function TaskEditSheet() {
   );
   const saveTaskEdit = useMobileAppStore(store => store.actions.saveTaskEdit);
   const closeTaskEdit = useMobileAppStore(store => store.actions.closeTaskEdit);
+  const archiveTask = useMobileAppStore(store => store.actions.archiveTask);
+  const deleteTask = useMobileAppStore(store => store.actions.deleteTask);
   const { theme } = useTheme();
   const [draft, setDraft] = useState<EditorDraft | null>(null);
   const [titleError, setTitleError] = useState<string | null>(null);
@@ -135,6 +138,43 @@ export function TaskEditSheet() {
     onClose: closeTaskEdit,
   });
 
+  function handleArchive() {
+    if (editingTask == null) return;
+    Alert.alert(
+      copy.task.archiveConfirmTitle,
+      copy.task.archiveConfirmDescription,
+      [
+        { text: copy.confirmation.cancel, style: 'cancel' },
+        {
+          text: copy.confirmation.confirm,
+          onPress: () => {
+            void archiveTask(editingTask.id);
+            handleClose();
+          },
+        },
+      ],
+    );
+  }
+
+  function handleDelete() {
+    if (editingTask == null) return;
+    Alert.alert(
+      copy.task.deleteConfirmTitle,
+      copy.task.deleteConfirmDescription,
+      [
+        { text: copy.confirmation.cancel, style: 'cancel' },
+        {
+          text: copy.confirmation.delete_,
+          onPress: () => {
+            void deleteTask(editingTask.id);
+            handleClose();
+          },
+          style: 'destructive',
+        },
+      ],
+    );
+  }
+
   if (editingTask == null || draft == null) {
     return null;
   }
@@ -147,21 +187,49 @@ export function TaskEditSheet() {
       title={copy.task.editTitle}
       onClose={handleClose}
       headerAccessory={
-        <Pressable
-          accessibilityRole="button"
-          onPress={handleClose}
-          style={[
-            styles.closeButton,
-            {
-              backgroundColor: theme.colors.overlayGhost,
-              borderColor: theme.colors.borderSoft,
-            },
-          ]}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={copy.task.archiveAriaLabel}
+            onPress={handleArchive}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: theme.colors.overlayGhost,
+                borderColor: theme.colors.borderSoft,
+              },
+            ]}
+          >
+            <Icon decorative name="archive" size={16} tone="muted" />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={copy.task.deleteAriaLabel}
+            onPress={handleDelete}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: theme.colors.overlayGhost,
+                borderColor: theme.colors.borderSoft,
+              },
+            ]}
+          >
+            <Icon decorative name="trash" size={16} tone="muted" />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            onPress={handleClose}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: theme.colors.overlayGhost,
+                borderColor: theme.colors.borderSoft,
+              },
+            ]}
+          >
             <Icon decorative name="close" size={16} tone="muted" />
-          </View>
-        </Pressable>
+          </Pressable>
+        </View>
       }
     >
       <ScrollView

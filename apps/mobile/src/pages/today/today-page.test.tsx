@@ -57,6 +57,9 @@ const baseStore: AppStore = {
     setLanguage: jest.fn(),
     restoreTask: jest.fn(),
     restoreProject: jest.fn(),
+    archiveTask: jest.fn(),
+    deleteTask: jest.fn(),
+    archiveProject: jest.fn(),
   },
 };
 

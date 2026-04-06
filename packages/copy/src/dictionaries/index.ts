@@ -267,6 +267,11 @@ const ru: CopyDictionary = {
     todo: "В работе",
     done: "Готово"
   },
+  confirmation: {
+    cancel: "Отмена",
+    confirm: "Подтвердить",
+    delete_: "Удалить"
+  },
   systemStatus: {
     notificationsLabel: "Системные уведомления",
     saveErrorTitle: "Ошибка сохранения"
@@ -527,6 +532,11 @@ const en: CopyDictionary = {
   status: {
     todo: "In progress",
     done: "Done"
+  },
+  confirmation: {
+    cancel: "Cancel",
+    confirm: "Confirm",
+    delete_: "Delete"
   },
   systemStatus: {
     notificationsLabel: "System notifications",

@@ -97,6 +97,9 @@ export interface AppActions {
   setLanguage: (lang: AppLanguage) => void;
   restoreTask: (taskId: string) => Promise<void>;
   restoreProject: (projectId: string) => Promise<void>;
+  archiveTask: (taskId: string) => Promise<void>;
+  deleteTask: (taskId: string) => Promise<void>;
+  archiveProject: (projectId: string) => Promise<void>;
 }
 
 export interface AppStore {
