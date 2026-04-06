@@ -6,7 +6,7 @@ describe('SurfaceCard', () => {
     const { root } = render(
       <SurfaceCard>
         <>Card Content</>
-      </SurfaceCard>
+      </SurfaceCard>,
     );
     expect(root).toBeTruthy();
   });
@@ -15,7 +15,7 @@ describe('SurfaceCard', () => {
     const { root } = render(
       <SurfaceCard elevated testID="card">
         <> Elevated Card</>
-      </SurfaceCard>
+      </SurfaceCard>,
     );
     expect(root).toBeTruthy();
   });
@@ -24,7 +24,7 @@ describe('SurfaceCard', () => {
     const { root } = render(
       <SurfaceCard testID="card">
         <>Padded Card</>
-      </SurfaceCard>
+      </SurfaceCard>,
     );
     expect(root).toBeTruthy();
   });
@@ -33,7 +33,7 @@ describe('SurfaceCard', () => {
     const { root } = render(
       <SurfaceCard padded={false} testID="card">
         <>No Padding</>
-      </SurfaceCard>
+      </SurfaceCard>,
     );
     expect(root).toBeTruthy();
   });
@@ -42,7 +42,7 @@ describe('SurfaceCard', () => {
     const { root } = render(
       <SurfaceCard testID="card" style={{ opacity: 0.5 }}>
         <>Custom Style</>
-      </SurfaceCard>
+      </SurfaceCard>,
     );
     expect(root).toBeTruthy();
   });

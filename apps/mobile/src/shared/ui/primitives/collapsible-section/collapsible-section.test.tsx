@@ -7,7 +7,7 @@ describe('CollapsibleSection', () => {
     render(
       <CollapsibleSection count={2} title="Completed">
         <Body>Child row</Body>
-      </CollapsibleSection>
+      </CollapsibleSection>,
     );
 
     expect(screen.getByText('Completed')).toBeTruthy();
@@ -19,7 +19,7 @@ describe('CollapsibleSection', () => {
     render(
       <CollapsibleSection defaultOpen={false} title="Completed">
         <Body>Hidden row</Body>
-      </CollapsibleSection>
+      </CollapsibleSection>,
     );
 
     expect(screen.queryByText('Hidden row')).toBeNull();
@@ -33,7 +33,7 @@ describe('CollapsibleSection', () => {
     render(
       <CollapsibleSection defaultOpen={false} title="Completed">
         <Body>Hidden row</Body>
-      </CollapsibleSection>
+      </CollapsibleSection>,
     );
 
     const trigger = screen.getByRole('button');
@@ -42,14 +42,16 @@ describe('CollapsibleSection', () => {
 
     fireEvent.press(trigger);
 
-    expect(screen.getByRole('button').props.accessibilityState).toEqual({ expanded: true });
+    expect(screen.getByRole('button').props.accessibilityState).toEqual({
+      expanded: true,
+    });
   });
 
   it('keeps manual close after parent rerender when defaultOpen is true', () => {
     const { rerender } = render(
       <CollapsibleSection defaultOpen title="Completed">
         <Body>Sticky row</Body>
-      </CollapsibleSection>
+      </CollapsibleSection>,
     );
 
     fireEvent.press(screen.getByRole('button'));
@@ -59,7 +61,7 @@ describe('CollapsibleSection', () => {
     rerender(
       <CollapsibleSection defaultOpen title="Completed">
         <Body>Sticky row</Body>
-      </CollapsibleSection>
+      </CollapsibleSection>,
     );
 
     expect(screen.queryByText('Sticky row')).toBeNull();

@@ -14,7 +14,7 @@ describe('SectionHeader', () => {
 
   it('renders action when provided', () => {
     const { root } = render(
-      <SectionHeader title="Title" action={<button>Action</button>} />
+      <SectionHeader title="Title" action={<button>Action</button>} />,
     );
     expect(root).toBeTruthy();
   });
@@ -25,7 +25,7 @@ describe('SectionHeader', () => {
         title="Main Title"
         subtitle="Description"
         action={<button>Edit</button>}
-      />
+      />,
     );
     expect(root).toBeTruthy();
     expect(screen.getByText('Main Title')).toBeTruthy();

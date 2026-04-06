@@ -6,7 +6,7 @@ describe('ScreenShell', () => {
     render(
       <ScreenShell title="Test Title">
         <>Content</>
-      </ScreenShell>
+      </ScreenShell>,
     );
     expect(screen.getByText('Test Title')).toBeTruthy();
   });
@@ -15,7 +15,7 @@ describe('ScreenShell', () => {
     render(
       <ScreenShell title="Title" subtitle="Test Subtitle">
         <>Content</>
-      </ScreenShell>
+      </ScreenShell>,
     );
     expect(screen.getByText('Test Subtitle')).toBeTruthy();
   });
@@ -24,7 +24,7 @@ describe('ScreenShell', () => {
     const { root } = render(
       <ScreenShell title="Title">
         <>Child Content</>
-      </ScreenShell>
+      </ScreenShell>,
     );
     expect(root).toBeTruthy();
   });
@@ -33,7 +33,7 @@ describe('ScreenShell', () => {
     const { root } = render(
       <ScreenShell title="Title" accessory={<button>Button</button>}>
         <>Content</>
-      </ScreenShell>
+      </ScreenShell>,
     );
     expect(root).toBeTruthy();
   });

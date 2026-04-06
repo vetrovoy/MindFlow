@@ -39,7 +39,9 @@ export function BottomSheetSelector<T extends string>({
     <>
       <Pressable
         accessibilityRole="button"
-        onPress={() => { setIsOpen(true); }}
+        onPress={() => {
+          setIsOpen(true);
+        }}
         style={[styles.trigger, { backgroundColor: theme.colors.surface }]}
       >
         <Icon decorative name={icon} size={20} tone="muted" />
@@ -51,7 +53,9 @@ export function BottomSheetSelector<T extends string>({
       <BottomSheet
         visible={isOpen}
         title={sheetTitle}
-        onClose={() => { setIsOpen(false); }}
+        onClose={() => {
+          setIsOpen(false);
+        }}
       >
         <View style={styles.options}>
           {options.map(option => {
@@ -60,20 +64,31 @@ export function BottomSheetSelector<T extends string>({
               <Pressable
                 key={option.value}
                 accessibilityRole="button"
-                onPress={() => { onSelect(option.value); setIsOpen(false); }}
+                onPress={() => {
+                  onSelect(option.value);
+                  setIsOpen(false);
+                }}
                 style={[
                   styles.option,
                   {
-                    backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
-                    borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
+                    backgroundColor: active
+                      ? theme.colors.surfaceInteractive
+                      : theme.colors.surface,
+                    borderColor: active
+                      ? theme.colors.accentPrimaryPanelBorder
+                      : theme.colors.borderSoft,
                     borderWidth: active ? 1 : 0,
                   },
                 ]}
               >
                 {option.preview}
-                <Body tone={active ? 'primary' : 'secondary'}>{option.label}</Body>
+                <Body tone={active ? 'primary' : 'secondary'}>
+                  {option.label}
+                </Body>
                 <View style={styles.flex} />
-                {active && <Icon decorative name="check" size={16} tone="accent" />}
+                {active && (
+                  <Icon decorative name="check" size={16} tone="accent" />
+                )}
               </Pressable>
             );
           })}

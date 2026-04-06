@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Toast, {
-  type ToastConfig,
-} from 'react-native-toast-message';
+import Toast, { type ToastConfig } from 'react-native-toast-message';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
@@ -24,7 +22,12 @@ function ToastContent({
   backgroundColor?: string;
 }) {
   return (
-    <View style={[styles.container, { backgroundColor: backgroundColor || undefined }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: backgroundColor || undefined },
+      ]}
+    >
       {icon}
       <View style={styles.textContainer}>
         {text1 ? <Title style={{ color: tint }}>{text1}</Title> : null}

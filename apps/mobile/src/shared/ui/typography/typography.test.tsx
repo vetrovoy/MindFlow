@@ -14,7 +14,9 @@ describe('Typography', () => {
     });
 
     it('applies tone prop', () => {
-      const { getByText } = render(<Body tone="secondary">Secondary text</Body>);
+      const { getByText } = render(
+        <Body tone="secondary">Secondary text</Body>,
+      );
       expect(getByText('Secondary text')).toBeTruthy();
     });
 
@@ -24,7 +26,9 @@ describe('Typography', () => {
     });
 
     it('applies custom style', () => {
-      const { getByText } = render(<Body style={{ opacity: 0.5 }}>Custom style</Body>);
+      const { getByText } = render(
+        <Body style={{ opacity: 0.5 }}>Custom style</Body>,
+      );
       expect(getByText('Custom style')).toBeTruthy();
     });
   });

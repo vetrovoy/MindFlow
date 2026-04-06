@@ -8,7 +8,6 @@ import { useCopy } from '@shared/lib/use-copy';
 import { BottomSheet } from '../bottom-sheet';
 import { Body, Meta } from '../../typography';
 
-
 interface ColorPickerProps {
   value: string;
   onChange: (color: string) => void;
@@ -16,7 +15,12 @@ interface ColorPickerProps {
   label?: string;
 }
 
-export function ColorPicker({ value, onChange, colors, label }: ColorPickerProps) {
+export function ColorPicker({
+  value,
+  onChange,
+  colors,
+  label,
+}: ColorPickerProps) {
   const { theme } = useTheme();
   const copy = useCopy();
   const [isOpen, setIsOpen] = useState(false);
@@ -36,12 +40,17 @@ export function ColorPicker({ value, onChange, colors, label }: ColorPickerProps
             <Pressable
               key={color}
               accessibilityRole="button"
-              onPress={() => { onChange(color); }}
+              onPress={() => {
+                onChange(color);
+              }}
               style={[
                 styles.preset,
                 { backgroundColor: color },
                 value === color
-                  ? [styles.presetActive, { borderColor: theme.colors.textPrimary }]
+                  ? [
+                      styles.presetActive,
+                      { borderColor: theme.colors.textPrimary },
+                    ]
                   : { borderColor: 'transparent' },
               ]}
             />
@@ -51,7 +60,9 @@ export function ColorPicker({ value, onChange, colors, label }: ColorPickerProps
 
       <Pressable
         accessibilityRole="button"
-        onPress={() => { setIsOpen(true); }}
+        onPress={() => {
+          setIsOpen(true);
+        }}
         style={[
           styles.trigger,
           {
@@ -60,16 +71,21 @@ export function ColorPicker({ value, onChange, colors, label }: ColorPickerProps
           },
         ]}
       >
-        <View style={[styles.swatch, { backgroundColor: value || theme.colors.borderMuted }]} />
-        <Body tone={value ? 'primary' : 'secondary'}>
-          {value || '—'}
-        </Body>
+        <View
+          style={[
+            styles.swatch,
+            { backgroundColor: value || theme.colors.borderMuted },
+          ]}
+        />
+        <Body tone={value ? 'primary' : 'secondary'}>{value || '—'}</Body>
       </Pressable>
 
       <BottomSheet
         visible={isOpen}
         title={copy.colorPicker.title}
-        onClose={() => { setIsOpen(false); }}
+        onClose={() => {
+          setIsOpen(false);
+        }}
       >
         <RNColorPicker
           value={value || '#4285F4'}

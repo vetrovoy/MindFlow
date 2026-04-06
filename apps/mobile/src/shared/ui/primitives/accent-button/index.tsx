@@ -1,4 +1,9 @@
-import { Pressable, StyleSheet, type PressableProps, type ViewStyle } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  type PressableProps,
+  type ViewStyle,
+} from 'react-native';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Body } from '../../typography';

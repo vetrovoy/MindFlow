@@ -23,11 +23,22 @@ const styles = StyleSheet.create({
 
 export function ProgressBar({ value, max }: ProgressBarProps) {
   const { theme } = useTheme();
-  const width = `${Math.round(getProgressValue({ value, max }) * 100)}%` as DimensionValue;
+  const width =
+    `${Math.round(getProgressValue({ value, max }) * 100)}%` as DimensionValue;
 
   return (
-    <View style={[styles.progressTrack, { backgroundColor: theme.colors.overlayGhost }]}>
-      <View style={[styles.progressFill, { width, backgroundColor: theme.colors.accentPrimary }]} />
+    <View
+      style={[
+        styles.progressTrack,
+        { backgroundColor: theme.colors.overlayGhost },
+      ]}
+    >
+      <View
+        style={[
+          styles.progressFill,
+          { width, backgroundColor: theme.colors.accentPrimary },
+        ]}
+      />
     </View>
   );
 }

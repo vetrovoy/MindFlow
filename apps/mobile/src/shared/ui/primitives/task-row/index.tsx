@@ -10,7 +10,6 @@ import { Body, Meta } from '../../typography';
 import { SurfaceCard } from '../surface-card';
 import { StatusPill, type StatusPillProps } from '../status-pill';
 
-
 interface TaskRowProps {
   task: Task;
   onToggleDone: (taskId: string) => void;

@@ -11,7 +11,11 @@ interface PrioritySelectProps {
   label?: string;
 }
 
-export function PrioritySelect({ value, onChange, label }: PrioritySelectProps) {
+export function PrioritySelect({
+  value,
+  onChange,
+  label,
+}: PrioritySelectProps) {
   const { theme } = useTheme();
   const copy = useCopy();
 
@@ -23,9 +27,12 @@ export function PrioritySelect({ value, onChange, label }: PrioritySelectProps) 
 
   function getPriorityColor(priority: TaskPriority): string {
     switch (priority) {
-      case 'low': return theme.colors.accentInfo;
-      case 'medium': return theme.colors.accentPrimary;
-      case 'high': return theme.colors.accentAlert;
+      case 'low':
+        return theme.colors.accentInfo;
+      case 'medium':
+        return theme.colors.accentPrimary;
+      case 'high':
+        return theme.colors.accentAlert;
     }
   }
 
@@ -41,7 +48,9 @@ export function PrioritySelect({ value, onChange, label }: PrioritySelectProps) 
               key={option.value}
               accessibilityRole="button"
               accessibilityState={{ selected: active }}
-              onPress={() => { onChange(option.value); }}
+              onPress={() => {
+                onChange(option.value);
+              }}
               style={[
                 styles.chip,
                 {

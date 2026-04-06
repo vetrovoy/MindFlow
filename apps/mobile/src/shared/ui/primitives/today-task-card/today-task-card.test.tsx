@@ -27,30 +27,24 @@ const mockOverdueTaskGroup: TodayTaskGroup = {
 
 describe('TodayTaskCard', () => {
   it('renders task title', () => {
-    render(
-      <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />
-    );
+    render(<TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />);
     expect(screen.getByText('Today Task')).toBeTruthy();
   });
 
   it('renders today status pill', () => {
-    render(
-      <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />
-    );
+    render(<TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />);
     expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
   });
 
   it('renders overdue status pill', () => {
     render(
-      <TodayTaskCard item={mockOverdueTaskGroup} onToggleDone={() => {}} />
+      <TodayTaskCard item={mockOverdueTaskGroup} onToggleDone={() => {}} />,
     );
     expect(screen.getByText('ПРОСРОЧЕНО')).toBeTruthy();
   });
 
   it('does not render standalone bucket label above the row', () => {
-    render(
-      <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />
-    );
+    render(<TodayTaskCard item={mockTodayTaskGroup} onToggleDone={() => {}} />);
 
     // No standalone 'ПРОСРОЧЕНО' since bucket is due-today
     expect(screen.queryByText('ПРОСРОЧЕНО')).toBeNull();
@@ -61,7 +55,7 @@ describe('TodayTaskCard', () => {
   it('calls onToggleDone when task checkbox is pressed', () => {
     const onToggleDone = jest.fn();
     render(
-      <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={onToggleDone} />
+      <TodayTaskCard item={mockTodayTaskGroup} onToggleDone={onToggleDone} />,
     );
     const checkbox = screen.getByRole('checkbox');
     fireEvent.press(checkbox);
@@ -71,7 +65,11 @@ describe('TodayTaskCard', () => {
   it('forwards open task interaction', () => {
     const onOpenTask = jest.fn();
     render(
-      <TodayTaskCard item={mockTodayTaskGroup} onOpenTask={onOpenTask} onToggleDone={() => {}} />
+      <TodayTaskCard
+        item={mockTodayTaskGroup}
+        onOpenTask={onOpenTask}
+        onToggleDone={() => {}}
+      />,
     );
 
     fireEvent.press(screen.getByText('Today Task'));

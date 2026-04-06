@@ -8,7 +8,7 @@ describe('StateCard', () => {
         variant="empty"
         title="Пусто"
         description="Добавьте первую задачу."
-      />
+      />,
     );
 
     expect(screen.getByText('Пусто')).toBeTruthy();
@@ -21,7 +21,13 @@ describe('StateCard', () => {
   });
 
   it('renders error state content', () => {
-    render(<StateCard variant="error" title="Ошибка" description="Что-то пошло не так." />);
+    render(
+      <StateCard
+        variant="error"
+        title="Ошибка"
+        description="Что-то пошло не так."
+      />,
+    );
     expect(screen.getByText('Ошибка')).toBeTruthy();
     expect(screen.getByText('Что-то пошло не так.')).toBeTruthy();
   });

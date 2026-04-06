@@ -8,7 +8,6 @@ import { BottomSheet } from '../bottom-sheet';
 import { Icon } from '../../icons';
 import { Body, Meta } from '../../typography';
 
-
 interface ProjectSelectorProps {
   value: string | null;
   onChange: (projectId: string | null) => void;
@@ -27,7 +26,8 @@ function ProjectRow({ project, active, onPress }: ProjectRowProps) {
   const { theme } = useTheme();
   const copy = useCopy();
 
-  const label = project == null ? copy.projectSelector.inbox : `${project.name}`;
+  const label =
+    project == null ? copy.projectSelector.inbox : `${project.name}`;
   const colorDot = project?.color;
 
   return (
@@ -38,14 +38,25 @@ function ProjectRow({ project, active, onPress }: ProjectRowProps) {
       style={[
         styles.row,
         {
-          backgroundColor: active ? theme.colors.surfaceInteractive : theme.colors.surface,
-          borderColor: active ? theme.colors.accentPrimaryPanelBorder : theme.colors.borderSoft,
+          backgroundColor: active
+            ? theme.colors.surfaceInteractive
+            : theme.colors.surface,
+          borderColor: active
+            ? theme.colors.accentPrimaryPanelBorder
+            : theme.colors.borderSoft,
         },
       ]}
     >
-      {colorDot != null && <View style={[styles.colorDot, { backgroundColor: colorDot }]} />}
+      {colorDot != null && (
+        <View style={[styles.colorDot, { backgroundColor: colorDot }]} />
+      )}
       {colorDot == null && (
-        <Icon decorative name="nav-inbox" size={14} tone={active ? 'accent' : 'muted'} />
+        <Icon
+          decorative
+          name="nav-inbox"
+          size={14}
+          tone={active ? 'accent' : 'muted'}
+        />
       )}
       <View style={styles.rowLabel}>
         <Meta tone={active ? 'accent' : 'primary'}>{label}</Meta>
@@ -89,9 +100,10 @@ export function ProjectSelector({
     setIsOpen(false);
   }
 
-  const previewLabel = selectedProject != null
-    ? `${selectedProject.name}`
-    : copy.projectSelector.inbox;
+  const previewLabel =
+    selectedProject != null
+      ? `${selectedProject.name}`
+      : copy.projectSelector.inbox;
 
   const previewColor = selectedProject?.color;
 
@@ -110,12 +122,17 @@ export function ProjectSelector({
         ]}
       >
         {previewColor != null && (
-          <View style={[styles.previewDot, { backgroundColor: previewColor }]} />
+          <View
+            style={[styles.previewDot, { backgroundColor: previewColor }]}
+          />
         )}
         {previewColor == null && (
           <Icon decorative name="nav-inbox" size={14} tone="muted" />
         )}
-        <Body tone={selectedProject != null ? 'primary' : 'secondary'} style={styles.previewText}>
+        <Body
+          tone={selectedProject != null ? 'primary' : 'secondary'}
+          style={styles.previewText}
+        >
           {previewLabel}
         </Body>
         <Icon decorative name="chevron-down" size={16} tone="muted" />
@@ -126,12 +143,17 @@ export function ProjectSelector({
         title={copy.projectSelector.title}
         onClose={handleClose}
       >
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.sheetContent}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.sheetContent}
+        >
           {/* Inbox */}
           <ProjectRow
             project={null}
             active={value == null}
-            onPress={() => { handleSelect(null); }}
+            onPress={() => {
+              handleSelect(null);
+            }}
           />
 
           {/* Favorites */}
@@ -143,7 +165,9 @@ export function ProjectSelector({
                   key={project.id}
                   project={project}
                   active={value === project.id}
-                  onPress={() => { handleSelect(project.id); }}
+                  onPress={() => {
+                    handleSelect(project.id);
+                  }}
                 />
               ))}
             </View>
@@ -158,7 +182,9 @@ export function ProjectSelector({
                   key={project.id}
                   project={project}
                   active={value === project.id}
-                  onPress={() => { handleSelect(project.id); }}
+                  onPress={() => {
+                    handleSelect(project.id);
+                  }}
                 />
               ))}
             </View>

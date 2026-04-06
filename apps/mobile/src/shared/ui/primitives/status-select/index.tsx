@@ -22,8 +22,10 @@ export function StatusSelect({ value, onChange, label }: StatusSelectProps) {
 
   function getStatusColor(status: TaskStatus): string {
     switch (status) {
-      case 'todo': return theme.colors.accentInfo;
-      case 'done': return theme.colors.accentSuccessDeep;
+      case 'todo':
+        return theme.colors.accentInfo;
+      case 'done':
+        return theme.colors.accentSuccessDeep;
     }
   }
 
@@ -39,7 +41,9 @@ export function StatusSelect({ value, onChange, label }: StatusSelectProps) {
               key={option.value}
               accessibilityRole="button"
               accessibilityState={{ selected: active }}
-              onPress={() => { onChange(option.value); }}
+              onPress={() => {
+                onChange(option.value);
+              }}
               style={[
                 styles.chip,
                 {

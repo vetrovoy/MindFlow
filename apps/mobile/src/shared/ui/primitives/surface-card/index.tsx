@@ -37,8 +37,12 @@ export function SurfaceCard({
         styles.card,
         padded && styles.cardPadded,
         {
-          backgroundColor: elevated ? theme.colors.surfaceElevated : theme.colors.surfaceCard,
-          borderColor: elevated ? theme.colors.borderMedium : theme.colors.borderSoft,
+          backgroundColor: elevated
+            ? theme.colors.surfaceElevated
+            : theme.colors.surfaceCard,
+          borderColor: elevated
+            ? theme.colors.borderMedium
+            : theme.colors.borderSoft,
           shadowColor: theme.colors.shadowCard,
         },
         style,

@@ -72,8 +72,12 @@ export function CollapsibleSection({
           tone="muted"
         />
       </Pressable>
-      <View style={[styles.divider, { backgroundColor: theme.colors.borderSoft }]} />
-      {isOpen ? <View style={[styles.content, contentStyle]}>{children}</View> : null}
+      <View
+        style={[styles.divider, { backgroundColor: theme.colors.borderSoft }]}
+      />
+      {isOpen ? (
+        <View style={[styles.content, contentStyle]}>{children}</View>
+      ) : null}
     </SurfaceCard>
   );
 }

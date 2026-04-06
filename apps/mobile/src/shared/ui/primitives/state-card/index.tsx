@@ -67,7 +67,10 @@ export function StateCard({ variant, title, description }: StateCardProps) {
         styles.root,
         {
           backgroundColor: theme.colors.surface,
-          borderColor: variant === 'error' ? `${theme.colors.accentAlert}22` : theme.colors.borderSoft,
+          borderColor:
+            variant === 'error'
+              ? `${theme.colors.accentAlert}22`
+              : theme.colors.borderSoft,
         },
       ]}
     >

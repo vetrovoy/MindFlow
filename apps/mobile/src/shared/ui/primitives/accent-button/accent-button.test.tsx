@@ -11,7 +11,7 @@ describe('AccentButton', () => {
     const { getByTestId } = render(
       <AccentButton testID="button" style={{ opacity: 0.5 }}>
         Styled Button
-      </AccentButton>
+      </AccentButton>,
     );
     expect(getByTestId('button')).toBeTruthy();
   });
@@ -31,13 +31,9 @@ describe('AccentButton', () => {
   it('passes through Pressable props', () => {
     const onPress = jest.fn();
     render(
-      <AccentButton
-        onPress={onPress}
-        disabled
-        testID="disabled-button"
-      >
+      <AccentButton onPress={onPress} disabled testID="disabled-button">
         Disabled
-      </AccentButton>
+      </AccentButton>,
     );
     const button = screen.getByTestId('disabled-button');
     fireEvent.press(button);

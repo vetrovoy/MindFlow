@@ -30,37 +30,29 @@ const mockProject: Project = {
 
 describe('TaskRow', () => {
   it('renders task title', () => {
-    render(
-      <TaskRow task={mockTask} onToggleDone={() => {}} />
-    );
+    render(<TaskRow task={mockTask} onToggleDone={() => {}} />);
     expect(screen.getByText('Test Task')).toBeTruthy();
   });
 
   it('renders priority', () => {
-    render(
-      <TaskRow task={mockTask} onToggleDone={() => {}} />
-    );
+    render(<TaskRow task={mockTask} onToggleDone={() => {}} />);
     expect(screen.getByText('Высокий')).toBeTruthy();
   });
 
   it('renders status text', () => {
-    render(
-      <TaskRow task={mockTask} onToggleDone={() => {}} />
-    );
+    render(<TaskRow task={mockTask} onToggleDone={() => {}} />);
     expect(screen.getByText('В работе')).toBeTruthy();
   });
 
   it('renders done status when task is completed', () => {
     const doneTask: Task = { ...mockTask, status: 'done' };
-    render(
-      <TaskRow task={doneTask} onToggleDone={() => {}} />
-    );
+    render(<TaskRow task={doneTask} onToggleDone={() => {}} />);
     expect(screen.getByText('Готово')).toBeTruthy();
   });
 
   it('renders project when provided', () => {
     render(
-      <TaskRow task={mockTask} onToggleDone={() => {}} project={mockProject} />
+      <TaskRow task={mockTask} onToggleDone={() => {}} project={mockProject} />,
     );
     expect(screen.getByText('📁 Test Project')).toBeTruthy();
   });
@@ -73,7 +65,7 @@ describe('TaskRow', () => {
         onOpenTask={() => {}}
         presentation="inbox"
         project={mockProject}
-      />
+      />,
     );
 
     expect(screen.queryByText('В работе')).toBeNull();
@@ -83,20 +75,14 @@ describe('TaskRow', () => {
 
   it('renders badge variant when provided', () => {
     render(
-      <TaskRow
-        task={mockTask}
-        onToggleDone={() => {}}
-        badgeVariant="today"
-      />
+      <TaskRow task={mockTask} onToggleDone={() => {}} badgeVariant="today" />,
     );
     expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
   });
 
   it('calls onToggleDone when checkbox is pressed', () => {
     const onToggleDone = jest.fn();
-    render(
-      <TaskRow task={mockTask} onToggleDone={onToggleDone} />
-    );
+    render(<TaskRow task={mockTask} onToggleDone={onToggleDone} />);
     const checkbox = screen.getByRole('checkbox');
     fireEvent.press(checkbox);
     expect(onToggleDone).toHaveBeenCalledWith('task-1');
@@ -104,17 +90,13 @@ describe('TaskRow', () => {
 
   it('shows checked state for done task', () => {
     const doneTask: Task = { ...mockTask, status: 'done' };
-    render(
-      <TaskRow task={doneTask} onToggleDone={() => {}} />
-    );
+    render(<TaskRow task={doneTask} onToggleDone={() => {}} />);
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox.props.accessibilityState?.checked).toBe(true);
   });
 
   it('does not render badge when variant is not provided', () => {
-    render(
-      <TaskRow task={mockTask} onToggleDone={() => {}} />
-    );
+    render(<TaskRow task={mockTask} onToggleDone={() => {}} />);
     expect(screen.queryByText('СЕГОДНЯ')).toBeNull();
     expect(screen.queryByText('ПРОСРОЧЕНО')).toBeNull();
   });
@@ -126,7 +108,7 @@ describe('TaskRow', () => {
         onToggleDone={() => {}}
         presentation="inbox"
         badgeVariant="today"
-      />
+      />,
     );
 
     expect(screen.getByText('СЕГОДНЯ')).toBeTruthy();
@@ -134,11 +116,21 @@ describe('TaskRow', () => {
 
   it('applies hitSlop to interactive targets', () => {
     render(
-      <TaskRow task={mockTask} onToggleDone={() => {}} onOpenTask={() => {}} />
+      <TaskRow task={mockTask} onToggleDone={() => {}} onOpenTask={() => {}} />,
     );
     const checkbox = screen.getByRole('checkbox');
     const button = screen.getByRole('button');
-    expect(checkbox.props.hitSlop).toEqual({ top: 10, bottom: 10, left: 10, right: 10 });
-    expect(button.props.hitSlop).toEqual({ top: 10, bottom: 10, left: 10, right: 10 });
+    expect(checkbox.props.hitSlop).toEqual({
+      top: 10,
+      bottom: 10,
+      left: 10,
+      right: 10,
+    });
+    expect(button.props.hitSlop).toEqual({
+      top: 10,
+      bottom: 10,
+      left: 10,
+      right: 10,
+    });
   });
 });

@@ -28,7 +28,12 @@ export function StatusPill({ label, variant }: StatusPillProps) {
         : theme.colors.textSecondary;
 
   return (
-    <View style={[styles.pill, { backgroundColor: `${tone}14`, borderColor: `${tone}28` }]}>
+    <View
+      style={[
+        styles.pill,
+        { backgroundColor: `${tone}14`, borderColor: `${tone}28` },
+      ]}
+    >
       <Meta style={{ color: tone }}>{label.toUpperCase()}</Meta>
     </View>
   );

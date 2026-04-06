@@ -9,7 +9,11 @@ interface TodayTaskCardProps {
   onOpenTask?: (taskId: string) => void;
 }
 
-export function TodayTaskCard({ item, onOpenTask, onToggleDone }: TodayTaskCardProps) {
+export function TodayTaskCard({
+  item,
+  onOpenTask,
+  onToggleDone,
+}: TodayTaskCardProps) {
   const badgeVariant: StatusPillProps['variant'] =
     item.bucket === 'overdue' ? 'overdue' : 'today';
 

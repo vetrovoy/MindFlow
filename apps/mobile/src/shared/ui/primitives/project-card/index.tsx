@@ -7,7 +7,6 @@ import { SurfaceCard } from '../surface-card';
 import { ProgressBar } from '../progress-bar';
 import { Icon } from '../../icons';
 
-
 interface ProjectCardProps {
   project: Project;
   taskCount: number;
@@ -24,14 +23,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ProjectCard({ project, taskCount, doneCount, onPress }: ProjectCardProps) {
+export function ProjectCard({
+  project,
+  taskCount,
+  doneCount,
+  onPress,
+}: ProjectCardProps) {
   return (
     <Pressable accessibilityRole="button" onPress={onPress}>
       <SurfaceCard elevated>
         <View style={{ gap: 14 }}>
           <View style={styles.headerRow}>
-            <View style={{ flex: 1, flexDirection:'row', alignItems:'center', gap: 4 }}>
-              <View style={{ backgroundColor: project.color, width: 12, height:12, borderRadius: 999 }} />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: project.color,
+                  width: 12,
+                  height: 12,
+                  borderRadius: 999,
+                }}
+              />
               <Title>{project.name}</Title>
             </View>
             {project.isFavorite ? (

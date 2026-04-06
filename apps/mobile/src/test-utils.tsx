@@ -1,10 +1,12 @@
 import type { ReactElement } from 'react';
-import React from 'react';
 import { render, type RenderOptions } from '@testing-library/react-native';
 
 // Mocks are provided by jest.setup.js
 
-function customRender(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) {
+function customRender(
+  ui: ReactElement,
+  options?: Omit<RenderOptions, 'wrapper'>,
+) {
   return render(ui, { ...options });
 }
 

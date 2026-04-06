@@ -30,7 +30,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ScreenShell({ title, subtitle, accessory, children }: ScreenShellProps) {
+export function ScreenShell({
+  title,
+  subtitle,
+  accessory,
+  children,
+}: ScreenShellProps) {
   const { theme } = useTheme();
 
   return (

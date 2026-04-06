@@ -4,13 +4,9 @@ import { BottomSheet } from './index';
 describe('BottomSheet', () => {
   it('renders when visible', () => {
     render(
-      <BottomSheet
-        visible
-        title="Sheet Title"
-        onClose={() => {}}
-      >
+      <BottomSheet visible title="Sheet Title" onClose={() => {}}>
         <>Sheet Content</>
-      </BottomSheet>
+      </BottomSheet>,
     );
     expect(screen.getByText('Sheet Title')).toBeTruthy();
   });
@@ -24,7 +20,7 @@ describe('BottomSheet', () => {
         onClose={() => {}}
       >
         <>Content</>
-      </BottomSheet>
+      </BottomSheet>,
     );
     expect(screen.getByText('Sheet Subtitle')).toBeTruthy();
   });
@@ -33,7 +29,7 @@ describe('BottomSheet', () => {
     const { root } = render(
       <BottomSheet visible title="Title" onClose={() => {}}>
         <>Child Content</>
-      </BottomSheet>
+      </BottomSheet>,
     );
     expect(root).toBeTruthy();
   });
@@ -43,20 +39,16 @@ describe('BottomSheet', () => {
     render(
       <BottomSheet visible title="Title" onClose={onClose}>
         <>Content</>
-      </BottomSheet>
+      </BottomSheet>,
     );
     expect(screen.getByText('Title')).toBeTruthy();
   });
 
   it('does not render when not visible', () => {
     render(
-      <BottomSheet
-        visible={false}
-        title="Hidden Sheet"
-        onClose={() => {}}
-      >
+      <BottomSheet visible={false} title="Hidden Sheet" onClose={() => {}}>
         <>Hidden Content</>
-      </BottomSheet>
+      </BottomSheet>,
     );
     expect(screen.queryByText('Hidden Sheet')).toBeNull();
   });
