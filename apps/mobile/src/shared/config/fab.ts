@@ -1,4 +1,4 @@
-import { TAB_BAR_HEIGHT } from './contants';
+import { TAB_BAR_HEIGHT } from './constants';
 
 export const FAB_SIZE = 52;
 export const FAB_GAP = 8;

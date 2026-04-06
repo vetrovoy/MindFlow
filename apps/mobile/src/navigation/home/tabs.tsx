@@ -5,7 +5,7 @@ import { Icon } from '@mobile/shared/ui/icons';
 import { useTheme } from '@mobile/shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { TAB_BAR_HEIGHT } from '@mobile/shared/config/contants';
+import { TAB_BAR_HEIGHT } from '@mobile/shared/config/constants';
 import type { HomeTabParamList } from '../types';
 
 const Tab = createBottomTabNavigator<HomeTabParamList>();

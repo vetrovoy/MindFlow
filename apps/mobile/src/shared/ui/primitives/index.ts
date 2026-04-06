@@ -2,7 +2,6 @@
 export { ScreenShell } from './screen-shell';
 export { SurfaceCard } from './surface-card';
 export { SectionHeader } from './section-header';
-export { FeedbackCard } from './feedback-card';
 export { StateCard } from './state-card';
 export { CollapsibleSection } from './collapsible-section';
 export { ProgressBar } from './progress-bar';
@@ -24,7 +23,6 @@ export { AccentButton } from './accent-button';
 export type { ScreenShellProps } from './screen-shell';
 export type { SurfaceCardProps } from './surface-card';
 export type { SectionHeaderProps } from './section-header';
-export type { FeedbackCardProps } from './feedback-card';
 export type { StateCardProps } from './state-card';
 export type { CollapsibleSectionProps } from './collapsible-section';
 export type { ProgressBarProps } from './progress-bar';

@@ -8,7 +8,7 @@ import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
 import { Body, Title } from '@shared/ui/typography';
 
-import { TOAST_DURATION_MS } from '@mobile/shared/config/contants';
+import { TOAST_DURATION_MS } from '@mobile/shared/config/constants';
 
 function ToastContent({
   text1,
