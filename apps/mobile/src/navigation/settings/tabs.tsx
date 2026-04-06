@@ -22,9 +22,15 @@ const screenOptions = (theme: ReturnType<typeof useTheme>['theme']) => ({
   tabBarLabelStyle: { fontSize: 12 },
 });
 
-const tabIcon = (name: string) => ({ focused }: { focused: boolean }) => (
-  <Icon tone={focused ? 'accent' : 'muted'} name={name as Parameters<typeof Icon>[0]['name']} size={20} />
-);
+const tabIcon =
+  (name: string) =>
+  ({ focused }: { focused: boolean }) => (
+    <Icon
+      tone={focused ? 'accent' : 'muted'}
+      name={name as Parameters<typeof Icon>[0]['name']}
+      size={20}
+    />
+  );
 
 export function SettingsTabNavigator() {
   const { theme } = useTheme();
@@ -37,8 +43,16 @@ export function SettingsTabNavigator() {
 
   return (
     <Tab.Navigator screenOptions={screenOptions(theme)}>
-      <Tab.Screen name="Search" component={SearchPage} options={tabOptions(copy.navigation.search, 'search')} />
-      <Tab.Screen name="Archive" component={ArchivePage} options={tabOptions(copy.navigation.archive, 'archive')} />
+      <Tab.Screen
+        name="Search"
+        component={SearchPage}
+        options={tabOptions(copy.navigation.search, 'search')}
+      />
+      <Tab.Screen
+        name="Archive"
+        component={ArchivePage}
+        options={tabOptions(copy.navigation.archive, 'archive')}
+      />
     </Tab.Navigator>
   );
 }

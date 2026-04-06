@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
 import { NavigationContainer, type Theme } from '@react-navigation/native';
-import { createDrawerNavigator, type DrawerContentComponentProps } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  type DrawerContentComponentProps,
+} from '@react-navigation/drawer';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { HomeTabsShell } from './shells/home';
@@ -13,9 +16,12 @@ const Drawer = createDrawerNavigator<RootDrawerParamList>();
 function MainDrawer() {
   return (
     <Drawer.Navigator
-      drawerContent={useCallback((props: DrawerContentComponentProps) => (
-        <DrawerContent {...props} />
-      ), [])}
+      drawerContent={useCallback(
+        (props: DrawerContentComponentProps) => (
+          <DrawerContent {...props} />
+        ),
+        [],
+      )}
       screenOptions={{
         headerShown: false,
         drawerType: 'slide',

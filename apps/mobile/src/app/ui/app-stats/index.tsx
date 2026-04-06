@@ -6,7 +6,6 @@ import { useTheme } from '@shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';
 import { Body, Display } from '@shared/ui/typography';
 
-
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
@@ -37,7 +36,8 @@ export function AppStats() {
     () =>
       inboxCount +
       projectSections.reduce(
-        (total, section) => total + section.tasks.filter(t => t.status !== 'done').length,
+        (total, section) =>
+          total + section.tasks.filter(t => t.status !== 'done').length,
         0,
       ),
     [inboxCount, projectSections],

@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import type { TaskPriority, TaskStatus } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
@@ -7,9 +13,15 @@ import { useTheme } from '@shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';
 import { useAutoSaveDraft } from '@shared/lib/use-auto-save-draft';
 import { Icon } from '@shared/ui/icons';
-import { BottomSheet, DatePicker, PrioritySelect, ProjectSelector, StatusSelect, SurfaceCard } from '@shared/ui/primitives';
+import {
+  BottomSheet,
+  DatePicker,
+  PrioritySelect,
+  ProjectSelector,
+  StatusSelect,
+  SurfaceCard,
+} from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
-
 
 interface EditorDraft {
   title: string;
@@ -49,8 +61,12 @@ const styles = StyleSheet.create({
 export function TaskEditSheet() {
   const copy = useCopy();
   const editingTask = useMobileAppStore(store => store.derived.editingTask);
-  const favoriteProjects = useMobileAppStore(store => store.derived.favoriteProjects);
-  const regularProjects = useMobileAppStore(store => store.derived.regularProjects);
+  const favoriteProjects = useMobileAppStore(
+    store => store.derived.favoriteProjects,
+  );
+  const regularProjects = useMobileAppStore(
+    store => store.derived.regularProjects,
+  );
   const saveTaskEdit = useMobileAppStore(store => store.actions.saveTaskEdit);
   const closeTaskEdit = useMobileAppStore(store => store.actions.closeTaskEdit);
   const { theme } = useTheme();
@@ -80,26 +96,35 @@ export function TaskEditSheet() {
     setTitleError(null);
   }, [editingTask]);
 
-  const handleSave = useCallback(async (d: EditorDraft) => {
-    if (editingTask == null) return false;
-    const normalizedTitle = d.title.trim();
-    if (!normalizedTitle) {
-      setTitleError(copy.task.titleRequired);
-      return false;
-    }
-    setTitleError(null);
-    return saveTaskEdit({
-      taskId: editingTask.id,
-      title: normalizedTitle,
-      description: d.description.trim() ? d.description.trim() : null,
-      dueDate: d.dueDate.trim() ? d.dueDate.trim() : null,
-      priority: d.priority,
-      status: d.status,
-      projectId: d.projectId,
-    }, { closeOnSuccess: false, toastOnSuccess: false });
-  }, [editingTask, saveTaskEdit, copy.task.titleRequired]);
+  const handleSave = useCallback(
+    async (d: EditorDraft) => {
+      if (editingTask == null) return false;
+      const normalizedTitle = d.title.trim();
+      if (!normalizedTitle) {
+        setTitleError(copy.task.titleRequired);
+        return false;
+      }
+      setTitleError(null);
+      return saveTaskEdit(
+        {
+          taskId: editingTask.id,
+          title: normalizedTitle,
+          description: d.description.trim() ? d.description.trim() : null,
+          dueDate: d.dueDate.trim() ? d.dueDate.trim() : null,
+          priority: d.priority,
+          status: d.status,
+          projectId: d.projectId,
+        },
+        { closeOnSuccess: false, toastOnSuccess: false },
+      );
+    },
+    [editingTask, saveTaskEdit, copy.task.titleRequired],
+  );
 
-  const isDraftValid = useCallback((d: EditorDraft) => d.title.trim().length > 0, []);
+  const isDraftValid = useCallback(
+    (d: EditorDraft) => d.title.trim().length > 0,
+    [],
+  );
   const buildSavePayload = useCallback((d: EditorDraft) => d, []);
 
   const { handleClose } = useAutoSaveDraft<EditorDraft, EditorDraft>({
@@ -121,7 +146,7 @@ export function TaskEditSheet() {
       visible
       title={copy.task.editTitle}
       onClose={handleClose}
-      headerAccessory={(
+      headerAccessory={
         <Pressable
           accessibilityRole="button"
           onPress={handleClose}
@@ -137,16 +162,21 @@ export function TaskEditSheet() {
             <Icon decorative name="close" size={16} tone="muted" />
           </View>
         </Pressable>
-      )}
+      }
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingTop: 12, paddingBottom: 28 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 16, paddingTop: 12, paddingBottom: 28 }}
+      >
         <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.editTitle}</Meta>
             <TextInput
               value={currentDraft.title}
               onChangeText={nextTitle => {
-                setDraft(current => (current == null ? current : { ...current, title: nextTitle }));
+                setDraft(current =>
+                  current == null ? current : { ...current, title: nextTitle },
+                );
                 if (titleError != null) {
                   setTitleError(null);
                 }
@@ -157,7 +187,9 @@ export function TaskEditSheet() {
                 styles.input,
                 {
                   backgroundColor: theme.colors.surface,
-                  borderColor: titleError ? theme.colors.accentAlert : theme.colors.borderSoft,
+                  borderColor: titleError
+                    ? theme.colors.accentAlert
+                    : theme.colors.borderSoft,
                   color: theme.colors.textPrimary,
                 },
               ]}
@@ -172,7 +204,9 @@ export function TaskEditSheet() {
               value={currentDraft.description}
               onChangeText={nextDescription => {
                 setDraft(current =>
-                  current == null ? current : { ...current, description: nextDescription },
+                  current == null
+                    ? current
+                    : { ...current, description: nextDescription },
                 );
               }}
               placeholder={copy.task.descriptionPlaceholder}
@@ -194,7 +228,11 @@ export function TaskEditSheet() {
           <DatePicker
             value={currentDraft.dueDate}
             onChange={nextDueDate => {
-              setDraft(current => (current == null ? current : { ...current, dueDate: nextDueDate }));
+              setDraft(current =>
+                current == null
+                  ? current
+                  : { ...current, dueDate: nextDueDate },
+              );
             }}
             label={copy.task.changeDueDateTrigger}
           />
@@ -225,7 +263,9 @@ export function TaskEditSheet() {
             value={currentDraft.projectId}
             onChange={nextProjectId => {
               setDraft(current =>
-                current == null ? current : { ...current, projectId: nextProjectId },
+                current == null
+                  ? current
+                  : { ...current, projectId: nextProjectId },
               );
             }}
             projects={activeProjects}

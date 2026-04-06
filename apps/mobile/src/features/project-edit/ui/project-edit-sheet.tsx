@@ -21,7 +21,6 @@ import {
 } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
-
 const MARKER_COLORS = projectMarkers.map(m => m.color);
 
 interface EditDraft {
@@ -88,24 +87,33 @@ export function ProjectEditSheet() {
     setNameError(null);
   }, [editingProject]);
 
-  const handleSave = useCallback(async (d: EditDraft) => {
-    if (editingProject == null) return false;
-    const normalizedName = d.name.trim();
-    if (!normalizedName) {
-      setNameError(copy.project.titleRequired);
-      return false;
-    }
-    setNameError(null);
-    return saveProjectEdit({
-      projectId: editingProject.id,
-      name: normalizedName,
-      color: d.color,
-      deadline: d.deadline.trim() ? d.deadline.trim() : null,
-      isFavorite: d.isFavorite,
-    }, { closeOnSuccess: false, toastOnSuccess: false });
-  }, [editingProject, saveProjectEdit, copy.project.titleRequired]);
+  const handleSave = useCallback(
+    async (d: EditDraft) => {
+      if (editingProject == null) return false;
+      const normalizedName = d.name.trim();
+      if (!normalizedName) {
+        setNameError(copy.project.titleRequired);
+        return false;
+      }
+      setNameError(null);
+      return saveProjectEdit(
+        {
+          projectId: editingProject.id,
+          name: normalizedName,
+          color: d.color,
+          deadline: d.deadline.trim() ? d.deadline.trim() : null,
+          isFavorite: d.isFavorite,
+        },
+        { closeOnSuccess: false, toastOnSuccess: false },
+      );
+    },
+    [editingProject, saveProjectEdit, copy.project.titleRequired],
+  );
 
-  const isDraftValid = useCallback((d: EditDraft) => d.name.trim().length > 0, []);
+  const isDraftValid = useCallback(
+    (d: EditDraft) => d.name.trim().length > 0,
+    [],
+  );
   const buildSavePayload = useCallback((d: EditDraft) => d, []);
 
   const { handleClose } = useAutoSaveDraft<EditDraft, EditDraft>({
@@ -145,7 +153,10 @@ export function ProjectEditSheet() {
         </Pressable>
       }
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingTop: 12, paddingBottom: 28 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 16, paddingTop: 12, paddingBottom: 28 }}
+      >
         <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.project.editTitle}</Meta>

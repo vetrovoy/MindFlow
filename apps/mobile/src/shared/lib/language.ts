@@ -5,7 +5,7 @@ const LANGUAGE_KEY = 'language';
 
 export function getStoredLanguage(): AppLanguage | null {
   const stored = storage.getString(LANGUAGE_KEY);
-  return (stored === 'ru' || stored === 'en') ? stored : null;
+  return stored === 'ru' || stored === 'en' ? stored : null;
 }
 
 export function setStoredLanguage(lang: AppLanguage): void {

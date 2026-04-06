@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 export function AppDrawerOpener({ bottom }: { bottom: number }) {
   const { theme } = useTheme();
   const navigation = useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
- 
+
   return (
     <View style={[styles.container, { bottom }]} pointerEvents="box-none">
       <Pressable

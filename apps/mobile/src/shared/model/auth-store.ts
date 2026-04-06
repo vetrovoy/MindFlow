@@ -63,7 +63,8 @@ function validateSignUp(
   const copy = getCopyForLanguage();
   if (name.trim().length === 0) return copy.auth.nameRequiredError;
   if (!isValidEmail(email)) return copy.auth.invalidEmailError;
-  if (password.length < AUTH_MIN_PASSWORD_LENGTH) return copy.auth.passwordTooShortError;
+  if (password.length < AUTH_MIN_PASSWORD_LENGTH)
+    return copy.auth.passwordTooShortError;
   if (password !== confirmPassword) return copy.auth.passwordMismatchError;
   return null;
 }

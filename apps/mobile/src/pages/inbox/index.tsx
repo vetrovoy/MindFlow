@@ -13,7 +13,6 @@ import {
   TaskRow,
 } from '@shared/ui/primitives';
 
-
 const styles = StyleSheet.create({
   mainCard: {
     gap: 14,

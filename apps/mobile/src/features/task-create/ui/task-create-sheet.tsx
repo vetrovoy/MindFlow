@@ -1,14 +1,20 @@
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import type { TaskPriority } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, DatePicker, PrioritySelect, ProjectSelector, SurfaceCard } from '@shared/ui/primitives';
+import {
+  AccentButton,
+  BottomSheet,
+  DatePicker,
+  PrioritySelect,
+  ProjectSelector,
+  SurfaceCard,
+} from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
-
 
 interface CreateDraft {
   title: string;
@@ -116,7 +122,7 @@ export function TaskCreateSheet() {
       visible
       title={copy.task.createTitle}
       onClose={handleClose}
-      headerAccessory={(
+      headerAccessory={
         <Pressable
           accessibilityRole="button"
           onPress={handleClose}
@@ -132,70 +138,78 @@ export function TaskCreateSheet() {
             <Icon decorative name="close" size={16} tone="muted" />
           </View>
         </Pressable>
-      )}
+      }
     >
       <SurfaceCard elevated style={styles.card}>
-          <View style={styles.label}>
-            <Meta tone="soft">{copy.task.createTitle}</Meta>
-            <TextInput
-              value={draft.title}
-              onChangeText={nextTitle => {
-                setDraft(d => ({ ...d, title: nextTitle }));
-                if (titleError != null) setTitleError(null);
-              }}
-              placeholder={copy.task.titlePlaceholder}
-              placeholderTextColor={theme.colors.textTertiary}
-              style={[
-                styles.input,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: titleError ? theme.colors.accentAlert : theme.colors.borderSoft,
-                  color: theme.colors.textPrimary,
-                },
-              ]}
-            />
-            {titleError ? <Body tone="danger">{titleError}</Body> : null}
-          </View>
-        </SurfaceCard>
-
-        <SurfaceCard elevated style={styles.card}>
-          <DatePicker
-            value={effectiveDueDate}
-            onChange={nextDate => {
-              setDraft(d => ({ ...d, dueDate: nextDate }));
+        <View style={styles.label}>
+          <Meta tone="soft">{copy.task.createTitle}</Meta>
+          <TextInput
+            value={draft.title}
+            onChangeText={nextTitle => {
+              setDraft(d => ({ ...d, title: nextTitle }));
+              if (titleError != null) setTitleError(null);
             }}
-            label={copy.task.changeDueDateTrigger}
+            placeholder={copy.task.titlePlaceholder}
+            placeholderTextColor={theme.colors.textTertiary}
+            style={[
+              styles.input,
+              {
+                backgroundColor: theme.colors.surface,
+                borderColor: titleError
+                  ? theme.colors.accentAlert
+                  : theme.colors.borderSoft,
+                color: theme.colors.textPrimary,
+              },
+            ]}
           />
-
-          <PrioritySelect
-            value={draft.priority}
-            onChange={next => { setDraft(d => ({ ...d, priority: next })); }}
-            label={copy.task.priorityAriaLabel}
-          />
-        </SurfaceCard>
-
-        <SurfaceCard elevated style={styles.card}>
-          <ProjectSelector
-            value={draft.projectId}
-            onChange={nextProjectId => { setDraft(d => ({ ...d, projectId: nextProjectId })); }}
-            projects={activeProjects}
-            favoriteProjects={favoriteProjects}
-            label={copy.task.changeProjectTrigger}
-          />
-        </SurfaceCard>
-
-        <View style={styles.footer}>
-          <AccentButton onPress={handleClose} style={styles.footerButton}>
-            {copy.common.close}
-          </AccentButton>
-          <AccentButton
-            disabled={isSaving}
-            onPress={() => { void handleSave(); }}
-            style={styles.footerButton}
-          >
-            {isSaving ? copy.common.saving : copy.common.save}
-          </AccentButton>
+          {titleError ? <Body tone="danger">{titleError}</Body> : null}
         </View>
+      </SurfaceCard>
+
+      <SurfaceCard elevated style={styles.card}>
+        <DatePicker
+          value={effectiveDueDate}
+          onChange={nextDate => {
+            setDraft(d => ({ ...d, dueDate: nextDate }));
+          }}
+          label={copy.task.changeDueDateTrigger}
+        />
+
+        <PrioritySelect
+          value={draft.priority}
+          onChange={next => {
+            setDraft(d => ({ ...d, priority: next }));
+          }}
+          label={copy.task.priorityAriaLabel}
+        />
+      </SurfaceCard>
+
+      <SurfaceCard elevated style={styles.card}>
+        <ProjectSelector
+          value={draft.projectId}
+          onChange={nextProjectId => {
+            setDraft(d => ({ ...d, projectId: nextProjectId }));
+          }}
+          projects={activeProjects}
+          favoriteProjects={favoriteProjects}
+          label={copy.task.changeProjectTrigger}
+        />
+      </SurfaceCard>
+
+      <View style={styles.footer}>
+        <AccentButton onPress={handleClose} style={styles.footerButton}>
+          {copy.common.close}
+        </AccentButton>
+        <AccentButton
+          disabled={isSaving}
+          onPress={() => {
+            void handleSave();
+          }}
+          style={styles.footerButton}
+        >
+          {isSaving ? copy.common.saving : copy.common.save}
+        </AccentButton>
+      </View>
     </BottomSheet>
   );
 }

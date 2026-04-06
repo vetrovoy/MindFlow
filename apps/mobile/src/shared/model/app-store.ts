@@ -1,7 +1,12 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
 import { createSqliteRepositoryBundle } from '@mindflow/data/sqlite';
-import { computeDerived, formatError, INITIAL_STATE, readSnapshot } from './selectors';
+import {
+  computeDerived,
+  formatError,
+  INITIAL_STATE,
+  readSnapshot,
+} from './selectors';
 import { createAppActions } from './actions';
 import { resolveInitialLanguage } from '@shared/lib/language';
 import type { AppState, AppStore } from './types';
@@ -16,9 +21,14 @@ interface StoreEntry {
 let storeEntry: StoreEntry | null = null;
 
 export function createMobileAppStore(userId: string): AppStoreApi {
-  const repository = createSqliteRepositoryBundle({ name: `mindflow-${userId}` });
+  const repository = createSqliteRepositoryBundle({
+    name: `mindflow-${userId}`,
+  });
   const initialLanguage = resolveInitialLanguage();
-  const initialState: AppState = { ...INITIAL_STATE, language: initialLanguage };
+  const initialState: AppState = {
+    ...INITIAL_STATE,
+    language: initialLanguage,
+  };
 
   const store = createStore<AppStore>((set, get) => {
     const patchState = (patch: Partial<AppState>) => {

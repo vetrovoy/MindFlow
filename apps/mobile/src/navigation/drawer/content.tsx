@@ -9,12 +9,12 @@ import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useAuthStore } from '@shared/model/auth-store';
 import { resetMobileAppStore } from '@shared/model/app-store';
 import { useCopy } from '@shared/lib/use-copy';
-import { getThemeOptions, getLanguageOptions } from '@shared/lib/settings-options';
-import { Icon } from '@shared/ui/icons';
 import {
-  NavItem,
-  BottomSheetSelector,
-} from '@shared/ui/primitives';
+  getThemeOptions,
+  getLanguageOptions,
+} from '@shared/lib/settings-options';
+import { Icon } from '@shared/ui/icons';
+import { NavItem, BottomSheetSelector } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 import type { RootDrawerParamList } from '../types';
 
@@ -85,31 +85,41 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
             icon="nav-inbox"
             label={copy.navigation.inbox}
             active={activeRoute === 'Inbox'}
-            onPress={() => { nav('Home', 'Inbox'); }}
+            onPress={() => {
+              nav('Home', 'Inbox');
+            }}
           />
           <NavItem
             icon="nav-today"
             label={copy.navigation.today}
             active={activeRoute === 'Today'}
-            onPress={() => { nav('Home', 'Today'); }}
+            onPress={() => {
+              nav('Home', 'Today');
+            }}
           />
           <NavItem
             icon="nav-lists"
             label={copy.navigation.lists}
             active={activeRoute === 'Lists'}
-            onPress={() => { nav('Home', 'Lists'); }}
+            onPress={() => {
+              nav('Home', 'Lists');
+            }}
           />
           <NavItem
             icon="search"
             label={copy.navigation.search}
             active={activeRoute === 'Search'}
-            onPress={() => { nav('Settings', 'Search'); }}
+            onPress={() => {
+              nav('Settings', 'Search');
+            }}
           />
           <NavItem
             icon="archive"
             label={copy.navigation.archive}
             active={activeRoute === 'Archive'}
-            onPress={() => { nav('Settings', 'Archive'); }}
+            onPress={() => {
+              nav('Settings', 'Archive');
+            }}
           />
         </View>
 
@@ -119,7 +129,9 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
           <BottomSheetSelector
             icon="palette"
             triggerLabel={copy.theme.label}
-            currentLabel={themeOptions.find(t => t.value === themeName)?.label ?? ''}
+            currentLabel={
+              themeOptions.find(t => t.value === themeName)?.label ?? ''
+            }
             options={themeOptions}
             value={themeName}
             onSelect={setTheme}
@@ -128,7 +140,9 @@ export function DrawerContent({ navigation }: DrawerContentComponentProps) {
           <BottomSheetSelector
             icon="language"
             triggerLabel={copy.language.label}
-            currentLabel={languageOptions.find(l => l.value === language)?.label ?? ''}
+            currentLabel={
+              languageOptions.find(l => l.value === language)?.label ?? ''
+            }
             options={languageOptions}
             value={language}
             onSelect={setLanguage}

@@ -7,8 +7,8 @@ import type { ThemeName } from '@mindflow/ui';
 
 const THEME_COLORS: Record<ThemeName, [string, string, string]> = {
   graphite: ['#0A0A0A', '#1D1D22', '#C4F82A'],
-  gilded:   ['#FCF8F1', '#FFFDF9', '#C9A962'],
-  minimal:  ['#FFFFFF', '#F9FAFB', '#2563EB'],
+  gilded: ['#FCF8F1', '#FFFDF9', '#C9A962'],
+  minimal: ['#FFFFFF', '#F9FAFB', '#2563EB'],
 };
 
 function ThemePreview({ themeName }: { themeName: ThemeName }) {
@@ -16,7 +16,10 @@ function ThemePreview({ themeName }: { themeName: ThemeName }) {
   return (
     <View style={styles.themePreview}>
       {colors.map((c, i) => (
-        <View key={i} style={[styles.themePreviewStrip, { backgroundColor: c }]} />
+        <View
+          key={i}
+          style={[styles.themePreviewStrip, { backgroundColor: c }]}
+        />
       ))}
     </View>
   );

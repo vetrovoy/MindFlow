@@ -7,7 +7,6 @@ import { useCopy } from '@shared/lib/use-copy';
 import { Icon } from '@shared/ui/icons';
 import { SurfaceCard } from '@shared/ui/primitives';
 
-
 const DEFAULT_PROJECT_COLOR = '#4285F4';
 const DEFAULT_PROJECT_EMOJI = '📋';
 

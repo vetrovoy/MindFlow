@@ -9,7 +9,6 @@ import { Icon } from '@shared/ui/icons';
 import { SurfaceCard } from '@shared/ui/primitives';
 import { Meta } from '@shared/ui/typography';
 
-
 interface TaskQuickAddFeatureProps {
   preferredDate?: string | null;
 }
@@ -126,11 +125,7 @@ export function TaskQuickAddFeature({
           ]}
           value={draftTitle}
         />
-        {selectedDate != null && (
-          <Meta tone="primary">
-            {selectedDate}
-          </Meta>
-        )}
+        {selectedDate != null && <Meta tone="primary">{selectedDate}</Meta>}
         <Pressable
           accessibilityRole="button"
           onPress={() => {

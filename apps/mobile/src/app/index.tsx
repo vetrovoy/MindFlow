@@ -2,10 +2,16 @@ import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 
 import { ThemeProvider } from '@shared/theme/theme-context';
-import { AppStoreProvider, useMobileAppStore } from '@shared/model/app-store-provider';
+import {
+  AppStoreProvider,
+  useMobileAppStore,
+} from '@shared/model/app-store-provider';
 import { useAuthStore } from '@shared/model/auth-store';
 import { AppToast } from '@shared/ui/primitives';
 import { RootNavigator } from '@mobile/navigation';

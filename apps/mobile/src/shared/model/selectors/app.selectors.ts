@@ -2,7 +2,12 @@ import type { Project, Task, TodayTaskGroup } from '@mindflow/domain';
 import { buildTodayFeed, getProjectProgress } from '@mindflow/domain';
 
 import type { AppDerived, AppState, ProjectSection } from '../types';
-import { getVisibleTasks, sortProjects, sortTasks, getTodayKey } from './task.selectors';
+import {
+  getVisibleTasks,
+  sortProjects,
+  sortTasks,
+  getTodayKey,
+} from './task.selectors';
 
 /**
  * Селектор: входящие задачи (без проекта)

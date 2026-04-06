@@ -13,7 +13,6 @@ import {
 
 import { DraggableTaskList } from '@entities/draggable-task-list';
 
-
 const styles = StyleSheet.create({
   sectionCard: {
     gap: 14,

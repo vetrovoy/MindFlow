@@ -16,7 +16,6 @@ import { AppQuickAdd } from '../app-quick-add';
 import { AppDrawerOpener } from '../app-drawer-opener';
 import { FAB_SPACING } from '@shared/config/fab';
 
-
 interface MobileAppShellProps {
   children: ReactNode;
 }

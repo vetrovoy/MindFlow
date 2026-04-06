@@ -11,7 +11,6 @@ import {
   TodayTaskCard,
 } from '@shared/ui/primitives';
 
-
 const styles = StyleSheet.create({
   contentCard: {
     gap: 14,
@@ -70,7 +69,9 @@ export function TodayPage() {
               defaultOpen
               title={copy.today.overdueTitle}
             >
-              <View style={styles.sectionContent}>{overdueTasks.map(renderTodayTaskCard)}</View>
+              <View style={styles.sectionContent}>
+                {overdueTasks.map(renderTodayTaskCard)}
+              </View>
             </CollapsibleSection>
             {todayTasks.length > 0 ? (
               <CollapsibleSection
@@ -78,12 +79,16 @@ export function TodayPage() {
                 defaultOpen
                 title={copy.today.sectionTitle}
               >
-                <View style={styles.sectionContent}>{todayTasks.map(renderTodayTaskCard)}</View>
+                <View style={styles.sectionContent}>
+                  {todayTasks.map(renderTodayTaskCard)}
+                </View>
               </CollapsibleSection>
             ) : null}
           </View>
         ) : todayTasks.length > 0 ? (
-          <View style={styles.sectionContent}>{todayTasks.map(renderTodayTaskCard)}</View>
+          <View style={styles.sectionContent}>
+            {todayTasks.map(renderTodayTaskCard)}
+          </View>
         ) : (
           <StateCard
             variant="empty"

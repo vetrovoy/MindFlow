@@ -15,8 +15,14 @@ import type { AppLanguage } from '@mindflow/copy';
 import { useTheme } from '@shared/theme/use-theme';
 import { useThemeContext } from '@shared/theme/theme-context';
 import { useAuthStore } from '@shared/model/auth-store';
-import { resolveInitialLanguage, setStoredLanguage } from '@shared/lib/language';
-import { getThemeOptions, getLanguageOptions } from '@shared/lib/settings-options';
+import {
+  resolveInitialLanguage,
+  setStoredLanguage,
+} from '@shared/lib/language';
+import {
+  getThemeOptions,
+  getLanguageOptions,
+} from '@shared/lib/settings-options';
 import { Icon } from '@shared/ui/icons';
 import { BottomSheetSelector } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
@@ -75,9 +81,16 @@ function FieldRow({
         {secureTextEntry ? (
           <Pressable
             style={styles.eyeButton}
-            onPress={() => { setVisible(v => !v); }}
+            onPress={() => {
+              setVisible(v => !v);
+            }}
           >
-            <Icon decorative name={visible ? 'eye-off' : 'eye'} size={18} tone="muted" />
+            <Icon
+              decorative
+              name={visible ? 'eye-off' : 'eye'}
+              size={18}
+              tone="muted"
+            />
           </Pressable>
         ) : null}
       </View>
@@ -137,7 +150,9 @@ export function AuthScreen() {
       }
     } catch (err) {
       setSubmitError(
-        err instanceof Error ? err.message : copy.common.unexpectedLocalDataError,
+        err instanceof Error
+          ? err.message
+          : copy.common.unexpectedLocalDataError,
       );
     } finally {
       setIsSubmitting(false);
@@ -162,7 +177,10 @@ export function AuthScreen() {
           <View style={styles.heading}>
             <Body
               weight="semibold"
-              style={[styles.title, { color: colors.textPrimary, textAlign: 'center' }]}
+              style={[
+                styles.title,
+                { color: colors.textPrimary, textAlign: 'center' },
+              ]}
             >
               {copy.auth.title}
             </Body>
@@ -175,7 +193,10 @@ export function AuthScreen() {
           <View
             style={[
               styles.card,
-              { backgroundColor: colors.surface, borderColor: colors.borderSoft },
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.borderSoft,
+              },
             ]}
           >
             {/* Mode tabs */}
@@ -187,12 +208,22 @@ export function AuthScreen() {
                   accessibilityState={{ selected: mode === m }}
                   style={[
                     styles.tab,
-                    mode === m && [styles.tabActive, { backgroundColor: colors.surface }],
+                    mode === m && [
+                      styles.tabActive,
+                      { backgroundColor: colors.surface },
+                    ],
                   ]}
-                  onPress={() => { switchMode(m); }}
+                  onPress={() => {
+                    switchMode(m);
+                  }}
                 >
-                  <Body weight="medium" tone={mode === m ? 'primary' : 'secondary'}>
-                    {m === 'sign-in' ? copy.auth.signInTab : copy.auth.signUpTab}
+                  <Body
+                    weight="medium"
+                    tone={mode === m ? 'primary' : 'secondary'}
+                  >
+                    {m === 'sign-in'
+                      ? copy.auth.signInTab
+                      : copy.auth.signUpTab}
                   </Body>
                 </Pressable>
               ))}
@@ -221,7 +252,9 @@ export function AuthScreen() {
               />
 
               <FieldRow
-                autoComplete={mode === 'sign-in' ? 'current-password' : 'new-password'}
+                autoComplete={
+                  mode === 'sign-in' ? 'current-password' : 'new-password'
+                }
                 label={copy.auth.passwordLabel}
                 placeholder={copy.auth.passwordPlaceholder}
                 secureTextEntry
@@ -254,10 +287,14 @@ export function AuthScreen() {
                 { backgroundColor: colors.accentPrimary },
                 isSubmitting && styles.submitButtonDisabled,
               ]}
-              onPress={() => { void handleSubmit(); }}
+              onPress={() => {
+                void handleSubmit();
+              }}
             >
               <Body weight="semibold" style={{ color: colors.background }}>
-                {mode === 'sign-in' ? copy.auth.signInSubmit : copy.auth.signUpSubmit}
+                {mode === 'sign-in'
+                  ? copy.auth.signInSubmit
+                  : copy.auth.signUpSubmit}
               </Body>
             </Pressable>
           </View>
@@ -267,7 +304,9 @@ export function AuthScreen() {
             <BottomSheetSelector
               icon="palette"
               triggerLabel={copy.theme.label}
-              currentLabel={themeOptions.find(t => t.value === themeName)?.label ?? ''}
+              currentLabel={
+                themeOptions.find(t => t.value === themeName)?.label ?? ''
+              }
               options={themeOptions}
               value={themeName}
               onSelect={setTheme}
@@ -276,7 +315,9 @@ export function AuthScreen() {
             <BottomSheetSelector
               icon="language"
               triggerLabel={copy.language.label}
-              currentLabel={languageOptions.find(l => l.value === language)?.label ?? ''}
+              currentLabel={
+                languageOptions.find(l => l.value === language)?.label ?? ''
+              }
               options={languageOptions}
               value={language}
               onSelect={handleSetLanguage}

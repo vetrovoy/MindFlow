@@ -23,9 +23,15 @@ const screenOptions = (theme: ReturnType<typeof useTheme>['theme']) => ({
   tabBarLabelStyle: { fontSize: 12 },
 });
 
-const tabIcon = (name: string) => ({ focused }: { focused: boolean }) => (
-  <Icon tone={focused ? 'accent' : 'muted'} name={name as Parameters<typeof Icon>[0]['name']} size={20} />
-);
+const tabIcon =
+  (name: string) =>
+  ({ focused }: { focused: boolean }) => (
+    <Icon
+      tone={focused ? 'accent' : 'muted'}
+      name={name as Parameters<typeof Icon>[0]['name']}
+      size={20}
+    />
+  );
 
 export function HomeTabNavigator() {
   const { theme } = useTheme();
@@ -38,9 +44,21 @@ export function HomeTabNavigator() {
 
   return (
     <Tab.Navigator screenOptions={screenOptions(theme)}>
-      <Tab.Screen name="Inbox" component={InboxPage} options={tabOptions(copy.navigation.inbox, 'nav-inbox')} />
-      <Tab.Screen name="Today" component={TodayPage} options={tabOptions(copy.navigation.today, 'nav-today')} />
-      <Tab.Screen name="Lists" component={ListsPage} options={tabOptions(copy.navigation.lists, 'nav-lists')} />
+      <Tab.Screen
+        name="Inbox"
+        component={InboxPage}
+        options={tabOptions(copy.navigation.inbox, 'nav-inbox')}
+      />
+      <Tab.Screen
+        name="Today"
+        component={TodayPage}
+        options={tabOptions(copy.navigation.today, 'nav-today')}
+      />
+      <Tab.Screen
+        name="Lists"
+        component={ListsPage}
+        options={tabOptions(copy.navigation.lists, 'nav-lists')}
+      />
     </Tab.Navigator>
   );
 }

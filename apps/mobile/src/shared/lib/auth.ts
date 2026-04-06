@@ -80,7 +80,8 @@ function sanitizeSnapshot(value: unknown): AuthStorageSnapshot {
 
   const usersById = new Map(users.map(u => [u.id, u]));
   const rawSession = isAuthSession(c.session) ? c.session : null;
-  const sessionUser = rawSession == null ? null : (usersById.get(rawSession.userId) ?? null);
+  const sessionUser =
+    rawSession == null ? null : (usersById.get(rawSession.userId) ?? null);
 
   return {
     version: AUTH_STORAGE_VERSION,
@@ -88,7 +89,11 @@ function sanitizeSnapshot(value: unknown): AuthStorageSnapshot {
     session:
       sessionUser == null
         ? null
-        : { userId: sessionUser.id, name: sessionUser.name, email: sessionUser.email },
+        : {
+            userId: sessionUser.id,
+            name: sessionUser.name,
+            email: sessionUser.email,
+          },
   };
 }
 
@@ -122,7 +127,10 @@ export function verifyPassword(
   password: string,
   credentials: Pick<LocalAuthUser, 'passwordSalt' | 'passwordHash'>,
 ): boolean {
-  return hashPassword(password, credentials.passwordSalt) === credentials.passwordHash;
+  return (
+    hashPassword(password, credentials.passwordSalt) ===
+    credentials.passwordHash
+  );
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
