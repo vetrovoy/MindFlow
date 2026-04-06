@@ -45,7 +45,7 @@ export interface AppActions {
     priority?: Task['priority'];
     status?: Task['status'];
     projectId?: string | null;
-  }) => Promise<void>;
+  }, options?: { closeOnSuccess?: boolean; toastOnSuccess?: boolean }) => Promise<boolean>;
   createProject: (input: {
     name: string;
     color: string;
@@ -60,7 +60,7 @@ export interface AppActions {
     emoji?: string;
     deadline?: string | null;
     isFavorite?: boolean;
-  }) => Promise<void>;
+  }, options?: { closeOnSuccess?: boolean; toastOnSuccess?: boolean }) => Promise<boolean>;
   reorderProjectTasks: (
     projectId: string,
     orderedTaskIds: string[],

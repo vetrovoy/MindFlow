@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import type { TaskPriority, TaskStatus } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';
+import { useAutoSaveDraft } from '@shared/lib/use-auto-save-draft';
 import { Icon } from '@shared/ui/icons';
-import { AccentButton, BottomSheet, DatePicker, PrioritySelect, ProjectSelector, StatusSelect, SurfaceCard } from '@shared/ui/primitives';
+import { BottomSheet, DatePicker, PrioritySelect, ProjectSelector, StatusSelect, SurfaceCard } from '@shared/ui/primitives';
 import { Body, Meta } from '@shared/ui/typography';
 
 
@@ -43,13 +44,6 @@ const styles = StyleSheet.create({
     minHeight: 120,
     textAlignVertical: 'top',
   },
-  footer: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  footerButton: {
-    flex: 1,
-  },
 });
 
 export function TaskEditSheet() {
@@ -57,7 +51,6 @@ export function TaskEditSheet() {
   const editingTask = useMobileAppStore(store => store.derived.editingTask);
   const favoriteProjects = useMobileAppStore(store => store.derived.favoriteProjects);
   const regularProjects = useMobileAppStore(store => store.derived.regularProjects);
-  const isSaving = useMobileAppStore(store => store.state.isSaving);
   const saveTaskEdit = useMobileAppStore(store => store.actions.saveTaskEdit);
   const closeTaskEdit = useMobileAppStore(store => store.actions.closeTaskEdit);
   const { theme } = useTheme();
@@ -87,41 +80,51 @@ export function TaskEditSheet() {
     setTitleError(null);
   }, [editingTask]);
 
+  const handleSave = useCallback(async (d: EditorDraft) => {
+    if (editingTask == null) return false;
+    const normalizedTitle = d.title.trim();
+    if (!normalizedTitle) {
+      setTitleError(copy.task.titleRequired);
+      return false;
+    }
+    setTitleError(null);
+    return saveTaskEdit({
+      taskId: editingTask.id,
+      title: normalizedTitle,
+      description: d.description.trim() ? d.description.trim() : null,
+      dueDate: d.dueDate.trim() ? d.dueDate.trim() : null,
+      priority: d.priority,
+      status: d.status,
+      projectId: d.projectId,
+    }, { closeOnSuccess: false, toastOnSuccess: false });
+  }, [editingTask, saveTaskEdit, copy.task.titleRequired]);
+
+  const isDraftValid = useCallback((d: EditorDraft) => d.title.trim().length > 0, []);
+  const buildSavePayload = useCallback((d: EditorDraft) => d, []);
+
+  const { handleClose } = useAutoSaveDraft<EditorDraft, EditorDraft>({
+    draft,
+    isValid: isDraftValid,
+    buildPayload: buildSavePayload,
+    onSave: handleSave,
+    onClose: closeTaskEdit,
+  });
+
   if (editingTask == null || draft == null) {
     return null;
   }
 
-  const task = editingTask;
   const currentDraft = draft;
-
-  async function handleSave() {
-    const normalizedTitle = currentDraft.title.trim();
-    if (!normalizedTitle) {
-      setTitleError(copy.task.titleRequired);
-      return;
-    }
-
-    setTitleError(null);
-    await saveTaskEdit({
-      taskId: task.id,
-      title: normalizedTitle,
-      description: currentDraft.description.trim() ? currentDraft.description.trim() : null,
-      dueDate: currentDraft.dueDate.trim() ? currentDraft.dueDate.trim() : null,
-      priority: currentDraft.priority,
-      status: currentDraft.status,
-      projectId: currentDraft.projectId,
-    });
-  }
 
   return (
     <BottomSheet
       visible
       title={copy.task.editTitle}
-      onClose={closeTaskEdit}
+      onClose={handleClose}
       headerAccessory={(
         <Pressable
           accessibilityRole="button"
-          onPress={closeTaskEdit}
+          onPress={handleClose}
           style={[
             styles.closeButton,
             {
@@ -136,7 +139,8 @@ export function TaskEditSheet() {
         </Pressable>
       )}
     >
-      <SurfaceCard elevated style={styles.card}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingHorizontal: 18, paddingTop: 12, paddingBottom: 28 }}>
+        <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.editTitle}</Meta>
             <TextInput
@@ -229,21 +233,7 @@ export function TaskEditSheet() {
             label={copy.task.changeProjectTrigger}
           />
         </SurfaceCard>
-
-        <View style={styles.footer}>
-          <AccentButton onPress={closeTaskEdit} style={styles.footerButton}>
-            {copy.common.close}
-          </AccentButton>
-          <AccentButton
-            disabled={isSaving}
-            onPress={() => {
-              void handleSave();
-            }}
-            style={styles.footerButton}
-          >
-            {isSaving ? copy.common.saving : copy.common.save}
-          </AccentButton>
-        </View>
+      </ScrollView>
     </BottomSheet>
   );
 }

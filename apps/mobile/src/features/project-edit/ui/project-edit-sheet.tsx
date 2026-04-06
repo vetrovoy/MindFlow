@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -11,9 +11,9 @@ import { projectMarkers } from '@mindflow/ui';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useTheme } from '@shared/theme/use-theme';
 import { useCopy } from '@shared/lib/use-copy';
+import { useAutoSaveDraft } from '@shared/lib/use-auto-save-draft';
 import { Icon } from '@shared/ui/icons';
 import {
-  AccentButton,
   BottomSheet,
   ColorPicker,
   DatePicker,
@@ -61,21 +61,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
   },
-  footer: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  footerButton: {
-    flex: 1,
-  },
 });
 
 export function ProjectEditSheet() {
   const copy = useCopy();
   const editingProject = useMobileAppStore(s => s.derived.editingProject);
-  const isSaving = useMobileAppStore(s => s.state.isSaving);
-  const closeProjectEdit = useMobileAppStore(s => s.actions.closeProjectEdit);
   const saveProjectEdit = useMobileAppStore(s => s.actions.saveProjectEdit);
+  const closeProjectEdit = useMobileAppStore(s => s.actions.closeProjectEdit);
   const { theme } = useTheme();
 
   const [draft, setDraft] = useState<EditDraft | null>(null);
@@ -96,40 +88,49 @@ export function ProjectEditSheet() {
     setNameError(null);
   }, [editingProject]);
 
+  const handleSave = useCallback(async (d: EditDraft) => {
+    if (editingProject == null) return false;
+    const normalizedName = d.name.trim();
+    if (!normalizedName) {
+      setNameError(copy.project.titleRequired);
+      return false;
+    }
+    setNameError(null);
+    return saveProjectEdit({
+      projectId: editingProject.id,
+      name: normalizedName,
+      color: d.color,
+      deadline: d.deadline.trim() ? d.deadline.trim() : null,
+      isFavorite: d.isFavorite,
+    }, { closeOnSuccess: false, toastOnSuccess: false });
+  }, [editingProject, saveProjectEdit, copy.project.titleRequired]);
+
+  const isDraftValid = useCallback((d: EditDraft) => d.name.trim().length > 0, []);
+  const buildSavePayload = useCallback((d: EditDraft) => d, []);
+
+  const { handleClose } = useAutoSaveDraft<EditDraft, EditDraft>({
+    draft,
+    isValid: isDraftValid,
+    buildPayload: buildSavePayload,
+    onSave: handleSave,
+    onClose: closeProjectEdit,
+  });
+
   if (editingProject == null || draft == null) {
     return null;
   }
 
-  const project = editingProject;
   const currentDraft = draft;
-
-  async function handleSave() {
-    const normalizedName = currentDraft.name.trim();
-    if (!normalizedName) {
-      setNameError(copy.project.titleRequired);
-      return;
-    }
-    setNameError(null);
-    await saveProjectEdit({
-      projectId: project.id,
-      name: normalizedName,
-      color: currentDraft.color,
-      deadline: currentDraft.deadline.trim()
-        ? currentDraft.deadline.trim()
-        : null,
-      isFavorite: currentDraft.isFavorite,
-    });
-  }
 
   return (
     <BottomSheet
       visible
       title={copy.project.editTitle}
-      onClose={closeProjectEdit}
+      onClose={handleClose}
       headerAccessory={
         <Pressable
           accessibilityRole="button"
-          onPress={closeProjectEdit}
+          onPress={handleClose}
           style={[
             styles.closeButton,
             {
@@ -144,7 +145,8 @@ export function ProjectEditSheet() {
         </Pressable>
       }
     >
-      <SurfaceCard elevated style={styles.card}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingHorizontal: 18, paddingTop: 12, paddingBottom: 28 }}>
+        <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.project.editTitle}</Meta>
             <TextInput
@@ -215,21 +217,7 @@ export function ProjectEditSheet() {
             </Pressable>
           </View>
         </SurfaceCard>
-
-        <View style={styles.footer}>
-          <AccentButton onPress={closeProjectEdit} style={styles.footerButton}>
-            {copy.common.close}
-          </AccentButton>
-          <AccentButton
-            disabled={isSaving}
-            onPress={() => {
-              void handleSave();
-            }}
-            style={styles.footerButton}
-          >
-            {isSaving ? copy.common.saving : copy.common.save}
-          </AccentButton>
-        </View>
+      </ScrollView>
     </BottomSheet>
   );
 }

@@ -96,11 +96,12 @@ export function createAppActions({
       });
     },
 
-    async saveTaskEdit(input) {
+    async saveTaskEdit(input, options = {}) {
+      const { closeOnSuccess = true, toastOnSuccess = true } = options;
       const { tasks } = getStore().state;
       const task = tasks.find(t => t.id === input.taskId);
       if (task == null) {
-        return;
+        return false;
       }
 
       const now = getNowIso();
@@ -128,10 +129,16 @@ export function createAppActions({
       });
 
       if (saved) {
-        patchState({ editingTaskId: null });
-        const copy = getRuntimeCopy(getStore);
-        setToast(getStore, copy.task.updatedToastTitle, 'success');
+        if (closeOnSuccess) {
+          patchState({ editingTaskId: null });
+        }
+        if (toastOnSuccess) {
+          const copy = getRuntimeCopy(getStore);
+          setToast(getStore, copy.task.updatedToastTitle, 'success');
+        }
       }
+
+      return saved;
     },
 
     async createProject(input) {
@@ -161,11 +168,12 @@ export function createAppActions({
       }
     },
 
-    async saveProjectEdit(input) {
+    async saveProjectEdit(input, options = {}) {
+      const { closeOnSuccess = true, toastOnSuccess = true } = options;
       const { projects } = getStore().state;
       const project = projects.find(p => p.id === input.projectId);
       if (project == null) {
-        return;
+        return false;
       }
 
       const now = getNowIso();
@@ -189,10 +197,16 @@ export function createAppActions({
       });
 
       if (saved) {
-        patchState({ editingProjectId: null });
-        const copy = getRuntimeCopy(getStore);
-        setToast(getStore, copy.project.updatedToastTitle, 'success');
+        if (closeOnSuccess) {
+          patchState({ editingProjectId: null });
+        }
+        if (toastOnSuccess) {
+          const copy = getRuntimeCopy(getStore);
+          setToast(getStore, copy.project.updatedToastTitle, 'success');
+        }
       }
+
+      return saved;
     },
 
     async reorderProjectTasks(projectId, orderedTaskIds) {

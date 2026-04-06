@@ -25,13 +25,19 @@ function AppContent() {
   const session = useAuthStore(s => s.state.session);
 
   if (session == null) {
-    return <AuthScreen />;
+    return (
+      <BottomSheetModalProvider>
+        <AuthScreen />
+      </BottomSheetModalProvider>
+    );
   }
 
   return (
     <AppStoreProvider userId={session.userId}>
-      <AppInit />
-      <AppToast />
+      <BottomSheetModalProvider>
+        <AppInit />
+        <AppToast />
+      </BottomSheetModalProvider>
     </AppStoreProvider>
   );
 }
@@ -41,9 +47,7 @@ export function MindFlowApp() {
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <ThemeProvider>
-          <BottomSheetModalProvider>
-            <AppContent />
-          </BottomSheetModalProvider>
+          <AppContent />
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
