@@ -1,4 +1,4 @@
-import { open } from '@op-engineering/op-sqlite';
+import { open, type Scalar } from '@op-engineering/op-sqlite';
 import type { Transaction as OPTransaction } from '@op-engineering/op-sqlite';
 import type { Project, Task } from '@mindflow/domain';
 import { validateProject, validateTask } from '@mindflow/domain';
@@ -76,7 +76,7 @@ function rowToProject(row: Record<string, unknown>): Project {
   });
 }
 
-function taskToParams(task: Task): unknown[] {
+function taskToParams(task: Task): Scalar[] {
   return [
     task.id,
     task.title,
@@ -93,7 +93,7 @@ function taskToParams(task: Task): unknown[] {
   ];
 }
 
-function projectToParams(project: Project): unknown[] {
+function projectToParams(project: Project): Scalar[] {
   return [
     project.id,
     project.name,
@@ -109,7 +109,7 @@ function projectToParams(project: Project): unknown[] {
 
 // ─── Repositories ─────────────────────────────────────────────────────────────
 
-type ExecFn = (query: string, params?: unknown[]) => Promise<{ rows: Record<string, unknown>[] }>;
+type ExecFn = (query: string, params?: Scalar[]) => Promise<{ rows: Record<string, unknown>[] }>;
 
 class SqliteTaskRepository implements TaskRepository {
   constructor(private readonly exec: ExecFn) {}
@@ -248,7 +248,7 @@ export function createSqliteRepositoryBundle(options: {
 
   // Async exec wrapper that returns rows as plain array
   const exec: ExecFn = async (query, params) => {
-    const result = await db.execute(query, params as never);
+    const result = await db.execute(query, params);
     return { rows: result.rows as Record<string, unknown>[] };
   };
 
