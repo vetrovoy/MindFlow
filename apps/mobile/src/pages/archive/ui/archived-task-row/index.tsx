@@ -46,7 +46,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ArchivedTaskRow({ project, task, onRestore }: ArchivedTaskRowProps) {
+export function ArchivedTaskRow({
+  project,
+  task,
+  onRestore,
+}: ArchivedTaskRowProps) {
   const { theme } = useTheme();
   const copy = useCopy();
 
@@ -60,13 +64,22 @@ export function ArchivedTaskRow({ project, task, onRestore }: ArchivedTaskRowPro
           {project == null ? (
             <Meta tone="soft">{copy.task.inbox}</Meta>
           ) : (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-              <View style={[styles.projectDot, { backgroundColor: project.color }]} />
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+            >
+              <View
+                style={[styles.projectDot, { backgroundColor: project.color }]}
+              />
               <Meta tone="soft">{project.name}</Meta>
             </View>
           )}
           {task.status === 'done' && (
-            <View style={[styles.pill, { backgroundColor: theme.colors.accentSuccessDeep + '30' }]}>
+            <View
+              style={[
+                styles.pill,
+                { backgroundColor: theme.colors.accentSuccessDeep + '30' },
+              ]}
+            >
               <Meta tone="accent">{copy.status.done}</Meta>
             </View>
           )}

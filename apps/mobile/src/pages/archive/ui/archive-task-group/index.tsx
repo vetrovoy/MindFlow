@@ -24,7 +24,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ArchiveTaskGroup({ tasks, projectById, onRestore }: ArchiveTaskGroupProps) {
+export function ArchiveTaskGroup({
+  tasks,
+  projectById,
+  onRestore,
+}: ArchiveTaskGroupProps) {
   const copy = useCopy();
 
   return (
@@ -37,7 +41,11 @@ export function ArchiveTaskGroup({ tasks, projectById, onRestore }: ArchiveTaskG
         {tasks.map(task => (
           <ArchivedTaskRow
             key={task.id}
-            project={task.projectId != null ? projectById.get(task.projectId) ?? null : null}
+            project={
+              task.projectId != null
+                ? (projectById.get(task.projectId) ?? null)
+                : null
+            }
             task={task}
             onRestore={onRestore}
           />

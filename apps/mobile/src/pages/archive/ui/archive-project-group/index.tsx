@@ -24,7 +24,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ArchiveProjectGroup({ projects, taskCountByProjectId, onRestore }: ArchiveProjectGroupProps) {
+export function ArchiveProjectGroup({
+  projects,
+  taskCountByProjectId,
+  onRestore,
+}: ArchiveProjectGroupProps) {
   const copy = useCopy();
 
   return (

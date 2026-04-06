@@ -5,7 +5,7 @@ import type { Project } from '@mindflow/domain';
 import { useCopy } from '@shared/lib/use-copy';
 import { useTheme } from '@shared/theme/use-theme';
 import { Icon } from '@shared/ui/icons';
-import { Body, Meta, Title } from '@shared/ui/typography';
+import { Meta, Title } from '@shared/ui/typography';
 
 interface ArchivedProjectRowProps {
   project: Project;
@@ -51,7 +51,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ArchivedProjectRow({ project, taskCount, onRestore }: ArchivedProjectRowProps) {
+export function ArchivedProjectRow({
+  project,
+  taskCount,
+  onRestore,
+}: ArchivedProjectRowProps) {
   const { theme } = useTheme();
   const copy = useCopy();
 
@@ -59,12 +63,19 @@ export function ArchivedProjectRow({ project, taskCount, onRestore }: ArchivedPr
     <View style={styles.row}>
       <View style={styles.content}>
         <View style={styles.identityRow}>
-          <View style={[styles.projectDot, { backgroundColor: project.color }]} />
+          <View
+            style={[styles.projectDot, { backgroundColor: project.color }]}
+          />
           <Title>{project.name}</Title>
         </View>
         <View style={styles.metaRow}>
           <Meta tone="soft">{copy.project.taskCount(taskCount)}</Meta>
-          <View style={[styles.divider, { backgroundColor: theme.colors.textTertiary }]} />
+          <View
+            style={[
+              styles.divider,
+              { backgroundColor: theme.colors.textTertiary },
+            ]}
+          />
           <Meta tone="soft">
             {project.deadline == null
               ? copy.project.noDeadline
