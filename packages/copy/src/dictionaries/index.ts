@@ -111,7 +111,8 @@ const ru: CopyDictionary = {
   inbox: {
     title: "Входящие",
     emptyTitle: "Пусто",
-    emptyDescription: "Добавьте задачу через быстрое поле, и она появится здесь.",
+    emptyDescription:
+      "Добавьте задачу через быстрое поле, и она появится здесь.",
     completedTitle: "Выполненные",
     completedEmptyDescription: "Завершите задачу и она появится здесь."
   },
@@ -151,7 +152,7 @@ const ru: CopyDictionary = {
     tasksTitle: "Задачи",
     projectsTitle: "Списки",
     emptyTitle: "Архив пуст",
-    emptyDescription: "Архивированные задачи и списки появятся здесь.",
+    emptyDescription: "Архивированные задачи и списки появятся здесь."
   },
   task: {
     inbox: "Входящие",
@@ -166,7 +167,8 @@ const ru: CopyDictionary = {
     restoredToastDescription: "Она больше не помечена как архивная.",
     deletedToastTitle: "Задача удалена",
     deletedToastDescription: "Мы убрали её из локального плана.",
-    titleRequired: "Добавьте короткое название задачи, чтобы сохранить изменения.",
+    titleRequired:
+      "Добавьте короткое название задачи, чтобы сохранить изменения.",
     createTitle: "Создать задачу",
     editTitle: "Редактировать задачу",
     createCloseAriaLabel: "Закрыть создание задачи",
@@ -195,7 +197,8 @@ const ru: CopyDictionary = {
     defaultMarkerLabel: "Маркер",
     noDeadline: "Без дедлайна",
     createdToastTitle: "Список создан",
-    createdToastDescription: "Теперь в него можно переносить задачи из Входящих.",
+    createdToastDescription:
+      "Теперь в него можно переносить задачи из Входящих.",
     updatedToastTitle: "Список обновлён",
     updatedToastDescription: "Изменения списка сохранены локально.",
     archivedToastTitle: "Список архивирован",
@@ -208,7 +211,8 @@ const ru: CopyDictionary = {
     createCloseAriaLabel: "Закрыть создание списка",
     editCloseAriaLabel: "Закрыть редактирование списка",
     titlePlaceholder: "Название списка",
-    titleRequired: "У списка должно быть название, чтобы его можно было сохранить.",
+    titleRequired:
+      "У списка должно быть название, чтобы его можно было сохранить.",
     changeMarkerTrigger: "Изменить маркер списка",
     changeDeadlineTrigger: "Изменить дедлайн",
     addFavoriteAriaLabel: "Добавить список в избранное",
@@ -229,7 +233,7 @@ const ru: CopyDictionary = {
       total === 0 ? "Пустой список" : `${done} из ${total} выполнено`,
     inProgressLabel: (count) => `${count} в работе`,
     deadlineLabel: (value) => `до ${value}`,
-    taskCount: getRussianTaskCount,
+    taskCount: getRussianTaskCount
   },
   editor: {
     confirmCancelAriaLabel: "Отменить подтверждение",
@@ -249,8 +253,10 @@ const ru: CopyDictionary = {
   },
   messages: {
     movedTasksTitle: "Задачи перенесены",
-    movedTasksDescriptionExistingProject: "Выбранные задачи перенесены в нужный список.",
-    movedTasksDescriptionCreatedProject: "Новый список создан и сразу заполнен задачами."
+    movedTasksDescriptionExistingProject:
+      "Выбранные задачи перенесены в нужный список.",
+    movedTasksDescriptionCreatedProject:
+      "Новый список создан и сразу заполнен задачами."
   },
   priority: {
     low: "Низкий",
@@ -267,11 +273,13 @@ const ru: CopyDictionary = {
   },
   taskReorder: {
     title: "Ручной порядок задач",
-    description: "Перетаскивайте задачи и задавайте фактическую последовательность работы.",
+    description:
+      "Перетаскивайте задачи и задавайте фактическую последовательность работы.",
     saving: "Сохраняем порядок",
     saved: "Порядок обновлён",
     emptyTitle: "Пусто",
-    emptyDescription: "Добавьте задачи в список, чтобы задать им ручной порядок."
+    emptyDescription:
+      "Добавьте задачи в список, чтобы задать им ручной порядок."
   }
 };
 
@@ -367,7 +375,8 @@ const en: CopyDictionary = {
   inbox: {
     title: "Inbox",
     emptyTitle: "Empty",
-    emptyDescription: "Add a task using the quick field and it will show up here.",
+    emptyDescription:
+      "Add a task using the quick field and it will show up here.",
     completedTitle: "Completed",
     completedEmptyDescription: "Complete a task and it will show up here."
   },
@@ -407,7 +416,7 @@ const en: CopyDictionary = {
     tasksTitle: "Archived tasks",
     projectsTitle: "Archived lists",
     emptyTitle: "Archive is empty",
-    emptyDescription: "Archived tasks and lists will appear here.",
+    emptyDescription: "Archived tasks and lists will appear here."
   },
   task: {
     inbox: "Inbox",
@@ -485,7 +494,7 @@ const en: CopyDictionary = {
       total === 0 ? "Empty list" : `${done} of ${total} completed`,
     inProgressLabel: (count) => `${count} in progress`,
     deadlineLabel: (value) => `due ${value}`,
-    taskCount: getEnglishTaskCount,
+    taskCount: getEnglishTaskCount
   },
   editor: {
     confirmCancelAriaLabel: "Cancel confirmation",
@@ -505,7 +514,8 @@ const en: CopyDictionary = {
   },
   messages: {
     movedTasksTitle: "Tasks moved",
-    movedTasksDescriptionExistingProject: "Selected tasks were moved to the chosen list.",
+    movedTasksDescriptionExistingProject:
+      "Selected tasks were moved to the chosen list.",
     movedTasksDescriptionCreatedProject:
       "A new list was created and filled with the selected tasks."
   },

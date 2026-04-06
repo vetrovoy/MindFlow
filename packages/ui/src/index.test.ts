@@ -38,7 +38,9 @@ describe("tokens", () => {
       const theme = getTheme(themeName);
 
       expect(Object.keys(theme.colors)).toEqual(Object.keys(firstTheme.colors));
-      expect(Object.keys(theme.gradients)).toEqual(Object.keys(firstTheme.gradients));
+      expect(Object.keys(theme.gradients)).toEqual(
+        Object.keys(firstTheme.gradients)
+      );
       expect(theme.preview).toHaveLength(3);
       expect(["dark", "light"]).toContain(theme.colorScheme);
     }
@@ -95,7 +97,10 @@ describe("icons", () => {
   });
 
   it("keeps the shared icon contract platform-neutral", () => {
-    const source = readFileSync(new URL("./icons/index.ts", import.meta.url), "utf8");
+    const source = readFileSync(
+      new URL("./icons/index.ts", import.meta.url),
+      "utf8"
+    );
 
     expect(source).not.toContain("lucide-react");
     expect(source).not.toContain("react-native");

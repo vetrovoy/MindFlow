@@ -33,7 +33,9 @@ class TaskDatabase extends Dexie {
 }
 
 function sortByCreatedAtAsc<T extends { createdAt: string }>(items: T[]) {
-  return [...items].sort((left, right) => left.createdAt.localeCompare(right.createdAt));
+  return [...items].sort((left, right) =>
+    left.createdAt.localeCompare(right.createdAt)
+  );
 }
 
 class DexieTaskRepository implements TaskRepository {
@@ -116,7 +118,12 @@ class DexieTransaction implements Transaction {
   constructor(private readonly database: TaskDatabase) {}
 
   async run<T>(work: () => Promise<T>) {
-    return this.database.transaction("rw", this.database.tasks, this.database.projects, work);
+    return this.database.transaction(
+      "rw",
+      this.database.tasks,
+      this.database.projects,
+      work
+    );
   }
 }
 

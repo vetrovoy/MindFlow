@@ -27,7 +27,13 @@ const config = {
       // Resolve workspace packages to their source directories
       if (workspacePackages.includes(moduleName)) {
         const pkgName = moduleName.replace('@mindflow/', '');
-        const pkgPath = path.resolve(root, 'packages', pkgName, 'src', 'index.ts');
+        const pkgPath = path.resolve(
+          root,
+          'packages',
+          pkgName,
+          'src',
+          'index.ts',
+        );
         return {
           filePath: pkgPath,
           type: 'sourceFile',

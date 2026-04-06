@@ -40,8 +40,11 @@ export function formatDisplayDate(value: string, language: AppLanguage) {
     return "";
   }
 
-  return new Date(`${value}T00:00:00`).toLocaleDateString(getIntlLocale(language), {
-    day: "numeric",
-    month: "long"
-  });
+  return new Date(`${value}T00:00:00`).toLocaleDateString(
+    getIntlLocale(language),
+    {
+      day: "numeric",
+      month: "long"
+    }
+  );
 }

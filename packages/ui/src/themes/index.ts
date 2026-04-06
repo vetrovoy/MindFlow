@@ -256,10 +256,13 @@ export const themes: Record<ThemeName, ThemeDefinition> = {
 
 export function resolveThemeName(input?: string | null): ThemeName {
   const normalized = input
-    ? (LEGACY_THEME_ALIASES[input as keyof typeof LEGACY_THEME_ALIASES] ?? input)
+    ? (LEGACY_THEME_ALIASES[input as keyof typeof LEGACY_THEME_ALIASES] ??
+      input)
     : null;
 
-  return SUPPORTED_THEMES.find((theme) => theme === normalized) ?? DEFAULT_THEME;
+  return (
+    SUPPORTED_THEMES.find((theme) => theme === normalized) ?? DEFAULT_THEME
+  );
 }
 
 export function getTheme(name: ThemeName): ThemeDefinition {

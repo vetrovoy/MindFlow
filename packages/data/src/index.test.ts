@@ -58,7 +58,9 @@ describe("createInMemoryRepositoryBundle", () => {
       projects: [activeProject, archivedProject]
     });
 
-    await expect(bundle.projects.listActive()).resolves.toEqual([activeProject]);
+    await expect(bundle.projects.listActive()).resolves.toEqual([
+      activeProject
+    ]);
     await expect(bundle.projects.listArchived()).resolves.toEqual([
       archivedProject
     ]);

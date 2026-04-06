@@ -1,7 +1,7 @@
-const config =  {
+const config = {
   arrowParens: 'avoid',
   singleQuote: true,
   trailingComma: 'all',
 };
 
-export default config
+export default config;

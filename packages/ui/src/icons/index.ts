@@ -28,11 +28,17 @@ export const ICON_NAMES = [
   "eye",
   "eye-off",
   "more",
-  "trash",
+  "trash"
 ] as const;
 
 export type IconName = (typeof ICON_NAMES)[number];
-export type IconTone = "default" | "muted" | "accent" | "alert" | "success" | "contrast";
+export type IconTone =
+  | "default"
+  | "muted"
+  | "accent"
+  | "alert"
+  | "success"
+  | "contrast";
 
 export interface IconProps {
   name: IconName;

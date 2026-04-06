@@ -8,7 +8,7 @@ describe("Acceptance: Task Management Flows", () => {
 
   beforeEach(async () => {
     const tasks = await repo.tasks.listAll();
-    await Promise.all(tasks.map(t => repo.tasks.delete(t.id)));
+    await Promise.all(tasks.map((t) => repo.tasks.delete(t.id)));
   });
 
   const now = new Date().toISOString();
@@ -49,14 +49,18 @@ describe("Acceptance: Task Management Flows", () => {
 
     await repo.tasks.save(task);
 
-    const completed = { ...task, status: "done" as const, updatedAt: new Date().toISOString() };
+    const completed = {
+      ...task,
+      status: "done" as const,
+      updatedAt: new Date().toISOString()
+    };
     await repo.tasks.save(completed);
 
     const retrieved = await repo.tasks.getById(task.id);
     expect(retrieved?.status).toBe("done");
 
     const allTasks = await repo.tasks.listAll();
-    expect(allTasks.some(t => t.id === task.id)).toBe(true);
+    expect(allTasks.some((t) => t.id === task.id)).toBe(true);
   });
 
   it("Archive/restore flow: task is archived and restored", async () => {
@@ -77,7 +81,7 @@ describe("Acceptance: Task Management Flows", () => {
     await repo.tasks.save(archived);
 
     const archivedTasks = await repo.tasks.listArchived();
-    expect(archivedTasks.some(t => t.id === task.id)).toBe(true);
+    expect(archivedTasks.some((t) => t.id === task.id)).toBe(true);
 
     const restored = { ...task, archivedAt: null };
     await repo.tasks.save(restored);
@@ -86,7 +90,7 @@ describe("Acceptance: Task Management Flows", () => {
     expect(retrieved?.archivedAt).toBeNull();
 
     const activeTasks = await repo.tasks.listActive();
-    expect(activeTasks.some(t => t.id === task.id)).toBe(true);
+    expect(activeTasks.some((t) => t.id === task.id)).toBe(true);
   });
 
   it("Project flow: project with tasks is created and progress calculated", async () => {
@@ -127,12 +131,20 @@ describe("Acceptance: Task Management Flows", () => {
 
     await repo.tasks.saveMany([task1, task2]);
 
-    const task2Completed = { ...task2, status: "done" as const, updatedAt: new Date().toISOString() };
+    const task2Completed = {
+      ...task2,
+      status: "done" as const,
+      updatedAt: new Date().toISOString()
+    };
     await repo.tasks.save(task2Completed);
 
     const allProjectTasks = await repo.tasks.listAll();
-    const doneCount = allProjectTasks.filter(t => t.projectId === project.id && t.status === "done").length;
-    const totalCount = allProjectTasks.filter(t => t.projectId === project.id).length;
+    const doneCount = allProjectTasks.filter(
+      (t) => t.projectId === project.id && t.status === "done"
+    ).length;
+    const totalCount = allProjectTasks.filter(
+      (t) => t.projectId === project.id
+    ).length;
 
     expect(totalCount).toBe(2);
     expect(doneCount).toBe(1);

@@ -78,7 +78,9 @@ export function searchEntities(
 ) {
   const normalizedQuery = query.trim().toLowerCase();
   const archivedProjectIds = new Set(
-    projects.filter((project) => isProjectArchived(project)).map((project) => project.id)
+    projects
+      .filter((project) => isProjectArchived(project))
+      .map((project) => project.id)
   );
 
   if (!normalizedQuery) {

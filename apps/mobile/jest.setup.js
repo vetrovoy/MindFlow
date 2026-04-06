@@ -1,18 +1,24 @@
 require('react-native-gesture-handler/jestSetup');
 
+jest.mock('react-native-worklets', () => ({}), { virtual: true });
+
 jest.mock('reanimated-color-picker', () => {
   const React = require('react');
   const { View } = require('react-native');
-  const ColorPickerContainer = ({ children }) => React.createElement(View, { testID: 'rn-color-picker' }, children);
-  const Swatches = () => React.createElement(View, { testID: 'color-picker-swatches' });
-  const Panel5 = () => React.createElement(View, { testID: 'color-picker-panel5' });
+  const ColorPickerContainer = ({ children }) =>
+    React.createElement(View, { testID: 'rn-color-picker' }, children);
+  const Swatches = () =>
+    React.createElement(View, { testID: 'color-picker-swatches' });
+  const Panel5 = () =>
+    React.createElement(View, { testID: 'color-picker-panel5' });
   return { default: ColorPickerContainer, Swatches, Panel5, __esModule: true };
 });
 
 jest.mock('react-native-date-picker', () => {
   const React = require('react');
   const { View } = require('react-native');
-  const DatePickerMock = () => React.createElement(View, { testID: 'date-picker-modal' });
+  const DatePickerMock = () =>
+    React.createElement(View, { testID: 'date-picker-modal' });
   DatePickerMock.displayName = 'DatePicker';
   return { default: DatePickerMock, __esModule: true };
 });
@@ -25,8 +31,12 @@ jest.mock('@gorhom/bottom-sheet', () => {
     const [isVisible, setIsVisible] = React.useState(false);
 
     React.useImperativeHandle(ref, () => ({
-      present: () => { setIsVisible(true); },
-      dismiss: () => { setIsVisible(false); },
+      present: () => {
+        setIsVisible(true);
+      },
+      dismiss: () => {
+        setIsVisible(false);
+      },
       expand: () => {},
       collapse: () => {},
       close: () => {},
@@ -36,13 +46,23 @@ jest.mock('@gorhom/bottom-sheet', () => {
     }));
 
     if (!isVisible) return null;
-    return React.createElement(View, null, typeof children === 'function' ? children() : children);
+    return React.createElement(
+      View,
+      null,
+      typeof children === 'function' ? children() : children,
+    );
   });
 
   const BottomSheetModalProvider = ({ children }) => children;
-  const BottomSheetView = ({ children, style }) => React.createElement(View, { style }, children);
-  const BottomSheetScrollView = React.forwardRef(({ children, style, contentContainerStyle }, ref) =>
-    React.createElement(View, { ref, style }, typeof children === 'function' ? children() : children)
+  const BottomSheetView = ({ children, style }) =>
+    React.createElement(View, { style }, children);
+  const BottomSheetScrollView = React.forwardRef(
+    ({ children, style, contentContainerStyle }, ref) =>
+      React.createElement(
+        View,
+        { ref, style },
+        typeof children === 'function' ? children() : children,
+      ),
   );
   const BottomSheetBackdrop = () => null;
 
@@ -131,7 +151,9 @@ jest.mock('@shopify/flash-list', () => {
   const { FlatList } = require('react-native');
 
   return {
-    FlashList: React.forwardRef((props, ref) => <FlatList ref={ref} {...props} />),
+    FlashList: React.forwardRef((props, ref) => (
+      <FlatList ref={ref} {...props} />
+    )),
   };
 });
 
@@ -191,8 +213,8 @@ jest.mock('@mindflow/ui', () => ({
   },
   getFeedbackCardRole: () => 'status',
   getProgressValue: ({ value, max }) => (max > 0 ? value / max : 0),
-  resolveThemeName: (name) => name || 'graphite',
-  getTheme: (name) => ({
+  resolveThemeName: name => name || 'graphite',
+  getTheme: name => ({
     name: name || 'graphite',
     colors: {
       background: '#FFFFFF',

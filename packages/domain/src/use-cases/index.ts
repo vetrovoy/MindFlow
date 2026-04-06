@@ -65,7 +65,9 @@ export function updateProject(
 
 export function updateTask(
   task: Task,
-  updates: Partial<Pick<Task, "title" | "description" | "priority" | "dueDate" | "projectId">>,
+  updates: Partial<
+    Pick<Task, "title" | "description" | "priority" | "dueDate" | "projectId">
+  >,
   now: string
 ) {
   return validateTask({
@@ -84,7 +86,7 @@ export function setTaskStatus(task: Task, status: Task["status"], now: string) {
   return validateTask({
     ...task,
     status,
-    completedAt: status === "done" ? task.completedAt ?? now : null,
+    completedAt: status === "done" ? (task.completedAt ?? now) : null,
     updatedAt: now
   });
 }
@@ -138,7 +140,9 @@ export function bulkMoveToProject(
   targetProjectId: string,
   now: string
 ) {
-  const selectedOrder = new Map(selectedTaskIds.map((id, index) => [id, index]));
+  const selectedOrder = new Map(
+    selectedTaskIds.map((id, index) => [id, index])
+  );
   const selectedTasks = tasks
     .filter((task) => selectedOrder.has(task.id))
     .sort((left, right) => {
@@ -155,7 +159,11 @@ export function bulkMoveToProject(
   );
 }
 
-export function reorderTasks(tasks: Task[], orderedTaskIds: string[], now: string) {
+export function reorderTasks(
+  tasks: Task[],
+  orderedTaskIds: string[],
+  now: string
+) {
   const orderMap = new Map(orderedTaskIds.map((id, index) => [id, index]));
 
   return tasks.map((task) => {

@@ -81,6 +81,7 @@ This package is part of the MindFlow monorepo and uses shared packages:
 - `@mindflow/copy` - Localization dictionaries (RU/EN)
 
 Path aliases are configured in:
+
 - `tsconfig.json` - TypeScript path mapping
 - `babel.config.js` - Runtime module resolution
 - `metro.config.js` - Metro watch folders
@@ -148,6 +149,7 @@ pnpm mobile:test
 ## Troubleshooting
 
 See platform-specific guides:
+
 - [Android Troubleshooting](./README_ANDROID.md#troubleshooting)
 - [iOS Troubleshooting](./README_IOS.md#troubleshooting)
 

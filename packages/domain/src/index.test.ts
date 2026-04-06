@@ -134,13 +134,13 @@ describe("getProjectProgress", () => {
       NOW
     );
 
-    expect(getProjectProgress([doneTask, todoTask, archivedTask], "project-a")).toEqual(
-      {
-        done: 1,
-        total: 2,
-        ratio: 0.5
-      }
-    );
+    expect(
+      getProjectProgress([doneTask, todoTask, archivedTask], "project-a")
+    ).toEqual({
+      done: 1,
+      total: 2,
+      ratio: 0.5
+    });
   });
 });
 
@@ -159,7 +159,9 @@ describe("bulkMoveToProject", () => {
       "2026-03-25T10:00:00.000Z"
     );
 
-    expect(moved.map((task) => [task.id, task.orderIndex, task.projectId])).toEqual([
+    expect(
+      moved.map((task) => [task.id, task.orderIndex, task.projectId])
+    ).toEqual([
       ["task-3", 0, "project-a"],
       ["task-1", 1, "project-a"]
     ]);
