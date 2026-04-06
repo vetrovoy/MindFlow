@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Archive,
+  ArrowLeft,
   Calendar,
   CalendarDays,
   CalendarClock,
@@ -47,6 +48,7 @@ export interface IconProps extends SharedIconProps {
 const ICONS: Record<IconName, LucideIcon> = {
   add: Plus,
   archive: Archive,
+  back: ArrowLeft,
   check: Check,
   "checkbox-empty": Circle,
   "checkbox-checked": CheckCircle2,

@@ -41,9 +41,9 @@ export function ArchiveProjectGroup({
         {projects.map(project => (
           <ArchivedProjectRow
             key={project.id}
-            onRestore={onRestore}
             project={project}
             taskCount={taskCountByProjectId.get(project.id) ?? 0}
+            onRestore={onRestore}
           />
         ))}
       </View>

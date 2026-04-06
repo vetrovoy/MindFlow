@@ -1,17 +1,19 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
 import type { Task } from '@mindflow/domain';
 
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { useCopy } from '@shared/lib/use-copy';
 import {
   CollapsibleSection,
+  RefreshControl,
   ScreenShell,
   StateCard,
   SurfaceCard,
   TaskRow,
 } from '@shared/ui/primitives';
+import { ErrorBoundary } from '@shared/ui/error-boundary';
+import { FlashList } from '@shopify/flash-list';
 
 const styles = StyleSheet.create({
   mainCard: {
@@ -25,10 +27,18 @@ const styles = StyleSheet.create({
 export function InboxPage() {
   const tasks = useMobileAppStore(store => store.derived.inboxTasks);
   const todayFeed = useMobileAppStore(store => store.derived.todayFeed);
+  const reload = useMobileAppStore(store => store.actions.reload);
   const copy = useCopy();
   const toggleTask = useMobileAppStore(store => store.actions.toggleTask);
   const openTaskEdit = useMobileAppStore(store => store.actions.openTaskEdit);
   const inboxCardData = useMemo(() => ['inbox-main-card'], []);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await reload();
+    setRefreshing(false);
+  }, [reload]);
 
   const { activeInboxTasks, completedInboxTasks, badgeByTaskId } =
     useMemo(() => {
@@ -79,50 +89,60 @@ export function InboxPage() {
     const hasInboxContent = tasks.length > 0;
 
     return (
-      <SurfaceCard elevated>
-        <View style={styles.mainCard}>
-          {hasInboxContent ? (
-            <>
-              {activeInboxTasks.length > 0 ? (
+      <SurfaceCard elevated style={styles.mainCard}>
+        {hasInboxContent ? (
+          <>
+            {activeInboxTasks.length > 0 ? (
+              <View style={styles.taskList}>
+                {activeInboxTasks.map(renderTaskRow)}
+              </View>
+            ) : null}
+            {completedInboxTasks.length > 0 ? (
+              <CollapsibleSection
+                count={completedInboxTasks.length}
+                defaultOpen={activeInboxTasks.length === 0}
+                title={copy.inbox.completedTitle}
+              >
                 <View style={styles.taskList}>
-                  {activeInboxTasks.map(renderTaskRow)}
+                  {completedInboxTasks.map(renderTaskRow)}
                 </View>
-              ) : null}
-              {completedInboxTasks.length > 0 ? (
-                <CollapsibleSection
-                  count={completedInboxTasks.length}
-                  defaultOpen={activeInboxTasks.length === 0}
-                  title={copy.inbox.completedTitle}
-                >
-                  <View style={styles.taskList}>
-                    {completedInboxTasks.map(renderTaskRow)}
-                  </View>
-                </CollapsibleSection>
-              ) : null}
-            </>
-          ) : (
-            <StateCard
-              variant="empty"
-              title={copy.inbox.emptyTitle}
-              description={copy.inbox.emptyDescription}
-            />
-          )}
-        </View>
+              </CollapsibleSection>
+            ) : null}
+          </>
+        ) : (
+          <StateCard
+            variant="empty"
+            title={copy.inbox.emptyTitle}
+            description={copy.inbox.emptyDescription}
+          />
+        )}
       </SurfaceCard>
     );
-  }, [activeInboxTasks, completedInboxTasks, renderTaskRow, tasks.length]);
+  }, [
+    activeInboxTasks,
+    completedInboxTasks,
+    renderTaskRow,
+    tasks.length,
+    copy,
+  ]);
 
   return (
-    <ScreenShell>
-      <FlashList<string>
-        data={inboxCardData}
-        keyExtractor={keyExtractor}
-        getItemType={getItemType}
-        overrideItemLayout={(layout, _item) => {
-          layout.span = 1;
-        }}
-        renderItem={renderItem}
-      />
-    </ScreenShell>
+    <ErrorBoundary>
+      <ScreenShell>
+        <FlashList
+          data={inboxCardData}
+          keyExtractor={keyExtractor}
+          getItemType={getItemType}
+          overrideItemLayout={(layout: { span?: number }, _item: string) => {
+            layout.span = 1;
+          }}
+          renderItem={renderItem}
+          ListEmptyComponent={null}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
+        />
+      </ScreenShell>
+    </ErrorBoundary>
   );
 }

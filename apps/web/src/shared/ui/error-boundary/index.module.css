@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--mf-space-4xl);
+}
+
+.actions {
+  margin-top: var(--mf-space-lg);
+  display: flex;
+  justify-content: center;
+}
+
+.resetButton {
+  padding: var(--mf-space-sm) var(--mf-space-xl);
+  border-radius: var(--mf-radius-md);
+  border: 1px solid var(--mf-color-border-medium);
+  background: var(--mf-color-accent-primary);
+  color: var(--mf-color-text-primary-on-accent);
+  font-size: var(--mf-font-size-body);
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  opacity: 0.9;
+}

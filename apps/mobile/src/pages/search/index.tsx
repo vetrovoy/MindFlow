@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { ScrollView } from 'react-native';
 
 import { searchEntities } from '@mindflow/domain';
 
@@ -62,17 +63,19 @@ export function SearchPage() {
 
   return (
     <ScreenShell accessory={titleAccessory} title={copy.search.title}>
-      <SearchField value={query} onChange={setQuery} />
-      <SearchResultsContent
-        isIdle={isIdle}
-        isEmpty={isEmpty}
-        tasks={results.tasks}
-        projects={results.projects}
-        sectionsById={projectSectionsById}
-        onToggleDone={actions.toggleTask}
-        onOpenTask={actions.openTaskEdit}
-        onOpenProject={actions.openProjectEdit}
-      />
+      <ScrollView contentContainerStyle={{ gap: 16 }}>
+        <SearchField value={query} onChange={setQuery} />
+        <SearchResultsContent
+          isIdle={isIdle}
+          isEmpty={isEmpty}
+          tasks={results.tasks}
+          projects={results.projects}
+          sectionsById={projectSectionsById}
+          onToggleDone={actions.toggleTask}
+          onOpenTask={actions.openTaskEdit}
+          onOpenProject={actions.openProjectEdit}
+        />
+      </ScrollView>
     </ScreenShell>
   );
 }

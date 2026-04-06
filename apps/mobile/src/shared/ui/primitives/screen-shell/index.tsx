@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { useTheme } from '@shared/theme/use-theme';
 import { Body, Display } from '../../typography';
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  scrollContent: {
+  content: {
     paddingHorizontal: 16,
     gap: 16,
   },
@@ -39,10 +39,12 @@ export function ScreenShell({
   const { theme } = useTheme();
 
   return (
-    <ScrollView
-      style={[styles.screen, { backgroundColor: theme.colors.background }]}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
+    <View
+      style={[
+        styles.screen,
+        styles.content,
+        { backgroundColor: theme.colors.background },
+      ]}
     >
       <View style={styles.screenHeader}>
         <View style={styles.headerRow}>
@@ -52,7 +54,7 @@ export function ScreenShell({
         {subtitle ? <Body tone="secondary">{subtitle}</Body> : null}
       </View>
       {children}
-    </ScrollView>
+    </View>
   );
 }
 

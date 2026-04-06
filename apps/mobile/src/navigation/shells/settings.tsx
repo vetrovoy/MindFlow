@@ -4,6 +4,7 @@ import { useTheme } from '@shared/theme/use-theme';
 import { SettingsTabNavigator } from '../settings';
 import { AppDrawerOpener } from '@app/ui/app-drawer-opener';
 import { FAB_SPACING } from '@shared/config/fab';
+import { AppBack } from '@mobile/app/ui/app-back';
 
 export function SettingsTabsShell() {
   const { theme } = useTheme();
@@ -12,7 +13,8 @@ export function SettingsTabsShell() {
     <SafeAreaView style={styles.root}>
       <View style={[styles.root, { backgroundColor: theme.colors.background }]}>
         <SettingsTabNavigator />
-        <AppDrawerOpener bottom={FAB_SPACING.main} />
+        <AppDrawerOpener bottom={FAB_SPACING.menu} />
+        <AppBack bottom={FAB_SPACING.main} />
       </View>
     </SafeAreaView>
   );

@@ -276,6 +276,13 @@ const ru: CopyDictionary = {
     notificationsLabel: "Системные уведомления",
     saveErrorTitle: "Ошибка сохранения"
   },
+  errorBoundary: {
+    title: "Ошибка",
+    description: "Произошла непредвиденная ошибка.",
+    resetButton: "Перезагрузить",
+    maxResetTitle: "Не удалось восстановить",
+    maxResetDescription: "Попробуйте перезапустить приложение."
+  },
   taskReorder: {
     title: "Ручной порядок задач",
     description:
@@ -541,6 +548,13 @@ const en: CopyDictionary = {
   systemStatus: {
     notificationsLabel: "System notifications",
     saveErrorTitle: "Save error"
+  },
+  errorBoundary: {
+    title: "Error",
+    description: "An unexpected error occurred.",
+    resetButton: "Reload",
+    maxResetTitle: "Could not recover",
+    maxResetDescription: "Try restarting the application."
   },
   taskReorder: {
     title: "Manual task order",

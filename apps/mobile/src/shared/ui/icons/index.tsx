@@ -66,6 +66,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   drag: GripVertical,
   more: MoreHorizontal,
   trash: Trash2,
+  back: ChevronLeft,
 };
 
 function resolveToneColor(

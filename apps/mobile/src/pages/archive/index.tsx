@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { ScrollView } from 'react-native';
 
 import { useCopy } from '@shared/lib/use-copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
@@ -45,15 +46,17 @@ export function ArchivePage() {
 
   return (
     <ScreenShell title={copy.archive.title}>
-      <ArchiveResultsContent
-        isEmpty={isEmpty}
-        tasks={archivedTasks}
-        projects={archivedProjects}
-        projectById={projectById}
-        taskCountByProjectId={taskCountByProjectId}
-        onRestoreTask={actions.restoreTask}
-        onRestoreProject={actions.restoreProject}
-      />
+      <ScrollView contentContainerStyle={{ gap: 16 }}>
+        <ArchiveResultsContent
+          isEmpty={isEmpty}
+          tasks={archivedTasks}
+          projects={archivedProjects}
+          projectById={projectById}
+          taskCountByProjectId={taskCountByProjectId}
+          onRestoreTask={actions.restoreTask}
+          onRestoreProject={actions.restoreProject}
+        />
+      </ScrollView>
     </ScreenShell>
   );
 }

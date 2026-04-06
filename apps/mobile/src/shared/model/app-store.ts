@@ -9,6 +9,8 @@ import {
 } from './selectors';
 import { createAppActions } from './actions';
 import { resolveInitialLanguage } from '@shared/lib/language';
+import { withRetry } from '@shared/lib/retry';
+import { logError } from '@shared/lib/error-logger';
 import type { AppState, AppStore } from './types';
 
 export type AppStoreApi = StoreApi<AppStore>;
@@ -50,10 +52,18 @@ export function createMobileAppStore(userId: string): AppStoreApi {
     const runMutation = async (work: () => Promise<void>): Promise<boolean> => {
       patchState({ isSaving: true, error: null });
       try {
-        await repository.transaction.run(work);
+        await withRetry(() => repository.transaction.run(work), {
+          onRetry: (attempt, error) => {
+            logError(error, {
+              action: 'runMutation.retry',
+              metadata: { attempt },
+            });
+          },
+        });
         await applySnapshot();
         return true;
       } catch (nextError) {
+        logError(nextError, { action: 'runMutation' });
         patchState({ error: formatError(nextError) });
         return false;
       } finally {

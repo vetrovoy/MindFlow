@@ -41,7 +41,6 @@ export function SearchProjectGroup({
       <View style={styles.projectGrid}>
         {projects.map(project => {
           const section = sectionsById.get(project.id);
-
           return (
             <ProjectCard
               key={project.id}

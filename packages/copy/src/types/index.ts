@@ -247,6 +247,13 @@ export interface CopyDictionary {
     notificationsLabel: string;
     saveErrorTitle: string;
   };
+  errorBoundary: {
+    title: string;
+    description: string;
+    resetButton: string;
+    maxResetTitle: string;
+    maxResetDescription: string;
+  };
   taskReorder: {
     title: string;
     description: string;

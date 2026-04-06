@@ -12,6 +12,7 @@ import { QuickAddFeature } from "@/features/quick-add";
 import { TaskCreateFeature } from "@/features/task-create";
 import { TaskEditFeature } from "@/features/task-edit";
 
+import { ErrorBoundary } from "@/shared/ui/error-boundary";
 import { SystemStatusWidget } from "@/widgets/system-status";
 import { BottomNavWidget } from "@/widgets/bottom-nav";
 import { useAppState } from "@/shared/model/app-store-provider";
@@ -135,7 +136,9 @@ export function AppShell() {
             variant="loading"
           />
         ) : (
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         )}
       </main>
       <BottomNavWidget />

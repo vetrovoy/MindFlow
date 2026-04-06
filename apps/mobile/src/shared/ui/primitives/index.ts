@@ -19,6 +19,7 @@ export { StatusSelect } from './status-select';
 export { NavItem } from './nav-item';
 export { BottomSheetSelector } from './bottom-sheet-selector';
 export { AccentButton } from './accent-button';
+export { RefreshControl } from './refresh-control';
 
 export type { ScreenShellProps } from './screen-shell';
 export type { SurfaceCardProps } from './surface-card';
