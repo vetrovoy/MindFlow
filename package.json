@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rimraf .turbo packages/*/.turbo apps/*/.turbo",
+    "prepare": "husky",
     "mobile:start": "pnpm --filter @mindflow/mobile start",
     "mobile:android": "pnpm --filter @mindflow/mobile android",
     "mobile:ios": "pnpm --filter @mindflow/mobile ios",
@@ -25,6 +26,8 @@
     "web:typecheck": "pnpm --filter @mindflow/web typecheck"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.22.0",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
@@ -34,10 +37,22 @@
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "prettier": "^3.5.3",
     "turbo": "^2.4.4",
     "typescript": "^5.8.2",
     "vite": "^6.2.1",
     "vitest": "^3.0.8"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }

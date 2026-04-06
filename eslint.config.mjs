@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import prettier from "eslint-config-prettier";
+import unusedImports from "eslint-plugin-unused-imports";
 
 export default [
   {
@@ -23,7 +24,8 @@ export default [
       }
     },
     plugins: {
-      "@typescript-eslint": tseslint
+      "@typescript-eslint": tseslint,
+      "unused-imports": unusedImports
     },
     rules: {
       "no-undef": "off",
@@ -32,10 +34,11 @@ export default [
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_"
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_"
         }
-      ]
+      ],
+      "unused-imports/no-unused-imports": "error"
     }
   }
 ];

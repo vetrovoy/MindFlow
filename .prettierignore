@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.turbo/
+coverage/
+pnpm-lock.yaml
+**/*.podspec.json
+apps/mobile/ios/Pods/
+apps/mobile/vendor/
+apps/mobile/android/.gradle/
+apps/android/app/build/
+apps/ios/build/
+.husky/
