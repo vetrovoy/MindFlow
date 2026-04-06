@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 40,
     borderRadius: 16,
-    borderWidth: 1,
+    borderWidth: 0.5,
     paddingHorizontal: 8,
     paddingVertical: 8,
     justifyContent: 'center',

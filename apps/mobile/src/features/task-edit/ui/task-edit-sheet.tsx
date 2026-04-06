@@ -139,7 +139,7 @@ export function TaskEditSheet() {
         </Pressable>
       )}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingHorizontal: 18, paddingTop: 12, paddingBottom: 28 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingTop: 12, paddingBottom: 28 }}>
         <SurfaceCard elevated style={styles.card}>
           <View style={styles.label}>
             <Meta tone="soft">{copy.task.editTitle}</Meta>
