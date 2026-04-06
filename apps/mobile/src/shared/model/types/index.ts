@@ -89,6 +89,8 @@ export interface AppActions {
   clearError: () => void;
   reload: () => Promise<void>;
   setLanguage: (lang: AppLanguage) => void;
+  restoreTask: (taskId: string) => Promise<void>;
+  restoreProject: (projectId: string) => Promise<void>;
 }
 
 export interface AppStore {

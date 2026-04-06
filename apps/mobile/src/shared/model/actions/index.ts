@@ -2,6 +2,8 @@ import {
   createProject as createProjectEntity,
   createTask,
   reorderTasks,
+  restoreProject as restoreProjectEntity,
+  restoreTask as restoreTaskEntity,
   toggleTaskDone,
   updateProject,
   updateTask,
@@ -300,6 +302,28 @@ export function createAppActions({
         setToast(getStore, copy.task.addedToastTitle, 'success');
       }
     },
+    async restoreTask(taskId) {
+      const { tasks } = getStore().state;
+      const task = tasks.find(t => t.id === taskId);
+      if (task == null) return;
+      await runMutation(async () => {
+        await repository.tasks.save(restoreTaskEntity(task, getNowIso()));
+      });
+      const copy = getRuntimeCopy(getStore);
+      setToast(getStore, copy.task.restoredToastTitle, 'success');
+    },
+
+    async restoreProject(projectId) {
+      const { projects } = getStore().state;
+      const project = projects.find(p => p.id === projectId);
+      if (project == null) return;
+      await runMutation(async () => {
+        await repository.projects.save(restoreProjectEntity(project, getNowIso()));
+      });
+      const copy = getRuntimeCopy(getStore);
+      setToast(getStore, copy.project.restoredToastTitle, 'success');
+    },
+
     dismissToast() {
       Toast.hide();
     },
