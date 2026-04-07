@@ -4,7 +4,8 @@ import type { Project } from '@mindflow/domain';
 
 import { useCopy } from '@shared/lib/use-copy';
 import { Body, Meta } from '@shared/ui/typography';
-import { ArchivedProjectRow } from '../archived-project-row';
+
+import { ArchivedProjectRow } from './archived-project-row';
 
 interface ArchiveProjectGroupProps {
   projects: Project[];

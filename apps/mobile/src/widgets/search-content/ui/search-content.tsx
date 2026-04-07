@@ -5,10 +5,11 @@ import type { Project, Task } from '@mindflow/domain';
 import type { ProjectSection } from '@shared/model/types';
 import { useCopy } from '@shared/lib/use-copy';
 import { StateCard } from '@shared/ui/primitives';
-import { SearchTaskGroup } from '../search-task-group';
-import { SearchProjectGroup } from '../search-project-group';
 
-interface SearchResultsContentProps {
+import { SearchProjectGroup } from './search-project-group';
+import { SearchTaskGroup } from './search-task-group';
+
+interface SearchContentProps {
   isIdle: boolean;
   isEmpty: boolean;
   tasks: Task[];
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function SearchResultsContent({
+export function SearchContent({
   isIdle,
   isEmpty,
   tasks,
@@ -34,7 +35,7 @@ export function SearchResultsContent({
   onToggleDone,
   onOpenTask,
   onOpenProject,
-}: SearchResultsContentProps) {
+}: SearchContentProps) {
   const copy = useCopy();
 
   if (isIdle) {
@@ -59,21 +60,20 @@ export function SearchResultsContent({
 
   return (
     <View style={styles.content}>
-      {tasks.length > 0 && (
+      {tasks.length > 0 ? (
         <SearchTaskGroup
           tasks={tasks}
           onOpenTask={onOpenTask}
           onToggleDone={onToggleDone}
         />
-      )}
-
-      {projects.length > 0 && (
+      ) : null}
+      {projects.length > 0 ? (
         <SearchProjectGroup
           onOpenProject={onOpenProject}
           projects={projects}
           sectionsById={sectionsById}
         />
-      )}
+      ) : null}
     </View>
   );
 }

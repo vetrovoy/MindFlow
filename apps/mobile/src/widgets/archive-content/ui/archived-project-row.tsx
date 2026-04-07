@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   divider: {
     width: 1,
     height: 10,
-    backgroundColor: '#999',
     opacity: 0.3,
   },
   restoreButton: {

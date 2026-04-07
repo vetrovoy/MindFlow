@@ -1,21 +1,15 @@
 import { useMemo, useState } from 'react';
 import { ScrollView } from 'react-native';
 
-import { searchEntities } from '@mindflow/domain';
-
 import { useCopy } from '@shared/lib/use-copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
-import {
-  sortProjects,
-  sortTasks,
-} from '@shared/model/selectors/task.selectors';
 import { ScreenShell } from '@shared/ui/primitives';
-import {
-  SearchSortControl,
-  type SearchSortOption,
-} from './ui/search-sort-control';
+
+import { SearchContent } from '@widgets/search-content/ui/search-content';
+
+import { buildSearchPageState, type SearchSortOption } from './model';
 import { SearchField } from './ui/search-field';
-import { SearchResultsContent } from './ui/search-results-content';
+import { SearchSortControl } from './ui/search-sort-control';
 
 export function SearchPage() {
   const copy = useCopy();
@@ -25,39 +19,19 @@ export function SearchPage() {
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<SearchSortOption>('relevance');
 
-  const results = useMemo(() => {
-    const nextResults = searchEntities(state.tasks, state.projects, query);
-    const sortedTasks = sortTasks(nextResults.tasks);
-    const sortedProjects = sortProjects(nextResults.projects);
-
-    if (sortBy === 'date') {
-      sortedTasks.sort((a, b) => {
-        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return dateB - dateA;
-      });
-    }
-
-    return {
-      tasks: sortedTasks,
-      projects: sortedProjects,
-    };
-  }, [query, state.projects, state.tasks, sortBy]);
-
-  const projectSectionsById = useMemo(
+  const viewModel = useMemo(
     () =>
-      new Map(
-        derived.projectSections.map(section => [section.project.id, section]),
-      ),
-    [derived.projectSections],
+      buildSearchPageState({
+        query,
+        sortBy,
+        tasks: state.tasks,
+        projects: state.projects,
+        projectSections: derived.projectSections,
+      }),
+    [derived.projectSections, query, sortBy, state.projects, state.tasks],
   );
 
-  const normalizedQuery = query.trim();
-  const hasResults = results.tasks.length > 0 || results.projects.length > 0;
-  const isIdle = normalizedQuery.length === 0;
-  const isEmpty = !hasResults && !isIdle;
-
-  const titleAccessory = !isIdle ? (
+  const titleAccessory = !viewModel.isIdle ? (
     <SearchSortControl sortBy={sortBy} onSortChange={setSortBy} />
   ) : undefined;
 
@@ -65,12 +39,12 @@ export function SearchPage() {
     <ScreenShell accessory={titleAccessory} title={copy.search.title}>
       <ScrollView contentContainerStyle={{ gap: 16 }}>
         <SearchField value={query} onChange={setQuery} />
-        <SearchResultsContent
-          isIdle={isIdle}
-          isEmpty={isEmpty}
-          tasks={results.tasks}
-          projects={results.projects}
-          sectionsById={projectSectionsById}
+        <SearchContent
+          isIdle={viewModel.isIdle}
+          isEmpty={viewModel.isEmpty}
+          tasks={viewModel.tasks}
+          projects={viewModel.projects}
+          sectionsById={viewModel.sectionsById}
           onToggleDone={actions.toggleTask}
           onOpenTask={actions.openTaskEdit}
           onOpenProject={actions.openProjectEdit}

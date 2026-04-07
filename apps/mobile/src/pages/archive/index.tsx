@@ -4,55 +4,34 @@ import { ScrollView } from 'react-native';
 import { useCopy } from '@shared/lib/use-copy';
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { ScreenShell } from '@shared/ui/primitives';
-import { ArchiveResultsContent } from './ui/archive-results-content';
+
+import { ArchiveContent } from '@widgets/archive-content/ui/archive-content';
+
+import { buildArchivePageState } from './model';
 
 export function ArchivePage() {
   const copy = useCopy();
   const actions = useMobileAppStore(s => s.actions);
   const state = useMobileAppStore(s => s.state);
 
-  const projectById = useMemo(
-    () => new Map(state.projects.map(project => [project.id, project])),
-    [state.projects],
-  );
-
-  const taskCountByProjectId = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const task of state.tasks) {
-      if (task.projectId != null) {
-        counts.set(task.projectId, (counts.get(task.projectId) ?? 0) + 1);
-      }
-    }
-    return counts;
-  }, [state.tasks]);
-
-  const archivedTasks = useMemo(
+  const viewModel = useMemo(
     () =>
-      state.tasks
-        .filter(task => task.archivedAt != null)
-        .sort((a, b) => (b.archivedAt ?? '').localeCompare(a.archivedAt ?? '')),
-    [state.tasks],
+      buildArchivePageState({
+        tasks: state.tasks,
+        projects: state.projects,
+      }),
+    [state.projects, state.tasks],
   );
-
-  const archivedProjects = useMemo(
-    () =>
-      state.projects
-        .filter(project => project.archivedAt != null)
-        .sort((a, b) => (b.archivedAt ?? '').localeCompare(a.archivedAt ?? '')),
-    [state.projects],
-  );
-
-  const isEmpty = archivedTasks.length === 0 && archivedProjects.length === 0;
 
   return (
     <ScreenShell title={copy.archive.title}>
       <ScrollView contentContainerStyle={{ gap: 16 }}>
-        <ArchiveResultsContent
-          isEmpty={isEmpty}
-          tasks={archivedTasks}
-          projects={archivedProjects}
-          projectById={projectById}
-          taskCountByProjectId={taskCountByProjectId}
+        <ArchiveContent
+          isEmpty={viewModel.isEmpty}
+          tasks={viewModel.archivedTasks}
+          projects={viewModel.archivedProjects}
+          projectById={viewModel.projectById}
+          taskCountByProjectId={viewModel.taskCountByProjectId}
           onRestoreTask={actions.restoreTask}
           onRestoreProject={actions.restoreProject}
         />

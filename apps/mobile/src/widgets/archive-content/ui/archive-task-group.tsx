@@ -4,7 +4,8 @@ import type { Project, Task } from '@mindflow/domain';
 
 import { useCopy } from '@shared/lib/use-copy';
 import { Body, Meta } from '@shared/ui/typography';
-import { ArchivedTaskRow } from '../archived-task-row';
+
+import { ArchivedTaskRow } from './archived-task-row';
 
 interface ArchiveTaskGroupProps {
   tasks: Task[];

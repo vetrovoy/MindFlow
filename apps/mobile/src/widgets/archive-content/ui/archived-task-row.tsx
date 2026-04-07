@@ -73,7 +73,7 @@ export function ArchivedTaskRow({
               <Meta tone="soft">{project.name}</Meta>
             </View>
           )}
-          {task.status === 'done' && (
+          {task.status === 'done' ? (
             <View
               style={[
                 styles.pill,
@@ -82,7 +82,7 @@ export function ArchivedTaskRow({
             >
               <Meta tone="accent">{copy.status.done}</Meta>
             </View>
-          )}
+          ) : null}
         </View>
       </View>
       <Pressable

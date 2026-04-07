@@ -4,10 +4,11 @@ import type { Project, Task } from '@mindflow/domain';
 
 import { useCopy } from '@shared/lib/use-copy';
 import { StateCard } from '@shared/ui/primitives';
-import { ArchiveTaskGroup } from '../archive-task-group';
-import { ArchiveProjectGroup } from '../archive-project-group';
 
-interface ArchiveResultsContentProps {
+import { ArchiveProjectGroup } from './archive-project-group';
+import { ArchiveTaskGroup } from './archive-task-group';
+
+interface ArchiveContentProps {
   isEmpty: boolean;
   tasks: Task[];
   projects: Project[];
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ArchiveResultsContent({
+export function ArchiveContent({
   isEmpty,
   tasks,
   projects,
@@ -31,7 +32,7 @@ export function ArchiveResultsContent({
   taskCountByProjectId,
   onRestoreTask,
   onRestoreProject,
-}: ArchiveResultsContentProps) {
+}: ArchiveContentProps) {
   const copy = useCopy();
 
   if (isEmpty) {
@@ -46,21 +47,20 @@ export function ArchiveResultsContent({
 
   return (
     <View style={styles.groups}>
-      {tasks.length > 0 && (
+      {tasks.length > 0 ? (
         <ArchiveTaskGroup
           onRestore={onRestoreTask}
           projectById={projectById}
           tasks={tasks}
         />
-      )}
-
-      {projects.length > 0 && (
+      ) : null}
+      {projects.length > 0 ? (
         <ArchiveProjectGroup
           onRestore={onRestoreProject}
           projects={projects}
           taskCountByProjectId={taskCountByProjectId}
         />
-      )}
+      ) : null}
     </View>
   );
 }
