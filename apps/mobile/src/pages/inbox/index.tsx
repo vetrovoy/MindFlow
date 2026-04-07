@@ -19,7 +19,7 @@ export function InboxPage() {
     <ScreenShell>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 16 }}
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       >
         <InboxContent
           activeInboxTasks={activeInboxTasks}

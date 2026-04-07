@@ -18,7 +18,7 @@ export function TodayPage() {
     <ScreenShell>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 16 }}
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       >
         <TodayTaskFeed
           overdueTasks={overdueTasks}
