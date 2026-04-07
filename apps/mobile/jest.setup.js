@@ -1,5 +1,17 @@
 require('react-native-gesture-handler/jestSetup');
 
+jest.mock('@shared/lib/use-copy', () => {
+  const { getCopy } = require('@mindflow/copy');
+
+  return {
+    useCopy: () => getCopy('ru'),
+    useLanguage: () => ({
+      language: 'ru',
+      setLanguage: jest.fn(),
+    }),
+  };
+});
+
 jest.mock(
   'react-native-worklets',
   () => ({
@@ -112,17 +124,6 @@ jest.mock('react-native-mmkv', () => {
     createMMKV: jest.fn(createStorage),
   };
 });
-
-jest.mock('@op-engineering/op-sqlite', () => ({
-  open: jest.fn(() => ({
-    executeSync: jest.fn(),
-    execute: jest.fn(async () => ({ rows: [] })),
-    transaction: jest.fn(async work => {
-      await work({});
-    }),
-    close: jest.fn(),
-  })),
-}));
 
 jest.mock('@react-navigation/native', () => {
   const React = require('react');
@@ -306,5 +307,5 @@ jest.mock('@shared/theme/use-theme', () => ({
 }));
 
 jest.mock('react-native-localize', () => ({
-  getLocales: () => [{ languageCode: 'en', countryCode: 'US' }],
+  getLocales: () => [{ languageCode: 'ru', countryCode: 'RU' }],
 }));

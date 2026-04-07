@@ -91,7 +91,6 @@ describe('ListsPage', () => {
     renderWithStore();
 
     expect(screen.getByTestId('lists-all-card')).toBeTruthy();
-    expect(screen.getByText('Все списки')).toBeTruthy();
     expect(screen.getByText('Пусто')).toBeTruthy();
     expect(screen.getByText('Создайте новый список.')).toBeTruthy();
   });

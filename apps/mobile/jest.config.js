@@ -6,6 +6,7 @@ module.exports = {
     '^@mindflow/data$': '<rootDir>/../../packages/data/src',
     '^@mindflow/ui$': '<rootDir>/../../packages/ui/src',
     '^@mindflow/copy$': '<rootDir>/../../packages/copy/src',
+    '^@op-engineering/op-sqlite$': '<rootDir>/test-mocks/op-sqlite.ts',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transform: {
