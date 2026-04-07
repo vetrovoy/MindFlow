@@ -1,6 +1,12 @@
 require('react-native-gesture-handler/jestSetup');
 
-jest.mock('react-native-worklets', () => ({}), { virtual: true });
+jest.mock(
+  'react-native-worklets',
+  () => ({
+    createSerializable: value => value,
+  }),
+  { virtual: true },
+);
 
 jest.mock('reanimated-color-picker', () => {
   const React = require('react');
@@ -154,6 +160,24 @@ jest.mock('@shopify/flash-list', () => {
     FlashList: React.forwardRef((props, ref) => (
       <FlatList ref={ref} {...props} />
     )),
+  };
+});
+
+jest.mock('react-native-draggable-flatlist', () => {
+  const React = require('react');
+  const { FlatList, View } = require('react-native');
+
+  const DraggableFlatList = React.forwardRef((props, ref) =>
+    React.createElement(FlatList, { ...props, ref }),
+  );
+
+  const ScaleDecorator = ({ children }) =>
+    React.createElement(View, null, children);
+
+  return {
+    __esModule: true,
+    default: DraggableFlatList,
+    ScaleDecorator,
   };
 });
 
