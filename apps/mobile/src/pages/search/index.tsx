@@ -37,7 +37,10 @@ export function SearchPage() {
 
   return (
     <ScreenShell accessory={titleAccessory} title={copy.search.title}>
-      <ScrollView contentContainerStyle={{ gap: 16 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 16 }}
+      >
         <SearchField value={query} onChange={setQuery} />
         <SearchContent
           isIdle={viewModel.isIdle}

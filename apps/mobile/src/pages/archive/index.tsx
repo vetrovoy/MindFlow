@@ -25,7 +25,10 @@ export function ArchivePage() {
 
   return (
     <ScreenShell title={copy.archive.title}>
-      <ScrollView contentContainerStyle={{ gap: 16 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 16 }}
+      >
         <ArchiveContent
           isEmpty={viewModel.isEmpty}
           tasks={viewModel.archivedTasks}
