@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useRef } from 'react';
 import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 
 import { getMobileAppStore, type AppStoreApi } from './app-store';
 import type { AppStore } from './types';
@@ -33,5 +34,5 @@ function useAppStoreApi(): AppStoreApi {
 
 export function useMobileAppStore<T>(selector: (store: AppStore) => T): T {
   const store = useAppStoreApi();
-  return useStore(store, selector);
+  return useStore(store, useShallow(selector));
 }
