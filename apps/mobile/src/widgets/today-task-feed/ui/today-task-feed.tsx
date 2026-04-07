@@ -11,7 +11,6 @@ import type { AppStore } from '@shared/model/types';
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 16,
     gap: 14,
   },
   sectionContent: {

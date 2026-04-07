@@ -1,6 +1,7 @@
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { ScreenShell } from '@shared/ui/primitives';
 import { ListsContent } from '@widgets/lists-content/ui/lists-content';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export function ListsPage() {
   const sections = useMobileAppStore(store => store.derived.projectSections);
@@ -21,14 +22,19 @@ export function ListsPage() {
 
   return (
     <ScreenShell>
-      <ListsContent
-        favoriteSections={favoriteSections}
-        regularSections={regularSections}
-        onOpenProject={openProjectEdit}
-        onOpenTask={openTaskEdit}
-        onReorderTasks={reorderProjectTasks}
-        onToggleDone={toggleTask}
-      />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 16 }}
+        showsHorizontalScrollIndicator={false}
+      >
+        <ListsContent
+          favoriteSections={favoriteSections}
+          regularSections={regularSections}
+          onOpenProject={openProjectEdit}
+          onOpenTask={openTaskEdit}
+          onReorderTasks={reorderProjectTasks}
+          onToggleDone={toggleTask}
+        />
+      </ScrollView>
     </ScreenShell>
   );
 }

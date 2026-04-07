@@ -10,7 +10,6 @@ import { DraggableTaskList } from '@entities/draggable-task-list';
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 16,
     gap: 14,
   },
   sectionBlock: {

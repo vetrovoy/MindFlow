@@ -7,7 +7,6 @@ import { CollapsibleSection, StateCard, TaskRow } from '@shared/ui/primitives';
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 16,
     gap: 14,
   },
   sectionContent: {
