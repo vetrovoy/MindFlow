@@ -3,11 +3,23 @@ import "dotenv/config";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import type { JwtVariables } from "hono/jwt";
 import { tasks, projects } from "./db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "./db";
+import { authMiddleware, registerAuthRoutes } from "./auth";
 
-const app = new Hono();
+type Env = { Variables: JwtVariables };
+
+// Validate required env vars at startup
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+  console.error(
+    "FATAL: JWT_SECRET is required and must be at least 32 characters"
+  );
+  process.exit(1);
+}
+
+const app = new Hono<Env>();
 
 app.use("*", logger());
 app.use("*", cors());
@@ -17,14 +29,22 @@ app.onError((err, c) => {
   return c.json({ error: err.message ?? "Internal Server Error" }, 500);
 });
 
-// ─── Tasks ───────────────────────────────────────────────────────────────────
+// ─── Auth routes (no auth required) ─────────────────────────────────────────
 
-app.get("/api/tasks", async (c) => {
+registerAuthRoutes(app);
+
+// ─── Protected CRUD routes ──────────────────────────────────────────────────
+
+const api = new Hono<Env>();
+api.use("*", authMiddleware);
+
+// Tasks
+api.get("/api/tasks", async (c) => {
   const allTasks = await db.select().from(tasks).orderBy(tasks.createdAt);
   return c.json(allTasks);
 });
 
-app.get("/api/tasks/:id", async (c) => {
+api.get("/api/tasks/:id", async (c) => {
   const id = c.req.param("id");
   const result = await db.select().from(tasks).where(eq(tasks.id, id));
   if (result.length === 0) {
@@ -33,7 +53,7 @@ app.get("/api/tasks/:id", async (c) => {
   return c.json(result[0]);
 });
 
-app.post("/api/tasks", async (c) => {
+api.post("/api/tasks", async (c) => {
   const body = await c.req.json();
   if (!body.title) {
     return c.json({ error: "title is required" }, 400);
@@ -42,7 +62,7 @@ app.post("/api/tasks", async (c) => {
   return c.json(result[0], 201);
 });
 
-app.put("/api/tasks/:id", async (c) => {
+api.put("/api/tasks/:id", async (c) => {
   const id = c.req.param("id");
   const body = await c.req.json();
   const result = await db
@@ -56,7 +76,7 @@ app.put("/api/tasks/:id", async (c) => {
   return c.json(result[0]);
 });
 
-app.delete("/api/tasks/:id", async (c) => {
+api.delete("/api/tasks/:id", async (c) => {
   const id = c.req.param("id");
   const result = await db.delete(tasks).where(eq(tasks.id, id)).returning();
   if (result.length === 0) {
@@ -65,9 +85,8 @@ app.delete("/api/tasks/:id", async (c) => {
   return c.body(null, 204);
 });
 
-// ─── Projects ────────────────────────────────────────────────────────────────
-
-app.get("/api/projects", async (c) => {
+// Projects
+api.get("/api/projects", async (c) => {
   const allProjects = await db
     .select()
     .from(projects)
@@ -75,7 +94,7 @@ app.get("/api/projects", async (c) => {
   return c.json(allProjects);
 });
 
-app.get("/api/projects/:id", async (c) => {
+api.get("/api/projects/:id", async (c) => {
   const id = c.req.param("id");
   const result = await db.select().from(projects).where(eq(projects.id, id));
   if (result.length === 0) {
@@ -84,7 +103,7 @@ app.get("/api/projects/:id", async (c) => {
   return c.json(result[0]);
 });
 
-app.post("/api/projects", async (c) => {
+api.post("/api/projects", async (c) => {
   const body = await c.req.json();
   if (!body.name) {
     return c.json({ error: "name is required" }, 400);
@@ -93,7 +112,7 @@ app.post("/api/projects", async (c) => {
   return c.json(result[0], 201);
 });
 
-app.put("/api/projects/:id", async (c) => {
+api.put("/api/projects/:id", async (c) => {
   const id = c.req.param("id");
   const body = await c.req.json();
   const result = await db
@@ -107,7 +126,7 @@ app.put("/api/projects/:id", async (c) => {
   return c.json(result[0]);
 });
 
-app.delete("/api/projects/:id", async (c) => {
+api.delete("/api/projects/:id", async (c) => {
   const id = c.req.param("id");
   const result = await db
     .delete(projects)
@@ -118,6 +137,8 @@ app.delete("/api/projects/:id", async (c) => {
   }
   return c.body(null, 204);
 });
+
+app.route("/", api);
 
 // ─── Health ──────────────────────────────────────────────────────────────────
 
