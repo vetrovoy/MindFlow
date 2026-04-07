@@ -1,6 +1,7 @@
 import { useMobileAppStore } from '@shared/model/app-store-provider';
 import { ScreenShell } from '@shared/ui/primitives';
 import { ListsContent } from '@widgets/lists-content/ui/lists-content';
+import { useMemo } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export function ListsPage() {
@@ -13,11 +14,13 @@ export function ListsPage() {
   const openProjectEdit = useMobileAppStore(
     store => store.actions.openProjectEdit,
   );
-  const favoriteSections = sections.filter(
-    section => section.project.isFavorite,
+  const favoriteSections = useMemo(
+    () => sections.filter(section => section.project.isFavorite),
+    [sections],
   );
-  const regularSections = sections.filter(
-    section => !section.project.isFavorite,
+  const regularSections = useMemo(
+    () => sections.filter(section => !section.project.isFavorite),
+    [sections],
   );
 
   return (
