@@ -269,7 +269,7 @@ export function createAppActions({
         id: createId(),
         name: trimmedName,
         color: input.color,
-        emoji: '',
+        emoji: '📋',
         isFavorite: input.isFavorite ?? false,
         deadline: input.deadline ?? null,
         now,
