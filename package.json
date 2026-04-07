@@ -32,7 +32,14 @@
     "web:build": "pnpm --filter @mindflow/web build",
     "web:lint": "pnpm --filter @mindflow/web lint",
     "web:test": "pnpm --filter @mindflow/web test",
-    "web:typecheck": "pnpm --filter @mindflow/web typecheck"
+    "web:typecheck": "pnpm --filter @mindflow/web typecheck",
+    "server:dev": "pnpm --filter @mindflow/server dev",
+    "server:build": "pnpm --filter @mindflow/server build",
+    "server:start": "pnpm --filter @mindflow/server start",
+    "db:generate": "pnpm --filter @mindflow/server db:generate",
+    "db:migrate": "pnpm --filter @mindflow/server db:migrate",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

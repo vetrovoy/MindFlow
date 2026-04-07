@@ -49,6 +49,11 @@ pnpm mobile:android   # Сборка и запуск на Android-эмулято
 | `pnpm mobile:android` | Запуск на Android-эмуляторе |
 | `pnpm web:dev`        | Запуск Vite dev-сервера     |
 | `pnpm web:build`      | Продакшн-сборка веба        |
+| `pnpm server:dev`     | Запуск Hono API (порт 3000) |
+| `pnpm server:build`   | Сборка сервера              |
+| `pnpm db:up`          | Поднять PostgreSQL          |
+| `pnpm db:down`        | Остановить PostgreSQL       |
+| `pnpm db:migrate`     | Применить миграции БД       |
 
 ## Структура проекта
 
@@ -56,7 +61,8 @@ pnpm mobile:android   # Сборка и запуск на Android-эмулято
 mindflow-app/
 ├── apps/
 │   ├── mobile/          # React Native приложение (FSD)
-│   └── web/             # React SPA с Vite (FSD)
+│   ├── web/             # React SPA с Vite (FSD)
+│   └── server/          # Hono API + Drizzle ORM + PostgreSQL
 ├── packages/
 │   ├── domain/          # Бизнес-сущности, use case'ы, селекторы
 │   ├── data/            # Контракты репозиториев + персистенция (SQLite, Dexie)
@@ -66,7 +72,8 @@ mindflow-app/
 └── [infra]
     ├── .github/         # GitHub Actions CI
     ├── .husky/          # Git-хуки (lint-staged, commitlint)
-    └── .vscode/         # Настройки редактора + рекомендуемые расширения
+    ├── .vscode/         # Настройки редактора + рекомендуемые расширения
+    └── docker-compose.yml # PostgreSQL контейнер
 ```
 
 Подробнее — в [ARCHITECTURE.md](./ARCHITECTURE.md): диаграммы слоёв и потоков данных.
@@ -77,6 +84,7 @@ mindflow-app/
 - **Стейт-менеджмент**: Zustand
 - **Мобильное хранилище**: SQLite (`@op-engineering/op-sqlite`)
 - **Веб-хранилище**: IndexedDB (`dexie`)
+- **Сервер**: Hono + PostgreSQL + Drizzle ORM
 - **Навигация**: React Navigation 7 (мобильный), React Router 7 (веб)
 - **Синхронизация**: Паттерн Repository через `RepositoryBundle` — подставляй SQLite / Dexie / API / in-memory
 

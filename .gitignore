@@ -8,3 +8,7 @@ coverage
 *.tsbuildinfo
 tmp/
 apps/web/.cert/
+.env
+.env.local
+*.env
+*.env.local

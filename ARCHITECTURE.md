@@ -5,7 +5,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         APP LAYER                           │
-│  apps/mobile/  ·  apps/web/                                 │
+│  apps/mobile/  ·  apps/web/  ·  apps/server/               │
 │  ┌─────────┐ ┌──────────┐ ┌─────────┐ ┌────────┐ ┌───────┐ │
 │  │ pages   │ │ features │ │ widgets │ │entities│ │shared │ │
 │  │ Экраны  │ │ Потоки   │ │ Композ. │ │Модели  │ │Утилиты│ │
@@ -32,6 +32,7 @@
 │                                                             │
 │  Mobile: SQLite (@op-engineering/op-sqlite)                │
 │  Web:    IndexedDB (dexie)                                 │
+│  Server: PostgreSQL (postgres + Drizzle ORM)               │
 │  Test:   In-memory maps                                     │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -118,7 +119,19 @@ src/
     └── ui/             # Локальные примитивы
 ```
 
+### Сервер (`apps/server/`)
+
+```
+src/
+├── db/                # Drizzle ORM подключение
+│   ├── index.ts        # postgres client + drizzle instance
+│   └── schema.ts       # схемы таблиц tasks + projects
+└── index.ts           # Hono API — CRUD endpoints + serve
+```
+
 ## Поток данных
+
+### Клиенты (mobile / web)
 
 ```
 Действие пользователя (тап/ввод)
@@ -140,6 +153,26 @@ App Actions (createAppActions)
     │  перевычисление derived-селекторов
     ▼
 UI перерисовывается (TaskRow, ProjectCard, …)
+```
+
+### Сервер (API)
+
+```
+HTTP запрос (GET/POST/PUT/DELETE)
+    │
+    ▼
+Hono route handler
+    │
+    │  вызывает
+    ▼
+Drizzle ORM (postgres)
+    │
+    │  SQL запрос
+    ▼
+PostgreSQL (tasks / projects)
+    │
+    ▼
+JSON ответ клиенту
 ```
 
 ### Ключевые принципы

@@ -1,0 +1,33 @@
+{
+  "name": "@mindflow/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo 'no lint for server yet'",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  },
+  "dependencies": {
+    "@mindflow/domain": "workspace:*",
+    "@hono/node-server": "^1.14.5",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.39.3",
+    "hono": "^4.10.4",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "@mindflow/config": "workspace:*",
+    "@types/node": "^22.13.10",
+    "drizzle-kit": "^0.30.6",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.2"
+  }
+}
