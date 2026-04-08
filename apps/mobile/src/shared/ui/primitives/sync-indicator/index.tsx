@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 export function SyncIndicator({ showPendingCount = true }: SyncIndicatorProps) {
   const { theme } = useTheme();
   const [status, setStatus] = useState<SyncStatus>('idle');
-  const [_pendingCount, _setPendingCount] = useState(0);
+  const [pendingCount, _setPendingCount] = useState(0);
 
   useEffect(() => {
     const store = getSyncStore();
