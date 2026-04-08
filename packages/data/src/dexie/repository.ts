@@ -2,7 +2,7 @@ import Dexie, { type Table } from "dexie";
 
 import type { Project, Task } from "@mindflow/domain";
 import { validateProject, validateTask } from "@mindflow/domain";
-import type { PendingChange } from "../api/pending-changes";
+import type { PendingChange } from "../contracts";
 
 import type {
   ProjectRepository,
@@ -129,7 +129,7 @@ class DexieTransaction implements Transaction {
 }
 
 class NoopSyncPort implements SyncPort {
-  async push(_change: PendingChange) {}
+  async push(_change: PendingChange): Promise<void> {}
 
   async pull(): Promise<null> {
     return null;

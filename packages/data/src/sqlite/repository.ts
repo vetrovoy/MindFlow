@@ -3,6 +3,7 @@ import type { Transaction as OPTransaction } from "@op-engineering/op-sqlite";
 import type { Project, Task } from "@mindflow/domain";
 import { validateProject, validateTask } from "@mindflow/domain";
 import type {
+  PendingChange,
   ProjectRepository,
   RepositoryBundle,
   SyncPort,
@@ -238,7 +239,7 @@ class SqliteTransactionWrapper implements Transaction {
 // ─── Noop sync ────────────────────────────────────────────────────────────────
 
 class NoopSyncPort implements SyncPort {
-  async push(): Promise<void> {}
+  async push(_change: PendingChange): Promise<void> {}
   async pull(): Promise<null> {
     return null;
   }

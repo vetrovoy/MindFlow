@@ -1,5 +1,15 @@
 import type { Project, Task } from "@mindflow/domain";
 
+export type ChangeType = "created" | "updated" | "deleted";
+
+export interface PendingChange {
+  entity: "task" | "project";
+  id: string;
+  type: ChangeType;
+  data?: Record<string, unknown>;
+  timestamp: number;
+}
+
 export interface TaskRepository {
   getById(id: string): Promise<Task | null>;
   listAll(): Promise<Task[]>;
@@ -24,7 +34,7 @@ export interface Transaction {
 }
 
 export interface SyncPort {
-  push(): Promise<void>;
+  push(change: PendingChange): Promise<void>;
   pull(): Promise<{ tasks: Task[]; projects: Project[] } | null>;
 }
 
