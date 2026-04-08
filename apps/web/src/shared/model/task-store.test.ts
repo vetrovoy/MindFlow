@@ -90,7 +90,7 @@ describe("createAppStore", () => {
       },
       sync: {
         push: async () => {},
-        pull: async () => {}
+        pull: async () => null
       }
     };
     const store = createAppStore("test-store", {

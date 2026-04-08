@@ -25,7 +25,7 @@ export interface Transaction {
 
 export interface SyncPort {
   push(): Promise<void>;
-  pull(): Promise<void>;
+  pull(): Promise<{ tasks: Task[]; projects: Project[] } | null>;
 }
 
 export interface RepositoryBundle {

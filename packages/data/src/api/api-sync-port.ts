@@ -5,32 +5,29 @@ import { apiGet } from "./api-client";
 /**
  * SyncPort implementation for API-based repositories.
  *
- * - pull(): Fetches all tasks and projects from the server.
+ * - pull(): Fetches all tasks and projects from the server and returns them.
  * - push(): No-op for now — will be implemented with pending
- *   changes tracking in VET-103 (offline-first sync).
+ *   changes tracking in VET-104 (offline-first sync).
  */
 export class ApiSyncPort implements SyncPort {
   constructor(
     private readonly baseUrl: string,
-    private readonly token: string,
-    private readonly onSyncComplete?: (data: {
-      tasks: Task[];
-      projects: Project[];
-    }) => void
+    private readonly token: string
   ) {}
 
-  async pull(): Promise<void> {
-    const [tasks, projects] = await Promise.all([
-      apiGet<Task[]>(this.baseUrl, "/api/tasks", this.token).catch(() => []),
-      apiGet<Project[]>(this.baseUrl, "/api/projects", this.token).catch(
-        () => []
-      )
-    ]);
-
-    this.onSyncComplete?.({ tasks, projects });
+  async pull(): Promise<{ tasks: Task[]; projects: Project[] } | null> {
+    try {
+      const [tasks, projects] = await Promise.all([
+        apiGet<Task[]>(this.baseUrl, "/api/tasks", this.token),
+        apiGet<Project[]>(this.baseUrl, "/api/projects", this.token)
+      ]);
+      return { tasks, projects };
+    } catch {
+      return null;
+    }
   }
 
   async push(): Promise<void> {
-    // No-op for now — pending changes tracking will be added in VET-103
+    // No-op for now — pending changes tracking will be added in VET-104
   }
 }

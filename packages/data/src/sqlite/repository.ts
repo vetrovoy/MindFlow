@@ -239,7 +239,9 @@ class SqliteTransactionWrapper implements Transaction {
 
 class NoopSyncPort implements SyncPort {
   async push(): Promise<void> {}
-  async pull(): Promise<void> {}
+  async pull(): Promise<null> {
+    return null;
+  }
 }
 
 // ─── Factory ──────────────────────────────────────────────────────────────────

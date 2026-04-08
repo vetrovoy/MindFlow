@@ -1,4 +1,3 @@
-import type { Project, Task } from "@mindflow/domain";
 import type { RepositoryBundle } from "../contracts";
 import { ApiTaskRepository } from "./api-task-repository";
 import { ApiProjectRepository } from "./api-project-repository";
@@ -8,18 +7,17 @@ import { ApiSyncPort } from "./api-sync-port";
 export interface ApiRepositoryBundleOptions {
   baseUrl: string;
   token: string;
-  onSyncComplete?: (data: { tasks: Task[]; projects: Project[] }) => void;
 }
 
 export function createApiRepositoryBundle(
   options: ApiRepositoryBundleOptions
 ): RepositoryBundle {
-  const { baseUrl, token, onSyncComplete } = options;
+  const { baseUrl, token } = options;
 
   const tasks = new ApiTaskRepository(baseUrl, token);
   const projects = new ApiProjectRepository(baseUrl, token);
   const transaction = new ApiTransaction();
-  const sync = new ApiSyncPort(baseUrl, token, onSyncComplete);
+  const sync = new ApiSyncPort(baseUrl, token);
 
   return { tasks, projects, transaction, sync };
 }

@@ -130,7 +130,9 @@ class DexieTransaction implements Transaction {
 class NoopSyncPort implements SyncPort {
   async push() {}
 
-  async pull() {}
+  async pull(): Promise<null> {
+    return null;
+  }
 }
 
 export function createDexieRepositoryBundle(

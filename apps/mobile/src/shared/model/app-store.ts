@@ -1,5 +1,6 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
+import type { Project, Task } from '@mindflow/domain';
 import type { RepositoryBundle } from '@mindflow/data';
 import { createSqliteRepositoryBundle } from '@mindflow/data/sqlite';
 import {
@@ -12,6 +13,8 @@ import { createAppActions } from './actions';
 import { resolveInitialLanguage } from '@shared/lib/language';
 import { withRetry } from '@shared/lib/retry';
 import { logError } from '@shared/lib/error-logger';
+import { SyncManager } from '@shared/lib/sync-manager';
+import { resetSyncStore } from '@shared/model/sync-store';
 import type { AppState, AppStore } from './types';
 
 export type AppStoreApi = StoreApi<AppStore>;
@@ -19,16 +22,15 @@ export type AppStoreApi = StoreApi<AppStore>;
 interface StoreEntry {
   store: AppStoreApi;
   userId: string;
+  syncManager?: SyncManager;
 }
 
 let storeEntry: StoreEntry | null = null;
 
 export function createMobileAppStore(
   userId: string,
-  repository?: RepositoryBundle,
+  repository: RepositoryBundle,
 ): AppStoreApi {
-  const repo =
-    repository ?? createSqliteRepositoryBundle({ name: `mindflow-${userId}` });
   const initialLanguage = resolveInitialLanguage();
   const initialState: AppState = {
     ...INITIAL_STATE,
@@ -44,7 +46,7 @@ export function createMobileAppStore(
     };
 
     const applySnapshot = async () => {
-      const snapshot = await readSnapshot(repo);
+      const snapshot = await readSnapshot(repository);
       patchState({
         tasks: snapshot.tasks,
         projects: snapshot.projects,
@@ -55,7 +57,7 @@ export function createMobileAppStore(
     const runMutation = async (work: () => Promise<void>): Promise<boolean> => {
       patchState({ isSaving: true, error: null });
       try {
-        await withRetry(() => repo.transaction.run(work), {
+        await withRetry(() => repository.transaction.run(work), {
           onRetry: (attempt, error) => {
             logError(error, {
               action: 'runMutation.retry',
@@ -78,7 +80,7 @@ export function createMobileAppStore(
       state: initialState,
       derived: computeDerived(initialState),
       actions: createAppActions({
-        repository: repo,
+        repository,
         getStore: get,
         patchState,
         runMutation,
@@ -96,14 +98,42 @@ export function getMobileAppStore(
 ): AppStoreApi {
   if (storeEntry != null) {
     if (storeEntry.userId === userId) return storeEntry.store;
-    // Different userId or new repository → reset cache
     resetMobileAppStore();
   }
-  const store = createMobileAppStore(userId, repository);
-  storeEntry = { store, userId };
+
+  const isApiBundle = repository != null;
+  const repo =
+    repository ?? createSqliteRepositoryBundle({ name: `mindflow-${userId}` });
+  const store = createMobileAppStore(userId, repo);
+
+  if (isApiBundle) {
+    // Only start sync for API bundles — SQLite has NoopSyncPort (no-op)
+    const onSyncComplete = ({
+      tasks,
+      projects,
+    }: {
+      tasks: Task[];
+      projects: Project[];
+    }) => {
+      console.log('[AppStore] Sync complete:', tasks.length, 'tasks');
+      store.setState(s => {
+        const nextState = { ...s.state, tasks, projects, isHydrated: true };
+        return { state: nextState, derived: computeDerived(nextState) };
+      });
+    };
+
+    const syncManager = new SyncManager(repo, onSyncComplete);
+    syncManager.start();
+    storeEntry = { store, userId, syncManager };
+  } else {
+    storeEntry = { store, userId };
+  }
+
   return store;
 }
 
 export function resetMobileAppStore(): void {
+  storeEntry?.syncManager?.stop();
+  resetSyncStore();
   storeEntry = null;
 }

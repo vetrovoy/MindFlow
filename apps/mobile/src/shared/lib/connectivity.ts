@@ -1,6 +1,35 @@
 import { useEffect, useState } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 
+type ConnectivityEvent = 'online' | 'offline';
+type Listener = (event: ConnectivityEvent) => void;
+
+const listeners = new Set<Listener>();
+let currentIsOnline = true;
+
+// Run initial probe at module load so isOnlineNow() is accurate
+// even before any component mounts useNetworkStatus()
+void checkOnline().then(online => {
+  if (currentIsOnline !== online) {
+    currentIsOnline = online;
+  }
+});
+
+function emit(event: ConnectivityEvent) {
+  listeners.forEach(fn => fn(event));
+}
+
+export function onConnectivityChange(callback: Listener): () => void {
+  listeners.add(callback);
+  return () => {
+    listeners.delete(callback);
+  };
+}
+
+export function isOnlineNow(): boolean {
+  return currentIsOnline;
+}
+
 /**
  * Lightweight connectivity hook.
  * Uses AppState + a background fetch probe to detect online/offline status.
@@ -26,7 +55,13 @@ export function useNetworkStatus(): { isOnline: boolean } {
 
     async function probe() {
       const online = await checkOnline();
-      if (!cancelled) setIsOnline(online);
+      if (!cancelled) {
+        setIsOnline(online);
+        if (currentIsOnline !== online) {
+          currentIsOnline = online;
+          emit(online ? 'online' : 'offline');
+        }
+      }
     }
 
     void probe();
