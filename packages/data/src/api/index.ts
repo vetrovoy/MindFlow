@@ -26,3 +26,5 @@ export { ApiTaskRepository } from "./api-task-repository";
 export { ApiProjectRepository } from "./api-project-repository";
 export { ApiTransaction } from "./api-transaction";
 export { ApiSyncPort } from "./api-sync-port";
+export { PendingChangesQueue } from "./pending-changes";
+export type { PendingChange, ChangeType } from "./pending-changes";
