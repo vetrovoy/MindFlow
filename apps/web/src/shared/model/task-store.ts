@@ -22,17 +22,18 @@ export type AppStoreApi = StoreApi<AppStore>;
 
 interface CreateAppStoreOptions {
   repositoryFactory?: (input: { name: string }) => RepositoryBundle;
+  repository?: RepositoryBundle;
 }
 
 export function createAppStore(
   databaseName: string,
   options: CreateAppStoreOptions = {}
 ): AppStoreApi {
-  const repository = (options.repositoryFactory ?? createDexieRepositoryBundle)(
-    {
+  const repository =
+    options.repository ??
+    (options.repositoryFactory ?? createDexieRepositoryBundle)({
       name: databaseName
-    }
-  );
+    });
 
   return createStore<AppStore>((set, get) => {
     let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;

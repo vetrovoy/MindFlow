@@ -1,5 +1,6 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
+import type { RepositoryBundle } from '@mindflow/data';
 import { createSqliteRepositoryBundle } from '@mindflow/data/sqlite';
 import {
   computeDerived,
@@ -22,10 +23,12 @@ interface StoreEntry {
 
 let storeEntry: StoreEntry | null = null;
 
-export function createMobileAppStore(userId: string): AppStoreApi {
-  const repository = createSqliteRepositoryBundle({
-    name: `mindflow-${userId}`,
-  });
+export function createMobileAppStore(
+  userId: string,
+  repository?: RepositoryBundle,
+): AppStoreApi {
+  const repo =
+    repository ?? createSqliteRepositoryBundle({ name: `mindflow-${userId}` });
   const initialLanguage = resolveInitialLanguage();
   const initialState: AppState = {
     ...INITIAL_STATE,
@@ -41,7 +44,7 @@ export function createMobileAppStore(userId: string): AppStoreApi {
     };
 
     const applySnapshot = async () => {
-      const snapshot = await readSnapshot(repository);
+      const snapshot = await readSnapshot(repo);
       patchState({
         tasks: snapshot.tasks,
         projects: snapshot.projects,
@@ -52,7 +55,7 @@ export function createMobileAppStore(userId: string): AppStoreApi {
     const runMutation = async (work: () => Promise<void>): Promise<boolean> => {
       patchState({ isSaving: true, error: null });
       try {
-        await withRetry(() => repository.transaction.run(work), {
+        await withRetry(() => repo.transaction.run(work), {
           onRetry: (attempt, error) => {
             logError(error, {
               action: 'runMutation.retry',
@@ -75,7 +78,7 @@ export function createMobileAppStore(userId: string): AppStoreApi {
       state: initialState,
       derived: computeDerived(initialState),
       actions: createAppActions({
-        repository,
+        repository: repo,
         getStore: get,
         patchState,
         runMutation,
@@ -87,11 +90,16 @@ export function createMobileAppStore(userId: string): AppStoreApi {
   return store;
 }
 
-export function getMobileAppStore(userId: string): AppStoreApi {
-  if (storeEntry != null && storeEntry.userId === userId) {
-    return storeEntry.store;
+export function getMobileAppStore(
+  userId: string,
+  repository?: RepositoryBundle,
+): AppStoreApi {
+  if (storeEntry != null) {
+    if (storeEntry.userId === userId) return storeEntry.store;
+    // Different userId or new repository → reset cache
+    resetMobileAppStore();
   }
-  const store = createMobileAppStore(userId);
+  const store = createMobileAppStore(userId, repository);
   storeEntry = { store, userId };
   return store;
 }
