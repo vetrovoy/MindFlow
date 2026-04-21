@@ -11,49 +11,117 @@
 
 ## Быстрый старт
 
+### Установка зависимостей
+
 ```bash
-# 1. Установка зависимостей
 pnpm install
-
-# 2. Запуск всех dev-серверов (веб + мобильный metro)
-pnpm dev
-
-# Или запуск отдельных приложений:
-pnpm web:dev          # Веб на localhost:5173
-pnpm mobile:start     # Metro bundler
-pnpm mobile:ios       # Сборка и запуск на iOS-симуляторе
-pnpm mobile:android   # Сборка и запуск на Android-эмуляторе
 ```
+
+### Development Workflows
+
+#### 🔵 **Full-Stack (Web + Server + Mobile)**
+
+**Терминал 1:** PostgreSQL
+
+```bash
+pnpm db:up
+```
+
+**Терминал 2:** Backend
+
+```bash
+pnpm server:dev
+```
+
+**Терминал 3:** Frontend
+
+```bash
+pnpm web:dev
+```
+
+**Терминал 4 (опционально):** Mobile
+
+```bash
+cd apps/mobile && pnpm start   # Metro bundler
+# Затем в другом терминале:
+pnpm ios   # iOS эмулятор
+```
+
+➜ Server: http://localhost:3000  
+➜ Web: http://localhost:5173  
+➜ Mobile: подключается через Metro
+
+---
+
+#### 🟦 **Только Backend**
+
+```bash
+pnpm db:up         # PostgreSQL
+pnpm server:dev    # Server with hot reload
+```
+
+#### 🟦 **Только Frontend**
+
+```bash
+# Убедись что Server запущен
+pnpm web:dev
+```
+
+#### 📦 **Production (Docker)**
+
+```bash
+docker compose up
+```
+
+➜ http://localhost (Web через nginx)  
+➜ http://localhost:3000 (API)
 
 ## Скрипты
 
-### Монорепозиторий (root)
+### Root scripts
 
-| Команда             | Описание                             |
-| ------------------- | ------------------------------------ |
-| `pnpm dev`          | Запуск всех dev-серверов параллельно |
-| `pnpm build`        | Сборка всех пакетов и приложений     |
-| `pnpm lint`         | ESLint по всему workspace            |
-| `pnpm test`         | Запуск всех тестов                   |
-| `pnpm typecheck`    | TypeScript проверка всех пакетов     |
-| `pnpm format`       | Prettier — автоисправление           |
-| `pnpm format:check` | Prettier — только проверка           |
-| `pnpm clean`        | Очистка кешей turbo                  |
+| Команда             | Описание                                 |
+| ------------------- | ---------------------------------------- |
+| `pnpm dev`          | Server + Web локально (требует postgres) |
+| `pnpm build`        | Сборка всех пакетов и приложений         |
+| `pnpm test`         | Запуск всех тестов                       |
+| `pnpm typecheck`    | TypeScript проверка всех пакетов         |
+| `pnpm format`       | Prettier — автоисправление               |
+| `pnpm format:check` | Prettier — только проверка               |
+| `pnpm clean`        | Очистка кешей turbo                      |
 
-### Команды для отдельных приложений
+### Docker
 
-| Команда               | Описание                    |
-| --------------------- | --------------------------- |
-| `pnpm mobile:start`   | Запуск Metro bundler        |
-| `pnpm mobile:ios`     | Запуск на iOS-симуляторе    |
-| `pnpm mobile:android` | Запуск на Android-эмуляторе |
-| `pnpm web:dev`        | Запуск Vite dev-сервера     |
-| `pnpm web:build`      | Продакшн-сборка веба        |
-| `pnpm server:dev`     | Запуск Hono API (порт 3000) |
-| `pnpm server:build`   | Сборка сервера              |
-| `pnpm db:up`          | Поднять PostgreSQL          |
-| `pnpm db:down`        | Остановить PostgreSQL       |
-| `pnpm db:migrate`     | Применить миграции БД       |
+| Команда            | Описание                               |
+| ------------------ | -------------------------------------- |
+| `pnpm docker:up`   | Production (nginx + server + postgres) |
+| `pnpm docker:down` | Остановить контейнеры                  |
+
+### Server
+
+| Команда                 | Описание               |
+| ----------------------- | ---------------------- |
+| `pnpm server:dev`       | Запуск с hot reload    |
+| `pnpm server:build`     | Сборка                 |
+| `pnpm server:start`     | Запуск compiled версии |
+| `pnpm server:test`      | Запуск тестов          |
+| `pnpm server:typecheck` | TypeScript проверка    |
+
+### Web
+
+| Команда              | Описание                                 |
+| -------------------- | ---------------------------------------- |
+| `pnpm web:dev`       | Запуск Vite dev-сервера (localhost:5173) |
+| `pnpm web:build`     | Продакшн-сборка                          |
+| `pnpm web:test`      | Запуск тестов                            |
+| `pnpm web:typecheck` | TypeScript проверка                      |
+
+### Database
+
+| Команда        | Описание              |
+| -------------- | --------------------- |
+| `pnpm db:up`   | Запустить PostgreSQL  |
+| `pnpm db:down` | Остановить PostgreSQL |
 
 ## Структура проекта
 
@@ -69,11 +137,13 @@ mindflow-app/
 │   ├── ui/              # Токены тем, UI-примитивы
 │   ├── copy/            # i18n словарь (RU/EN)
 │   └── config/          # Общие TS-превенты
+├── .env.example         # Environment variables template
+├── docker-compose.yml   # Production: PostgreSQL + Server + Web (nginx)
+├── docker-compose.dev.yml # Development: Server (hot reload) + PostgreSQL
 └── [infra]
     ├── .github/         # GitHub Actions CI
     ├── .husky/          # Git-хуки (lint-staged, commitlint)
-    ├── .vscode/         # Настройки редактора + рекомендуемые расширения
-    └── docker-compose.yml # PostgreSQL контейнер
+    └── .vscode/         # Настройки редактора + рекомендуемые расширения
 ```
 
 Подробнее — в [ARCHITECTURE.md](./ARCHITECTURE.md): диаграммы слоёв и потоков данных.
