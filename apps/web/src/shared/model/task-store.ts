@@ -1,4 +1,5 @@
 import {
+  createApiRepositoryBundle,
   createDexieRepositoryBundle,
   type RepositoryBundle
 } from "@mindflow/data";
@@ -33,18 +34,65 @@ let storeEntry: {
   syncManager?: SyncManager;
 } | null = null;
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/**
+ * Reads the auth token from the web storage (localStorage).
+ * The key 'planner-auth' is defined in apps/web/src/shared/lib/auth.ts
+ */
+function getAuthToken(): string | null {
+  try {
+    const raw = localStorage.getItem("planner-auth");
+    if (raw) {
+      const data = JSON.parse(raw);
+      // Check if session exists and has an accessToken
+      return data?.session?.accessToken ?? null;
+    }
+  } catch {
+    // Ignore parse errors
+  }
+  return null;
+}
+
+// ─── Factory ─────────────────────────────────────────────────────────────────
+
 export function createAppStore(
   databaseName: string,
   options: CreateAppStoreOptions = {}
 ): AppStoreApi {
-  const repository =
-    options.repository ??
-    (options.repositoryFactory ?? createDexieRepositoryBundle)({
-      name: databaseName
+  // 1. Explicit override
+  if (options.repository) {
+    return createAppStoreWithRepo(databaseName, options.repository, true);
+  }
+
+  // 2. Auto-detect based on ENV and Token
+  const apiUrl = import.meta.env.VITE_API_BASE_URL ?? "";
+  const isBackendDisabled = import.meta.env.VITE_DISABLE_BACKEND === "true";
+  const token = getAuthToken();
+
+  // If backend is enabled and we have a token -> Use API Bundle
+  if (!isBackendDisabled && token) {
+    console.log("[AppStore] Initializing API Repository Bundle...");
+    const apiRepo = createApiRepositoryBundle({
+      baseUrl: apiUrl,
+      token
     });
+    return createAppStoreWithRepo(databaseName, apiRepo, true);
+  }
 
-  const isApiBundle = options.repository != null;
+  // 3. Fallback to Local (Dexie)
+  console.log("[AppStore] Initializing Local Repository Bundle (Dexie)...");
+  const localRepo = (options.repositoryFactory ?? createDexieRepositoryBundle)({
+    name: databaseName
+  });
+  return createAppStoreWithRepo(databaseName, localRepo, false);
+}
 
+function createAppStoreWithRepo(
+  databaseName: string,
+  repository: RepositoryBundle,
+  isApiBundle: boolean
+): AppStoreApi {
   const store = createStore<AppStore & { syncManager?: SyncManager }>(
     (set, get) => {
       let toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -153,7 +201,7 @@ export function createAppStore(
     }
   );
 
-  // Start sync for API bundles
+  // Start sync ONLY for API bundles
   if (isApiBundle) {
     const onSyncComplete = ({
       tasks,
@@ -169,7 +217,9 @@ export function createAppStore(
       });
     };
 
-    const syncManager = new SyncManager(repository, onSyncComplete);
+    // Skip initial pull for API bundles (data already loaded via applySnapshot in reload())
+    // SyncManager will still listen for connectivity changes and pull on reconnect
+    const syncManager = new SyncManager(repository, onSyncComplete, true);
     syncManager.start();
 
     storeEntry = { store, syncManager };

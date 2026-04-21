@@ -13,24 +13,38 @@ export class SyncManager {
   private repository: RepositoryBundle;
   private onSyncComplete: SyncCallback;
   private cleanup: (() => void) | null = null;
+  private skipInitialPull: boolean;
+  private isSyncing = false;
+  private stopped = false;
 
-  constructor(repository: RepositoryBundle, onSyncComplete: SyncCallback) {
+  constructor(
+    repository: RepositoryBundle,
+    onSyncComplete: SyncCallback,
+    skipInitialPull = false,
+  ) {
     this.repository = repository;
     this.onSyncComplete = onSyncComplete;
+    this.skipInitialPull = skipInitialPull;
   }
 
   /**
    * Starts the sync loop:
-   * 1. Pulls data immediately.
-   * 2. Listens for connectivity changes to pull on reconnect.
+   * - For SQLite bundles: pulls data immediately + listens for reconnect.
+   * - For API bundles: only listens for reconnect (data already loaded via applySnapshot).
    */
   start(): void {
     console.log('[SyncManager] Starting sync...');
-    this.performPull();
+    this.stopped = false;
     this.setupConnectivityListener();
+
+    // For API bundles, skip initial pull — applySnapshot already loads data
+    if (!this.skipInitialPull) {
+      void this.performPull();
+    }
   }
 
   stop(): void {
+    this.stopped = true;
     this.cleanup?.();
     this.cleanup = null;
     console.log('[SyncManager] Sync stopped.');
@@ -43,24 +57,24 @@ export class SyncManager {
     await this.performPull();
   }
 
-  /**
-   * Triggers a manual push (no-op for API-based repos where writes are direct).
-   */
-  async push(): Promise<void> {
-    console.log('[SyncManager] Push triggered (no-op for API mode).');
-  }
-
   private async performPull(): Promise<void> {
-    if (!isOnlineNow()) {
-      console.log('[SyncManager] Skipping pull: offline.');
+    if (this.stopped || this.isSyncing || !isOnlineNow()) {
       return;
     }
 
+    this.isSyncing = true;
     const syncStore = getSyncStore();
     syncStore.getState().setSyncing();
 
     try {
       const data = await this.repository.sync.pull();
+
+      // Check if stopped during async pull — discard stale result
+      if (this.stopped) {
+        console.log('[SyncManager] Discarding pull result — manager stopped.');
+        return;
+      }
+
       if (data) {
         this.onSyncComplete(data);
         syncStore.getState().setSynced();
@@ -75,6 +89,8 @@ export class SyncManager {
       logError(error, { action: 'sync.pull' });
       syncStore.getState().setError(msg);
       console.error('[SyncManager] Pull failed:', msg);
+    } finally {
+      this.isSyncing = false;
     }
   }
 

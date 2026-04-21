@@ -10,18 +10,27 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useAuth } from "@/app/providers/auth-provider";
 import { getUserDatabaseName } from "./app-storage.config";
-import { createAppStore, type AppStoreApi } from "./task-store";
+import { createAppStore, resetAppStore, type AppStoreApi } from "./task-store";
 
 const AppStoreContext = createContext<AppStoreApi | null>(null);
 
 export function AppStoreProvider({ children }: PropsWithChildren) {
   const { session } = useAuth();
+
+  // Depend on both userId AND accessToken so the store is re-created
+  // when offline-registration-sync upgrades the session with a JWT.
+  // This switches the repository from Dexie (local) to API (server).
+  const hasToken = session?.accessToken != null;
+  const storeKey = session
+    ? `${session.userId}:${hasToken ? "api" : "local"}`
+    : null;
+
   const store = useMemo(
     () =>
       session == null
         ? null
         : createAppStore(getUserDatabaseName(session.userId)),
-    [session?.userId]
+    [storeKey]
   );
 
   useEffect(() => {
@@ -30,6 +39,10 @@ export function AppStoreProvider({ children }: PropsWithChildren) {
     }
 
     void store.getState().actions.reload();
+
+    return () => {
+      resetAppStore();
+    };
   }, [store]);
 
   return (

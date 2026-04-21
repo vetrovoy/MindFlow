@@ -1,8 +1,12 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
+import Toast from 'react-native-toast-message';
 
 import type { Project, Task } from '@mindflow/domain';
 import type { RepositoryBundle } from '@mindflow/data';
+import { createApiRepositoryBundle } from '@mindflow/data';
 import { createSqliteRepositoryBundle } from '@mindflow/data/sqlite';
+import { readAuthSnapshot } from '@shared/lib/auth';
+import { API_BASE_URL } from '@shared/config';
 import {
   computeDerived,
   formatError,
@@ -26,6 +30,7 @@ interface StoreEntry {
 }
 
 let storeEntry: StoreEntry | null = null;
+let storePromise: Promise<AppStoreApi> | null = null;
 
 export function createMobileAppStore(
   userId: string,
@@ -69,7 +74,9 @@ export function createMobileAppStore(
         return true;
       } catch (nextError) {
         logError(nextError, { action: 'runMutation' });
-        patchState({ error: formatError(nextError) });
+        const message = formatError(nextError);
+        patchState({ error: message });
+        Toast.show({ type: 'error', text1: message });
         return false;
       } finally {
         patchState({ isSaving: false });
@@ -92,48 +99,77 @@ export function createMobileAppStore(
   return store;
 }
 
-export function getMobileAppStore(
+export async function getMobileAppStore(
   userId: string,
   repository?: RepositoryBundle,
-): AppStoreApi {
-  if (storeEntry != null) {
-    if (storeEntry.userId === userId) return storeEntry.store;
-    resetMobileAppStore();
+): Promise<AppStoreApi> {
+  // Return existing store if available
+  if (storeEntry != null && storeEntry.userId === userId) {
+    return storeEntry.store;
   }
 
-  const isApiBundle = repository != null;
-  const repo =
-    repository ?? createSqliteRepositoryBundle({ name: `mindflow-${userId}` });
-  const store = createMobileAppStore(userId, repo);
-
-  if (isApiBundle) {
-    // Only start sync for API bundles — SQLite has NoopSyncPort (no-op)
-    const onSyncComplete = ({
-      tasks,
-      projects,
-    }: {
-      tasks: Task[];
-      projects: Project[];
-    }) => {
-      console.log('[AppStore] Sync complete:', tasks.length, 'tasks');
-      store.setState(s => {
-        const nextState = { ...s.state, tasks, projects, isHydrated: true };
-        return { state: nextState, derived: computeDerived(nextState) };
-      });
-    };
-
-    const syncManager = new SyncManager(repo, onSyncComplete);
-    syncManager.start();
-    storeEntry = { store, userId, syncManager };
-  } else {
-    storeEntry = { store, userId };
+  // If already being created — wait for existing promise
+  if (storePromise != null) {
+    return storePromise;
   }
 
-  return store;
+  // Create new store (with lock to prevent race conditions from React Strict Mode)
+  storePromise = (async () => {
+    const isApiBundle = repository != null;
+    let repo: RepositoryBundle;
+
+    if (repository) {
+      repo = repository;
+    } else {
+      const snapshot = readAuthSnapshot();
+      const token = snapshot.session?.accessToken ?? null;
+
+      if (token != null && API_BASE_URL != null) {
+        repo = createApiRepositoryBundle({ baseUrl: API_BASE_URL, token });
+      } else {
+        repo = await createSqliteRepositoryBundle({
+          name: `mindflow-${userId}`,
+        });
+      }
+    }
+
+    const store = createMobileAppStore(userId, repo);
+
+    const snapshot = readAuthSnapshot();
+    const hasToken = snapshot.session?.accessToken ?? null;
+
+    if (isApiBundle || hasToken != null) {
+      const onSyncComplete = ({
+        tasks,
+        projects,
+      }: {
+        tasks: Task[];
+        projects: Project[];
+      }) => {
+        console.log('[AppStore] Sync complete:', tasks.length, 'tasks');
+        store.setState(s => {
+          const nextState = { ...s.state, tasks, projects, isHydrated: true };
+          return { state: nextState, derived: computeDerived(nextState) };
+        });
+      };
+
+      const syncManager = new SyncManager(repo, onSyncComplete, isApiBundle);
+      syncManager.start();
+      storeEntry = { store, userId, syncManager };
+    } else {
+      storeEntry = { store, userId };
+    }
+
+    storePromise = null;
+    return store;
+  })();
+
+  return storePromise;
 }
 
 export function resetMobileAppStore(): void {
   storeEntry?.syncManager?.stop();
   resetSyncStore();
+  storePromise = null;
   storeEntry = null;
 }
