@@ -116,31 +116,37 @@ export function registerAuthRoutes(app: {
       return c.json({ error: "Password must be 8-128 characters" }, 400);
     }
 
-    const normalizedEmail = email.toLowerCase();
-    const existing = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, normalizedEmail));
-    if (existing.length > 0) {
-      return c.json({ error: "Email already registered" }, 409);
-    }
-
+    const normalizedEmail = email.trim().toLowerCase();
     const passwordHash = await hashPassword(password);
     const now = new Date();
     const crypto = await import("node:crypto");
     const id = crypto.randomUUID();
 
-    const result = await db
-      .insert(users)
-      .values({
-        id,
-        email: normalizedEmail,
-        name: trimmedName,
-        passwordHash,
-        createdAt: now,
-        updatedAt: now
-      })
-      .returning();
+    let result;
+    try {
+      result = await db
+        .insert(users)
+        .values({
+          id,
+          email: normalizedEmail,
+          name: trimmedName,
+          passwordHash,
+          createdAt: now,
+          updatedAt: now
+        })
+        .returning();
+    } catch (err: unknown) {
+      // Handle unique constraint violation (TOCTOU-safe)
+      if (
+        err &&
+        typeof err === "object" &&
+        "code" in err &&
+        (err as { code: string }).code === "23505"
+      ) {
+        return c.json({ error: "Email already registered" }, 409);
+      }
+      throw err;
+    }
 
     const token = await issueToken(result[0].id);
 
@@ -171,19 +177,24 @@ export function registerAuthRoutes(app: {
       return c.json({ error: "email and password are required" }, 400);
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
     const result = await db
       .select()
       .from(users)
-      .where(eq(users.email, email.toLowerCase()));
+      .where(eq(users.email, normalizedEmail));
 
     if (result.length === 0) {
+      console.log(`[auth/login] User not found: ${normalizedEmail}`);
       return c.json({ error: "Invalid credentials" }, 401);
     }
 
     const isValid = await verifyPassword(password, result[0].passwordHash);
     if (!isValid) {
+      console.log(`[auth/login] Wrong password for: ${normalizedEmail}`);
       return c.json({ error: "Invalid credentials" }, 401);
     }
+
+    console.log(`[auth/login] Success: ${normalizedEmail}`);
 
     const token = await issueToken(result[0].id);
 

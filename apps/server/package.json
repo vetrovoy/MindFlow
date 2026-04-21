@@ -10,6 +10,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "echo 'no lint for server yet'",
     "test": "vitest run --passWithNoTests",
+    "test:integration": "vitest run src/endpoints.test.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -17,8 +18,8 @@
     "db:down": "docker compose down"
   },
   "dependencies": {
-    "@mindflow/domain": "workspace:*",
     "@hono/node-server": "^1.14.5",
+    "@mindflow/domain": "workspace:*",
     "bcryptjs": "^2.4.3",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.39.3",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@mindflow/config": "workspace:*",
+    "@testcontainers/postgresql": "^11.14.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.13.10",
     "drizzle-kit": "^0.30.6",
