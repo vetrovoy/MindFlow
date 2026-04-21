@@ -115,7 +115,8 @@ describe("auth helpers", () => {
       session: {
         userId: "user-1",
         name: "Andrey",
-        email: "user@example.com"
+        email: "user@example.com",
+        accessToken: null
       },
       legacyMigrated: true
     });

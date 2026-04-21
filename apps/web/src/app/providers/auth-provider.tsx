@@ -2,10 +2,13 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type PropsWithChildren
 } from "react";
+
+import { AuthClient, AuthHttpError } from "@mindflow/data";
 
 import { getRuntimeCopy } from "@/shared/lib/language";
 import {
@@ -26,6 +29,20 @@ import {
   type LocalAuthUser
 } from "@/shared/lib/auth";
 import { migrateLegacyAnonymousData } from "@/shared/lib/auth-migration";
+import { logError } from "@/shared/lib/error-logger";
+import { startOfflineRegistrationSync } from "@/shared/lib/offline-registration-sync";
+
+// ─── Config ───────────────────────────────────────────────────────────────────
+
+/**
+ * Backend API URL.
+ * - Empty / not set → uses relative URLs (works with Vite proxy in dev, same-origin in prod)
+ * - Explicit URL     → uses that URL directly
+ * Set VITE_DISABLE_BACKEND=true to force local-only mode.
+ */
+const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? "";
+
+const isBackendEnabled = import.meta.env.VITE_DISABLE_BACKEND !== "true";
 
 export interface AuthState {
   isHydrated: boolean;
@@ -83,6 +100,23 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setState(createProviderState(nextSnapshot));
   }, []);
 
+  // Start offline registration sync — when connectivity is restored,
+  // register the offline user on the backend and upload local data.
+  useEffect(() => {
+    return startOfflineRegistrationSync(
+      (nextSnapshot) => {
+        console.log(
+          "[AuthProvider] Offline sync completed — updating session."
+        );
+        setState(createProviderState(nextSnapshot));
+      },
+      (errorMessage) => {
+        console.error("[AuthProvider] Offline sync error:", errorMessage);
+        window.alert(errorMessage);
+      }
+    );
+  }, []);
+
   const signIn = useCallback(
     async (email: string, password: string) => {
       const copy = getRuntimeCopy();
@@ -96,6 +130,62 @@ export function AuthProvider({ children }: PropsWithChildren) {
         throw new Error(copy.auth.passwordTooShortError);
       }
 
+      // Try backend auth if enabled
+      if (isBackendEnabled) {
+        try {
+          const client = new AuthClient({ baseUrl: API_BASE_URL });
+          const response = await client.login({
+            email: normalizedEmail,
+            password
+          });
+
+          let user = findAuthUserByEmail(state.users, normalizedEmail);
+
+          // Create local user record if not exists (for offline fallback)
+          if (user == null) {
+            const salt = createPasswordSalt();
+            const hash = await hashPassword(password, salt);
+            user = createLocalAuthUser({
+              name: response.user.name,
+              email: response.user.email,
+              passwordSalt: salt,
+              passwordHash: hash
+            });
+            const nextUsers = [...state.users, user];
+            let nextSnapshot: AuthStorageSnapshot = {
+              version: AUTH_STORAGE_VERSION,
+              users: nextUsers,
+              session: createAuthSession(user, response.token),
+              legacyMigrated: state.legacyMigrated
+            };
+
+            if (!nextSnapshot.legacyMigrated) {
+              await migrateLegacyAnonymousData(user.id);
+              nextSnapshot = { ...nextSnapshot, legacyMigrated: true };
+            }
+
+            commitState(nextSnapshot);
+          } else {
+            const session = createAuthSession(user, response.token);
+            commitState({
+              version: AUTH_STORAGE_VERSION,
+              users: state.users,
+              session,
+              legacyMigrated: state.legacyMigrated
+            });
+          }
+          return;
+        } catch (err) {
+          // HTTP client errors (401, 409, etc.) should be shown to the user
+          if (err instanceof AuthHttpError && err.isClientError) {
+            throw err;
+          }
+          // Network errors — fall through to local auth
+          logError(err, { action: "signIn.backend" });
+        }
+      }
+
+      // Local-only auth
       const user = findAuthUserByEmail(state.users, normalizedEmail);
       if (user == null || !(await verifyPassword(password, user))) {
         throw new Error(copy.auth.invalidCredentialsError);
@@ -147,13 +237,60 @@ export function AuthProvider({ children }: PropsWithChildren) {
         throw new Error(copy.auth.duplicateEmailError);
       }
 
+      // Try backend registration if enabled
+      if (isBackendEnabled) {
+        try {
+          const client = new AuthClient({ baseUrl: API_BASE_URL });
+          const response = await client.register({
+            name,
+            email: normalizedEmail,
+            password
+          });
+
+          // Store local record with password hash for offline fallback
+          const passwordSalt = createPasswordSalt();
+          const passwordHash = await hashPassword(password, passwordSalt);
+          const user = createLocalAuthUser({
+            name: response.user.name,
+            email: response.user.email,
+            passwordSalt,
+            passwordHash
+          });
+
+          const nextUsers = [...state.users, user];
+          let nextSnapshot: AuthStorageSnapshot = {
+            version: AUTH_STORAGE_VERSION,
+            users: nextUsers,
+            session: createAuthSession(user, response.token),
+            legacyMigrated: state.legacyMigrated
+          };
+
+          if (!nextSnapshot.legacyMigrated) {
+            await migrateLegacyAnonymousData(user.id);
+            nextSnapshot = { ...nextSnapshot, legacyMigrated: true };
+          }
+
+          commitState(nextSnapshot);
+          return;
+        } catch (err) {
+          // HTTP client errors (409 duplicate, etc.) should be shown to the user
+          if (err instanceof AuthHttpError && err.isClientError) {
+            throw err;
+          }
+          // Network errors — fall through to local registration
+          logError(err, { action: "signUp.backend" });
+        }
+      }
+
+      // Local-only registration — save pendingPassword for deferred backend sync
       const passwordSalt = createPasswordSalt();
       const passwordHash = await hashPassword(password, passwordSalt);
       const user = createLocalAuthUser({
         name,
         email: normalizedEmail,
         passwordSalt,
-        passwordHash
+        passwordHash,
+        pendingPassword: password
       });
       const nextUsers = [...state.users, user];
       let nextSnapshot: AuthStorageSnapshot = {

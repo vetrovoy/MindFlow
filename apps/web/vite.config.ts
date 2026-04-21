@@ -20,7 +20,16 @@ export default defineConfig({
           key: fs.readFileSync(devKeyUrl),
           cert: fs.readFileSync(devCertUrl)
         }
-      : undefined
+      : undefined,
+    // Proxy API requests to the backend server
+    // This prevents mixed-content issues (HTTPS web → HTTP server)
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path
+      }
+    }
   },
   resolve: {
     alias: {

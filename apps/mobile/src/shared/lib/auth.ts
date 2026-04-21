@@ -24,12 +24,21 @@ export interface LocalAuthUser {
   passwordSalt: string;
   passwordHash: string;
   createdAt: string;
+  /**
+   * Stored temporarily when user registers offline.
+   * Needed to forward the original password to the backend
+   * when connectivity is restored (server uses bcrypt, not SHA-256).
+   * Cleared after successful backend registration.
+   */
+  pendingPassword?: string;
 }
 
 export interface AuthSession {
   userId: string;
   name: string;
   email: string;
+  /** JWT token from backend — null for local-only auth */
+  accessToken: string | null;
 }
 
 export interface AuthStorageSnapshot {
@@ -63,7 +72,8 @@ function isAuthSession(value: unknown): value is AuthSession {
   return (
     typeof c.userId === 'string' &&
     typeof c.name === 'string' &&
-    typeof c.email === 'string'
+    typeof c.email === 'string' &&
+    (c.accessToken == null || typeof c.accessToken === 'string')
   );
 }
 
@@ -93,6 +103,7 @@ function sanitizeSnapshot(value: unknown): AuthStorageSnapshot {
             userId: sessionUser.id,
             name: sessionUser.name,
             email: sessionUser.email,
+            accessToken: rawSession?.accessToken ?? null,
           },
   };
 }
@@ -100,6 +111,7 @@ function sanitizeSnapshot(value: unknown): AuthStorageSnapshot {
 export function readAuthSnapshot(): AuthStorageSnapshot {
   try {
     const raw = authStorage.getString(AUTH_STORAGE_KEY);
+    console.log('Raw auth snapshot from storage:', raw);
     if (raw == null) return createEmptySnapshot();
     return sanitizeSnapshot(JSON.parse(raw));
   } catch {
@@ -155,8 +167,9 @@ export function createLocalAuthUser(input: {
   email: string;
   passwordSalt: string;
   passwordHash: string;
+  pendingPassword?: string;
 }): LocalAuthUser {
-  return {
+  const user: LocalAuthUser = {
     id: createId(),
     name: input.name.trim(),
     email: normalizeEmail(input.email),
@@ -164,8 +177,22 @@ export function createLocalAuthUser(input: {
     passwordHash: input.passwordHash,
     createdAt: getNowIso(),
   };
+
+  if (input.pendingPassword) {
+    user.pendingPassword = input.pendingPassword;
+  }
+
+  return user;
 }
 
-export function createAuthSession(user: LocalAuthUser): AuthSession {
-  return { userId: user.id, name: user.name, email: user.email };
+export function createAuthSession(
+  user: LocalAuthUser,
+  accessToken: string | null = null,
+): AuthSession {
+  return {
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    accessToken,
+  };
 }

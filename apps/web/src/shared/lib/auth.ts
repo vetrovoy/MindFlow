@@ -19,12 +19,21 @@ export interface LocalAuthUser {
   passwordSalt: string;
   passwordHash: string;
   createdAt: string;
+  /**
+   * Stored temporarily when user registers offline.
+   * Needed to forward the original password to the backend
+   * when connectivity is restored (server uses bcrypt, not SHA-256).
+   * Cleared after successful backend registration.
+   */
+  pendingPassword?: string;
 }
 
 export interface AuthSession {
   userId: string;
   name: string;
   email: string;
+  /** JWT token from backend — null for local-only auth */
+  accessToken: string | null;
 }
 
 export interface AuthStorageSnapshot {
@@ -70,7 +79,8 @@ function isAuthSession(value: unknown): value is AuthSession {
   return (
     typeof candidate.userId === "string" &&
     typeof candidate.name === "string" &&
-    typeof candidate.email === "string"
+    typeof candidate.email === "string" &&
+    (candidate.accessToken == null || typeof candidate.accessToken === "string")
   );
 }
 
@@ -114,7 +124,8 @@ function sanitizeStoredSnapshot(value: unknown): AuthStorageSnapshot {
         : {
             userId: sessionUser.id,
             name: sessionUser.name,
-            email: sessionUser.email
+            email: sessionUser.email,
+            accessToken: rawSession?.accessToken ?? null
           },
     legacyMigrated: candidate.legacyMigrated === true
   };
@@ -143,11 +154,15 @@ export function persistAuthSnapshot(snapshot: AuthStorageSnapshot) {
   safeWriteStorage(APP_AUTH_STORAGE_KEY, JSON.stringify(snapshot));
 }
 
-export function createAuthSession(user: LocalAuthUser): AuthSession {
+export function createAuthSession(
+  user: LocalAuthUser,
+  accessToken: string | null = null
+): AuthSession {
   return {
     userId: user.id,
     name: user.name,
-    email: user.email
+    email: user.email,
+    accessToken
   };
 }
 
@@ -161,17 +176,24 @@ export function createLocalAuthUser(input: {
   email: string;
   passwordSalt: string;
   passwordHash: string;
+  pendingPassword?: string;
 }) {
   const trimmedName = input.name.trim();
 
-  return {
+  const user: LocalAuthUser = {
     id: createId(),
     name: trimmedName,
     email: normalizeAuthEmail(input.email),
     passwordSalt: input.passwordSalt,
     passwordHash: input.passwordHash,
     createdAt: getNowIso()
-  } satisfies LocalAuthUser;
+  };
+
+  if (input.pendingPassword) {
+    user.pendingPassword = input.pendingPassword;
+  }
+
+  return user;
 }
 
 function getRuntimeCrypto() {
