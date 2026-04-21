@@ -16,11 +16,19 @@ async function fetchWithRetry(
     try {
       const response = await fetch(url, init);
       if (!response.ok) {
+        // Don't retry on client errors (4xx) — they won't change on retry
+        if (response.status >= 400 && response.status < 500) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       return response;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
+      // Check if this is a client error (4xx) that shouldn't be retried
+      if (lastError.message.includes("HTTP 4")) {
+        throw lastError;
+      }
       if (attempt < retries) {
         await sleep(RETRY_DELAY_MS);
       }

@@ -1,13 +1,12 @@
 import type { Project, Task } from "@mindflow/domain";
-import type { SyncPort } from "../contracts";
-import { apiGet } from "./api-client";
+import type { PendingChange, SyncPort } from "../contracts";
+import { apiGet, apiPost, apiPut, apiDelete } from "./api-client";
 
 /**
  * SyncPort implementation for API-based repositories.
  *
- * - pull(): Fetches all tasks and projects from the server and returns them.
- * - push(): No-op for now — will be implemented with pending
- *   changes tracking in VET-104 (offline-first sync).
+ * - pull(): Fetches all tasks and projects from the server.
+ * - push(): Sends a pending change to the server.
  */
 export class ApiSyncPort implements SyncPort {
   constructor(
@@ -22,12 +21,38 @@ export class ApiSyncPort implements SyncPort {
         apiGet<Project[]>(this.baseUrl, "/api/projects", this.token)
       ]);
       return { tasks, projects };
-    } catch {
-      return null;
+    } catch (error) {
+      // Re-throw to let caller distinguish between auth failures (401), server errors, and network issues
+      if (error instanceof Error && error.message.includes("401")) {
+        throw new Error("Unauthorized: token expired or invalid");
+      }
+      throw error;
     }
   }
 
-  async push(): Promise<void> {
-    // No-op for now — pending changes tracking will be added in VET-104
+  async push(change: PendingChange): Promise<void> {
+    const basePath = change.entity === "task" ? "/api/tasks" : "/api/projects";
+
+    switch (change.type) {
+      case "created":
+        await apiPost(
+          this.baseUrl,
+          basePath,
+          { id: change.id, ...change.data },
+          this.token
+        );
+        break;
+      case "updated":
+        await apiPut(
+          this.baseUrl,
+          `${basePath}/${change.id}`,
+          change.data ?? {},
+          this.token
+        );
+        break;
+      case "deleted":
+        await apiDelete(this.baseUrl, `${basePath}/${change.id}`, this.token);
+        break;
+    }
   }
 }

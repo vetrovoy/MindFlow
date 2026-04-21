@@ -19,6 +19,21 @@ function assertCalendarDate(value: string | null | undefined, field: string) {
   }
 }
 
+function normalizeCalendarDate(
+  value: string | null | undefined
+): string | null {
+  if (value == null || !value.trim()) {
+    return null;
+  }
+
+  // If it's an ISO string (contains T), take only the date part
+  if (value.includes("T")) {
+    return value.split("T")[0];
+  }
+
+  return value.trim();
+}
+
 function assertUtcIso(value: string | null | undefined, field: string) {
   if (value == null) {
     return;
@@ -42,36 +57,45 @@ function assertTaskPriority(value: TaskPriority) {
 }
 
 export function validateTask(task: Task): Task {
-  assertNonEmpty(task.id, "task.id");
-  assertNonEmpty(task.title, "task.title");
-  assertTaskStatus(task.status);
-  assertTaskPriority(task.priority);
-  assertCalendarDate(task.dueDate, "task.dueDate");
-  assertUtcIso(task.createdAt, "task.createdAt");
-  assertUtcIso(task.updatedAt, "task.updatedAt");
-  assertUtcIso(task.completedAt, "task.completedAt");
-  assertUtcIso(task.archivedAt, "task.archivedAt");
+  const normalizedDueDate = normalizeCalendarDate(task.dueDate);
+  const nextTask = { ...task, dueDate: normalizedDueDate };
 
-  if (!Number.isFinite(task.orderIndex)) {
+  assertNonEmpty(nextTask.id, "task.id");
+  assertNonEmpty(nextTask.title, "task.title");
+  assertTaskStatus(nextTask.status);
+  assertTaskPriority(nextTask.priority);
+  assertCalendarDate(nextTask.dueDate, "task.dueDate");
+  assertUtcIso(nextTask.createdAt, "task.createdAt");
+  assertUtcIso(nextTask.updatedAt, "task.updatedAt");
+  assertUtcIso(nextTask.completedAt, "task.completedAt");
+  assertUtcIso(nextTask.archivedAt, "task.archivedAt");
+
+  if (!Number.isFinite(nextTask.orderIndex)) {
     throw new Error("task.orderIndex must be a finite number");
   }
 
-  if (task.description != null && typeof task.description !== "string") {
+  if (
+    nextTask.description != null &&
+    typeof nextTask.description !== "string"
+  ) {
     throw new Error("task.description must be a string or null");
   }
 
-  return task;
+  return nextTask;
 }
 
 export function validateProject(project: Project): Project {
-  assertNonEmpty(project.id, "project.id");
-  assertNonEmpty(project.name, "project.name");
-  assertNonEmpty(project.color, "project.color");
-  assertNonEmpty(project.emoji, "project.emoji");
-  assertCalendarDate(project.deadline, "project.deadline");
-  assertUtcIso(project.createdAt, "project.createdAt");
-  assertUtcIso(project.updatedAt, "project.updatedAt");
-  assertUtcIso(project.archivedAt, "project.archivedAt");
+  const normalizedDeadline = normalizeCalendarDate(project.deadline);
+  const nextProject = { ...project, deadline: normalizedDeadline };
 
-  return project;
+  assertNonEmpty(nextProject.id, "project.id");
+  assertNonEmpty(nextProject.name, "project.name");
+  assertNonEmpty(nextProject.color, "project.color");
+  assertNonEmpty(nextProject.emoji, "project.emoji");
+  assertCalendarDate(nextProject.deadline, "project.deadline");
+  assertUtcIso(nextProject.createdAt, "project.createdAt");
+  assertUtcIso(nextProject.updatedAt, "project.updatedAt");
+  assertUtcIso(nextProject.archivedAt, "project.archivedAt");
+
+  return nextProject;
 }

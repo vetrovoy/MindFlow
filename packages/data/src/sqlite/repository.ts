@@ -10,39 +10,7 @@ import type {
   TaskRepository,
   Transaction
 } from "../contracts";
-
-// ─── Schema ──────────────────────────────────────────────────────────────────
-
-const TASKS_DDL = `
-  CREATE TABLE IF NOT EXISTS tasks (
-    id         TEXT    PRIMARY KEY NOT NULL,
-    title      TEXT    NOT NULL,
-    description TEXT,
-    status     TEXT    NOT NULL DEFAULT 'todo',
-    priority   TEXT    NOT NULL DEFAULT 'medium',
-    dueDate    TEXT,
-    projectId  TEXT,
-    orderIndex REAL    NOT NULL DEFAULT 0,
-    createdAt  TEXT    NOT NULL,
-    updatedAt  TEXT    NOT NULL,
-    completedAt TEXT,
-    archivedAt  TEXT
-  )
-`;
-
-const PROJECTS_DDL = `
-  CREATE TABLE IF NOT EXISTS projects (
-    id          TEXT    PRIMARY KEY NOT NULL,
-    name        TEXT    NOT NULL,
-    color       TEXT    NOT NULL,
-    emoji       TEXT    NOT NULL,
-    isFavorite  INTEGER NOT NULL DEFAULT 0,
-    deadline    TEXT,
-    createdAt   TEXT    NOT NULL,
-    updatedAt   TEXT    NOT NULL,
-    archivedAt  TEXT
-  )
-`;
+import { runMigrations } from "./migrations/runner";
 
 // ─── Row mappers ─────────────────────────────────────────────────────────────
 
@@ -247,14 +215,13 @@ class NoopSyncPort implements SyncPort {
 
 // ─── Factory ──────────────────────────────────────────────────────────────────
 
-export function createSqliteRepositoryBundle(options: {
+export async function createSqliteRepositoryBundle(options: {
   name: string;
-}): RepositoryBundle {
+}): Promise<RepositoryBundle> {
   const db = open({ name: `${options.name}.sqlite` });
 
-  // Create tables synchronously at startup
-  db.executeSync(TASKS_DDL);
-  db.executeSync(PROJECTS_DDL);
+  // Run migrations (creates tables on first install, applies ALTER on upgrade)
+  await runMigrations(db as Parameters<typeof runMigrations>[0]);
 
   // Async exec wrapper that returns rows as plain array
   const exec: ExecFn = async (query, params) => {
